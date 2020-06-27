@@ -34,6 +34,7 @@ A simple UNO Game made in Javascript, supposed to be blazing easier and faster t
 - Material UI
 - Husky
 - Lint Staged
+- Git Commit Message Linter
 - ESLint
 
 ## 👣 Project Scope
