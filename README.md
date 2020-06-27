@@ -41,6 +41,6 @@ A simple UNO Game made in Javascript, supposed to be blazing easier and faster t
 - [ ] Creating a Dashboard Page which I can use to see open rooms, create new ones and get into the ones I want to.
 - [ ] Implementing a server integration with Dashboard Page to make it to work.
 - [ ] Refactoring the Dashboard Page to give it a better looking.
-- [ ] Implementing a monorepository manager.
+- [X] Implementing a monorepository manager.
 - [ ] Updating README with new info (new badges, how to get started and so on...).
 - [ ] Implementing sounds.
