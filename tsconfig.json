@@ -1,0 +1,32 @@
+{
+	"compilerOptions": {
+		"outDir": "dist",
+		"module": "CommonJS",
+		"esModuleInterop": true,
+		"sourceMap": true,
+    "rootDir": "src",
+    "target": "es6",
+    "lib": [
+			"ES2020"
+		],
+    "allowJs": true,
+    "strictPropertyInitialization": false,
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "noImplicitAny": false,
+    "resolveJsonModule": true,
+    "baseUrl": ".",
+    "paths": {
+      "@unapy/*": ["packages/unapy/src/*"],
+      "@unoenty/*": ["packages/unoenty/src/*"]
+    },
+    "typeRoots": [
+      "node_modules/@types"
+    ]
+	},
+	"include": [
+    "src"
+	]
+}

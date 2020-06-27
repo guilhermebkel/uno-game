@@ -1,0 +1,9 @@
+{
+  "packages": [
+    "packages/*",
+    "packages/shared/**"
+  ],
+  "npmClient": "npm",
+  "version": "0.0.1",
+  "useWorkspaces": true
+}

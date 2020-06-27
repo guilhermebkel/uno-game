@@ -1,0 +1,21 @@
+{
+  "name": "root",
+  "private": true,
+  "scripts": {
+    "bootstrap": "lerna exec npm install",
+    "list": "lerna ls",
+    "deploy": "lerna version"
+  },
+  "dependencies": {
+    "dotenv": "^8.2.0"
+  },
+  "devDependencies": {
+    "husky": "^4.2.5",
+    "lint-staged": "^10.2.10",
+    "lerna": "^3.20.2"
+  },
+  "workspaces": [
+    "packages/*",
+    "packages/shared/**"
+  ]
+}
