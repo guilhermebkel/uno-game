@@ -32,6 +32,9 @@ A simple UNO Game made in Javascript, supposed to be blazing easier and faster t
 - P5
 - Phaser
 - Material UI
+- Husky
+- Lint Staged
+- ESLint
 
 ## 👣 Project Scope
 
