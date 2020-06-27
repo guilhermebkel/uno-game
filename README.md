@@ -25,6 +25,7 @@ A simple UNO Game made in Javascript, supposed to be blazing easier and faster t
 - Express
 - P5
 - Phaser
+- Material UI
 
 ## 👣 Project Scope
 
