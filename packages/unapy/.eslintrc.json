@@ -1,0 +1,15 @@
+{
+	"extends": "standard-with-typescript",
+	"parserOptions": {
+		"project": "./tsconfig.eslint.json"
+	},
+	"rules": {
+		"@typescript-eslint/strict-boolean-expressions": "off",
+		"@typescript-eslint/no-floating-promises": "off",
+		"indent": ["error", "tab"],
+		"@typescript-eslint/indent": ["error", "tab"],
+		"no-tabs": "off",
+		"quotes": ["error", "double"],
+		"@typescript-eslint/quotes": ["error", "double"]
+	}
+}
