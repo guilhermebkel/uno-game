@@ -14,7 +14,7 @@
     "lint-staged": "^10.2.10",
     "lerna": "^3.20.2",
     "typescript": "^3.9.2",
-    "eslint": "^7.2.0",
+    "eslint": "^6.6.0",
     "@typescript-eslint/eslint-plugin": "^2.34.0",
     "eslint-config-standard-with-typescript": "^17.0.0",
     "eslint-plugin-import": "^2.21.2",
