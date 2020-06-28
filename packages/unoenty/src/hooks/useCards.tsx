@@ -23,7 +23,7 @@ type CardTypes =
 "buy-4" |
 "reverse"
 
-interface CardData {
+export interface CardData {
 	id: number
 	src: string
 	name: string
@@ -231,7 +231,7 @@ const useCards = (props: PropTypes) => {
 				usedCards: []
 			}
 		})
-
+console.log(loadedDecks)
 		setDecks(loadedDecks)
 		setAvailableCards(allCards)
 	}

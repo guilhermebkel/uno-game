@@ -2,12 +2,14 @@ import React, { useEffect } from "react"
 
 import useCards from "../../hooks/useCards"
 
+import CardStack from "./CardStack"
+
 const Table = () => {
 	const {
 		preloadingCardPictures,
-		getCard,
 		availableCards,
 		usedCards,
+		decks,
 		commitPlay
 	} = useCards({
 		preloadCardPictures: true,
@@ -16,6 +18,26 @@ const Table = () => {
 			name: "mota"
 		}]
 	})
+
+	const putRandomCard = () => {
+		const [deck] = decks
+
+		if (deck) {
+			const [card] = deck.handCards
+
+			if (card) {
+				commitPlay("put", deck.id, card.id)
+			}
+		}
+	}
+
+	const buyRandomCard = () => {
+		const [deck] = decks
+
+		if (deck) {
+			commitPlay("buy", deck.id)
+		}
+	}
 
 	useEffect(() => {
 		console.log(availableCards, usedCards)
@@ -27,8 +49,12 @@ const Table = () => {
 				<h1>Preloading Card Pictures...</h1>
 			) : (
 				<>
+					<button onClick={putRandomCard}>PUT CARD</button>
+					<button onClick={buyRandomCard}>BUY CARD</button>
 					<h1>Table</h1>
-					<img src={getCard("0", "blue").src} alt={getCard("0", "blue").name} />
+					<CardStack
+						cards={usedCards}
+					/>
 				</>
 			)}
 		</>
