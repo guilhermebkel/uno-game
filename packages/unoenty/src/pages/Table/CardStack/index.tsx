@@ -12,8 +12,6 @@ interface Props {
 const CardStack = (props: Props) => {
 	const { cards } = props
 
-	console.log(cards)
-
 	const classes = useStyles()
 
 	return (
