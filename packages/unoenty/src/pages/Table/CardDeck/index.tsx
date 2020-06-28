@@ -54,6 +54,7 @@ const CardStack = (props: Props) => {
 		>
 			{cards.map((card, index) => (
 				<img
+					key={card.name}
 					className={classes.card}
 					alt={card.name}
 					src={card.src}
