@@ -31,7 +31,7 @@ export interface CardData {
 	type: CardTypes
 }
 
-interface Player {
+export interface Player {
 	id: number
 	name: string
 }
@@ -83,11 +83,11 @@ const useCards = (props: PropTypes) => {
 	]
 
 	const commitPlay = (type: "buy" | "put", playerId: number, cardId?: number) => {
-		if (availableCards.length <= 0) {
-			return
-		}
-
 		if (type === "buy") {
+			if (availableCards.length <= 0) {
+				return
+			}
+
 			const available = [...availableCards]
 
 			const card = available.shift()
@@ -231,7 +231,7 @@ const useCards = (props: PropTypes) => {
 				usedCards: []
 			}
 		})
-console.log(loadedDecks)
+
 		setDecks(loadedDecks)
 		setAvailableCards(allCards)
 	}

@@ -1,8 +1,10 @@
 import React, { useEffect } from "react"
+import { Grid } from "@material-ui/core"
 
 import useCards from "../../hooks/useCards"
 
 import CardStack from "./CardStack"
+import CardDeck from "./CardDeck"
 
 const Table = () => {
 	const {
@@ -48,14 +50,22 @@ const Table = () => {
 			{preloadingCardPictures ? (
 				<h1>Preloading Card Pictures...</h1>
 			) : (
-				<>
-					<button onClick={putRandomCard}>PUT CARD</button>
-					<button onClick={buyRandomCard}>BUY CARD</button>
-					<h1>Table</h1>
-					<CardStack
-						cards={usedCards}
-					/>
-				</>
+				<Grid container spacing={2} justify="center" style={{ width: "100%", height: "100%" }}>
+					<Grid item xs={12} md={12} lg={12} xl={12}>
+						<button onClick={putRandomCard}>PUT CARD</button>
+						<button onClick={buyRandomCard}>BUY CARD</button>
+					</Grid>
+					<Grid item xs={12} md={12} lg={12} xl={12}>
+						<CardStack
+							cards={usedCards}
+						/>
+						<CardDeck
+							cards={decks[0]?.handCards || []}
+							player={decks[0]}
+							position="bottom"
+						/>
+					</Grid>
+				</Grid>
 			)}
 		</>
 	)
