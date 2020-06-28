@@ -1,18 +1,34 @@
-import React from "react"
+import React, { useEffect } from "react"
 
 import useCards from "../../hooks/useCards"
 
 const Table = () => {
-	const { cards, loading } = useCards({ preload: true })
+	const {
+		preloadingCardPictures,
+		getCard,
+		availableCards,
+		usedCards,
+		commitPlay
+	} = useCards({
+		preloadCardPictures: true,
+		players: [{
+			id: 1,
+			name: "mota"
+		}]
+	})
+
+	useEffect(() => {
+		console.log(availableCards, usedCards)
+	}, [availableCards, usedCards])
 
 	return (
 		<>
-			{loading ? (
-				<h1>Loading...</h1>
+			{preloadingCardPictures ? (
+				<h1>Preloading Card Pictures...</h1>
 			) : (
 				<>
 					<h1>Table</h1>
-					<img src={cards["0"]?.blue.src} alt={cards["0"]?.blue.name} />
+					<img src={getCard("0", "blue").src} alt={getCard("0", "blue").name} />
 				</>
 			)}
 		</>
