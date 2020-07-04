@@ -7,12 +7,14 @@ const useStyles = makeStyles(() => {
 		cardContainer: {
 			width: cardContainerSize,
 			height: cardContainerSize,
-			position: "relative"
+			position: "relative",
+			backgroundColor: "#ECECEC"
 		},
 		card: {
 			height: cardContainerSize,
 			width: "auto",
-			position: "absolute"
+			position: "absolute",
+			left: cardContainerSize * 0.2
 		}
 	}
 })

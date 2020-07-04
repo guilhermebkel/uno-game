@@ -1,15 +1,18 @@
-import React, { useEffect } from "react"
-import { Grid } from "@material-ui/core"
+import React from "react"
+import { Grid, Button } from "@material-ui/core"
+import { DndProvider } from "react-dnd"
+import { HTML5Backend } from "react-dnd-html5-backend"
+import { TouchBackend } from "react-dnd-touch-backend"
 
 import useCards from "../../hooks/useCards"
+
+import { DeviceUtil } from "../../utils/Device"
 
 import CardStack from "./CardStack"
 import CardDeck from "./CardDeck"
 
 const Table = () => {
 	const {
-		preloadingCardPictures,
-		availableCards,
 		usedCards,
 		decks,
 		commitPlay
@@ -21,18 +24,6 @@ const Table = () => {
 		}]
 	})
 
-	const putRandomCard = () => {
-		const [deck] = decks
-
-		if (deck) {
-			const [card] = deck.handCards
-
-			if (card) {
-				commitPlay("put", deck.id, card.id)
-			}
-		}
-	}
-
 	const buyRandomCard = () => {
 		const [deck] = decks
 
@@ -41,33 +32,66 @@ const Table = () => {
 		}
 	}
 
-	useEffect(() => {
-		console.log(availableCards, usedCards)
-	}, [availableCards, usedCards])
+	const onDrop = (cardId: number) => {
+		const [deck] = decks
+	
+		if (deck) {
+			commitPlay("put", deck.id, cardId)
+		}
+	}
 
 	return (
-		<>
-			{preloadingCardPictures ? (
-				<h1>Preloading Card Pictures...</h1>
+		<DndProvider
+			backend={DeviceUtil.isTouchDevice ? (
+				TouchBackend
 			) : (
-				<Grid container spacing={2} justify="center" style={{ width: "100%", height: "100%" }}>
-					<Grid item xs={12} md={12} lg={12} xl={12}>
-						<button onClick={putRandomCard}>PUT CARD</button>
-						<button onClick={buyRandomCard}>BUY CARD</button>
+				HTML5Backend
+			)}
+		>
+			<Grid container>
+				<Grid container>
+					<Grid item xs={1}></Grid>
+					<Grid item xs={10}>
+						<Grid container justify="center" alignItems="center">
+							
+						</Grid>
 					</Grid>
-					<Grid item xs={12} md={12} lg={12} xl={12}>
-						<CardStack
-							cards={usedCards}
-						/>
-						<CardDeck
-							cards={decks[0]?.handCards || []}
-							player={decks[0]}
-							position="bottom"
-						/>
+					<Grid item xs={1}></Grid>
+				</Grid>
+				<Grid container>
+					<Grid item xs={1}>
+						<Grid container justify="center" alignItems="center">
+
+						</Grid>
+					</Grid>
+					<Grid item xs={10}>
+						<Grid container justify="center" alignItems="center">
+							<CardStack
+								cards={usedCards}
+								onDrop={onDrop}
+							/>
+						</Grid>
+					</Grid>
+					<Grid item xs={1}>
+						<Grid container justify="center" alignItems="center">
+							<Button color="primary" variant="contained" onClick={buyRandomCard}>BUY CARD</Button>
+						</Grid>
 					</Grid>
 				</Grid>
-			)}
-		</>
+				<Grid container>
+					<Grid item xs={1}></Grid>
+					<Grid item xs={10}>
+						<Grid container justify="center" alignItems="center">
+							<CardDeck
+								cards={decks[0]?.handCards || []}
+								player={decks[0]}
+							/>
+						</Grid>
+					</Grid>
+					<Grid item xs={1}></Grid>
+				</Grid>
+			</Grid>
+		</DndProvider>
 	)
 }
 

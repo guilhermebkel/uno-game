@@ -39,7 +39,7 @@ A simple UNO Game made in Javascript, supposed to be blazing easier and faster t
 
 ## 👣 Project Scope
 
-- [ ] Implementing a basic Table Page which I can use to move and buy cards.
+- [X] Implementing a basic Table Page which I can use to move and buy cards.
 - [ ] Implementing a server integration with Table Page to make it to work.
 - [ ] Refactoring the Table Page to give it a better looking.
 - [ ] Creating a Dashboard Page which I can use to see open rooms, create new ones and get into the ones I want to.
@@ -48,3 +48,4 @@ A simple UNO Game made in Javascript, supposed to be blazing easier and faster t
 - [X] Implementing a monorepository manager.
 - [ ] Updating README with new info (new badges, how to get started and so on...).
 - [ ] Implementing sounds.
+- [ ] Making husky to work.

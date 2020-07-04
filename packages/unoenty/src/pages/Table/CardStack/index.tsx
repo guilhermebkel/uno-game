@@ -1,5 +1,6 @@
-import React from "react"
+import React, { useRef } from "react"
 import { Container } from "@material-ui/core"
+import { useDrop } from "react-dnd"
 
 import { CardData } from "../../../hooks/useCards"
 
@@ -7,17 +8,28 @@ import useStyles from "./styles"
 
 interface Props {
 	cards: CardData[]
+	onDrop: (cardId: number) => void
 }
 
 const CardStack = (props: Props) => {
-	const { cards } = props
+	const { cards, onDrop } = props
 
 	const classes = useStyles()
+	const cardStackRef = useRef()
+
+	const [, drop] = useDrop({
+    accept: "DraggableCard",
+		drop: (item: any) => onDrop(item.id)
+	})
+	
+	drop(cardStackRef)
 
 	return (
 		<Container
 			disableGutters
 			className={classes.cardContainer}
+			maxWidth={false}
+			innerRef={cardStackRef}
 		>
 			{cards.map((card, index) => (
 				<img

@@ -5,9 +5,8 @@ const useStyles = makeStyles((theme) => {
 
 	return {
 		cardContainer: {
-			width: cardContainerSize,
-			height: cardContainerSize,
-			position: "relative"
+			position: "absolute",
+			bottom: 50
 		},
 		card: {
 			height: cardContainerSize,

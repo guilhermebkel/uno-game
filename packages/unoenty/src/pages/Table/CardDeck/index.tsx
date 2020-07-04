@@ -1,17 +1,53 @@
-import React from "react"
+import React, { useRef } from "react"
 import { Container } from "@material-ui/core"
+import { useDrag } from "react-dnd"
 
 import { CardData, Player } from "../../../hooks/useCards"
 
 import useStyles from "./styles"
 
-interface Props {
-	cards: CardData[]
-	player: Player
-	position: "bottom"
+interface CardProps {
+	card: CardData
+	index: number
+	style: object
+	className: string
 }
 
-const CardStack = (props: Props) => {
+const DraggableCard = (props: CardProps) => {
+	const { card, index, style, className } = props
+
+	const draggableCardRef = useRef(null)
+
+  const [{ isDragging }, drag] = useDrag({
+    item: { type: "DraggableCard", id: card.id, index },
+    collect: monitor => ({
+      isDragging: monitor.isDragging()
+		})
+  })
+ 
+  drag(draggableCardRef)
+
+  return (
+		<img
+			ref={draggableCardRef}
+			key={card.name}
+			className={className}
+			alt={card.name}
+			src={card.src}
+			style={{
+				...style,
+				opacity: isDragging ? 0 : 1
+			}}
+		/>
+  )
+}
+
+interface CardDeckProps {
+	cards: CardData[]
+	player: Player
+}
+
+const CardStack = (props: CardDeckProps) => {
 	const { cards } = props
 
 	const getCardInclination = (index: number) => {
@@ -51,14 +87,14 @@ const CardStack = (props: Props) => {
 		<Container
 			disableGutters
 			className={classes.cardContainer}
+			maxWidth={false}
 		>
 			{cards.map((card, index) => (
-				<img
-					key={card.name}
+				<DraggableCard
+					key={card.id}
+					card={card}
 					className={classes.card}
-					alt={card.name}
-					src={card.src}
-					draggable="true"
+					index={index}
 					style={{
 						transform: `rotate(${getCardInclination(index)}deg)`,
 						zIndex: index,
