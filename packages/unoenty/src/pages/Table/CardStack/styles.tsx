@@ -8,7 +8,8 @@ const useStyles = makeStyles(() => {
 			width: cardContainerSize,
 			height: cardContainerSize,
 			position: "relative",
-			backgroundColor: "#ECECEC"
+			border: "1px solid rgba(0, 0, 0, 0.4)",
+			borderRadius: "100%"
 		},
 		card: {
 			height: cardContainerSize,

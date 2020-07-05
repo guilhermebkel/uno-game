@@ -52,7 +52,7 @@ const Table = () => {
 				<Grid container>
 					<Grid item xs={1}></Grid>
 					<Grid item xs={10}>
-						<Grid container justify="center" alignItems="center">
+						<Grid container justify="center" alignItems="center" style={{ backgroundColor: "blue" }}>
 							
 						</Grid>
 					</Grid>
@@ -60,12 +60,12 @@ const Table = () => {
 				</Grid>
 				<Grid container>
 					<Grid item xs={1}>
-						<Grid container justify="center" alignItems="center">
+						<Grid container justify="center" alignItems="center" style={{ backgroundColor: "red" }}>
 
 						</Grid>
 					</Grid>
 					<Grid item xs={10}>
-						<Grid container justify="center" alignItems="center">
+						<Grid container justify="center" alignItems="center" style={{ height: "100%" }}>
 							<CardStack
 								cards={usedCards}
 								onDrop={onDrop}
@@ -73,7 +73,7 @@ const Table = () => {
 						</Grid>
 					</Grid>
 					<Grid item xs={1}>
-						<Grid container justify="center" alignItems="center">
+						<Grid container justify="center" alignItems="center" style={{ backgroundColor: "yellow" }}>
 							<Button color="primary" variant="contained" onClick={buyRandomCard}>BUY CARD</Button>
 						</Grid>
 					</Grid>
@@ -81,7 +81,7 @@ const Table = () => {
 				<Grid container>
 					<Grid item xs={1}></Grid>
 					<Grid item xs={10}>
-						<Grid container justify="center" alignItems="center">
+						<Grid container justify="center" alignItems="center" style={{ backgroundColor: "black" }}>
 							<CardDeck
 								cards={decks[0]?.handCards || []}
 								player={decks[0]}
