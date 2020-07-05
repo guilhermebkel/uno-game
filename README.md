@@ -48,4 +48,4 @@ A simple UNO Game made in Javascript, supposed to be blazing easier and faster t
 - [X] Implementing a monorepository manager.
 - [ ] Updating README with new info (new badges, how to get started and so on...).
 - [ ] Implementing sounds.
-- [ ] Making husky to work.
+- [X] Making husky to work.
