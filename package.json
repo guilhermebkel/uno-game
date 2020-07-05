@@ -10,18 +10,22 @@
     "dotenv": "^8.2.0"
   },
   "devDependencies": {
-    "husky": "^4.2.5",
-    "lint-staged": "^10.2.10",
-    "lerna": "^3.20.2",
-    "typescript": "^3.9.2",
-    "eslint": "^6.6.0",
     "@typescript-eslint/eslint-plugin": "^2.34.0",
+    "eslint": "^6.6.0",
     "eslint-config-standard-with-typescript": "^17.0.0",
+    "eslint-plugin-flowtype": "^5.2.0",
     "eslint-plugin-import": "^2.21.2",
+    "eslint-plugin-jsx-a11y": "^6.3.1",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-react": "^7.20.3",
+    "eslint-plugin-react-hooks": "^4.0.5",
     "eslint-plugin-standard": "^4.0.1",
-    "git-commit-msg-linter": "^2.4.3"
+    "git-commit-msg-linter": "^2.4.3",
+    "husky": "^4.2.5",
+    "lerna": "^3.20.2",
+    "lint-staged": "^10.2.10",
+    "typescript": "^3.9.2"
   },
   "workspaces": [
     "packages/*",

@@ -17,9 +17,12 @@ const CardStack = (props: Props) => {
 	const classes = useStyles()
 	const cardStackRef = useRef()
 
-	const [, drop] = useDrop({
+	const [{ isHovering }, drop] = useDrop({
     accept: "DraggableCard",
-		drop: (item: any) => onDrop(item.id)
+		drop: (item: any) => onDrop(item.id),
+		collect: monitor => ({
+			isHovering: monitor.isOver()
+		})
 	})
 	
 	drop(cardStackRef)
@@ -30,6 +33,9 @@ const CardStack = (props: Props) => {
 			className={classes.cardContainer}
 			maxWidth={false}
 			innerRef={cardStackRef}
+			style={{
+				backgroundColor: isHovering ? "rgba(0, 0, 0, 0.2)" : "rgba(0, 0, 0, 0)"
+			}}
 		>
 			{cards.map((card, index) => (
 				<img

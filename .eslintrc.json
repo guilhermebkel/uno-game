@@ -1,8 +1,16 @@
 {
-	"extends": "standard-with-typescript",
+	"extends": [
+		"standard-with-typescript",
+		"plugin:react/recommended"
+	],
 	"parserOptions": {
 		"project": "./tsconfig.json"
 	},
+	"plugins": [
+		"react",
+		"flowtype",
+		"jsx-a11y"
+	],
 	"rules": {
 		"@typescript-eslint/strict-boolean-expressions": "off",
 		"@typescript-eslint/no-floating-promises": "off",

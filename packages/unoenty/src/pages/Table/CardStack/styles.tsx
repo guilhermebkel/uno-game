@@ -1,6 +1,6 @@
 import { makeStyles } from "@material-ui/core"
 
-const useStyles = makeStyles(() => {
+const useStyles = makeStyles(theme => {
 	const cardContainerSize = 150
 
 	return {
@@ -9,7 +9,10 @@ const useStyles = makeStyles(() => {
 			height: cardContainerSize,
 			position: "relative",
 			border: "1px solid rgba(0, 0, 0, 0.4)",
-			borderRadius: "100%"
+			borderRadius: "100%",
+			transition: theme.transitions.create("all", {
+				duration: theme.transitions.duration.standard
+			}),
 		},
 		card: {
 			height: cardContainerSize,
