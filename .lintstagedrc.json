@@ -1,8 +1,8 @@
 {
 	"*.ts": [
-		"eslint 'packages/**' --fix"
+		"eslint --fix"
 	],
 	"*.tsx": [
-		"eslint 'packages/**' --fix"
+		"eslint --fix"
 	]
 }

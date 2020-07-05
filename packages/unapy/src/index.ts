@@ -1,5 +1,5 @@
 import "dotenv/config"
 
-import { App } from "~/App"
+import Core from "@unapy/Core"
 
-App.start()
+Core.boot()
