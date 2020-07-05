@@ -4,6 +4,6 @@ import AssetController from "@unapy/Controllers/Asset"
 
 const routes = Router()
 
-routes.use("/assets", AssetController.getAssets)
+routes.use("/assets", AssetController.getAsset)
 
 export default routes

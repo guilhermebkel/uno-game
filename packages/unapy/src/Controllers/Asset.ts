@@ -2,7 +2,7 @@ import path from "path"
 import express, { Request, Response, NextFunction } from "express"
 
 class AssetController {
-	getAssets (req: Request, res: Response, next: NextFunction) {
+	getAsset (req: Request, res: Response, next: NextFunction) {
 		const assetsPath = path.join(__dirname, "..", "Assets")
 
 		return express.static(assetsPath)(req, res, next)
