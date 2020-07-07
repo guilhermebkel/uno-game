@@ -3,10 +3,10 @@ import { createMuiTheme } from "@material-ui/core"
 const palette = {
 	light: {
 		background: "#F9F9F9",
-		text: "#222329"
+		text: "#1C2836"
 	},
 	dark: {
-		background: "#222329",
+		background: "#1C2836",
 		text: "#FFF"
 	}
 }
