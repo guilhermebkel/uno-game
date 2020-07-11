@@ -13,7 +13,7 @@ class GameService {
 
 		const initialPlayer: PlayerData = {
 			id: playerId,
-			name: "player",
+			name: playerId,
 			handCards: [],
 			usedCards: []
 		}
@@ -64,6 +64,23 @@ class GameService {
 		})
 
 		GameService.emitGameEvent(gameId, "GameStarted", game)
+	}
+
+	static addPlayer (gameId: string, playerId: string) {
+		const game = GameService.getGame(gameId)
+
+		GameService.setGameData(gameId, {
+			...game,
+			players: [
+				...game?.players,
+				{
+					id: playerId,
+					name: playerId,
+					handCards: [],
+					usedCards: []
+				}
+			]
+		})
 	}
 
 	static removePlayer (gameId: string, playerId: string) {

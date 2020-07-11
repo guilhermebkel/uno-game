@@ -20,10 +20,18 @@ class Socket {
 
 	static setupListeners() {
 		io.on("connection", client => {
-			client.on("CreateGame", (playerId: string, roomId: string) => {
+			const playerId = client.id
+
+			client.on("CreateGame", (roomId: string) => {
 				client.join(roomId)
 
-				ListenerService.onGameCreate(playerId, roomId)
+				ListenerService.onCreateGame(roomId, playerId)
+			})
+
+			client.on("JoinGame", (roomId: string) => {
+				client.join(roomId)
+
+				ListenerService.onJoinGame(roomId, playerId)
 			})
 		})
 	}
