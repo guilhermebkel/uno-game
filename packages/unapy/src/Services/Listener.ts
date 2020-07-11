@@ -11,6 +11,10 @@ class ListenerService {
 	onCreateGame (gameId: string, playerId: string) {
 		GameService.setupGame(gameId, playerId)
 	}
+
+	onPlayerDisconnect (playerId: string) {
+		GameService.purgePlayer(playerId)
+	}
 }
 
 export default new ListenerService()

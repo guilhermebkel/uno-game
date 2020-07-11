@@ -6,6 +6,6 @@ export interface ContextData {
 	playerId: string
 }
 
-export const SocketState = createContext<ContextData>({} as ContextData)
+export const SocketStore = createContext<ContextData>({} as ContextData)
 
-export const useSocketState = () => useContext(SocketState)
+export const useSocketStore = () => useContext(SocketStore)

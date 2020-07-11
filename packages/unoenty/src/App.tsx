@@ -6,7 +6,7 @@ import useDidMount from "./hooks/useDidMount"
 import Routes from "./routes"
 
 import client, { connectSocket } from "./services/socket"
-import { SocketState, ContextData } from "./store/socket"
+import { SocketStore, ContextData } from "./store/socket"
 
 import { Header, Loading } from "./components"
 
@@ -30,14 +30,14 @@ const App = () => {
 	})
 
 	return (
-		<SocketState.Provider value={socketData}>
+		<SocketStore.Provider value={socketData}>
 			<Loading loading={loading}>
 				<Grid container direction="column">
 					<Header />
 					<Routes />
 				</Grid>
 			</Loading>
-		</SocketState.Provider>
+		</SocketStore.Provider>
 	)
 }
 

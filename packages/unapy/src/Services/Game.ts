@@ -83,6 +83,16 @@ class GameService {
 		})
 	}
 
+	static purgePlayer (playerId: string) {
+		for (const game of GameService.games.values()) {
+			const isPlayerInGame = game?.players?.find(player => player?.id === playerId)
+
+			if (isPlayerInGame) {
+				GameService.removePlayer(game?.id, playerId)
+			}
+		}
+	}
+
 	static removePlayer (gameId: string, playerId: string) {
 		const game = GameService.getGame(gameId)
 
@@ -164,7 +174,8 @@ class GameService {
 					return player
 				}
 			}),
-			usedCards: [card, ...game?.usedCards]
+			usedCards: [card, ...game?.usedCards],
+			currentGameColor: card?.color
 		})
 	}
 

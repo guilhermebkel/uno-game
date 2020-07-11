@@ -35,6 +35,10 @@ class Socket {
 
 				ListenerService.onJoinGame(roomId, playerId)
 			})
+
+			client.on("disconnect", () => {
+				ListenerService.onPlayerDisconnect(playerId)
+			})
 		})
 	}
 
