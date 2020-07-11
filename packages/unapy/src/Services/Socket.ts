@@ -1,7 +1,9 @@
-import Server from "@unapy/Core/Server"
+import { io } from "@unapy/Core/Socket"
 
 class SocketService {
-	io = Server.socket
+	emitRoomEvent (roomId: string, event: string, data?: any) {
+		io.to(roomId).emit(event, data)
+	}
 }
 
 export default new SocketService()

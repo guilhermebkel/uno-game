@@ -19,6 +19,7 @@
 		"no-tabs": "off",
 		"quotes": ["error", "double"],
 		"@typescript-eslint/quotes": ["error", "double"],
-		"@typescript-eslint/explicit-function-return-type": "off"
+		"@typescript-eslint/explicit-function-return-type": "off",
+		"@typescript-eslint/no-extraneous-class": "off"
 	}
 }

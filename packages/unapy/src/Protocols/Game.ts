@@ -1,11 +1,24 @@
-import { CardData } from "@unapy/Protocols/Card"
+import { CardData, CardColors } from "@unapy/Protocols/Card"
 import { PlayerData } from "@unapy/Protocols/Player"
+
+export type GameEvents =
+"GameStateChanged" |
+"GameStarted" |
+"GameCreated"
 
 export interface Game {
 	/**
 	 * Game ID
 	 */
 	id: string
+	/**
+	 * Player[] index
+	 */
+	currentPlayerIndex: number
+	/**
+	 * Card Color
+	 */
+	currentGameColor: CardColors
 	/**
 	 * Game name
 	 */

@@ -1,7 +1,7 @@
 import { CardData } from "@unapy/Protocols/Card"
 
 export interface Player {
-	id: number
+	id: string
 	name: string
 }
 

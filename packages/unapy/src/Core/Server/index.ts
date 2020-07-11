@@ -1,14 +1,12 @@
 import express from "express"
 import { createServer } from "http"
 import cors from "cors"
-import socket from 'socket.io'
 
 import routes from "@unapy/routes"
 
 class Server {
 	private static app = express()
-	private static http = createServer(Server.app)
-	static socket = socket(Server.http)
+	static http = createServer(Server.app)
 
 	static async boot() {
 		Server.setupMiddlewares()

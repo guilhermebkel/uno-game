@@ -27,4 +27,5 @@ export interface CardData {
 	name: string
 	color: CardColors
 	type: CardTypes
+	canBeUsed?: boolean
 }
