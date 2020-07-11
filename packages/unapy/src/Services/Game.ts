@@ -22,7 +22,7 @@ class GameService {
 			id: gameId,
 			currentPlayerIndex: 0,
 			currentGameColor: null,
-			title: "test",
+			title: gameId,
 			availableCards: [],
 			usedCards: [],
 			players: [initialPlayer],
@@ -100,6 +100,16 @@ class GameService {
 			...game,
 			players: game?.players?.filter(player => player.id !== playerId)
 		})
+	}
+
+	static getGameList () {
+		const games: Game[] = []
+
+		for (const game of GameService.games.values()) {
+			games.push(game)
+		}
+
+		return games
 	}
 
 	static getGame (gameId: string) {

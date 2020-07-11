@@ -7,7 +7,13 @@ import {
 
 import useStyles from "./styles"
 
-const RoomCard = () => {
+interface RoomCardProps {
+	title: string
+}
+
+const RoomCard = (props: RoomCardProps) => {
+	const { title } = props
+
 	const classes = useStyles()
 
 	return (
@@ -16,6 +22,7 @@ const RoomCard = () => {
 				component={ButtonBase}
 				className={classes.cardContent}
 			>
+				{title}
 			</CardContent>
 		</Card>
 	)
