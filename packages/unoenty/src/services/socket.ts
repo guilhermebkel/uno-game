@@ -2,7 +2,7 @@ import io from "socket.io-client"
 
 import serverConfig from "../config/server"
 
-const client = io(serverConfig as any, {
+const client = io(serverConfig.apiUrl, {
 	reconnection: true,
 	reconnectionAttempts: Infinity,
 	reconnectionDelay: 1000,
