@@ -6,15 +6,21 @@ import useDidMount from "./hooks/useDidMount"
 import Routes from "./routes"
 
 import client, { connectSocket } from "./services/socket"
-import { SocketState } from "./store/socket"
+import { SocketState, ContextData } from "./store/socket"
 
 import { Header, Loading } from "./components"
 
 const App = () => {
 	const [loading, setLoading] = useState(true)
+	const [socketData, setSocketData] = useState<ContextData>({} as ContextData)
 
 	const connect = async () => {
-		await connectSocket()
+		const playerId = await connectSocket()
+
+		setSocketData({
+			io: client,
+			playerId
+		})
 
 		setLoading(false)
 	}
@@ -24,13 +30,13 @@ const App = () => {
 	})
 
 	return (
-		<SocketState.Provider value={{ io: client }}>
-			<Grid container direction="column">
-				<Loading loading={loading}>
+		<SocketState.Provider value={socketData}>
+			<Loading loading={loading}>
+				<Grid container direction="column">
 					<Header />
 					<Routes />
-				</Loading>
-			</Grid>
+				</Grid>
+			</Loading>
 		</SocketState.Provider>
 	)
 }

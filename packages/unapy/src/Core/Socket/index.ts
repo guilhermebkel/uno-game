@@ -22,6 +22,8 @@ class Socket {
 		io.on("connection", client => {
 			const playerId = client.id
 
+			client.emit("PlayerConnected", playerId)
+
 			client.on("CreateGame", (roomId: string) => {
 				client.join(roomId)
 

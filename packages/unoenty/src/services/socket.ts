@@ -11,10 +11,9 @@ const client = io(serverConfig.apiUrl, {
 })
 
 export const connectSocket = async () =>{
-	return new Promise(resolve => {
-		client.on("connection", (...data) => {
-			console.log(data)
-			resolve()
+	return new Promise<string>(resolve => {
+		client.on("PlayerConnected", (playerId: string) => {
+			resolve(playerId)
 		})
 	})
 }

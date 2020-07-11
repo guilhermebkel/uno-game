@@ -1,8 +1,9 @@
 import { createContext, useContext } from "react"
 import { Socket } from "socket.io-client"
 
-interface ContextData {
+export interface ContextData {
 	io: typeof Socket
+	playerId: string
 }
 
 export const SocketState = createContext<ContextData>({} as ContextData)
