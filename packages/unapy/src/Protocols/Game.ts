@@ -3,6 +3,10 @@ import { PlayerData } from "@unapy/Protocols/Player"
 
 export interface Game {
 	/**
+	 * Game ID
+	 */
+	id: string
+	/**
 	 * Game name
 	 */
 	title: string
