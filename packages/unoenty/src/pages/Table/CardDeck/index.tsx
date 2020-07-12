@@ -2,7 +2,8 @@ import React, { useRef } from "react"
 import { Container } from "@material-ui/core"
 import { useDrag } from "react-dnd"
 
-import { CardData, Player } from "../../../hooks/useCards"
+import { CardData } from "../../../protocols/Card"
+import { Player } from "../../../protocols/Player"
 
 import useStyles from "./styles"
 

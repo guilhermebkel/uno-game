@@ -49,7 +49,7 @@ const Loading = (props: LoadingProps) => {
 
 	return (
 		<>
-			<div style={{ height: "100vh", width: "100vw", overflow: "hidden", position: "absolute" }}>
+			<div style={{ height: "100%", width: "100%", overflow: "hidden", position: "absolute" }}>
 				<Zoom in={loading}>
 					<JackInTheBox>
 						<Pulse>

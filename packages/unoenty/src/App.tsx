@@ -10,7 +10,7 @@ import { Header } from "./components"
 const App = () => {
 	return (
 		<SocketProvider>
-			<Grid container direction="column">
+			<Grid container>
 				<Header />
 				<Routes />
 			</Grid>
