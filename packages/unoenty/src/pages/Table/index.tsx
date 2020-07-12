@@ -22,11 +22,11 @@ const Table = () => {
 	const [loadingStartGame, setLoadingStartGame] = useState(true)
 
 	const getCurrentPlayer = () => {
-		const currentPlayerIndex = socketStore?.game?.currentPlayerIndex
+		const playerId = socketStore.playerId
 
-		const player = socketStore?.game?.players?.[currentPlayerIndex as any]
+		const player = socketStore?.game?.players?.find(player => player.id === playerId)
 
-		return player as PlayerData
+		return (player || {}) as PlayerData
 	}
 
 	const buyCard = () => {
