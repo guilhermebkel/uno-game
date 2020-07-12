@@ -41,7 +41,7 @@ class GameService {
 
 		const currentPlayer = game?.players?.[0]
 
-		GameService.setGameData(gameId, {
+		const updatedGame: Game = {
 			...game,
 			players: game?.players.map(player => {
 				const handCards: CardData[] = []
@@ -60,9 +60,11 @@ class GameService {
 				}
 			}),
 			availableCards: allCards
-		})
+		}
 
-		GameService.emitGameEvent(gameId, "GameStarted", game)
+		GameService.setGameData(gameId, updatedGame)
+
+		GameService.emitGameEvent(gameId, "GameStarted", updatedGame)
 	}
 
 	static addPlayer (gameId: string, playerId: string) {

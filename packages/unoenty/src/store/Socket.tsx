@@ -1,6 +1,5 @@
 import React, { createContext, useContext, useState } from "react"
 import { Socket } from "socket.io-client"
-import _ from "lodash"
 
 import client, { connectSocket } from "../services/socket"
 
@@ -9,12 +8,10 @@ import useDidMount from "../hooks/useDidMount"
 import { Loading } from "../components"
 
 import { Game } from "../protocols/Game"
-import { PlayerData } from "../protocols/Player"
 
 export interface SocketContextData {
 	io: typeof Socket
 	playerId: string
-	currentPlayer: PlayerData
 	game?: Game
 	set: (data: Partial<this>) => void
 }
@@ -34,7 +31,12 @@ const SocketProvider = (props: SocketProviderProps) => {
 	const [socketData, setSocketData] = useState<SocketContextData>({} as SocketContextData)
 
 	const setData = (data: Partial<SocketContextData>) => {
-		setSocketData(lastState => _.merge(lastState, data))
+		setSocketData(lastState => {
+			return {
+				...(lastState || {}),
+				...data
+			}
+		})
 	}
 
 	const onGameStateChanged = () => {
@@ -49,16 +51,10 @@ const SocketProvider = (props: SocketProviderProps) => {
 		const data: SocketContextData = {
 			io: client,
 			set: setData,
-			playerId,
-			get currentPlayer () {
-				const player = this?.game?.players?.
-					find(player => player.id === this.playerId) || {}
-
-				return player as PlayerData
-			}
+			playerId
 		}
 
-		setSocketData(data)
+		setData(data)
 
 		setLoading(false)
 	}

@@ -14,11 +14,20 @@ import CardStack from "./CardStack"
 import CardDeck from "./CardDeck"
 
 import { Game } from "../../protocols/Game"
+import { PlayerData } from "../../protocols/Player"
 
 const Table = () => {
 	const socketStore = useSocketStore()
 
 	const [loadingStartGame, setLoadingStartGame] = useState(true)
+
+	const getCurrentPlayer = () => {
+		const currentPlayerIndex = socketStore?.game?.currentPlayerIndex
+
+		const player = socketStore?.game?.players?.[currentPlayerIndex as any]
+
+		return player as PlayerData
+	}
 
 	const buyCard = () => {
 		socketStore.io.emit("BuyCard", socketStore?.game?.id)
@@ -94,8 +103,8 @@ const Table = () => {
 						<Grid item xs={10}>
 							<Grid container justify="center" alignItems="center" style={{ backgroundColor: "black" }}>
 								<CardDeck
-									cards={socketStore?.currentPlayer.handCards as any}
-									player={socketStore?.currentPlayer as any}
+									cards={getCurrentPlayer()?.handCards as any}
+									player={getCurrentPlayer() as any}
 								/>
 							</Grid>
 						</Grid>
