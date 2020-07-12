@@ -9,10 +9,12 @@ import useDidMount from "../hooks/useDidMount"
 import { Loading } from "../components"
 
 import { Game } from "../protocols/Game"
+import { PlayerData } from "../protocols/Player"
 
-export interface ContextData {
+export interface SocketContextData {
 	io: typeof Socket
 	playerId: string
+	currentPlayer: PlayerData
 	game?: Game
 	set: (data: Partial<this>) => void
 }
@@ -21,7 +23,7 @@ interface SocketProviderProps {
 	children: React.ReactNode
 }
 
-const SocketStore = createContext<ContextData>({} as ContextData)
+const SocketStore = createContext<SocketContextData>({} as SocketContextData)
 
 export const useSocketStore = () => useContext(SocketStore)
 
@@ -29,9 +31,9 @@ const SocketProvider = (props: SocketProviderProps) => {
 	const { children } = props
 
 	const [loading, setLoading] = useState(true)
-	const [socketData, setSocketData] = useState<ContextData>({} as ContextData)
+	const [socketData, setSocketData] = useState<SocketContextData>({} as SocketContextData)
 
-	const setData = (data: Partial<ContextData>) => {
+	const setData = (data: Partial<SocketContextData>) => {
 		setSocketData(lastState => _.merge(lastState, data))
 	}
 
@@ -44,11 +46,19 @@ const SocketProvider = (props: SocketProviderProps) => {
 	const connect = async () => {
 		const playerId = await connectSocket()
 
-		setSocketData({
+		const data: SocketContextData = {
 			io: client,
 			set: setData,
-			playerId
-		})
+			playerId,
+			get currentPlayer () {
+				const player = this?.game?.players?.
+					find(player => player.id === this.playerId) || {}
+
+				return player as PlayerData
+			}
+		}
+
+		setSocketData(data)
 
 		setLoading(false)
 	}

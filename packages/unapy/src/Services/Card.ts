@@ -53,7 +53,7 @@ class CardService {
 	private buildCardPictureSrc (cardType: CardTypes, cardColor: CardColors) {
 		const baseUrl = staticFilesConfig.staticFilesBaseUrl
 
-		const picturePath = `${cardType}/${cardColor}.png`
+		const picturePath = `cards/${cardType}/${cardColor}.png`
 
 		return `${baseUrl}/${picturePath}`
 	}

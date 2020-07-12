@@ -2,7 +2,7 @@ import React, { useRef } from "react"
 import { Container } from "@material-ui/core"
 import { useDrop } from "react-dnd"
 
-import { CardData } from "../../../hooks/useCards"
+import { CardData } from "../../../protocols/Card"
 
 import useStyles from "./styles"
 
@@ -37,14 +37,14 @@ const CardStack = (props: Props) => {
 				backgroundColor: isHovering ? "rgba(0, 0, 0, 0.2)" : "rgba(0, 0, 0, 0)"
 			}}
 		>
-			{cards.map((card, index) => (
+			{cards?.map((card, index) => (
 				<img
-					key={card.name}
+					key={card.id}
 					className={classes.card}
 					alt={card.name}
 					src={card.src}
 					style={{
-						transform: `rotate(${card.id}rad)`,
+						transform: `rotate(${index}rad)`,
 						zIndex: cards.length - index
 					}}
 				/>

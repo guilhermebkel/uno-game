@@ -36,7 +36,8 @@ const Dashboard = () => {
 
 		setLoadingCreateGame(false)
 
-		history.push(`/room/${game.id}`)
+		// history.push(`/room/${game.id}`)
+		history.push(`/table/${game.id}`)
 	}
 
 	const getGameList = async () => {
@@ -68,7 +69,7 @@ const Dashboard = () => {
 				</Grid>
 				<Grid item sm={12} md={12} lg={12} xl={12}>
 					{loadingGetGames ? (
-						"Loading..."
+						<h1>Loading Game List...</h1>
 					) : (
 						<Grid container spacing={2}>
 							{games.map(game => (

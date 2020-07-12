@@ -1,5 +1,6 @@
 import socket, { Server as SocketServer } from "socket.io"
 import { Server as HttpServer } from "http"
+import uuid from "uuid"
 
 import ListenerService from "@unapy/Services/Listener"
 
@@ -21,10 +22,13 @@ class Socket {
 	static setupListeners() {
 		io.on("connection", client => {
 			const playerId = client.id
+			let roomId: string
 
 			client.emit("PlayerConnected", playerId)
 
-			client.on("CreateGame", (roomId: string) => {
+			client.on("CreateGame", () => {
+				roomId = uuid.v4()
+
 				client.join(roomId)
 
 				ListenerService.onCreateGame(roomId, playerId)
@@ -34,6 +38,18 @@ class Socket {
 				client.join(roomId)
 
 				ListenerService.onJoinGame(roomId, playerId)
+			})
+
+			client.on("StartGame", (roomId: string) => {
+				ListenerService.onStartGame(roomId)
+			})
+
+			client.on("BuyCard", (roomId: string) => {
+				ListenerService.onBuyCard(roomId, playerId)
+			})
+
+			client.on("PutCard", (roomId: string, cardId: string) => {
+				ListenerService.onPutCard(roomId, playerId, cardId)
 			})
 
 			client.on("disconnect", () => {

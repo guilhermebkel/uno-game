@@ -89,7 +89,7 @@ const CardStack = (props: CardDeckProps) => {
 			className={classes.cardContainer}
 			maxWidth={false}
 		>
-			{cards.map((card, index) => (
+			{cards?.map((card, index) => (
 				<DraggableCard
 					key={card.id}
 					card={card}

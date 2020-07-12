@@ -46,11 +46,10 @@ class GameService {
 			players: game?.players.map(player => {
 				const handCards: CardData[] = []
 
-				new Array(7).forEach(() => {
+				for (let i = 0; i < 7; i++) {
 					const selectedCard = allCards.shift()
-
 					handCards.push(selectedCard)
-				})
+				}
 
 				return {
 					...player,

@@ -1,98 +1,110 @@
-import React from "react"
+import React, { useState } from "react"
 import { Grid, Button } from "@material-ui/core"
 import { DndProvider } from "react-dnd"
 import { HTML5Backend } from "react-dnd-html5-backend"
 import { TouchBackend } from "react-dnd-touch-backend"
 
-import useCards from "../../hooks/useCards"
+import { useSocketStore } from "../../store/Socket"
+
+import useDidMount from "../../hooks/useDidMount"
 
 import { DeviceUtil } from "../../utils/Device"
 
 import CardStack from "./CardStack"
 import CardDeck from "./CardDeck"
 
+import { Game } from "../../protocols/Game"
+
 const Table = () => {
-	const {
-		usedCards,
-		decks,
-		commitPlay
-	} = useCards({
-		preloadCardPictures: true,
-		players: [{
-			id: 1,
-			name: "mota"
-		}]
-	})
+	const socketStore = useSocketStore()
 
-	const buyRandomCard = () => {
-		const [deck] = decks
+	const [loadingStartGame, setLoadingStartGame] = useState(true)
 
-		if (deck) {
-			commitPlay("buy", deck.id)
-		}
+	const buyCard = () => {
+		socketStore.io.emit("BuyCard", socketStore?.game?.id)
 	}
 
 	const onDrop = (cardId: number) => {
-		const [deck] = decks
-	
-		if (deck) {
-			commitPlay("put", deck.id, cardId)
-		}
+		socketStore.io.emit("PutCard", socketStore?.game?.id, cardId)
 	}
 
-	return (
-		<DndProvider
-			backend={DeviceUtil.isTouchDevice ? (
-				TouchBackend
-			) : (
-				HTML5Backend
-			)}
-		>
-			<Grid container>
-				<Grid container>
-					<Grid item xs={1}></Grid>
-					<Grid item xs={10}>
-						<Grid container justify="center" alignItems="center" style={{ backgroundColor: "blue" }}>
-							
-						</Grid>
-					</Grid>
-					<Grid item xs={1}></Grid>
-				</Grid>
-				<Grid container>
-					<Grid item xs={1}>
-						<Grid container justify="center" alignItems="center" style={{ backgroundColor: "red" }}>
+	const startGame = async () => {
+		if (socketStore?.game && socketStore?.game?.availableCards?.length === 0) {
+			socketStore.io.emit("StartGame", socketStore?.game?.id)
 
-						</Grid>
-					</Grid>
-					<Grid item xs={10}>
-						<Grid container justify="center" alignItems="center" style={{ height: "100%" }}>
-							<CardStack
-								cards={usedCards}
-								onDrop={onDrop}
-							/>
-						</Grid>
-					</Grid>
-					<Grid item xs={1}>
-						<Grid container justify="center" alignItems="center" style={{ backgroundColor: "yellow" }}>
-							<Button color="primary" variant="contained" onClick={buyRandomCard}>BUY CARD</Button>
-						</Grid>
-					</Grid>
-				</Grid>
+			const game = await new Promise<Game>(resolve => {
+				socketStore.io.on("GameStarted", (game: Game) => {
+					resolve(game)
+				})
+			})
+
+			socketStore.set({ game })
+		}
+
+		setLoadingStartGame(false)
+	}
+
+	useDidMount(() => {
+		startGame()
+	})
+
+	if (loadingStartGame) {
+		return <h1>Loading Start Game...</h1>
+	} else {
+		return (
+			<DndProvider
+				backend={DeviceUtil.isTouchDevice ? (
+					TouchBackend
+				) : (
+					HTML5Backend
+				)}
+			>
 				<Grid container>
-					<Grid item xs={1}></Grid>
-					<Grid item xs={10}>
-						<Grid container justify="center" alignItems="center" style={{ backgroundColor: "black" }}>
-							<CardDeck
-								cards={decks[0]?.handCards || []}
-								player={decks[0]}
-							/>
+					<Grid container>
+						<Grid item xs={1}></Grid>
+						<Grid item xs={10}>
+							<Grid container justify="center" alignItems="center" style={{ backgroundColor: "blue" }}>
+								
+							</Grid>
+						</Grid>
+						<Grid item xs={1}></Grid>
+					</Grid>
+					<Grid container>
+						<Grid item xs={1}>
+							<Grid container justify="center" alignItems="center" style={{ backgroundColor: "red" }}>
+	
+							</Grid>
+						</Grid>
+						<Grid item xs={10}>
+							<Grid container justify="center" alignItems="center" style={{ height: "100%" }}>
+								<CardStack
+									cards={socketStore?.game?.usedCards as any}
+									onDrop={onDrop}
+								/>
+							</Grid>
+						</Grid>
+						<Grid item xs={1}>
+							<Grid container justify="center" alignItems="center" style={{ backgroundColor: "yellow" }}>
+								<Button color="primary" variant="contained" onClick={buyCard}>BUY CARD</Button>
+							</Grid>
 						</Grid>
 					</Grid>
-					<Grid item xs={1}></Grid>
+					<Grid container>
+						<Grid item xs={1}></Grid>
+						<Grid item xs={10}>
+							<Grid container justify="center" alignItems="center" style={{ backgroundColor: "black" }}>
+								<CardDeck
+									cards={socketStore?.currentPlayer.handCards as any}
+									player={socketStore?.currentPlayer as any}
+								/>
+							</Grid>
+						</Grid>
+						<Grid item xs={1}></Grid>
+					</Grid>
 				</Grid>
-			</Grid>
-		</DndProvider>
-	)
+			</DndProvider>
+		)
+	}
 }
 
 export default Table
