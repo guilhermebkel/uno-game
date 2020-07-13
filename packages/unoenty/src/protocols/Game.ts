@@ -4,9 +4,40 @@ import { PlayerData } from "./Player"
 export type GameEvents =
 "GameStateChanged" |
 "GameStarted" |
-"GameCreated"
+"GameCreated" |
+"GameEnded" |
+"PlayerWon" |
+"PlayerUno" |
+"StartedObservingGame" |
+"PlayerJoined" |
+"PlayerJoinFailed"
+
+export type GameStatus =
+"waiting" |
+"playing" |
+"ended"
+
+export type GameType =
+"private" |
+"public"
 
 export interface Game {
+	/**
+	 * Type of the game
+	 */
+	type: GameType
+	/**
+	 * Max players number
+	 */
+	maxPlayers: number
+	/**
+	 * Status of current game
+	 */
+	status: GameStatus
+	/**
+	 * Round counter
+	 */
+	round: number
 	/**
 	 * Game ID
 	 */

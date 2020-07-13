@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import { useHistory, Link } from "react-router-dom"
-import { Grid, Container, Button, CircularProgress } from "@material-ui/core"
+import { Grid, Button, CircularProgress } from "@material-ui/core"
 
 import { Game } from "../../protocols/Game"
 
@@ -10,7 +10,9 @@ import api from "../../services/api"
 
 import { useSocketStore } from "../../store/Socket"
 
-import RoomCard from "./RoomCard"
+import { Divider } from "../../components"
+
+import GameItem from "./GameItem"
 
 const Dashboard = () => {
 	const [games, setGames] = useState<Game[]>([])
@@ -36,8 +38,7 @@ const Dashboard = () => {
 
 		setLoadingCreateGame(false)
 
-		// history.push(`/room/${game.id}`)
-		history.push(`/table/${game.id}`)
+		history.push(`/room/${game.id}`)
 	}
 
 	const getGameList = async () => {
@@ -53,9 +54,11 @@ const Dashboard = () => {
 	})
 
 	return (
-		<Container>
+		<>
 			<Grid container spacing={2}>
 				<Grid item sm={12} md={12} lg={12} xl={12}>
+					<Divider size={4} />
+
 					<Button
 						color="primary"
 						variant="contained"
@@ -64,34 +67,33 @@ const Dashboard = () => {
 						endIcon={loadingCreateGame && (<CircularProgress />)}
 						disabled={loadingCreateGame}
 					>
-						New game
+						CREATE NEW GAME
 					</Button>
+
+					<Divider size={3} />
 				</Grid>
-				<Grid item sm={12} md={12} lg={12} xl={12}>
-					{loadingGetGames ? (
-						<h1>Loading Game List...</h1>
-					) : (
-						<Grid container spacing={2}>
-							{games.map(game => (
-								<Grid
-									key={game.id}
-									component={Link}
-									to={`/room/${game.id}`}
-									item 
-									sm={5}
-									md={4}
-									lg={3}
-									xl={3}
-								>
-									<RoomCard title={game.title} />
+				{loadingGetGames ? (
+					<h1>Loading Get Games...</h1>
+				) : (
+					<Grid item sm={12} md={12} lg={12} xl={12}>
+						{games.map(game => (
+							<>
+								<Grid container component={Link} to={`/room/${game.id}`}>
+									<GameItem
+										key={game.id}
+										title={game.title}
+										players={game.players}
+										status={game.status}
+									/>
 								</Grid>
-							))}
-						</Grid>
-					)}
-				</Grid>
+								
+								<Divider size={2} />
+							</>
+						))}
+					</Grid>
+				)}
 			</Grid>
-			
-		</Container>
+		</>
 	)
 }
 

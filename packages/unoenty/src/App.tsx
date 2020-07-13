@@ -1,19 +1,16 @@
 import React from "react"
-import { Grid } from "@material-ui/core"
+import { Container } from "@material-ui/core"
 
 import Routes from "./routes"
 
 import SocketProvider from "./store/Socket"
 
-import { Header } from "./components"
-
 const App = () => {
 	return (
 		<SocketProvider>
-			<Grid container>
-				<Header />
+			<Container>
 				<Routes />
-			</Grid>
+			</Container>
 		</SocketProvider>
 	)
 }
