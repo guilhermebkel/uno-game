@@ -52,6 +52,12 @@ class Socket {
 				ListenerService.onPutCard(roomId, playerId, cardId)
 			})
 
+			client.on("StartListeningGame", (roomId: string) => {
+				client.join(roomId)
+
+				ListenerService.onListenGame(roomId)
+			})
+
 			client.on("disconnect", () => {
 				ListenerService.onPlayerDisconnect(playerId)
 			})

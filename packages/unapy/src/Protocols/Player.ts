@@ -5,7 +5,17 @@ export interface Player {
 	name: string
 }
 
+export type PlayerStatus = "online" | "offline"
+
 export interface PlayerData extends Player {
 	handCards: CardData[]
 	usedCards: CardData[]
+	status: PlayerStatus
+}
+
+export type CurrentPlayerStatus = "uno" | "winner"
+
+export interface CurrentPlayerInfo {
+	id: string
+	status: CurrentPlayerStatus
 }

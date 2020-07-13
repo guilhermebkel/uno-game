@@ -4,6 +4,10 @@ import GameService from "@unapy/Services/Game"
  * Usually the class which handles events from client
  */
 class ListenerService {
+	onListenGame (gameId: string) {
+		GameService.startObservingGame(gameId)
+	}
+
 	onJoinGame (gameId: string, playerId: string) {
 		GameService.addPlayer(gameId, playerId)
 	}

@@ -2,7 +2,7 @@ import CardService from "@unapy/Services/Card"
 import SocketService from "@unapy/Services/Socket"
 
 import { Game, GameEvents } from "@unapy/Protocols/Game"
-import { PlayerData } from "@unapy/Protocols/Player"
+import { PlayerData, CurrentPlayerInfo, CurrentPlayerStatus } from "@unapy/Protocols/Player"
 import { CardData } from "@unapy/Protocols/Card"
 
 class GameService {
@@ -15,10 +15,15 @@ class GameService {
 			id: playerId,
 			name: playerId,
 			handCards: [],
-			usedCards: []
+			usedCards: [],
+			status: "online"
 		}
 
 		const game: Game = {
+			maxPlayers: 4,
+			type: "public",
+			status: "waiting",
+			round: 0,
 			id: gameId,
 			currentPlayerIndex: 0,
 			currentGameColor: null,
@@ -43,6 +48,7 @@ class GameService {
 
 		const updatedGame: Game = {
 			...game,
+			status: "playing",
 			players: game?.players.map(player => {
 				const handCards: CardData[] = []
 
@@ -70,18 +76,30 @@ class GameService {
 	static addPlayer (gameId: string, playerId: string) {
 		const game = GameService.getGame(gameId)
 
-		GameService.setGameData(gameId, {
-			...game,
-			players: [
-				...game?.players,
-				{
-					id: playerId,
-					name: playerId,
-					handCards: [],
-					usedCards: []
-				}
-			]
-		})
+		game.players = [
+			...game?.players,
+			{
+				id: playerId,
+				name: playerId,
+				handCards: [],
+				usedCards: [],
+				status: "online"
+			}
+		]
+
+		if (game.players.length < game.maxPlayers) {
+			GameService.setGameData(gameId, game)
+
+			GameService.emitGameEvent(gameId, "PlayerJoined", game)
+		} else {
+			GameService.emitGameEvent(gameId, "PlayerJoinFailed")
+		}
+	}
+
+	static startObservingGame (gameId: string) {
+		const game = GameService.getGame(gameId)
+
+		GameService.emitGameEvent(gameId, "StartedObservingGame", game)
 	}
 
 	static purgePlayer (playerId: string) {
@@ -89,18 +107,32 @@ class GameService {
 			const isPlayerInGame = game?.players?.find(player => player?.id === playerId)
 
 			if (isPlayerInGame) {
-				GameService.removePlayer(game?.id, playerId)
+				GameService.disconnectPlayer(game?.id, playerId)
 			}
 		}
 	}
 
-	static removePlayer (gameId: string, playerId: string) {
+	private static disconnectPlayer (gameId: string, playerId: string) {
 		const game = GameService.getGame(gameId)
 
-		GameService.setGameData(gameId, {
-			...game,
-			players: game?.players?.filter(player => player.id !== playerId)
-		})
+		if (game.status === "waiting") {
+			game.players = game?.players?.filter(player => player.id !== playerId)
+		}
+
+		if (game.status === "playing") {
+			game.players = game?.players?.map(player => {
+				if (player.id === playerId) {
+					return {
+						...player,
+						status: "offline"
+					}
+				} else {
+					return player
+				}
+			})
+		}
+
+		GameService.setGameData(gameId, game)
 	}
 
 	static getGameList () {
@@ -120,6 +152,17 @@ class GameService {
 	}
 
 	static nextTurn (gameId: string) {
+		const currentPlayerInfo = this.getCurrentPlayerInfo(gameId)
+
+		if (currentPlayerInfo.status === "winner") {
+			GameService.emitGameEvent(gameId, "PlayerWon", currentPlayerInfo.id)
+			return GameService.endGame(gameId)
+		}
+
+		if (currentPlayerInfo.status === "uno") {
+			GameService.emitGameEvent(gameId, "PlayerUno", currentPlayerInfo.id)
+		}
+
 		const game = GameService.getGame(gameId)
 
 		const totalPlayers = game?.players?.length
@@ -130,6 +173,8 @@ class GameService {
 		const nextPlayer = game?.players?.[nextPlayerIndex]
 
 		const playersWithCardUsability = GameService.buildPlayersWithCardUsability(nextPlayer.id, gameId)
+
+		game.round++
 
 		GameService.setGameData(gameId, {
 			...game,
@@ -190,8 +235,8 @@ class GameService {
 		})
 	}
 
-	private static emitGameEvent (gameId: string, event: GameEvents, game?: Game) {
-		SocketService.emitRoomEvent(gameId, event, game)
+	private static emitGameEvent (gameId: string, event: GameEvents, data?: Game | any) {
+		SocketService.emitRoomEvent(gameId, event, data)
 	}
 
 	private static setGameData (gameId: string, game: Game) {
@@ -231,6 +276,44 @@ class GameService {
 		})
 
 		return playersWithCardUsability
+	}
+
+	private static getCurrentPlayerInfo (gameId: string): CurrentPlayerInfo {
+		const game = GameService.getGame(gameId)
+
+		const { players } = game
+
+		const currentPlayer = players[game?.currentPlayerIndex]
+
+		const currentPlayerId = currentPlayer?.id
+		let status: CurrentPlayerStatus
+
+		/**
+		 * In case the current player has no card on hand, he's the winner
+		 */
+		if (currentPlayer?.handCards.length === 0) {
+			status = "winner"
+		/**
+		 * In case the player has only one card, he's made uno
+		 */
+		} else if (currentPlayer?.handCards.length === 1) {
+			status = "uno"
+		}
+
+		return {
+			id: currentPlayerId,
+			status
+		}
+	}
+
+	private static endGame (gameId: string) {
+		const game = GameService.getGame(gameId)
+
+		game.status = "ended"
+
+		GameService.setGameData(gameId, game)
+
+		GameService.emitGameEvent(gameId, "GameEnded")
 	}
 }
 
