@@ -5,14 +5,15 @@ import { Grid, Button, CircularProgress } from "@material-ui/core"
 import { Game } from "../../protocols/Game"
 
 import useDidMount from "../../hooks/useDidMount"
+import useSocket from "../../hooks/useSocket"
 
 import api from "../../services/api"
-
-import { useSocketStore } from "../../store/Socket"
 
 import { Divider } from "../../components"
 
 import GameItem from "./GameItem"
+
+import useStyles from "./styles"
 
 const Dashboard = () => {
 	const [games, setGames] = useState<Game[]>([])
@@ -21,24 +22,18 @@ const Dashboard = () => {
 	const [loadingGetGames, setLoadingGetGames] = useState(true)
 
 	const history = useHistory()
-	const socketStore = useSocketStore()
+	const classes = useStyles()
+
+	const socket = useSocket()
 
 	const handleCreateNewGame = async () => {
 		setLoadingCreateGame(true)
 
-		socketStore.io.emit("CreateGame")
-
-		const game = await new Promise<Game>(resolve => {
-			socketStore.io.on("GameCreated", (game: Game) => {
-				resolve(game)
-			})
-		})
-
-		socketStore.set({ game })
+		const game = await socket.createGame()
 
 		setLoadingCreateGame(false)
 
-		history.push(`/room/${game.id}`)
+		history.push(`/game/${game.id}/room`)
 	}
 
 	const getGameList = async () => {
@@ -78,7 +73,12 @@ const Dashboard = () => {
 					<Grid item sm={12} md={12} lg={12} xl={12}>
 						{games.map(game => (
 							<>
-								<Grid container component={Link} to={`/room/${game.id}`}>
+								<Grid
+									container
+									component={Link}
+									to={`/game/${game.id}/room`}
+									className={classes.gameItemGrid}
+								>
 									<GameItem
 										key={game.id}
 										title={game.title}

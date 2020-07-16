@@ -1,5 +1,6 @@
 import React, { useState } from "react"
 import { Grid, Button } from "@material-ui/core"
+import { useParams } from "react-router-dom"
 import { DndProvider } from "react-dnd"
 import { HTML5Backend } from "react-dnd-html5-backend"
 import { TouchBackend } from "react-dnd-touch-backend"
@@ -7,54 +8,37 @@ import { TouchBackend } from "react-dnd-touch-backend"
 import { useSocketStore } from "../../store/Socket"
 
 import useDidMount from "../../hooks/useDidMount"
+import useSocket from "../../hooks/useSocket"
 
 import { DeviceUtil } from "../../utils/Device"
 
 import CardStack from "./CardStack"
 import CardDeck from "./CardDeck"
 
-import { Game } from "../../protocols/Game"
-import { PlayerData } from "../../protocols/Player"
-
 const Table = () => {
+	const { gameId } = useParams()
+
 	const socketStore = useSocketStore()
+	const socket = useSocket()
 
 	const [loadingStartGame, setLoadingStartGame] = useState(true)
 
-	const getCurrentPlayer = () => {
-		const playerId = socketStore.playerId
-
-		const player = socketStore?.game?.players?.find(player => player.id === playerId)
-
-		return (player || {}) as PlayerData
-	}
-
 	const buyCard = () => {
-		socketStore.io.emit("BuyCard", socketStore?.game?.id)
+		socket.buyCard(gameId)
 	}
 
-	const onDrop = (cardId: number) => {
-		socketStore.io.emit("PutCard", socketStore?.game?.id, cardId)
+	const onDrop = (cardId: string) => {
+		socket.putCard(gameId, cardId)
 	}
 
-	const startGame = async () => {
-		if (socketStore?.game && socketStore?.game?.availableCards?.length === 0) {
-			socketStore.io.emit("StartGame", socketStore?.game?.id)
-
-			const game = await new Promise<Game>(resolve => {
-				socketStore.io.on("GameStarted", (game: Game) => {
-					resolve(game)
-				})
-			})
-
-			socketStore.set({ game })
-		}
+	const joinGame = async () => {
+		await socket.joinGame(gameId)
 
 		setLoadingStartGame(false)
 	}
 
 	useDidMount(() => {
-		startGame()
+		joinGame()
 	})
 
 	if (loadingStartGame) {
@@ -103,8 +87,8 @@ const Table = () => {
 						<Grid item xs={10}>
 							<Grid container justify="center" alignItems="center" style={{ backgroundColor: "black" }}>
 								<CardDeck
-									cards={getCurrentPlayer()?.handCards as any}
-									player={getCurrentPlayer() as any}
+									cards={socket.currentPlayer?.handCards as any}
+									player={socket.currentPlayer as any}
 								/>
 							</Grid>
 						</Grid>

@@ -16,7 +16,8 @@ class GameService {
 			name: playerId,
 			handCards: [],
 			usedCards: [],
-			status: "online"
+			status: "online",
+			ready: false
 		}
 
 		const game: Game = {
@@ -46,46 +47,50 @@ class GameService {
 
 		const currentPlayer = game?.players?.[0]
 
-		const updatedGame: Game = {
-			...game,
-			status: "playing",
-			players: game?.players.map(player => {
-				const handCards: CardData[] = []
+		game.status = "playing"
 
-				for (let i = 0; i < 7; i++) {
-					const selectedCard = allCards.shift()
-					handCards.push(selectedCard)
-				}
+		game.players = game?.players.map(player => {
+			const handCards: CardData[] = []
 
-				return {
-					...player,
-					handCards: handCards.map(handCard => ({
-						...handCard,
-						canBeUsed: player.id === currentPlayer.id
-					}))
-				}
-			}),
-			availableCards: allCards
-		}
+			for (let i = 0; i < 7; i++) {
+				const selectedCard = allCards.shift()
+				handCards.push(selectedCard)
+			}
 
-		GameService.setGameData(gameId, updatedGame)
+			return {
+				...player,
+				handCards: handCards.map(handCard => ({
+					...handCard,
+					canBeUsed: player.id === currentPlayer.id
+				}))
+			}
+		})
 
-		GameService.emitGameEvent(gameId, "GameStarted", updatedGame)
+		game.availableCards = allCards
+
+		GameService.setGameData(gameId, game)
+
+		GameService.emitGameEvent(gameId, "GameStarted", game)
 	}
 
 	static addPlayer (gameId: string, playerId: string) {
 		const game = GameService.getGame(gameId)
 
-		game.players = [
-			...game?.players,
-			{
-				id: playerId,
-				name: playerId,
-				handCards: [],
-				usedCards: [],
-				status: "online"
-			}
-		]
+		const player = game?.players?.find(player => player.id === playerId)
+
+		if (!player) {
+			game.players = [
+				...game?.players,
+				{
+					id: playerId,
+					name: playerId,
+					handCards: [],
+					usedCards: [],
+					status: "online",
+					ready: false
+				}
+			]
+		}
 
 		if (game.players.length < game.maxPlayers) {
 			GameService.setGameData(gameId, game)
@@ -110,6 +115,23 @@ class GameService {
 				GameService.disconnectPlayer(game?.id, playerId)
 			}
 		}
+	}
+
+	static toggleReady (playerId: string, gameId: string) {
+		const game = GameService.getGame(gameId)
+
+		game.players = game?.players?.map(player => {
+			if (player.id === playerId) {
+				return {
+					...player,
+					ready: !player.ready
+				}
+			} else {
+				return player
+			}
+		})
+
+		GameService.setGameData(gameId, game)
 	}
 
 	private static disconnectPlayer (gameId: string, playerId: string) {
@@ -176,11 +198,11 @@ class GameService {
 
 		game.round++
 
-		GameService.setGameData(gameId, {
-			...game,
-			currentPlayerIndex: nextPlayerIndex,
-			players: playersWithCardUsability
-		})
+		game.currentPlayerIndex = nextPlayerIndex
+
+		game.players = playersWithCardUsability
+
+		GameService.setGameData(gameId, game)
 	}
 
 	static buyCard (playerId: string, gameId: string) {
@@ -194,20 +216,20 @@ class GameService {
 
 		const card = available.shift()
 
-		GameService.setGameData(gameId, {
-			...game,
-			players: game?.players?.map(player => {
-				if (player.id === playerId) {
-					return {
-						...player,
-						handCards: [card, ...player?.handCards]
-					}
-				} else {
-					return player
+		game.players = game?.players?.map(player => {
+			if (player.id === playerId) {
+				return {
+					...player,
+					handCards: [card, ...player?.handCards]
 				}
-			}),
-			availableCards: available
+			} else {
+				return player
+			}
 		})
+
+		game.availableCards = available
+
+		GameService.setGameData(gameId, game)
 	}
 
 	static putCard (playerId: string, cardId: string, gameId: string) {
@@ -217,22 +239,23 @@ class GameService {
 
 		const card = player?.handCards?.find(card => card.id === cardId)
 
-		GameService.setGameData(gameId, {
-			...game,
-			players: game?.players?.map(player => {
-				if (player.id === playerId) {
-					return {
-						...player,
-						handCards: player?.handCards?.filter(card => card.id !== cardId),
-						usedCards: [card, ...player?.usedCards]
-					}
-				} else {
-					return player
+		game.players = game?.players?.map(player => {
+			if (player.id === playerId) {
+				return {
+					...player,
+					handCards: player?.handCards?.filter(card => card.id !== cardId),
+					usedCards: [card, ...player?.usedCards]
 				}
-			}),
-			usedCards: [card, ...game?.usedCards],
-			currentGameColor: card?.color
+			} else {
+				return player
+			}
 		})
+
+		game.usedCards = [card, ...game?.usedCards]
+
+		game.currentGameColor = card?.color
+
+		GameService.setGameData(gameId, game)
 	}
 
 	private static emitGameEvent (gameId: string, event: GameEvents, data?: Game | any) {

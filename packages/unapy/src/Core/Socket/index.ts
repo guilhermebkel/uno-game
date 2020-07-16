@@ -58,6 +58,10 @@ class Socket {
 				ListenerService.onListenGame(roomId)
 			})
 
+			client.on("ToggleReady", (roomId: string) => {
+				ListenerService.onToggleReady(roomId, playerId)
+			})
+
 			client.on("disconnect", () => {
 				ListenerService.onPlayerDisconnect(playerId)
 			})

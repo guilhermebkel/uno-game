@@ -8,7 +8,7 @@ import useStyles from "./styles"
 
 interface Props {
 	cards: CardData[]
-	onDrop: (cardId: number) => void
+	onDrop: (cardId: string) => void
 }
 
 const CardStack = (props: Props) => {

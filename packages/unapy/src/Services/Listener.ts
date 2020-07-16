@@ -31,6 +31,10 @@ class ListenerService {
 	onPutCard (gameId: string, playerId: string, cardId: string) {
 		GameService.putCard(playerId, cardId, gameId)
 	}
+
+	onToggleReady (gameId: string, playerId: string) {
+		GameService.toggleReady(playerId, gameId)
+	}
 }
 
 export default new ListenerService()
