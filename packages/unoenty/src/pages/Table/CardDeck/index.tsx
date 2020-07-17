@@ -23,7 +23,8 @@ const DraggableCard = (props: CardProps) => {
     item: { type: "DraggableCard", id: card.id, index },
     collect: monitor => ({
       isDragging: monitor.isDragging()
-		})
+		}),
+		canDrag: card.canBeUsed
   })
  
   drag(draggableCardRef)
@@ -37,7 +38,8 @@ const DraggableCard = (props: CardProps) => {
 			src={card.src}
 			style={{
 				...style,
-				opacity: isDragging ? 0 : 1
+				opacity: isDragging ? 0 : 1,
+				filter: !card.canBeUsed ? "grayscale(1)" : ""
 			}}
 		/>
   )
