@@ -6,12 +6,20 @@ import { Game } from "../protocols/Game"
 const useSocket = () => {
 	const socketStore = useSocketStore()
 
-	const getCurrentPlayer = () => {
+	const getCurrentPlayer = (): PlayerData => {
 		const playerId = socketStore.playerId
 
 		const player = socketStore?.game?.players?.find(player => player.id === playerId)
 
 		return (player || {}) as PlayerData
+	}
+
+	const getOtherPlayers = (): PlayerData[] => {
+		const playerId = socketStore.playerId
+
+		const players = socketStore?.game?.players?.filter(player => player.id !== playerId)
+
+		return (players || []) as PlayerData[]
 	}
 
 	const createGame = async (): Promise<Game> => {
@@ -54,6 +62,9 @@ const useSocket = () => {
 	return {
 		get currentPlayer (): PlayerData {
 			return getCurrentPlayer()
+		},
+		get otherPlayers (): PlayerData[] {
+			return getOtherPlayers()
 		},
 		createGame,
 		joinGame,

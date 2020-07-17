@@ -52,9 +52,11 @@ const Table = () => {
 					HTML5Backend
 				)}
 			>
-				<Grid container>
+				<Grid container style={{ height: "100%" }}>
 					<Grid container>
-						<Grid item xs={1}></Grid>
+						<Grid item xs={1}>
+							<Button color="primary" variant="contained" onClick={buyCard}>BUY CARD</Button>
+						</Grid>
 						<Grid item xs={10}>
 							<Grid container justify="center" alignItems="center" style={{ backgroundColor: "blue" }}>
 								
@@ -62,10 +64,10 @@ const Table = () => {
 						</Grid>
 						<Grid item xs={1}></Grid>
 					</Grid>
-					<Grid container>
+					<Grid container alignItems="center">
 						<Grid item xs={1}>
 							<Grid container justify="center" alignItems="center" style={{ backgroundColor: "red" }}>
-	
+
 							</Grid>
 						</Grid>
 						<Grid item xs={10}>
@@ -78,11 +80,11 @@ const Table = () => {
 						</Grid>
 						<Grid item xs={1}>
 							<Grid container justify="center" alignItems="center" style={{ backgroundColor: "yellow" }}>
-								<Button color="primary" variant="contained" onClick={buyCard}>BUY CARD</Button>
+
 							</Grid>
 						</Grid>
 					</Grid>
-					<Grid container>
+					<Grid container alignItems="center">
 						<Grid item xs={1}></Grid>
 						<Grid item xs={10}>
 							<Grid container justify="center" alignItems="center" style={{ backgroundColor: "black" }}>
