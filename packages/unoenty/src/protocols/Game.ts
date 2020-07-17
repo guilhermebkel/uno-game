@@ -70,4 +70,8 @@ export interface Game {
 	 * Current players
 	 */
 	players: PlayerData[]
+	/**
+	 * Placeholder Card
+	 */
+	placeholderCardSrc: string
 }

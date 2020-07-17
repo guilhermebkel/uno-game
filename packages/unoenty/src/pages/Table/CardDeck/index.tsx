@@ -7,15 +7,18 @@ import { Player } from "../../../protocols/Player"
 
 import useStyles from "./styles"
 
+import cardPlaceholder from "../../../assets/card_placeholder.png"
+
 interface CardProps {
 	card: CardData
 	index: number
 	style: object
 	className: string
+	hideCard?: boolean
 }
 
 const DraggableCard = (props: CardProps) => {
-	const { card, index, style, className } = props
+	const { card, index, style, className, hideCard } = props
 
 	const draggableCardRef = useRef(null)
 
@@ -35,7 +38,7 @@ const DraggableCard = (props: CardProps) => {
 			key={card.name}
 			className={className}
 			alt={card.name}
-			src={card.src}
+			src={hideCard ? cardPlaceholder : card.src}
 			style={{
 				...style,
 				opacity: isDragging ? 0 : 1,
@@ -48,10 +51,11 @@ const DraggableCard = (props: CardProps) => {
 interface CardDeckProps {
 	cards: CardData[]
 	player: Player
+	hideCards?: boolean
 }
 
 const CardStack = (props: CardDeckProps) => {
-	const { cards } = props
+	const { cards, hideCards } = props
 
 	const getCardInclination = (index: number) => {
 		const isMiddleCard = Math.round(cards.length / 2) === index
@@ -104,6 +108,7 @@ const CardStack = (props: CardDeckProps) => {
 						left: index * 50,
 						bottom: getCardElevation(index)
 					}}
+					hideCard={hideCards}
 				/>
 			))}
 		</Container>
