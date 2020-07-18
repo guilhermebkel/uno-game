@@ -6,6 +6,3 @@ node_modules
 
 # Environmental variables
 .env
-
-# Client build
-build
