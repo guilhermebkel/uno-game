@@ -4,8 +4,7 @@
   "scripts": {
     "bootstrap": "lerna exec npm install",
     "list": "lerna ls",
-    "deploy": "lerna version",
-    "unapy:dev": "lerna exec --scope unapy npm run dev"
+    "deploy": "lerna version"
   },
   "dependencies": {
     "@material-ui/lab": "^4.0.0-alpha.56",
