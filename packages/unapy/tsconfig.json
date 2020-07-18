@@ -1,4 +1,10 @@
 {
 	"extends": "../../tsconfig.json",
-	"rootDir": "src"
+	"rootDir": "src",
+	"exclude": [
+		"../unoenty/**"
+	],
+	"compilerOptions": {
+    "outDir": "dist"
+  }
 }

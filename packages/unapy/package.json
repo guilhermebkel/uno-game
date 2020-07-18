@@ -4,7 +4,7 @@
   "description": "The UNO Game API",
   "main": "dist/index.js",
   "scripts": {
-    "start": "node -r module-alias/register dist/index.js",
+    "start": "node -r module-alias/register dist/unapy/src/index.js",
     "dev": "nodemon src/index.ts",
     "dev:resources": "docker-compose up",
     "build": "rm -rf dist && tsc"
@@ -27,6 +27,8 @@
     "socket.io": "^2.3.0"
   },
   "_moduleAliases": {
-    "~": "./dist"
+    "@unapy": "dist/unapy/src",
+    "@shared/protocols": "packages/shared/protocols",
+    "@shared/error-handler": "packages/shared/error-handler/src"
   }
 }
