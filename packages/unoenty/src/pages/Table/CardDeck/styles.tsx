@@ -5,8 +5,11 @@ const useStyles = makeStyles((theme) => {
 
 	return {
 		cardContainer: {
-			position: "absolute",
-			bottom: 50
+			position: "relative",
+			height: 150,
+			transition: theme.transitions.create("all", {
+				duration: theme.transitions.duration.standard
+			})
 		},
 		card: {
 			height: cardContainerSize,

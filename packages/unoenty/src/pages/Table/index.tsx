@@ -58,16 +58,24 @@ const Table = () => {
 							<Button color="primary" variant="contained" onClick={buyCard}>BUY CARD</Button>
 						</Grid>
 						<Grid item xs={10}>
-							<Grid container justify="center" alignItems="center" style={{ backgroundColor: "blue" }}>
-								
+							<Grid container justify="center" alignItems="center" style={{ transform: "rotate(180deg)" }}>
+								<CardDeck
+									cards={socket.otherPlayers?.[1]?.handCards as any}
+									player={socket.otherPlayers?.[1] as any}
+									hideCards
+								/>
 							</Grid>
 						</Grid>
 						<Grid item xs={1}></Grid>
 					</Grid>
 					<Grid container alignItems="center">
 						<Grid item xs={1}>
-							<Grid container justify="center" alignItems="center" style={{ backgroundColor: "red" }}>
-
+							<Grid container justify="center" alignItems="center" style={{ transform: "rotate(90deg)" }}>
+								<CardDeck
+									cards={socket.otherPlayers?.[0]?.handCards as any}
+									player={socket.otherPlayers?.[0] as any}
+									hideCards
+								/>
 							</Grid>
 						</Grid>
 						<Grid item xs={10}>
@@ -79,15 +87,19 @@ const Table = () => {
 							</Grid>
 						</Grid>
 						<Grid item xs={1}>
-							<Grid container justify="center" alignItems="center" style={{ backgroundColor: "yellow" }}>
-
+							<Grid container justify="center" alignItems="center" style={{ transform: "rotate3d(1, 1, 0, 180deg)" }}>
+								<CardDeck
+									cards={socket.otherPlayers?.[2]?.handCards as any}
+									player={socket.otherPlayers?.[2] as any}
+									hideCards
+								/>
 							</Grid>
 						</Grid>
 					</Grid>
 					<Grid container alignItems="center">
 						<Grid item xs={1}></Grid>
 						<Grid item xs={10}>
-							<Grid container justify="center" alignItems="center" style={{ backgroundColor: "black" }}>
+							<Grid container justify="center" alignItems="center">
 								<CardDeck
 									cards={socket.currentPlayer?.handCards as any}
 									player={socket.currentPlayer as any}

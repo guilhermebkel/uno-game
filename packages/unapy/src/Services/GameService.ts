@@ -297,7 +297,7 @@ class GameService {
 					handCards: player?.handCards?.map(handCard => ({
 						...handCard,
 						canBeUsed: (
-							topStackCard.color === handCard.color ||
+							topStackCard?.color === handCard.color ||
 							handCard.type === "change-color" ||
 							handCard.type === "buy-4"
 						)

@@ -18,7 +18,10 @@ const useStyles = makeStyles(theme => {
 			height: cardContainerSize,
 			width: "auto",
 			position: "absolute",
-			left: cardContainerSize * 0.2
+			left: cardContainerSize * 0.2,
+			transition: theme.transitions.create("all", {
+				duration: theme.transitions.duration.standard
+			})
 		}
 	}
 })

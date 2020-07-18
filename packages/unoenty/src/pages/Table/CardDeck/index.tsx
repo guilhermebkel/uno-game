@@ -27,13 +27,14 @@ const DraggableCard = (props: CardProps) => {
     collect: monitor => ({
       isDragging: monitor.isDragging()
 		}),
-		canDrag: card.canBeUsed
+		canDrag: !hideCard && card.canBeUsed
   })
  
   drag(draggableCardRef)
 
   return (
 		<img
+			draggable="false"
 			ref={draggableCardRef}
 			key={card.name}
 			className={className}
@@ -42,7 +43,8 @@ const DraggableCard = (props: CardProps) => {
 			style={{
 				...style,
 				opacity: isDragging ? 0 : 1,
-				filter: !card.canBeUsed ? "grayscale(1)" : ""
+				filter: (!card.canBeUsed || hideCard) ? "grayscale(1)" : "",
+				pointerEvents: !hideCard && card.canBeUsed ? "all" : "none"
 			}}
 		/>
   )
@@ -95,6 +97,10 @@ const CardStack = (props: CardDeckProps) => {
 			disableGutters
 			className={classes.cardContainer}
 			maxWidth={false}
+			style={{
+				width: (cards?.length * 50) + 50,
+				pointerEvents: hideCards ? "none" : "all"
+			}}
 		>
 			{cards?.map((card, index) => (
 				<DraggableCard

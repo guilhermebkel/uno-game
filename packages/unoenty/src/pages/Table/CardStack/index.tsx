@@ -44,7 +44,7 @@ const CardStack = (props: Props) => {
 					alt={card.name}
 					src={card.src}
 					style={{
-						transform: `rotate(${index}rad)`,
+						transform: `rotate(${cards.length - index}rad)`,
 						zIndex: cards.length - index
 					}}
 				/>
