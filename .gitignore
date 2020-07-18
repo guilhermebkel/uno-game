@@ -1,8 +1,11 @@
 # Built code
-dist
+# dist
 
 # Libs
 node_modules
 
 # Environmental variables
 .env
+
+# Client build
+build
