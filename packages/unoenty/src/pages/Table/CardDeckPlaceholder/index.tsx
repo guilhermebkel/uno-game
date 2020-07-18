@@ -1,20 +1,21 @@
 import React from "react"
-import { Container } from "@material-ui/core"
+import { Container, Chip } from "@material-ui/core"
 
 import { CardData } from "@shared/protocols/Card"
 import { PlayerData } from "@shared/protocols/Player"
 
-import useStyles from "@unoenty/pages/Table/CardDeck/styles"
+import useStyles from "@unoenty/pages/Table/CardDeckPlaceholder/styles"
 
 import cardPlaceholder from "@unoenty/assets/card_placeholder.png"
 
 interface CardDeckPlaceholderProps {
 	cards: CardData[]
 	player: PlayerData
+	transform?: string
 }
 
 const CardDeckPlaceholder = (props: CardDeckPlaceholderProps) => {
-	const { cards, player } = props
+	const { cards, player, transform } = props
 
 	const classes = useStyles()
 
@@ -23,11 +24,23 @@ const CardDeckPlaceholder = (props: CardDeckPlaceholderProps) => {
 			disableGutters
 			className={classes.cardContainer}
 			maxWidth={false}
-			style={{
-				width: (cards?.length * 25) + 75,
-				pointerEvents: "none"
-			}}
+			style={{ width: (cards?.length * 25) + 75	}}
 		>
+			{player?.name && (
+				<Chip
+					label={player?.name}
+					className={classes.cardChip}
+					style={{ backgroundColor: player?.isCurrentRoundPlayer ? "#FFE600" : "#E0E0E0" }}
+				/>
+			)}
+
+			<Container
+			disableGutters
+			className={classes.cardContainer}
+			maxWidth={false}
+			style={{ transform }}
+		>
+			
 			{cards?.map((card, index) => (
 				<img
 					key={card.name}
@@ -37,11 +50,11 @@ const CardDeckPlaceholder = (props: CardDeckPlaceholderProps) => {
 					style={{
 						zIndex: index,
 						left: index * 25,
-						filter: player?.isCurrentRoundPlayer ? "none" : "grayscale(1)",
-						pointerEvents: "none"
+						filter: player?.isCurrentRoundPlayer ? "none" : "grayscale(1)"
 					}}
 				/>
 			))}
+		</Container>
 		</Container>
 	)
 }

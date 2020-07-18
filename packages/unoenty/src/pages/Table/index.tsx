@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { Grid, Button } from "@material-ui/core"
+import { Grid, Button, Typography } from "@material-ui/core"
 import { useParams } from "react-router-dom"
 import { DndProvider } from "react-dnd"
 import { HTML5Backend } from "react-dnd-html5-backend"
@@ -57,30 +57,44 @@ const Table = () => {
 					<Grid container>
 						<Grid item xs={1}>
 							{socket?.currentPlayer && (
-								<Button color="primary" variant="contained" onClick={buyCard}>BUY CARD</Button>
+								<Button
+									color="primary"
+									variant="contained"
+									onClick={buyCard}
+									disabled={!socket?.currentPlayer?.isCurrentRoundPlayer}
+									fullWidth
+								>
+									BUY CARD
+								</Button>
 							)}
 						</Grid>
 						<Grid item xs={10}>
-							<Grid container justify="center" alignItems="center" style={{ transform: "rotate(180deg)" }}>
+							<Grid container justify="center" alignItems="center">
 								<CardDeckPlaceholder
 									cards={socket.otherPlayers?.[1]?.handCards as any}
 									player={socket.otherPlayers?.[1] as any}
+									transform="rotate(180deg)"
 								/>
 							</Grid>
 						</Grid>
-						<Grid item xs={1}></Grid>
+						<Grid item xs={1}>
+							<Typography variant="h1" color="primary" align="center">
+								Round {socketStore?.game?.round}
+							</Typography>
+						</Grid>
 					</Grid>
 					<Grid container alignItems="center">
 						<Grid item xs={2}>
-							<Grid container justify="center" alignItems="center" style={{ transform: "rotate(90deg)" }}>
+							<Grid container justify="center" alignItems="center">
 								<CardDeckPlaceholder
 									cards={socket.otherPlayers?.[0]?.handCards as any}
 									player={socket.otherPlayers?.[0] as any}
+									transform="rotate(90deg)"
 								/>
 							</Grid>
 						</Grid>
 						<Grid item xs={8}>
-							<Grid container justify="center" alignItems="center" style={{ height: "100%" }}>
+							<Grid container justify="center" alignItems="center">
 								<CardStack
 									cards={socketStore?.game?.usedCards as any}
 									onDrop={onDrop}
@@ -88,10 +102,11 @@ const Table = () => {
 							</Grid>
 						</Grid>
 						<Grid item xs={2}>
-							<Grid container justify="center" alignItems="center" style={{ transform: "rotate3d(1, 1, 0, 180deg)" }}>
+							<Grid container justify="center" alignItems="center">
 								<CardDeckPlaceholder
 									cards={socket.otherPlayers?.[2]?.handCards as any}
 									player={socket.otherPlayers?.[2] as any}
+									transform="rotate3d(1, 1, 0, 180deg)"
 								/>
 							</Grid>
 						</Grid>

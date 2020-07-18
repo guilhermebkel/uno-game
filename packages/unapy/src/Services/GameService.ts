@@ -60,10 +60,10 @@ class GameService {
 
 			return {
 				...player,
+				isCurrentRoundPlayer: player.id === currentPlayer.id,
 				handCards: handCards.map(handCard => ({
 					...handCard,
-					canBeUsed: player.id === currentPlayer.id,
-					isCurrentRoundPlayer: player.id === currentPlayer.id
+					canBeUsed: player.id === currentPlayer.id
 				}))
 			}
 		})
