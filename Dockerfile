@@ -1,7 +1,5 @@
 FROM node:current-stretch
 
-RUN npm i
-
 RUN mkdir -p /uno
 
 WORKDIR /uno/packages/unapy
