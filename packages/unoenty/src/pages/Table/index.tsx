@@ -53,10 +53,12 @@ const Table = () => {
 					HTML5Backend
 				)}
 			>
-				<Grid container style={{ height: "100%" }}>
+				<Grid container style={{ height: "100%", overflow: "hidden" }}>
 					<Grid container>
 						<Grid item xs={1}>
-							<Button color="primary" variant="contained" onClick={buyCard}>BUY CARD</Button>
+							{socket?.currentPlayer && (
+								<Button color="primary" variant="contained" onClick={buyCard}>BUY CARD</Button>
+							)}
 						</Grid>
 						<Grid item xs={10}>
 							<Grid container justify="center" alignItems="center" style={{ transform: "rotate(180deg)" }}>
@@ -98,10 +100,17 @@ const Table = () => {
 						<Grid item xs={1}></Grid>
 						<Grid item xs={10}>
 							<Grid container justify="center" alignItems="center">
-								<CardDeck
-									cards={socket.currentPlayer?.handCards as any}
-									player={socket.currentPlayer as any}
-								/>
+								{socket?.currentPlayer ? (
+									<CardDeck
+										cards={socket.currentPlayer?.handCards as any}
+										player={socket.currentPlayer as any}
+									/>
+								) : (
+									<CardDeckPlaceholder
+										cards={socket.otherPlayers?.[3]?.handCards as any}
+										player={socket.otherPlayers?.[3] as any}
+									/>
+								)}
 							</Grid>
 						</Grid>
 						<Grid item xs={1}></Grid>

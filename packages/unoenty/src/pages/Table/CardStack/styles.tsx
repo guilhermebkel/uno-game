@@ -8,7 +8,7 @@ const useStyles = makeStyles(theme => {
 			width: cardContainerSize,
 			height: cardContainerSize,
 			position: "relative",
-			border: "1px solid rgba(0, 0, 0, 0.4)",
+			border: "4px solid #000000",
 			borderRadius: "100%",
 			transition: theme.transitions.create("all", {
 				duration: theme.transitions.duration.standard

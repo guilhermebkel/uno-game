@@ -34,7 +34,7 @@ const CardStack = (props: Props) => {
 			maxWidth={false}
 			innerRef={cardStackRef}
 			style={{
-				backgroundColor: isHovering ? "rgba(0, 0, 0, 0.2)" : "rgba(0, 0, 0, 0)"
+				backgroundColor: isHovering ? "rgba(255, 255, 255, 0.7)" : "rgba(255, 255, 255, 0.1)"
 			}}
 		>
 			{cards?.map((card, index) => (
@@ -45,7 +45,9 @@ const CardStack = (props: Props) => {
 					src={card.src}
 					style={{
 						transform: `rotate(${cards.length - index}rad)`,
-						zIndex: cards.length - index
+						zIndex: cards.length - index,
+						boxShadow: `0 0 25px ${(index === 0) ? "#000000" : "transparent"}`,
+						filter: (index === 0) ? "saturate(1.5)" : "contrast(0.5)"
 					}}
 				/>
 			))}

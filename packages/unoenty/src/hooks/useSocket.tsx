@@ -11,7 +11,7 @@ const useSocket = () => {
 
 		const player = socketStore?.game?.players?.find(player => player.id === playerId)
 
-		return (player || {}) as PlayerData
+		return player as PlayerData
 	}
 
 	const getOtherPlayers = (): PlayerData[] => {

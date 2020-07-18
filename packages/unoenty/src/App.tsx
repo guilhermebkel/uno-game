@@ -8,7 +8,7 @@ import SocketProvider from "@unoenty/store/Socket"
 const App = () => {
 	return (
 		<SocketProvider>
-			<Container>
+			<Container maxWidth={false}>
 				<Routes />
 			</Container>
 		</SocketProvider>
