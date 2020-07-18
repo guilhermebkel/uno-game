@@ -11,6 +11,8 @@ ENV NODE_ENV production
 
 RUN npm ci
 
+RUN npm install -g @types/node
+
 COPY . /uno
 
 RUN npm run build
