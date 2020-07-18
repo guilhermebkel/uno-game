@@ -1,11 +1,11 @@
 import React from "react"
 import { Route, Switch, Redirect } from "react-router-dom"
 
-import { PageNotFound } from "./components"
+import { PageNotFound } from "@unoenty/components"
 
-import Dashboard from "./pages/Dashboard"
-import Table from "./pages/Table"
-import Room from "./pages/Room"
+import Dashboard from "@unoenty/pages/Dashboard"
+import Table from "@unoenty/pages/Table"
+import Room from "@unoenty/pages/Room"
 
 const Routes = () => (
 	<Switch>

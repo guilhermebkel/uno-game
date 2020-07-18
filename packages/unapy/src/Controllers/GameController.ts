@@ -1,4 +1,4 @@
-import GameService from "@unapy/Services/Game"
+import GameService from "@unapy/Services/GameService"
 import { Request, Response } from "express"
 
 class GameController {

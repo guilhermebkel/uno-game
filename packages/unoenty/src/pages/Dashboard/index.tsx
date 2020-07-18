@@ -2,18 +2,18 @@ import React, { useState } from "react"
 import { useHistory, Link } from "react-router-dom"
 import { Grid, Button, CircularProgress } from "@material-ui/core"
 
-import { Game } from "../../protocols/Game"
+import { Game } from "@shared/protocols/Game"
 
-import useDidMount from "../../hooks/useDidMount"
-import useSocket from "../../hooks/useSocket"
+import useDidMount from "@unoenty/hooks/useDidMount"
+import useSocket from "@unoenty/hooks/useSocket"
 
-import api from "../../services/api"
+import api from "@unoenty/services/api"
 
-import { Divider } from "../../components"
+import { Divider } from "@unoenty/components"
 
-import GameItem from "./GameItem"
+import GameItem from "@unoenty/pages/Dashboard/GameItem"
 
-import useStyles from "./styles"
+import useStyles from "@unoenty/pages/Dashboard/styles"
 
 const Dashboard = () => {
 	const [games, setGames] = useState<Game[]>([])

@@ -2,7 +2,7 @@ import socket, { Server as SocketServer } from "socket.io"
 import { Server as HttpServer } from "http"
 import uuid from "uuid"
 
-import ListenerService from "@unapy/Services/Listener"
+import ListenerService from "@unapy/Services/ListenerService"
 
 /**
  * Kept it here to avoid circular dependency problems

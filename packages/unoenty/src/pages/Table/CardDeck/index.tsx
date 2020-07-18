@@ -2,12 +2,12 @@ import React, { useRef } from "react"
 import { Container } from "@material-ui/core"
 import { useDrag } from "react-dnd"
 
-import { CardData } from "../../../protocols/Card"
-import { Player } from "../../../protocols/Player"
+import { CardData } from "@shared/protocols/Card"
+import { Player } from "@shared/protocols/Player"
 
-import useStyles from "./styles"
+import useStyles from "@unoenty/pages/Table/CardDeck/styles"
 
-import cardPlaceholder from "../../../assets/card_placeholder.png"
+import cardPlaceholder from "@unoenty/assets/card_placeholder.png"
 
 interface CardProps {
 	card: CardData

@@ -1,5 +1,6 @@
-import { CardData, CardTypes, CardColors } from "@unapy/Protocols/Card"
 import uuid from "uuid"
+
+import { CardData, CardTypes, CardColors } from "@shared/protocols/Card"
 
 import staticFilesConfig from "@unapy/Config/static-files"
 

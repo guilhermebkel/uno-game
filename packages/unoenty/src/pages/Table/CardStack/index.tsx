@@ -2,9 +2,9 @@ import React, { useRef } from "react"
 import { Container } from "@material-ui/core"
 import { useDrop } from "react-dnd"
 
-import { CardData } from "../../../protocols/Card"
+import { CardData } from "@shared/protocols/Card"
 
-import useStyles from "./styles"
+import useStyles from "@unoenty/pages/Table/CardStack/styles"
 
 interface Props {
 	cards: CardData[]

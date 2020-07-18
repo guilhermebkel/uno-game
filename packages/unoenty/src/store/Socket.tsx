@@ -7,7 +7,7 @@ import useDidMount from "../hooks/useDidMount"
 
 import { Loading } from "../components"
 
-import { Game } from "../protocols/Game"
+import { Game } from "@shared/protocols/Game"
 
 export interface SocketContextData {
 	io: typeof Socket

@@ -20,7 +20,8 @@
     "baseUrl": ".",
     "paths": {
       "@unapy/*": ["packages/unapy/src/*"],
-      "@unoenty/*": ["packages/unoenty/src/*"]
+      "@unoenty/*": ["packages/unoenty/src/*"],
+      "@shared/protocols/*": ["packages/shared/protocols/*"],
     },
     "typeRoots": [
       "node_modules/@types"

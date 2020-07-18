@@ -1,9 +1,9 @@
-import CardService from "@unapy/Services/Card"
-import SocketService from "@unapy/Services/Socket"
+import CardService from "@unapy/Services/CardService"
+import SocketService from "@unapy/Services/SocketService"
 
-import { Game, GameEvents } from "@unapy/Protocols/Game"
-import { PlayerData, CurrentPlayerInfo, CurrentPlayerStatus } from "@unapy/Protocols/Player"
-import { CardData } from "@unapy/Protocols/Card"
+import { Game, GameEvents } from "@shared/protocols/Game"
+import { PlayerData, CurrentPlayerInfo, CurrentPlayerStatus } from "@shared/protocols/Player"
+import { CardData } from "@shared/protocols/Card"
 
 class GameService {
 	static games: Map<string, Game> = new Map()

@@ -5,15 +5,15 @@ import { DndProvider } from "react-dnd"
 import { HTML5Backend } from "react-dnd-html5-backend"
 import { TouchBackend } from "react-dnd-touch-backend"
 
-import { useSocketStore } from "../../store/Socket"
+import { useSocketStore } from "@unoenty/store/Socket"
 
-import useDidMount from "../../hooks/useDidMount"
-import useSocket from "../../hooks/useSocket"
+import useDidMount from "@unoenty/hooks/useDidMount"
+import useSocket from "@unoenty/hooks/useSocket"
 
-import { DeviceUtil } from "../../utils/Device"
+import { DeviceUtil } from "@unoenty/utils/Device"
 
-import CardStack from "./CardStack"
-import CardDeck from "./CardDeck"
+import CardStack from "@unoenty/pages/Table/CardStack"
+import CardDeck from "@unoenty/pages/Table/CardDeck"
 
 const Table = () => {
 	const { gameId } = useParams()

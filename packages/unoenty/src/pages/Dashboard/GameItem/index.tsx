@@ -9,9 +9,10 @@ import {
 import AvatarGroup from "@material-ui/lab/AvatarGroup"
 import Chip from "@material-ui/core/Chip"
 
-import useStyles from "./styles"
-import { GameStatus } from "../../../protocols/Game"
-import { PlayerData } from "../../../protocols/Player"
+import useStyles from "@unoenty/pages/Dashboard/GameItem/styles"
+
+import { GameStatus } from "@shared/protocols/Game"
+import { PlayerData } from "@shared/protocols/Player"
 
 type ChipProps = {
 	label: "PLAYING" | "WAITING" | "ENDED"

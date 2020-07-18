@@ -2,14 +2,14 @@ import React, { useState } from "react"
 import { useParams, useHistory } from "react-router-dom"
 import { Grid, Button } from "@material-ui/core"
 
-import { useSocketStore } from "../../store/Socket"
+import { useSocketStore } from "@unoenty/store/Socket"
 
-import useDidMount from "../../hooks/useDidMount"
-import useSocket from "../../hooks/useSocket"
+import useDidMount from "@unoenty/hooks/useDidMount"
+import useSocket from "@unoenty/hooks/useSocket"
 
-import { Divider } from "../../components"
+import { Divider } from "@unoenty/components"
 
-import PlayerItem from "./PlayerItem"
+import PlayerItem from "@unoenty/pages/Room/PlayerItem"
 
 const Room = () => {
 	const [loadingRoom, setLoadingRoom] = useState(true)
