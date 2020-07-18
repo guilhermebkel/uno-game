@@ -3,22 +3,19 @@ import { Container } from "@material-ui/core"
 import { useDrag } from "react-dnd"
 
 import { CardData } from "@shared/protocols/Card"
-import { Player } from "@shared/protocols/Player"
+import { PlayerData } from "@shared/protocols/Player"
 
 import useStyles from "@unoenty/pages/Table/CardDeck/styles"
-
-import cardPlaceholder from "@unoenty/assets/card_placeholder.png"
 
 interface CardProps {
 	card: CardData
 	index: number
 	style: object
 	className: string
-	hideCard?: boolean
 }
 
 const DraggableCard = (props: CardProps) => {
-	const { card, index, style, className, hideCard } = props
+	const { card, index, style, className } = props
 
 	const draggableCardRef = useRef(null)
 
@@ -27,7 +24,7 @@ const DraggableCard = (props: CardProps) => {
     collect: monitor => ({
       isDragging: monitor.isDragging()
 		}),
-		canDrag: !hideCard && card.canBeUsed
+		canDrag: card.canBeUsed
   })
  
   drag(draggableCardRef)
@@ -39,12 +36,12 @@ const DraggableCard = (props: CardProps) => {
 			key={card.name}
 			className={className}
 			alt={card.name}
-			src={hideCard ? cardPlaceholder : card.src}
+			src={card.src}
 			style={{
 				...style,
 				opacity: isDragging ? 0 : 1,
-				filter: (!card.canBeUsed || hideCard) ? "grayscale(1)" : "",
-				pointerEvents: !hideCard && card.canBeUsed ? "all" : "none"
+				filter: !card.canBeUsed ? "grayscale(1)" : "",
+				pointerEvents: card.canBeUsed ? "all" : "none"
 			}}
 		/>
   )
@@ -52,12 +49,11 @@ const DraggableCard = (props: CardProps) => {
 
 interface CardDeckProps {
 	cards: CardData[]
-	player: Player
-	hideCards?: boolean
+	player: PlayerData
 }
 
-const CardStack = (props: CardDeckProps) => {
-	const { cards, hideCards } = props
+const CardDeck = (props: CardDeckProps) => {
+	const { cards } = props
 
 	const getCardInclination = (index: number) => {
 		const isMiddleCard = Math.round(cards.length / 2) === index
@@ -98,8 +94,7 @@ const CardStack = (props: CardDeckProps) => {
 			className={classes.cardContainer}
 			maxWidth={false}
 			style={{
-				width: (cards?.length * 50) + 50,
-				pointerEvents: hideCards ? "none" : "all"
+				width: (cards?.length * 50) + 50
 			}}
 		>
 			{cards?.map((card, index) => (
@@ -114,11 +109,10 @@ const CardStack = (props: CardDeckProps) => {
 						left: index * 50,
 						bottom: getCardElevation(index)
 					}}
-					hideCard={hideCards}
 				/>
 			))}
 		</Container>
 	)
 }
 
-export default CardStack
+export default CardDeck

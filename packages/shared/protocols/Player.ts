@@ -12,6 +12,7 @@ export interface PlayerData extends Player {
 	usedCards: CardData[]
 	status: PlayerStatus
 	ready: boolean
+	isCurrentRoundPlayer: boolean
 }
 
 export type CurrentPlayerStatus = "uno" | "winner"

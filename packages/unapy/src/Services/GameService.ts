@@ -17,7 +17,8 @@ class GameService {
 			handCards: [],
 			usedCards: [],
 			status: "online",
-			ready: false
+			ready: false,
+			isCurrentRoundPlayer: false
 		}
 
 		const game: Game = {
@@ -61,7 +62,8 @@ class GameService {
 				...player,
 				handCards: handCards.map(handCard => ({
 					...handCard,
-					canBeUsed: player.id === currentPlayer.id
+					canBeUsed: player.id === currentPlayer.id,
+					isCurrentRoundPlayer: player.id === currentPlayer.id
 				}))
 			}
 		})
@@ -202,7 +204,8 @@ class GameService {
 				handCards: [],
 				usedCards: [],
 				status: "online",
-				ready: false
+				ready: false,
+				isCurrentRoundPlayer: false
 			}
 		]
 
@@ -294,6 +297,7 @@ class GameService {
 			if (currentPlayerId === player.id) {
 				return {
 					...player,
+					isCurrentRoundPlayer: true,
 					handCards: player?.handCards?.map(handCard => ({
 						...handCard,
 						canBeUsed: (
@@ -306,6 +310,7 @@ class GameService {
 			} else {
 				return {
 					...player,
+					isCurrentRoundPlayer: false,
 					handCards: player?.handCards?.map(handCard => ({
 						...handCard,
 						canBeUsed: false

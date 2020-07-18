@@ -14,6 +14,7 @@ import { DeviceUtil } from "@unoenty/utils/Device"
 
 import CardStack from "@unoenty/pages/Table/CardStack"
 import CardDeck from "@unoenty/pages/Table/CardDeck"
+import CardDeckPlaceholder from "@unoenty/pages/Table/CardDeckPlaceholder"
 
 const Table = () => {
 	const { gameId } = useParams()
@@ -59,26 +60,24 @@ const Table = () => {
 						</Grid>
 						<Grid item xs={10}>
 							<Grid container justify="center" alignItems="center" style={{ transform: "rotate(180deg)" }}>
-								<CardDeck
+								<CardDeckPlaceholder
 									cards={socket.otherPlayers?.[1]?.handCards as any}
 									player={socket.otherPlayers?.[1] as any}
-									hideCards
 								/>
 							</Grid>
 						</Grid>
 						<Grid item xs={1}></Grid>
 					</Grid>
 					<Grid container alignItems="center">
-						<Grid item xs={1}>
+						<Grid item xs={2}>
 							<Grid container justify="center" alignItems="center" style={{ transform: "rotate(90deg)" }}>
-								<CardDeck
+								<CardDeckPlaceholder
 									cards={socket.otherPlayers?.[0]?.handCards as any}
 									player={socket.otherPlayers?.[0] as any}
-									hideCards
 								/>
 							</Grid>
 						</Grid>
-						<Grid item xs={10}>
+						<Grid item xs={8}>
 							<Grid container justify="center" alignItems="center" style={{ height: "100%" }}>
 								<CardStack
 									cards={socketStore?.game?.usedCards as any}
@@ -86,12 +85,11 @@ const Table = () => {
 								/>
 							</Grid>
 						</Grid>
-						<Grid item xs={1}>
+						<Grid item xs={2}>
 							<Grid container justify="center" alignItems="center" style={{ transform: "rotate3d(1, 1, 0, 180deg)" }}>
-								<CardDeck
+								<CardDeckPlaceholder
 									cards={socket.otherPlayers?.[2]?.handCards as any}
 									player={socket.otherPlayers?.[2] as any}
-									hideCards
 								/>
 							</Grid>
 						</Grid>
