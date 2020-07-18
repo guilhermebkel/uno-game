@@ -1,4 +1,4 @@
 {
   "schemaVersion": 2,
-  "imageName": "guilhermebkel/unapy"
+  "dockerfilePath": "./Dockerfile"
 }
