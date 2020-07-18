@@ -43,7 +43,7 @@ const CardDeckPlaceholder = (props: CardDeckPlaceholderProps) => {
 			
 			{cards?.map((card, index) => (
 				<img
-					key={card.name}
+					key={card.id}
 					className={classes.card}
 					alt="card-placeholder"
 					src={cardPlaceholder}

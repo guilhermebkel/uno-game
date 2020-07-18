@@ -17,9 +17,21 @@ const useSocket = () => {
 	const getOtherPlayers = (): PlayerData[] => {
 		const playerId = socketStore.playerId
 
-		const players = socketStore?.game?.players?.filter(player => player.id !== playerId)
+		const currentPlayerIndex = socketStore?.game?.players?.
+			findIndex(player => player.id === playerId) || 0
 
-		return (players || []) as PlayerData[]
+		const otherPlayersBeforeCurrentPlayer = socketStore?.game?.players?.
+			slice(0, currentPlayerIndex)
+
+		const otherPlayersAfterCurrentPlayer = socketStore?.game?.players?.
+			slice(currentPlayerIndex + 1, socketStore?.game?.players?.length)
+
+		const otherPlayers = [
+			...otherPlayersAfterCurrentPlayer || [],
+			...otherPlayersBeforeCurrentPlayer || []
+		]
+
+		return (otherPlayers || []) as PlayerData[]
 	}
 
 	const createGame = async (): Promise<Game> => {

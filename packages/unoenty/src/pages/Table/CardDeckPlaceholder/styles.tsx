@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => {
 		cardChip: {
 			position: "absolute",
 			top: "50%",
-			left: "50%",
+			left: 0,
 			zIndex: 9999,
 			color: "#000",
 			fontWeight: "bolder"

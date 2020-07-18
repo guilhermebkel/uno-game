@@ -56,12 +56,11 @@ const Table = () => {
 				<Grid container style={{ height: "100%", overflow: "hidden" }}>
 					<Grid container>
 						<Grid item xs={1}>
-							{socket?.currentPlayer && (
+							{socket?.currentPlayer?.isCurrentRoundPlayer && (
 								<Button
 									color="primary"
 									variant="contained"
 									onClick={buyCard}
-									disabled={!socket?.currentPlayer?.isCurrentRoundPlayer}
 									fullWidth
 								>
 									BUY CARD
