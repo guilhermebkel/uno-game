@@ -1,17 +1,17 @@
 FROM node:current-stretch
 
-RUN mkdir -p /usr/src/unapy
+RUN mkdir -p /uno/src/unapy
 
-WORKDIR /usr/src/unapy
+WORKDIR /uno/src/unapy
 
-COPY ./package.json /usr/src/unapy
-COPY ./package-lock.json /usr/src/unapy
+COPY ./package.json /uno/src/unapy
+COPY ./package-lock.json /uno/src/unapy
 
 ENV NODE_ENV production
 
 RUN npm ci
 
-COPY . /usr/src/unapy
+COPY . /uno/src/unapy
 
 RUN npm run build
 
