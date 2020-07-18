@@ -9,11 +9,13 @@ COPY ./packages/unapy/package-lock.json /uno/packages/unapy
 
 ENV NODE_ENV production
 
-RUN npm i
+RUN npm ci
 
 COPY . /uno
+
+RUN npm run build
 
 ENV PORT 80
 EXPOSE 80 3667
 
-CMD [ "npm", "run", "dev" ]
+CMD [ "npm", "run", "start" ]
