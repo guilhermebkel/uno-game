@@ -1,4 +1,4 @@
-import { CardData } from "@unapy/Protocols/Card"
+import { CardData } from "@shared/protocols/Card"
 
 export interface Player {
 	id: string

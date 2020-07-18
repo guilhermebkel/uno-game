@@ -37,10 +37,13 @@ const useSocket = () => {
 	const joinGame = async (gameId: string): Promise<Game> => {
 		socketStore.io.emit("JoinGame", gameId)
 
-		return  new Promise((resolve, reject) => {
+		const game = await new Promise<Game>((resolve) => {
 			socketStore.io.on("PlayerJoined", resolve)
-			socketStore.io.on("PlayerJoinFailed", reject)
 		})
+
+		socketStore.set({ game })
+
+		return game
 	}
 
 	const startGame = (gameId: string) => {

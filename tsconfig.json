@@ -22,6 +22,7 @@
       "@unapy/*": ["packages/unapy/src/*"],
       "@unoenty/*": ["packages/unoenty/src/*"],
       "@shared/protocols/*": ["packages/shared/protocols/*"],
+      "@shared/error-handler": ["packages/shared/error-handler/src"],
     },
     "typeRoots": [
       "node_modules/@types"

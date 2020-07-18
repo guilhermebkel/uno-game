@@ -2,6 +2,8 @@ import socket, { Server as SocketServer } from "socket.io"
 import { Server as HttpServer } from "http"
 import uuid from "uuid"
 
+import ErrorHandler from "@shared/error-handler"
+
 import ListenerService from "@unapy/Services/ListenerService"
 
 /**
@@ -50,12 +52,6 @@ class Socket {
 
 			client.on("PutCard", (roomId: string, cardId: string) => {
 				ListenerService.onPutCard(roomId, playerId, cardId)
-			})
-
-			client.on("StartListeningGame", (roomId: string) => {
-				client.join(roomId)
-
-				ListenerService.onListenGame(roomId)
 			})
 
 			client.on("ToggleReady", (roomId: string) => {

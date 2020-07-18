@@ -73,38 +73,16 @@ class GameService {
 		this.emitGameEvent(gameId, "GameStarted", game)
 	}
 
-	static addPlayer (gameId: string, playerId: string) {
+	static joinGame (gameId: string, playerId: string) {
 		const game = this.getGame(gameId)
 
 		const player = game?.players?.find(player => player.id === playerId)
 
-		if (!player) {
-			game.players = [
-				...game?.players,
-				{
-					id: playerId,
-					name: playerId,
-					handCards: [],
-					usedCards: [],
-					status: "online",
-					ready: false
-				}
-			]
+		if (game.status === "waiting" && game.players.length < game.maxPlayers && !player) {
+			this.addPlayer(gameId, playerId)
 		}
 
-		if (game.players.length < game.maxPlayers) {
-			this.setGameData(gameId, game)
-
-			this.emitGameEvent(gameId, "PlayerJoined", game)
-		} else {
-			this.emitGameEvent(gameId, "PlayerJoinFailed")
-		}
-	}
-
-	static startObservingGame (gameId: string) {
-		const game = this.getGame(gameId)
-
-		this.emitGameEvent(gameId, "StartedObservingGame", game)
+		this.emitGameEvent(gameId, "PlayerJoined", game)
 	}
 
 	static purgePlayer (playerId: string) {
@@ -134,29 +112,6 @@ class GameService {
 		this.setGameData(gameId, game)
 	}
 
-	private static disconnectPlayer (gameId: string, playerId: string) {
-		const game = this.getGame(gameId)
-
-		if (game.status === "waiting") {
-			game.players = game?.players?.filter(player => player.id !== playerId)
-		}
-
-		if (game.status === "playing") {
-			game.players = game?.players?.map(player => {
-				if (player.id === playerId) {
-					return {
-						...player,
-						status: "offline"
-					}
-				} else {
-					return player
-				}
-			})
-		}
-
-		this.setGameData(gameId, game)
-	}
-
 	static getGameList () {
 		const games: Game[] = []
 
@@ -167,45 +122,13 @@ class GameService {
 		return games
 	}
 
-	static getGame (gameId: string) {
-		const game = this.games.get(gameId)
-
-		return game
-	}
-
-	static nextTurn (gameId: string) {
+	static buyCard (playerId: string, gameId: string) {
 		const currentPlayerInfo = this.getCurrentPlayerInfo(gameId)
 
-		if (currentPlayerInfo.status === "winner") {
-			this.emitGameEvent(gameId, "PlayerWon", currentPlayerInfo.id)
-			return this.endGame(gameId)
+		if (currentPlayerInfo.id !== playerId) {
+			return
 		}
 
-		if (currentPlayerInfo.status === "uno") {
-			this.emitGameEvent(gameId, "PlayerUno", currentPlayerInfo.id)
-		}
-
-		const game = this.getGame(gameId)
-
-		const totalPlayers = game?.players?.length
-		const currentPlayerIndex = game?.currentPlayerIndex
-		const expectedNextPlayerIndex = currentPlayerIndex + 1
-
-		const nextPlayerIndex = (expectedNextPlayerIndex >= totalPlayers) ? 0 : expectedNextPlayerIndex
-		const nextPlayer = game?.players?.[nextPlayerIndex]
-
-		const playersWithCardUsability = this.buildPlayersWithCardUsability(nextPlayer.id, gameId)
-
-		game.round++
-
-		game.currentPlayerIndex = nextPlayerIndex
-
-		game.players = playersWithCardUsability
-
-		this.setGameData(gameId, game)
-	}
-
-	static buyCard (playerId: string, gameId: string) {
 		const game = this.getGame(gameId)
 
 		if (game?.availableCards?.length === 0) {
@@ -235,6 +158,12 @@ class GameService {
 	}
 
 	static putCard (playerId: string, cardId: string, gameId: string) {
+		const currentPlayerInfo = this.getCurrentPlayerInfo(gameId)
+
+		if (currentPlayerInfo.id !== playerId) {
+			return
+		}
+
 		const game = this.getGame(gameId)
 
 		const player = game?.players?.find(player => player.id === playerId)
@@ -260,6 +189,85 @@ class GameService {
 		this.setGameData(gameId, game)
 
 		this.nextTurn(gameId)
+	}
+
+	private static addPlayer (gameId: string, playerId: string) {
+		const game = this.getGame(gameId)
+
+		game.players = [
+			...game?.players,
+			{
+				id: playerId,
+				name: playerId,
+				handCards: [],
+				usedCards: [],
+				status: "online",
+				ready: false
+			}
+		]
+
+		this.setGameData(gameId, game)
+	}
+
+	private static disconnectPlayer (gameId: string, playerId: string) {
+		const game = this.getGame(gameId)
+
+		if (game.status === "waiting") {
+			game.players = game?.players?.filter(player => player.id !== playerId)
+		}
+
+		if (game.status === "playing") {
+			game.players = game?.players?.map(player => {
+				if (player.id === playerId) {
+					return {
+						...player,
+						status: "offline"
+					}
+				} else {
+					return player
+				}
+			})
+		}
+
+		this.setGameData(gameId, game)
+	}
+
+	private static getGame (gameId: string) {
+		const game = this.games.get(gameId)
+
+		return game
+	}
+
+	private static nextTurn (gameId: string) {
+		const currentPlayerInfo = this.getCurrentPlayerInfo(gameId)
+
+		if (currentPlayerInfo.status === "winner") {
+			this.emitGameEvent(gameId, "PlayerWon", currentPlayerInfo.id)
+			return this.endGame(gameId)
+		}
+
+		if (currentPlayerInfo.status === "uno") {
+			this.emitGameEvent(gameId, "PlayerUno", currentPlayerInfo.id)
+		}
+
+		const game = this.getGame(gameId)
+
+		const totalPlayers = game?.players?.length
+		const currentPlayerIndex = game?.currentPlayerIndex
+		const expectedNextPlayerIndex = currentPlayerIndex + 1
+
+		const nextPlayerIndex = (expectedNextPlayerIndex >= totalPlayers) ? 0 : expectedNextPlayerIndex
+		const nextPlayer = game?.players?.[nextPlayerIndex]
+
+		const playersWithCardUsability = this.buildPlayersWithCardUsability(nextPlayer.id, gameId)
+
+		game.round++
+
+		game.currentPlayerIndex = nextPlayerIndex
+
+		game.players = playersWithCardUsability
+
+		this.setGameData(gameId, game)
 	}
 
 	private static emitGameEvent (gameId: string, event: GameEvents, data?: Game | any) {

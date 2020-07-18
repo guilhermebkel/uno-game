@@ -1,5 +1,7 @@
 import uuid from "uuid"
 
+import ArrayUtil from "@unapy/Utils/ArrayUtil"
+
 import { CardData, CardTypes, CardColors } from "@shared/protocols/Card"
 
 import staticFilesConfig from "@unapy/Config/static-files"
@@ -47,6 +49,8 @@ class CardService {
 				})
 			})
 		})
+
+		ArrayUtil.shuffle(initialCards)
 
 		return initialCards
 	}

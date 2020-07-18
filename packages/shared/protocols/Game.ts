@@ -1,5 +1,5 @@
-import { CardData, CardColors } from "@unapy/Protocols/Card"
-import { PlayerData } from "@unapy/Protocols/Player"
+import { CardData, CardColors } from "@shared/protocols/Card"
+import { PlayerData } from "@shared/protocols/Player"
 
 export type GameEvents =
 "GameStateChanged" |
@@ -8,9 +8,7 @@ export type GameEvents =
 "GameEnded" |
 "PlayerWon" |
 "PlayerUno" |
-"StartedObservingGame" |
-"PlayerJoined" |
-"PlayerJoinFailed"
+"PlayerJoined"
 
 export type GameStatus =
 "waiting" |
