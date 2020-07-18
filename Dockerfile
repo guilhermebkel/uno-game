@@ -1,11 +1,11 @@
 FROM node:current-stretch
 
-RUN mkdir -p /uno
+RUN mkdir -p /uno/packages/unapy
 
-WORKDIR /uno
+WORKDIR /uno/packages/unapy
 
-COPY ./package.json /uno
-COPY ./package-lock.json /uno
+COPY ./packages/unapy/package.json /uno/packages/unapy
+COPY ./packages/unapy/package-lock.json /uno/packages/unapy
 
 ENV NODE_ENV production
 
@@ -16,4 +16,4 @@ COPY . /uno
 ENV PORT 80
 EXPOSE 80 3667
 
-CMD [ "npm", "run", "unapy:dev" ]
+CMD [ "npm", "run", "start" ]
