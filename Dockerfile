@@ -11,6 +11,8 @@ ENV NODE_ENV production
 
 RUN npm i
 
+RUN npm install -g typescript
+
 COPY . /uno
 
 RUN npm run build
