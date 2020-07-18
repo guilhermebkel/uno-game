@@ -9,7 +9,7 @@ COPY ./packages/unapy/package-lock.json /uno/packages/unapy
 
 ENV NODE_ENV production
 
-RUN npm ci
+RUN npm i
 
 RUN npm install -g @types/node
 
