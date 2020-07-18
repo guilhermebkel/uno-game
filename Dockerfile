@@ -13,6 +13,8 @@ RUN npm ci
 
 COPY . /uno
 
+RUN npm run build
+
 ENV PORT 80
 EXPOSE 80 3667
 
