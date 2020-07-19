@@ -36,6 +36,12 @@ const LoginDialog = (props: LoginDialogProps) => {
 		callback(response)
 	}
 
+	const handleSubmit = (event: React.FormEvent) => {
+		event.preventDefault()
+
+		handleConfirm()
+	}
+
 	const handleChange = (key: keyof LoginDialogResponse, value: LoginDialogResponse[keyof LoginDialogResponse]) => {
 		setResponse(lastState => ({
 			...lastState,
@@ -46,24 +52,31 @@ const LoginDialog = (props: LoginDialogProps) => {
 	return (
     <ThemeProvider theme={theme}>
       <Dialog open={dialogVisible} onClose={handleClose} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">Login</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-						You have to choose a name in order to play this game.
-          </DialogContentText>
-          <TextField
-            autoFocus
-            margin="dense"
-            label="Name"
-						onChange={({ target }) => handleChange("name", target.value)}
-            fullWidth
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleConfirm} variant="contained" color="primary">
-            Confirm
-          </Button>
-        </DialogActions>
+				<form onSubmit={handleSubmit}>
+					<DialogTitle id="form-dialog-title">Login</DialogTitle>
+					<DialogContent>
+						<DialogContentText>
+							You have to choose a name in order to play this game.
+						</DialogContentText>
+						<TextField
+							autoFocus
+							margin="dense"
+							label="Name"
+							onChange={({ target }) => handleChange("name", target.value)}
+							fullWidth
+						/>
+					</DialogContent>
+					<DialogActions>
+						<Button
+							onClick={handleConfirm}
+							variant="contained"
+							color="primary"
+							type="submit"
+						>
+							Confirm
+						</Button>
+					</DialogActions>
+				</form>
       </Dialog>
     </ThemeProvider>
   )
