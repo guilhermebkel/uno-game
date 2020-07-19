@@ -71,25 +71,28 @@ const Dashboard = () => {
 					<h1>Loading Get Games...</h1>
 				) : (
 					<Grid item sm={12} md={12} lg={12} xl={12}>
-						{games.map(game => (
-							<>
-								<Grid
-									container
-									component={Link}
-									to={`/game/${game.id}/room`}
-									className={classes.gameItemGrid}
-								>
-									<GameItem
-										key={game.id}
-										title={game.title}
-										players={game.players}
-										status={game.status}
-									/>
-								</Grid>
-								
-								<Divider size={2} />
-							</>
-						))}
+						{games
+							.filter(game => game.status === "waiting")
+							.map(game => (
+								<>
+									<Grid
+										container
+										component={Link}
+										to={`/game/${game.id}/room`}
+										className={classes.gameItemGrid}
+									>
+										<GameItem
+											key={game.id}
+											title={game.title}
+											players={game.players}
+											status={game.status}
+										/>
+									</Grid>
+									
+									<Divider size={2} />
+								</>
+							))
+						}
 					</Grid>
 				)}
 			</Grid>
