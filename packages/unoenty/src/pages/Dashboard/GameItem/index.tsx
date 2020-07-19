@@ -38,7 +38,7 @@ const chipStatusMap: ChipPropsMap = {
 	}
 }
 
-interface GameItemProps {
+type GameItemProps = {
 	title: string
 	status: GameStatus
 	players: PlayerData[]

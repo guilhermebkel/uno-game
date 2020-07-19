@@ -6,7 +6,7 @@ import { CardData } from "@shared/protocols/Card"
 
 import useStyles from "@unoenty/pages/Table/CardStack/styles"
 
-interface Props {
+type Props = {
 	cards: CardData[]
 	onDrop: (cardId: string) => void
 }

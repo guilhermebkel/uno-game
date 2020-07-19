@@ -8,7 +8,7 @@ import useStyles from "@unoenty/pages/Table/CardDeckPlaceholder/styles"
 
 import cardPlaceholder from "@unoenty/assets/card_placeholder.png"
 
-interface CardDeckPlaceholderProps {
+type CardDeckPlaceholderProps = {
 	cards: CardData[]
 	player: PlayerData
 	transform?: string

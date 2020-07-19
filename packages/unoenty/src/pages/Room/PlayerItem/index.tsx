@@ -11,7 +11,7 @@ import Chip from "@material-ui/core/Chip"
 import useStyles from "@unoenty/pages/Room/PlayerItem/styles"
 import { PlayerData } from "@shared/protocols/Player"
 
-interface PlayerItem {
+type PlayerItem = {
 	player: PlayerData
 }
 

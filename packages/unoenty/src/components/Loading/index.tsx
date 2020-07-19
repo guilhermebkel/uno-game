@@ -9,7 +9,7 @@ import tarotAnimation from "../../assets/animations/tarot.json"
 const LOADING_TAG_ID = "loading"
 const animationData = tarotAnimation
 
-interface LoadingProps {
+type LoadingProps = {
 	loading: boolean
 	background?: string
 	children: React.ReactNode

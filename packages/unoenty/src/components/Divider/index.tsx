@@ -2,7 +2,7 @@ import React from "react"
 
 import theme from "../../styles/theme"
 
-interface DividerProps {
+type DividerProps = {
 	size: number
 }
 

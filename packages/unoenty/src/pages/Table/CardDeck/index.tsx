@@ -7,7 +7,7 @@ import { PlayerData } from "@shared/protocols/Player"
 
 import useStyles from "@unoenty/pages/Table/CardDeck/styles"
 
-interface CardProps {
+type CardProps = {
 	card: CardData
 	index: number
 	style: object
@@ -47,7 +47,7 @@ const DraggableCard = (props: CardProps) => {
   )
 }
 
-interface CardDeckProps {
+type CardDeckProps = {
 	cards: CardData[]
 	player: PlayerData
 }

@@ -1,4 +1,5 @@
 import GameService from "@unapy/Services/GameService"
+import PlayerService from "@unapy/Services/PlayerService"
 
 /**
  * Usually the class which handles events from client
@@ -30,6 +31,10 @@ class ListenerService {
 
 	onToggleReady (gameId: string, playerId: string) {
 		GameService.toggleReady(playerId, gameId)
+	}
+
+	onSetPlayerData (playerId: string, playerName: string) {
+		PlayerService.setPlayerData({ id: playerId, name: playerName })
 	}
 }
 

@@ -1,5 +1,6 @@
 import CardService from "@unapy/Services/CardService"
 import SocketService from "@unapy/Services/SocketService"
+import PlayerService from "@unapy/Services/PlayerService"
 
 import { Game, GameEvents } from "@shared/protocols/Game"
 import { PlayerData, CurrentPlayerInfo, CurrentPlayerStatus } from "@shared/protocols/Player"
@@ -11,14 +12,17 @@ class GameService {
 	static setupGame (playerId: string, gameId: string) {
 		const cards = CardService.setupInitialCards()
 
+		const playerData = PlayerService.getPlayerData(playerId)
+
 		const initialPlayer: PlayerData = {
 			id: playerId,
-			name: playerId,
+			name: playerData.name,
 			handCards: [],
 			usedCards: [],
 			status: "online",
 			ready: false,
-			isCurrentRoundPlayer: false
+			isCurrentRoundPlayer: false,
+			canBuyCard: false
 		}
 
 		const game: Game = {
@@ -64,7 +68,8 @@ class GameService {
 				handCards: handCards.map(handCard => ({
 					...handCard,
 					canBeUsed: player.id === currentPlayer.id
-				}))
+				})),
+				canBuyCard: false
 			}
 		})
 
@@ -196,16 +201,19 @@ class GameService {
 	private static addPlayer (gameId: string, playerId: string) {
 		const game = this.getGame(gameId)
 
+		const playerData = PlayerService.getPlayerData(playerId)
+
 		game.players = [
 			...game?.players,
 			{
 				id: playerId,
-				name: playerId,
+				name: playerData.name,
 				handCards: [],
 				usedCards: [],
 				status: "online",
 				ready: false,
-				isCurrentRoundPlayer: false
+				isCurrentRoundPlayer: false,
+				canBuyCard: false
 			}
 		]
 
@@ -295,22 +303,26 @@ class GameService {
 
 		const playersWithCardUsability = game?.players?.map(player => {
 			if (currentPlayerId === player.id) {
+				const handCards = player?.handCards?.map(handCard => ({
+					...handCard,
+					canBeUsed: (
+						topStackCard?.color === handCard.color ||
+						handCard.type === "change-color" ||
+						handCard.type === "buy-4"
+					)
+				}))
+
 				return {
 					...player,
 					isCurrentRoundPlayer: true,
-					handCards: player?.handCards?.map(handCard => ({
-						...handCard,
-						canBeUsed: (
-							topStackCard?.color === handCard.color ||
-							handCard.type === "change-color" ||
-							handCard.type === "buy-4"
-						)
-					}))
+					canBuyCard: handCards.every(card => !card.canBeUsed),
+					handCards
 				}
 			} else {
 				return {
 					...player,
 					isCurrentRoundPlayer: false,
+					canBuyCard: false,
 					handCards: player?.handCards?.map(handCard => ({
 						...handCard,
 						canBeUsed: false

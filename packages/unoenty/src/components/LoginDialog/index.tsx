@@ -1,0 +1,83 @@
+import React, { useState } from "react"
+import {
+	Button,
+	Dialog,
+	DialogTitle,
+	DialogContent,
+	DialogContentText,
+	TextField,
+	DialogActions,
+	ThemeProvider
+} from "@material-ui/core"
+
+import Node from "@unoenty/utils/node"
+
+import theme from "@unoenty/styles/theme"
+
+type LoginDialogResponse = {
+	name: string
+}
+
+type LoginDialogProps = {
+	callback: (...args: any) => any
+}
+
+const LoginDialog = (props: LoginDialogProps) => {
+	const { callback } = props
+
+	const [dialogVisible, setDialogVisible] = useState(true)
+	const [response, setResponse] = useState<LoginDialogResponse>({ name: "" })
+
+	const handleClose = () => {
+		setDialogVisible(false)
+
+		callback(response)
+	}
+
+	const handleConfirm = () => {
+		setDialogVisible(false)
+
+		callback(response)
+	}
+
+	const handleChange = (key: keyof LoginDialogResponse, value: LoginDialogResponse[keyof LoginDialogResponse]) => {
+		setResponse(lastState => ({
+			...lastState,
+			[key]: value
+		}))
+	}
+
+	return (
+    <ThemeProvider theme={theme}>
+      <Dialog open={dialogVisible} onClose={handleClose} aria-labelledby="form-dialog-title">
+        <DialogTitle id="form-dialog-title">Login</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+						You have to choose a name in order to play this game.
+          </DialogContentText>
+          <TextField
+            autoFocus
+            margin="dense"
+            label="Name"
+						onChange={({ target }) => handleChange("name", target.value)}
+            fullWidth
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleConfirm} variant="contained" color="primary">
+            Confirm
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </ThemeProvider>
+  )
+}
+
+LoginDialog.open = async (): Promise<LoginDialogResponse> => new Promise(resolve => Node.renderComponent(
+	"login-dialog",
+	<LoginDialog
+		callback={resolve}
+	/>
+))
+
+export default LoginDialog

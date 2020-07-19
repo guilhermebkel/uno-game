@@ -10,7 +10,7 @@ import { useSocketStore } from "@unoenty/store/Socket"
 import useDidMount from "@unoenty/hooks/useDidMount"
 import useSocket from "@unoenty/hooks/useSocket"
 
-import { DeviceUtil } from "@unoenty/utils/Device"
+import { DeviceUtil } from "@unoenty/utils/device"
 
 import CardStack from "@unoenty/pages/Table/CardStack"
 import CardDeck from "@unoenty/pages/Table/CardDeck"
@@ -56,7 +56,7 @@ const Table = () => {
 				<Grid container style={{ height: "100%", overflow: "hidden" }}>
 					<Grid container>
 						<Grid item xs={1}>
-							{socket?.currentPlayer?.isCurrentRoundPlayer && (
+							{socket?.currentPlayer?.canBuyCard && (
 								<Button
 									color="primary"
 									variant="contained"
@@ -77,7 +77,11 @@ const Table = () => {
 							</Grid>
 						</Grid>
 						<Grid item xs={1}>
-							<Typography variant="h1" color="primary" align="center">
+							<Typography
+								variant="h1"
+								align="center"
+								style={{ color: socketStore?.game?.currentGameColor }}
+							>
 								Round {socketStore?.game?.round}
 							</Typography>
 						</Grid>

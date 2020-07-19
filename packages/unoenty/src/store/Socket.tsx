@@ -1,11 +1,12 @@
 import React, { createContext, useContext, useState } from "react"
 import { Socket } from "socket.io-client"
 
-import client, { connectSocket } from "../services/socket"
+import client, { connectSocket } from "@unoenty/services/socket"
+import Auth from "@unoenty/services/auth"
 
-import useDidMount from "../hooks/useDidMount"
+import useDidMount from "@unoenty/hooks/useDidMount"
 
-import { Loading } from "../components"
+import { Loading, LoginDialog } from "@unoenty/components"
 
 import { Game } from "@shared/protocols/Game"
 
@@ -46,7 +47,28 @@ const SocketProvider = (props: SocketProviderProps) => {
 	}
 
 	const connect = async () => {
-		const playerId = await connectSocket()
+		let playerId = await connectSocket()
+
+		let playerData = Auth.getPlayerData()
+
+		if (playerData) {
+			playerId = playerData.id
+		} else {
+			const loginData = await LoginDialog.open()
+
+			playerData = {
+				id: playerId,
+				name: loginData.name
+			}
+
+			Auth.setPlayerData(playerData)
+		}
+
+		client.emit("SetPlayerData", playerData.id, playerData.name)
+
+		await new Promise<void>((resolve) => {
+			client.on("PlayerDataSet", resolve)
+		})
 
 		const data: SocketContextData = {
 			io: client,
