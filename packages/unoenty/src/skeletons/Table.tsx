@@ -2,17 +2,10 @@ import React from "react"
 import { Skeleton } from "@material-ui/lab"
 import { Grid, makeStyles, createStyles, Card, CardContent } from "@material-ui/core"
 
-import { Divider } from "../components"
-
 const useStyles = makeStyles(theme => createStyles({
 	cardContentCardDeckPlaceholder: {
 		paddingBottom: `${theme.spacing(1)}px !important`,
 		padding: `${theme.spacing(1)}px !important`
-	},
-	cardContentGameItem: {
-		paddingBottom: `${theme.spacing(3)}px !important`,
-		padding: `${theme.spacing(3)}px !important`,
-		backgroundColor: theme.palette.background.default
 	}
 }))
 

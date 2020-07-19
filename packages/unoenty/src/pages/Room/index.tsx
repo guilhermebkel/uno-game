@@ -49,7 +49,7 @@ const Room = () => {
 		<LoadingComponent loading={loadingRoom} customLoadingElement={<PlayerListSkeleton />}>
 			<Grid container spacing={2}>
 				{socket.currentPlayer && (
-					<Grid item sm={12} md={12} lg={12} xl={12}>
+					<Grid item sm={12} md={12} lg={12} xl={12} style={{ width: "100%" }}>
 						<Divider size={4} />
 
 						<Button
@@ -65,19 +65,17 @@ const Room = () => {
 					</Grid>
 				)}
 
-				<Grid item sm={12} md={12} lg={12} xl={12}>
-					<Grid item sm={12} md={12} lg={12} xl={12}>
-						{socketStore?.game?.players?.map(player => (
-							<>
-								<PlayerItem
-									key={player.id}
-									player={player}
-								/>
+				<Grid item sm={12} md={12} lg={12} xl={12} style={{ width: "100%" }}>
+					{socketStore?.game?.players?.map(player => (
+						<>
+							<PlayerItem
+								key={player.id}
+								player={player}
+							/>
 
-								<Divider size={2} />
-							</>
-						))}
-					</Grid>
+							<Divider size={2} />
+						</>
+					))}
 				</Grid>
 			</Grid>
 		</LoadingComponent>

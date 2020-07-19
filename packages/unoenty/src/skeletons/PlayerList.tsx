@@ -8,7 +8,7 @@ const useStyles = makeStyles(theme => createStyles({
 	cardContentButton: {
 		paddingBottom: `${theme.spacing(1)}px !important`,
 		padding: `${theme.spacing(1)}px !important`,
-		backgroundColor: theme.palette.primary.main
+		backgroundColor: theme.palette.secondary.main
 	},
 	cardContentPlayerItem: {
 		paddingBottom: `${theme.spacing(3)}px !important`,

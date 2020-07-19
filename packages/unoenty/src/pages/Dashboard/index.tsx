@@ -53,7 +53,7 @@ const Dashboard = () => {
 	return (
 		<LoadingComponent loading={loadingGetGames} customLoadingElement={<GameListSkeleton />}>
 			<Grid container spacing={2}>
-				<Grid item sm={12} md={12} lg={12} xl={12}>
+				<Grid item sm={12} md={12} lg={12} xl={12} style={{ width: "100%" }}>
 					<Divider size={4} />
 
 					<Button
@@ -70,7 +70,7 @@ const Dashboard = () => {
 					<Divider size={3} />
 				</Grid>
 
-				<Grid item sm={12} md={12} lg={12} xl={12}>
+				<Grid item sm={12} md={12} lg={12} xl={12} style={{ width: "100%" }}>
 					{games
 						.filter(game => game.status === "waiting")
 						.map(game => (
