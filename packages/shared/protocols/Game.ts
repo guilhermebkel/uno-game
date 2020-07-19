@@ -45,6 +45,10 @@ export interface Game {
 	 */
 	currentPlayerIndex: number
 	/**
+	 * Player[] index
+	 */
+	nextPlayerIndex: number
+	/**
 	 * Card Color
 	 */
 	currentGameColor: CardColors

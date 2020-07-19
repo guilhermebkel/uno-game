@@ -32,8 +32,9 @@ class GameService {
 			round: 0,
 			id: gameId,
 			currentPlayerIndex: 0,
+			nextPlayerIndex: 1,
 			currentGameColor: null,
-			title: gameId,
+			title: playerData.name,
 			availableCards: [],
 			usedCards: [],
 			players: [initialPlayer],
@@ -270,8 +271,7 @@ class GameService {
 		const game = this.getGame(gameId)
 
 		const totalPlayers = game?.players?.length
-		const currentPlayerIndex = game?.currentPlayerIndex
-		const expectedNextPlayerIndex = currentPlayerIndex + 1
+		const expectedNextPlayerIndex = game?.nextPlayerIndex
 
 		const nextPlayerIndex = (expectedNextPlayerIndex >= totalPlayers) ? 0 : expectedNextPlayerIndex
 		const nextPlayer = game?.players?.[nextPlayerIndex]
@@ -281,6 +281,8 @@ class GameService {
 		game.round++
 
 		game.currentPlayerIndex = nextPlayerIndex
+
+		game.nextPlayerIndex = nextPlayerIndex + 1
 
 		game.players = playersWithCardUsability
 
