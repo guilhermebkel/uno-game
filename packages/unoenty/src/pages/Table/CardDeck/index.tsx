@@ -40,7 +40,7 @@ const DraggableCard = (props: CardProps) => {
   })
 
 	drag(draggableCardRef)
-	
+
 	useDidMount(() => {
 		preview(getEmptyImage(), { captureDraggingState: true })
 	})
