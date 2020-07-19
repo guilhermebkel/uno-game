@@ -12,7 +12,7 @@ import useSocket from "@unoenty/hooks/useSocket"
 
 import { LoadingComponent } from "@unoenty/components"
 
-import { DeviceUtil } from "@unoenty/utils/device"
+import Device from "@unoenty/utils/device"
 
 import CardStack from "@unoenty/pages/Table/CardStack"
 import CardDeck from "@unoenty/pages/Table/CardDeck"
@@ -50,7 +50,7 @@ const Table = () => {
 	return (
 		<LoadingComponent loading={loadingTable} customLoadingElement={<TableSkeleton />}>
 			<DndProvider
-				backend={DeviceUtil.isTouchDevice ? (
+				backend={Device.isTouchDevice ? (
 					TouchBackend
 				) : (
 					HTML5Backend
@@ -58,7 +58,7 @@ const Table = () => {
 			>
 				<Grid container style={{ height: "100%", overflow: "hidden", padding: "16px" }}>
 					<Grid container>
-						<Grid item xs={1}>
+						<Grid item xs={2}>
 							{socket?.currentPlayer?.canBuyCard && (
 								<Button
 									color="primary"
@@ -70,7 +70,7 @@ const Table = () => {
 								</Button>
 							)}
 						</Grid>
-						<Grid item xs={10}>
+						<Grid item xs={8}>
 							<Grid container justify="center" alignItems="center">
 								<CardDeckPlaceholder
 									cards={socket.otherPlayers?.[1]?.handCards as any}
@@ -79,13 +79,13 @@ const Table = () => {
 								/>
 							</Grid>
 						</Grid>
-						<Grid item xs={1}>
+						<Grid item xs={2}>
 							<Typography
 								variant="h1"
 								align="center"
 								style={{ color: socketStore?.game?.currentGameColor }}
 							>
-								Round {socketStore?.game?.round}
+								{!Device.isMobile && "Round"} {socketStore?.game?.round}
 							</Typography>
 						</Grid>
 					</Grid>

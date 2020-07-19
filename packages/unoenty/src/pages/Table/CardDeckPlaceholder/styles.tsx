@@ -1,12 +1,14 @@
 import { makeStyles } from "@material-ui/core"
 
+import Device from "@unoenty/utils/device"
+
 const useStyles = makeStyles((theme) => {
-	const cardContainerSize = 150
+	const cardContainerSize = Device.isMobile ? 50 : 150
 
 	return {
 		cardContent: {
 			position: "relative",
-			height: 150,
+			height: cardContainerSize,
 			pointerEvents: "none",
 			transition: theme.transitions.create("all", {
 				duration: theme.transitions.duration.standard
@@ -14,7 +16,7 @@ const useStyles = makeStyles((theme) => {
 		},
 		cardContainer: {
 			position: "relative",
-			height: 150,
+			height: cardContainerSize,
 			transition: theme.transitions.create("all", {
 				duration: theme.transitions.duration.standard
 			})

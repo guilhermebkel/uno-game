@@ -10,7 +10,10 @@ import { PlayerData } from "@shared/protocols/Player"
 
 import useStyles from "@unoenty/pages/Table/CardDeck/styles"
 
+import Device from "@unoenty/utils/device"
+
 export const CARD_TYPE = "DraggableCard"
+const CARD_WIDTH = Device.isMobile ? 25 : 50
 
 type CardProps = {
 	card: CardData
@@ -109,7 +112,7 @@ const CardDeck = (props: CardDeckProps) => {
 			className={classes.cardContainer}
 			maxWidth={false}
 			style={{
-				width: (cards?.length * 50) + 50
+				width: (cards?.length * CARD_WIDTH) + CARD_WIDTH
 			}}
 		>
 			{cards?.map((card, index) => (
@@ -121,7 +124,7 @@ const CardDeck = (props: CardDeckProps) => {
 					style={{
 						transform: `rotate(${getCardInclination(index)}deg)`,
 						zIndex: index,
-						left: index * 50,
+						left: index * CARD_WIDTH,
 						bottom: getCardElevation(index)
 					}}
 				/>

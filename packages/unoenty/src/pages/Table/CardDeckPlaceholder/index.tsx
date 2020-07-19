@@ -8,6 +8,10 @@ import useStyles from "@unoenty/pages/Table/CardDeckPlaceholder/styles"
 
 import cardPlaceholder from "@unoenty/assets/card_placeholder.png"
 
+import Device from "@unoenty/utils/device"
+
+const CARD_WIDTH = Device.isMobile ? 15 : 25
+
 type CardDeckPlaceholderProps = {
 	cards: CardData[]
 	player: PlayerData
@@ -24,7 +28,7 @@ const CardDeckPlaceholder = (props: CardDeckPlaceholderProps) => {
 			disableGutters
 			className={classes.cardContainer}
 			maxWidth={false}
-			style={{ width: (cards?.length * 25) + 75	}}
+			style={{ width: (cards?.length * CARD_WIDTH) + CARD_WIDTH	}}
 		>
 			{player?.name && (
 				<Chip
@@ -49,7 +53,7 @@ const CardDeckPlaceholder = (props: CardDeckPlaceholderProps) => {
 					src={cardPlaceholder}
 					style={{
 						zIndex: index,
-						left: index * 25,
+						left: index * CARD_WIDTH,
 						filter: player?.isCurrentRoundPlayer ? "none" : "grayscale(1)"
 					}}
 				/>
