@@ -7,7 +7,7 @@
     "start": "node -r module-alias/register dist/unapy/src/index.js",
     "dev": "nodemon src/index.ts",
     "dev:resources": "docker-compose up",
-    "build": "rm -rf dist && tsc"
+    "build": "rm -rf dist && tsc && cp -r src/Assets dist/unapy/src/Assets"
   },
   "devDependencies": {
     "@types/cors": "^2.8.6",
