@@ -8,7 +8,7 @@ import Auth from "@unoenty/services/auth"
 
 import useDidMount from "@unoenty/hooks/useDidMount"
 
-import { Loading, LoginDialog } from "@unoenty/components"
+import { LoadingApp, LoginDialog } from "@unoenty/components"
 
 import { Game } from "@shared/protocols/Game"
 
@@ -92,9 +92,9 @@ const SocketProvider = (props: SocketProviderProps) => {
 
 	return (
 		<SocketStore.Provider value={socketData}>
-			<Loading loading={loading}>
+			<LoadingApp loading={loading}>
 				{children}
-			</Loading>
+			</LoadingApp>
 		</SocketStore.Provider>
 	)
 }

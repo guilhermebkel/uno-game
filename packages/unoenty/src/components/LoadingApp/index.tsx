@@ -28,7 +28,7 @@ const useStyle = makeStyles({
 	}
 })
 
-const Loading = (props: LoadingProps) => {
+const LoadingApp = (props: LoadingProps) => {
 	const { loading, children, background } = props
 
 	const classes = useStyle()
@@ -73,8 +73,8 @@ const Loading = (props: LoadingProps) => {
 	)
 }
 
-Loading.defaultProps = {
+LoadingApp.defaultProps = {
 	background: "#222329"
 }
 
-export default Loading
+export default LoadingApp

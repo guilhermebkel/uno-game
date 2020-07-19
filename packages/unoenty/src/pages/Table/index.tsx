@@ -10,6 +10,8 @@ import { useSocketStore } from "@unoenty/store/Socket"
 import useDidMount from "@unoenty/hooks/useDidMount"
 import useSocket from "@unoenty/hooks/useSocket"
 
+import { LoadingComponent } from "@unoenty/components"
+
 import { DeviceUtil } from "@unoenty/utils/device"
 
 import CardStack from "@unoenty/pages/Table/CardStack"
@@ -17,13 +19,15 @@ import CardDeck from "@unoenty/pages/Table/CardDeck"
 import CardDeckPlaceholder from "@unoenty/pages/Table/CardDeckPlaceholder"
 import CustomCardDragPreview from "@unoenty/pages/Table/CustomCardDragPreview"
 
+import TableSkeleton from "@unoenty/skeletons/Table"
+
 const Table = () => {
 	const { gameId } = useParams()
 
 	const socketStore = useSocketStore()
 	const socket = useSocket()
 
-	const [loadingStartGame, setLoadingStartGame] = useState(true)
+	const [loadingTable, setLoadingTable] = useState(true)
 
 	const buyCard = () => {
 		socket.buyCard(gameId)
@@ -36,17 +40,15 @@ const Table = () => {
 	const joinGame = async () => {
 		await socket.joinGame(gameId)
 
-		setLoadingStartGame(false)
+		setLoadingTable(false)
 	}
 
 	useDidMount(() => {
 		joinGame()
 	})
 
-	if (loadingStartGame) {
-		return <h1>Loading Start Game...</h1>
-	} else {
-		return (
+	return (
+		<LoadingComponent loading={loadingTable} customLoadingElement={<TableSkeleton />}>
 			<DndProvider
 				backend={DeviceUtil.isTouchDevice ? (
 					TouchBackend
@@ -54,7 +56,7 @@ const Table = () => {
 					HTML5Backend
 				)}
 			>
-				<Grid container style={{ height: "100%", overflow: "hidden" }}>
+				<Grid container style={{ height: "100%", overflow: "hidden", padding: "16px" }}>
 					<Grid container>
 						<Grid item xs={1}>
 							{socket?.currentPlayer?.canBuyCard && (
@@ -89,7 +91,7 @@ const Table = () => {
 					</Grid>
 					<Grid container alignItems="center">
 						<Grid item xs={2}>
-							<Grid container justify="center" alignItems="center">
+							<Grid container justify="flex-start">
 								<CardDeckPlaceholder
 									cards={socket.otherPlayers?.[0]?.handCards as any}
 									player={socket.otherPlayers?.[0] as any}
@@ -106,7 +108,7 @@ const Table = () => {
 							</Grid>
 						</Grid>
 						<Grid item xs={2}>
-							<Grid container justify="center" alignItems="center">
+							<Grid container justify="flex-end">
 								<CardDeckPlaceholder
 									cards={socket.otherPlayers?.[2]?.handCards as any}
 									player={socket.otherPlayers?.[2] as any}
@@ -118,7 +120,7 @@ const Table = () => {
 					<Grid container alignItems="center">
 						<Grid item xs={1}></Grid>
 						<Grid item xs={10}>
-							<Grid container justify="center" alignItems="center">
+							<Grid container justify="center">
 								{socket?.currentPlayer ? (
 									<>
 										<CustomCardDragPreview />
@@ -139,8 +141,8 @@ const Table = () => {
 					</Grid>
 				</Grid>
 			</DndProvider>
-		)
-	}
+		</LoadingComponent>
+	)
 }
 
 export default Table

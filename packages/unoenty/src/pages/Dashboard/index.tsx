@@ -9,11 +9,13 @@ import useSocket from "@unoenty/hooks/useSocket"
 
 import api from "@unoenty/services/api"
 
-import { Divider } from "@unoenty/components"
+import { Divider, LoadingComponent } from "@unoenty/components"
 
 import GameItem from "@unoenty/pages/Dashboard/GameItem"
 
 import useStyles from "@unoenty/pages/Dashboard/styles"
+
+import GameListSkeleton from "@unoenty/skeletons/GameList"
 
 const Dashboard = () => {
 	const [games, setGames] = useState<Game[]>([])
@@ -49,7 +51,7 @@ const Dashboard = () => {
 	})
 
 	return (
-		<>
+		<LoadingComponent loading={loadingGetGames} customLoadingElement={<GameListSkeleton />}>
 			<Grid container spacing={2}>
 				<Grid item sm={12} md={12} lg={12} xl={12}>
 					<Divider size={4} />
@@ -67,36 +69,33 @@ const Dashboard = () => {
 
 					<Divider size={3} />
 				</Grid>
-				{loadingGetGames ? (
-					<h1>Loading Get Games...</h1>
-				) : (
-					<Grid item sm={12} md={12} lg={12} xl={12}>
-						{games
-							.filter(game => game.status === "waiting")
-							.map(game => (
-								<>
-									<Grid
-										container
-										component={Link}
-										to={`/game/${game.id}/room`}
-										className={classes.gameItemGrid}
-									>
-										<GameItem
-											key={game.id}
-											title={game.title}
-											players={game.players}
-											status={game.status}
-										/>
-									</Grid>
-									
-									<Divider size={2} />
-								</>
-							))
-						}
-					</Grid>
-				)}
+
+				<Grid item sm={12} md={12} lg={12} xl={12}>
+					{games
+						.filter(game => game.status === "waiting")
+						.map(game => (
+							<>
+								<Grid
+									container
+									component={Link}
+									to={`/game/${game.id}/room`}
+									className={classes.gameItemGrid}
+								>
+									<GameItem
+										key={game.id}
+										title={game.title}
+										players={game.players}
+										status={game.status}
+									/>
+								</Grid>
+								
+								<Divider size={2} />
+							</>
+						))
+					}
+				</Grid>
 			</Grid>
-		</>
+		</LoadingComponent>
 	)
 }
 

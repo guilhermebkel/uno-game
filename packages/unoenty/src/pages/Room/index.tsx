@@ -7,9 +7,11 @@ import { useSocketStore } from "@unoenty/store/Socket"
 import useDidMount from "@unoenty/hooks/useDidMount"
 import useSocket from "@unoenty/hooks/useSocket"
 
-import { Divider } from "@unoenty/components"
+import { Divider, LoadingComponent } from "@unoenty/components"
 
 import PlayerItem from "@unoenty/pages/Room/PlayerItem"
+
+import PlayerListSkeleton from "@unoenty/skeletons/PlayerList"
 
 const Room = () => {
 	const [loadingRoom, setLoadingRoom] = useState(true)
@@ -44,42 +46,41 @@ const Room = () => {
 	})
 
 	return (
-		<>
+		<LoadingComponent loading={loadingRoom} customLoadingElement={<PlayerListSkeleton />}>
 			<Grid container spacing={2}>
+				{socket.currentPlayer && (
+					<Grid item sm={12} md={12} lg={12} xl={12}>
+						<Divider size={4} />
+
+						<Button
+							color={socket.currentPlayer.ready ? "primary" : "secondary"}
+							variant="contained"
+							fullWidth
+							onClick={toggleReady}
+						>
+							{socket.currentPlayer.ready ? "READY" : "UNREADY"}
+						</Button>
+
+						<Divider size={3} />
+					</Grid>
+				)}
+
 				<Grid item sm={12} md={12} lg={12} xl={12}>
-					<Divider size={4} />
+					<Grid item sm={12} md={12} lg={12} xl={12}>
+						{socketStore?.game?.players?.map(player => (
+							<>
+								<PlayerItem
+									key={player.id}
+									player={player}
+								/>
 
-					<Button
-						color="primary"
-						variant="contained"
-						fullWidth
-						onClick={toggleReady}
-					>
-						READY
-					</Button>
-
-					<Divider size={3} />
-				</Grid>
-				<Grid item sm={12} md={12} lg={12} xl={12}>
-					{loadingRoom ? (
-						<h1>Loading Room...</h1>
-					) : (
-						<Grid item sm={12} md={12} lg={12} xl={12}>
-							{socketStore?.game?.players?.map(player => (
-								<>
-									<PlayerItem
-										key={player.id}
-										player={player}
-									/>
-
-									<Divider size={2} />
-								</>
-							))}
-						</Grid>
-					)}
+								<Divider size={2} />
+							</>
+						))}
+					</Grid>
 				</Grid>
 			</Grid>
-		</>
+		</LoadingComponent>
 	)
 }
 
