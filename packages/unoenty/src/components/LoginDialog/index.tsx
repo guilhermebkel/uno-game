@@ -28,11 +28,7 @@ const LoginDialog = (props: LoginDialogProps) => {
 	const [dialogVisible, setDialogVisible] = useState(true)
 	const [response, setResponse] = useState<LoginDialogResponse>({ name: "" })
 
-	const handleClose = () => {
-		setDialogVisible(false)
-
-		callback(response)
-	}
+	const handleClose = () => {}
 
 	const handleConfirm = () => {
 		setDialogVisible(false)
