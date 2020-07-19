@@ -2,9 +2,11 @@ import CardService from "@unapy/Services/CardService"
 import SocketService from "@unapy/Services/SocketService"
 import PlayerService from "@unapy/Services/PlayerService"
 
+import NumberUtil from "@unapy/Utils/NumberUtil"
+
 import { Game, GameEvents } from "@shared/protocols/Game"
 import { PlayerData, CurrentPlayerInfo, CurrentPlayerStatus } from "@shared/protocols/Player"
-import { CardData } from "@shared/protocols/Card"
+import { CardData, CardTypes } from "@shared/protocols/Card"
 
 class GameService {
 	static games: Map<string, Game> = new Map()
@@ -38,7 +40,8 @@ class GameService {
 			availableCards: [],
 			usedCards: [],
 			players: [initialPlayer],
-			cards
+			cards,
+			direction: "clockwise"
 		}
 
 		this.setGameData(gameId, game)
@@ -111,7 +114,7 @@ class GameService {
 		const game = this.getGame(gameId)
 
 		if (game?.availableCards?.length === 0) {
-			return
+			return this.nextTurn(gameId)
 		}
 
 		const available = [...game?.availableCards]
@@ -133,17 +136,13 @@ class GameService {
 
 		this.setGameData(gameId, game)
 
-		this.nextTurn(gameId)
+		game.players = this.buildPlayersWithCardUsability(currentPlayerInfo.id, gameId)
+
+		this.setGameData(gameId, game)
 	}
 
 	static putCard (playerId: string, cardId: string, gameId: string) {
-		const currentPlayerInfo = this.getCurrentPlayerInfo(gameId)
-
-		if (currentPlayerInfo.id !== playerId) {
-			return
-		}
-
-		const game = this.getGame(gameId)
+		let game = this.getGame(gameId)
 
 		const player = game?.players?.find(player => player.id === playerId)
 
@@ -164,6 +163,10 @@ class GameService {
 		game.usedCards = [card, ...game?.usedCards]
 
 		game.currentGameColor = card?.color
+
+		this.setGameData(gameId, game)
+
+		game = this.buildGameWithCardEffect(gameId, card?.type)
 
 		this.setGameData(gameId, game)
 
@@ -270,21 +273,23 @@ class GameService {
 
 		const game = this.getGame(gameId)
 
-		const totalPlayers = game?.players?.length
 		const expectedNextPlayerIndex = game?.nextPlayerIndex
 
-		const nextPlayerIndex = (expectedNextPlayerIndex >= totalPlayers) ? 0 : expectedNextPlayerIndex
+		const nextPlayerIndex = NumberUtil.getSanitizedValueWithBoundaries(expectedNextPlayerIndex, game?.players?.length, 0)
+
+		if (game.direction === "clockwise") {
+			game.nextPlayerIndex = nextPlayerIndex + 1
+		} else {
+			game.nextPlayerIndex = nextPlayerIndex - 1
+		}
+
 		const nextPlayer = game?.players?.[nextPlayerIndex]
 
-		const playersWithCardUsability = this.buildPlayersWithCardUsability(nextPlayer.id, gameId)
+		game.players = this.buildPlayersWithCardUsability(nextPlayer.id, gameId)
 
 		game.round++
 
 		game.currentPlayerIndex = nextPlayerIndex
-
-		game.nextPlayerIndex = nextPlayerIndex + 1
-
-		game.players = playersWithCardUsability
 
 		this.setGameData(gameId, game)
 	}
@@ -305,8 +310,68 @@ class GameService {
 		return game?.usedCards?.[0]
 	}
 
+	private static buildGameWithCardEffect (gameId: string, cardType: CardTypes): Game {
+		const game = this.getGame(gameId)
+
+		if (cardType === "reverse") {
+			if (game.direction === "clockwise") {
+				game.direction = "counterclockwise"
+
+				game.nextPlayerIndex = game.currentPlayerIndex - 1
+			} else {
+				game.direction = "clockwise"
+
+				game.nextPlayerIndex = game.currentPlayerIndex + 1
+			}
+		}
+
+		if (cardType === "block") {
+			if (game.direction === "clockwise") {
+				game.nextPlayerIndex++
+			} else {
+				game.nextPlayerIndex--
+			}
+		}
+
+		if (cardType.startsWith("buy-")) {
+			let amountToBuy: number
+
+			const nextPlayerIndex = NumberUtil.getSanitizedValueWithBoundaries(game?.nextPlayerIndex, game?.players?.length, 0)
+
+			if (cardType === "buy-2") {
+				amountToBuy = 2
+			} else if (cardType === "buy-4") {
+				amountToBuy = 4
+			}
+
+			const nextPlayer = game?.players?.[nextPlayerIndex]
+
+			let available = [...game?.availableCards]
+
+			const cards = available.slice(0, amountToBuy)
+
+			available = available.slice(amountToBuy, available.length - 1)
+
+			game.players = game?.players?.map(player => {
+				if (player.id === nextPlayer.id) {
+					return {
+						...player,
+						handCards: [...cards, ...player?.handCards]
+					}
+				} else {
+					return player
+				}
+			})
+
+			game.availableCards = available
+		}
+
+		return game
+	}
+
 	private static buildPlayersWithCardUsability (currentPlayerId: string, gameId: string): PlayerData[] {
 		const game = this.getGame(gameId)
+
 		const topStackCard = this.getTopStackCard(gameId)
 
 		const playersWithCardUsability = game?.players?.map(player => {
@@ -316,7 +381,8 @@ class GameService {
 					canBeUsed: (
 						topStackCard?.color === handCard.color ||
 						handCard.type === "change-color" ||
-						handCard.type === "buy-4"
+						handCard.type === "buy-4" ||
+						topStackCard?.type === handCard.type
 					)
 				}))
 

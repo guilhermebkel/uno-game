@@ -19,7 +19,15 @@ export type GameType =
 "private" |
 "public"
 
+export type GameDirection=
+"clockwise" |
+"counterclockwise"
+
 export interface Game {
+	/**
+	 * Direction of the game
+	 */
+	direction: GameDirection
 	/**
 	 * Type of the game
 	 */
