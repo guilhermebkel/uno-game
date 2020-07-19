@@ -15,6 +15,7 @@ import { DeviceUtil } from "@unoenty/utils/device"
 import CardStack from "@unoenty/pages/Table/CardStack"
 import CardDeck from "@unoenty/pages/Table/CardDeck"
 import CardDeckPlaceholder from "@unoenty/pages/Table/CardDeckPlaceholder"
+import CustomCardDragPreview from "@unoenty/pages/Table/CustomCardDragPreview"
 
 const Table = () => {
 	const { gameId } = useParams()
@@ -119,10 +120,13 @@ const Table = () => {
 						<Grid item xs={10}>
 							<Grid container justify="center" alignItems="center">
 								{socket?.currentPlayer ? (
-									<CardDeck
-										cards={socket.currentPlayer?.handCards as any}
-										player={socket.currentPlayer as any}
-									/>
+									<>
+										<CustomCardDragPreview />
+										<CardDeck
+											cards={socket.currentPlayer?.handCards as any}
+											player={socket.currentPlayer as any}
+										/>
+									</>
 								) : (
 									<CardDeckPlaceholder
 										cards={socket.otherPlayers?.[3]?.handCards as any}

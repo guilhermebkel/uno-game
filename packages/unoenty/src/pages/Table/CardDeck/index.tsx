@@ -1,11 +1,16 @@
 import React, { useRef } from "react"
 import { Container } from "@material-ui/core"
 import { useDrag } from "react-dnd"
+import { getEmptyImage } from "react-dnd-html5-backend"
+
+import useDidMount from "@unoenty/hooks/useDidMount"
 
 import { CardData } from "@shared/protocols/Card"
 import { PlayerData } from "@shared/protocols/Player"
 
 import useStyles from "@unoenty/pages/Table/CardDeck/styles"
+
+export const CARD_TYPE = "DraggableCard"
 
 type CardProps = {
 	card: CardData
@@ -19,19 +24,29 @@ const DraggableCard = (props: CardProps) => {
 
 	const draggableCardRef = useRef(null)
 
-  const [{ isDragging }, drag] = useDrag({
-    item: { type: "DraggableCard", id: card.id, index },
+  const [{ isDragging }, drag, preview] = useDrag({
+    item: {
+			type: CARD_TYPE,
+			id: card.id,
+			index,
+			src: card.src,
+			name: card.name,
+			className
+		},
     collect: monitor => ({
       isDragging: monitor.isDragging()
 		}),
 		canDrag: card.canBeUsed
   })
- 
-  drag(draggableCardRef)
+
+	drag(draggableCardRef)
+	
+	useDidMount(() => {
+		preview(getEmptyImage(), { captureDraggingState: true })
+	})
 
   return (
 		<img
-			draggable="false"
 			ref={draggableCardRef}
 			key={card.name}
 			className={className}

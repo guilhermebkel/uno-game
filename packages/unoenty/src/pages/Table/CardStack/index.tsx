@@ -4,6 +4,8 @@ import { useDrop } from "react-dnd"
 
 import { CardData } from "@shared/protocols/Card"
 
+import { CARD_TYPE } from "@unoenty/pages/Table/CardDeck"
+
 import useStyles from "@unoenty/pages/Table/CardStack/styles"
 
 type Props = {
@@ -18,7 +20,7 @@ const CardStack = (props: Props) => {
 	const cardStackRef = useRef()
 
 	const [{ isHovering }, drop] = useDrop({
-    accept: "DraggableCard",
+    accept: CARD_TYPE,
 		drop: (item: any) => onDrop(item.id),
 		collect: monitor => ({
 			isHovering: monitor.isOver()
