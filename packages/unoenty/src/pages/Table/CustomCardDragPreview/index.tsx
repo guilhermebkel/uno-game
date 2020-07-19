@@ -21,7 +21,7 @@ const CustomCardDragPreview = () => {
   }))
 
   const classes = useStyles()
-  
+
   const getItemStyles = (initialOffset: XYCoord | null, currentOffset: XYCoord | null) => {
     if (!initialOffset || !currentOffset) {
       return {
