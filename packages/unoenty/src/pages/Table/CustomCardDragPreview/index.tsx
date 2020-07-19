@@ -1,35 +1,9 @@
-import React, { memo, useEffect, useState } from "react"
+import React from "react"
 import { useDragLayer, XYCoord } from "react-dnd"
-import { Container } from "@material-ui/core"
 
 import { CARD_TYPE } from "@unoenty/pages/Table/CardDeck"
 
 import useStyles from "@unoenty/pages/Table/CustomCardDragPreview/styles"
-
-type CardPreviewProps = {
-  name: string
-  src: string
-  className: string
-}
-
-const CardPreview = memo((props: CardPreviewProps) => {
-    const [tickTock, setTickTock] = useState(false)
-
-    useEffect(() => {
-      const interval = setInterval(() => setTickTock(!tickTock), 500)
-
-      return () => clearInterval(interval)
-    }, [tickTock])
-
-    return (
-      <img
-        alt={props.name}
-        src={props.src}
-        className={props.className}
-      />
-    )
-  }
-)
 
 const CustomCardDragPreview = () => {
   const {
@@ -67,25 +41,17 @@ const CustomCardDragPreview = () => {
 
   if (isDragging) {
     return (
-      <Container
-        disableGutters
-        maxWidth={false}
-        className={classes.container}
-      >
-        <Container
-          disableGutters
-          maxWidth={false}
-          style={getItemStyles(initialOffset, currentOffset)}
-        >
+      <div className={classes.container} >
+        <div style={getItemStyles(initialOffset, currentOffset)}>
           {itemType === CARD_TYPE && (
-            <CardPreview
-              name={item.name}
+            <img
+              alt={item.name}
               src={item.src}
               className={item.className}
             />
           )}
-        </Container>
-      </Container>
+        </div>
+      </div>
     )
   } else {
     return null
