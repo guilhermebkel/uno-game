@@ -74,6 +74,10 @@ const useSocket = () => {
 		socketStore.io.on("GameStarted", fn)
 	}
 
+	const onPlayerWon = (fn: (playerId: string) => void) => {
+		socketStore.io.on("PlayerWon", fn)
+	}
+
 	return {
 		get currentPlayer (): PlayerData {
 			return getCurrentPlayer()
@@ -85,6 +89,7 @@ const useSocket = () => {
 		joinGame,
 		startGame,
 		onGameStart,
+		onPlayerWon,
 		buyCard,
 		putCard
 	}

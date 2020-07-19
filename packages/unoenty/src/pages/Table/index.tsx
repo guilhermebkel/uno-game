@@ -10,7 +10,7 @@ import { useSocketStore } from "@unoenty/store/Socket"
 import useDidMount from "@unoenty/hooks/useDidMount"
 import useSocket from "@unoenty/hooks/useSocket"
 
-import { LoadingComponent } from "@unoenty/components"
+import { LoadingComponent, Alert } from "@unoenty/components"
 
 import Device from "@unoenty/utils/device"
 
@@ -43,8 +43,23 @@ const Table = () => {
 		setLoadingTable(false)
 	}
 
+	const onPlayerWon = () => {
+		socket.onPlayerWon(playerId => {
+			const player = socketStore?.game?.players?.find(player => player.id === playerId)
+
+			Alert.success({
+				message: `${player?.name} won the game!`,
+				title: `${player?.name} won!`,
+				onClose: () => {
+					window.location.href = "/game"
+				}
+			})
+		})
+	}
+
 	useDidMount(() => {
 		joinGame()
+		onPlayerWon()
 	})
 
 	return (

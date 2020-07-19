@@ -48,6 +48,7 @@ const CustomCardDragPreview = () => {
               alt={item.name}
               src={item.src}
               className={item.className}
+              style={{ filter: "saturate(1.5)" }}
             />
           )}
         </div>

@@ -58,7 +58,7 @@ const DraggableCard = (props: CardProps) => {
 			style={{
 				...style,
 				opacity: isDragging ? 0 : 1,
-				filter: !card.canBeUsed ? "grayscale(1)" : "",
+				filter: !card.canBeUsed ? "brightness(0.5)" : "saturate(1.5)",
 				pointerEvents: card.canBeUsed ? "all" : "none"
 			}}
 		/>
