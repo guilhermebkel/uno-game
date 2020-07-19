@@ -32,10 +32,6 @@ const Room = () => {
 		setLoadingRoom(false)
 	}
 
-	const handleStartGame = () => {
-		socket.startGame(gameId)
-	}
-
 	const onGameStart = () => {
 		socket.onGameStart(() => {
 			history.push(`/game/${gameId}/table`)
@@ -60,17 +56,6 @@ const Room = () => {
 						onClick={toggleReady}
 					>
 						READY
-					</Button>
-
-					<Divider size={3} />
-
-					<Button
-						color="secondary"
-						variant="contained"
-						fullWidth
-						onClick={handleStartGame}
-					>
-						START GAME
 					</Button>
 
 					<Divider size={3} />

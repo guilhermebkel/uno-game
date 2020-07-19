@@ -45,41 +45,6 @@ class GameService {
 		this.emitGameEvent(gameId, "GameCreated", game)
 	}
 
-	static startGame (gameId: string) {
-		const game = this.getGame(gameId)
-
-		const allCards = [...game?.cards]
-
-		const currentPlayer = game?.players?.[0]
-
-		game.status = "playing"
-
-		game.players = game?.players.map(player => {
-			const handCards: CardData[] = []
-
-			for (let i = 0; i < 7; i++) {
-				const selectedCard = allCards.shift()
-				handCards.push(selectedCard)
-			}
-
-			return {
-				...player,
-				isCurrentRoundPlayer: player.id === currentPlayer.id,
-				handCards: handCards.map(handCard => ({
-					...handCard,
-					canBeUsed: player.id === currentPlayer.id
-				})),
-				canBuyCard: false
-			}
-		})
-
-		game.availableCards = allCards
-
-		this.setGameData(gameId, game)
-
-		this.emitGameEvent(gameId, "GameStarted", game)
-	}
-
 	static joinGame (gameId: string, playerId: string) {
 		const game = this.getGame(gameId)
 
@@ -117,6 +82,12 @@ class GameService {
 		})
 
 		this.setGameData(gameId, game)
+
+		const areAllPlayersReady = game?.players?.every(player => player.ready)
+
+		if (areAllPlayersReady) {
+			this.startGame(gameId)
+		}
 	}
 
 	static getGameList () {
@@ -196,6 +167,41 @@ class GameService {
 		this.setGameData(gameId, game)
 
 		this.nextTurn(gameId)
+	}
+
+	private static startGame (gameId: string) {
+		const game = this.getGame(gameId)
+
+		const allCards = [...game?.cards]
+
+		const currentPlayer = game?.players?.[0]
+
+		game.status = "playing"
+
+		game.players = game?.players.map(player => {
+			const handCards: CardData[] = []
+
+			for (let i = 0; i < 7; i++) {
+				const selectedCard = allCards.shift()
+				handCards.push(selectedCard)
+			}
+
+			return {
+				...player,
+				isCurrentRoundPlayer: player.id === currentPlayer.id,
+				handCards: handCards.map(handCard => ({
+					...handCard,
+					canBeUsed: player.id === currentPlayer.id
+				})),
+				canBuyCard: false
+			}
+		})
+
+		game.availableCards = allCards
+
+		this.setGameData(gameId, game)
+
+		this.emitGameEvent(gameId, "GameStarted", game)
 	}
 
 	private static addPlayer (gameId: string, playerId: string) {

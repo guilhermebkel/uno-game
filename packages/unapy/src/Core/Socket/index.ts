@@ -50,10 +50,6 @@ class Socket {
 				ListenerService.onJoinGame(roomId, playerData.id)
 			})
 
-			client.on("StartGame", (roomId: string) => {
-				ListenerService.onStartGame(roomId)
-			})
-
 			client.on("BuyCard", (roomId: string, ) => {
 				ListenerService.onBuyCard(roomId, playerData.id)
 			})

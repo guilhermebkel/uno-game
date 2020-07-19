@@ -17,10 +17,6 @@ class ListenerService {
 		GameService.purgePlayer(playerId)
 	}
 
-	onStartGame (gameId: string) {
-		GameService.startGame(gameId)
-	}
-
 	onBuyCard (gameId: string, playerId: string) {
 		GameService.buyCard(playerId, gameId)
 	}
