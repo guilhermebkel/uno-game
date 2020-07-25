@@ -33,9 +33,16 @@ jobs:
       run: npm run build:unoenty
 
     - name: Publish on Netlify
-      uses: jsmrcaga/action-netlify-deploy@master
+      uses: nwtgck/actions-netlify@v1.1
       with:
+        publish-dir: './packages/unoenty/build'
+        production-branch: master
+        github-token: ${{ secrets.NETLIFY_GITHUB_TOKEN }}
+        deploy-message: "Deploy from GitHub Actions"
+        enable-pull-request-comment: false
+        enable-commit-comment: true
+        overwrites-pull-request-comment: true
+      env:
         NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
         NETLIFY_SITE_ID: ${{ secrets.UNOENTY_SITE_ID }}
-        NETLIFY_DEPLOY_MESSAGE: "Deployed via Github Actions"
-        NETLIFY_DEPLOY_TO_PROD: true
+      timeout-minutes: 1
