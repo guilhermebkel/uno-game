@@ -32,7 +32,7 @@ class CardService {
 		"yellow"
 	]
 
-	setupInitialCards () {
+	setupRandomCards () {
 		const initialCards: CardData[] = []
 
 		this.cardTypes.map(cardType => {

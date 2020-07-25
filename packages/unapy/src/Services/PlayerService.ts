@@ -1,15 +1,15 @@
 import { Player } from "@uno-game/protocols"
 
-class PlayerService {
-	static players: Map<string, Player> = new Map()
+import PlayerRepository from "@/Repositories/PlayerRepository"
 
-	static setPlayerData (playerData: Player) {
-		this.players.set(playerData.id, playerData)
+class PlayerService {
+	setPlayerData (playerData: Player) {
+		PlayerRepository.setPlayerData(playerData)
 	}
 
-	static getPlayerData (playerId: string): Player {
-		return this.players.get(playerId)
+	getPlayerData (playerId: string): Player {
+		return PlayerRepository.getPlayerData(playerId)
 	}
 }
 
-export default PlayerService
+export default new PlayerService()

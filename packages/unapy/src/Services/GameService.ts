@@ -13,12 +13,11 @@ import {
 	CardData,
 	CardTypes
 } from "@uno-game/protocols"
+import GameRepository from "@/Repositories/GameRepository"
 
 class GameService {
-	static games: Map<string, Game> = new Map()
-
-	static setupGame (playerId: string, gameId: string) {
-		const cards = CardService.setupInitialCards()
+	setupGame (playerId: string, gameId: string) {
+		const cards = CardService.setupRandomCards()
 
 		const playerData = PlayerService.getPlayerData(playerId)
 
@@ -55,7 +54,7 @@ class GameService {
 		this.emitGameEvent(gameId, "GameCreated", game)
 	}
 
-	static joinGame (gameId: string, playerId: string) {
+	joinGame (gameId: string, playerId: string) {
 		const game = this.getGame(gameId)
 
 		const player = game?.players?.find(player => player.id === playerId)
@@ -67,17 +66,19 @@ class GameService {
 		this.emitGameEvent(gameId, "PlayerJoined", game)
 	}
 
-	static purgePlayer (playerId: string) {
-		for (const game of this.games.values()) {
+	purgePlayer (playerId: string) {
+		const games = GameRepository.getGameList()
+
+		games.forEach(game => {
 			const isPlayerInGame = game?.players?.find(player => player?.id === playerId)
 
 			if (isPlayerInGame) {
 				this.disconnectPlayer(game?.id, playerId)
 			}
-		}
+		})
 	}
 
-	static toggleReady (playerId: string, gameId: string) {
+	toggleReady (playerId: string, gameId: string) {
 		const game = this.getGame(gameId)
 
 		game.players = game?.players?.map(player => {
@@ -100,17 +101,11 @@ class GameService {
 		}
 	}
 
-	static getGameList () {
-		const games: Game[] = []
-
-		for (const game of this.games.values()) {
-			games.push(game)
-		}
-
-		return games
+	getGameList () {
+		return GameRepository.getGameList()
 	}
 
-	static buyCard (playerId: string, gameId: string) {
+	buyCard (playerId: string, gameId: string) {
 		const currentPlayerInfo = this.getCurrentPlayerInfo(gameId)
 
 		if (currentPlayerInfo.id !== playerId) {
@@ -147,7 +142,7 @@ class GameService {
 		this.setGameData(gameId, game)
 	}
 
-	static putCard (playerId: string, cardId: string, gameId: string) {
+	putCard (playerId: string, cardId: string, gameId: string) {
 		let game = this.getGame(gameId)
 
 		const player = game?.players?.find(player => player.id === playerId)
@@ -179,7 +174,7 @@ class GameService {
 		this.nextTurn(gameId)
 	}
 
-	private static startGame (gameId: string) {
+	private startGame (gameId: string) {
 		const game = this.getGame(gameId)
 
 		const allCards = [...game?.cards]
@@ -214,7 +209,7 @@ class GameService {
 		this.emitGameEvent(gameId, "GameStarted", game)
 	}
 
-	private static addPlayer (gameId: string, playerId: string) {
+	private addPlayer (gameId: string, playerId: string) {
 		const game = this.getGame(gameId)
 
 		const playerData = PlayerService.getPlayerData(playerId)
@@ -236,7 +231,7 @@ class GameService {
 		this.setGameData(gameId, game)
 	}
 
-	private static disconnectPlayer (gameId: string, playerId: string) {
+	private disconnectPlayer (gameId: string, playerId: string) {
 		const game = this.getGame(gameId)
 
 		if (game.status === "waiting") {
@@ -259,13 +254,13 @@ class GameService {
 		this.setGameData(gameId, game)
 	}
 
-	private static getGame (gameId: string) {
-		const game = this.games.get(gameId)
+	private getGame (gameId: string) {
+		const game = GameRepository.getGame(gameId)
 
 		return game
 	}
 
-	private static nextTurn (gameId: string) {
+	private nextTurn (gameId: string) {
 		const currentPlayerInfo = this.getCurrentPlayerInfo(gameId)
 
 		if (currentPlayerInfo.status === "winner") {
@@ -278,6 +273,24 @@ class GameService {
 		}
 
 		const game = this.getGame(gameId)
+
+		/**
+		 * Just to make sure the game will only stop if someone
+		 * wins it.
+		 */
+		if (game.availableCards.length <= 10) {
+			const additionalCards = CardService.setupRandomCards()
+
+			game.cards = [
+				...game.cards,
+				...additionalCards
+			]
+
+			game.availableCards = [
+				...game.availableCards,
+				...additionalCards
+			]
+		}
 
 		const expectedNextPlayerIndex = game?.nextPlayerIndex
 
@@ -300,23 +313,23 @@ class GameService {
 		this.setGameData(gameId, game)
 	}
 
-	private static emitGameEvent (gameId: string, event: GameEvents, data?: Game | any) {
+	private emitGameEvent (gameId: string, event: GameEvents, data?: Game | any) {
 		SocketService.emitRoomEvent(gameId, event, data)
 	}
 
-	private static setGameData (gameId: string, game: Game) {
-		this.games.set(gameId, game)
+	private setGameData (gameId: string, game: Game) {
+		GameRepository.setGameData(gameId, game)
 
 		this.emitGameEvent(gameId, "GameStateChanged", game)
 	}
 
-	private static getTopStackCard (gameId: string) {
+	private getTopStackCard (gameId: string) {
 		const game = this.getGame(gameId)
 
 		return game?.usedCards?.[0]
 	}
 
-	private static buildGameWithCardEffect (gameId: string, cardType: CardTypes): Game {
+	private buildGameWithCardEffect (gameId: string, cardType: CardTypes): Game {
 		const game = this.getGame(gameId)
 
 		if (cardType === "reverse") {
@@ -375,7 +388,7 @@ class GameService {
 		return game
 	}
 
-	private static buildPlayersWithCardUsability (currentPlayerId: string, gameId: string): PlayerData[] {
+	private buildPlayersWithCardUsability (currentPlayerId: string, gameId: string): PlayerData[] {
 		const game = this.getGame(gameId)
 
 		const topStackCard = this.getTopStackCard(gameId)
@@ -414,7 +427,7 @@ class GameService {
 		return playersWithCardUsability
 	}
 
-	private static getCurrentPlayerInfo (gameId: string): CurrentPlayerInfo {
+	private getCurrentPlayerInfo (gameId: string): CurrentPlayerInfo {
 		const game = this.getGame(gameId)
 
 		const { players } = game
@@ -442,7 +455,7 @@ class GameService {
 		}
 	}
 
-	private static endGame (gameId: string) {
+	private endGame (gameId: string) {
 		const game = this.getGame(gameId)
 
 		game.status = "ended"
@@ -453,4 +466,4 @@ class GameService {
 	}
 }
 
-export default GameService
+export default new GameService()
