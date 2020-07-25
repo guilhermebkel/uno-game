@@ -42,6 +42,7 @@ jobs:
         enable-pull-request-comment: false
         enable-commit-comment: true
         overwrites-pull-request-comment: true
+        production-deploy: true
       env:
         NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
         NETLIFY_SITE_ID: ${{ secrets.UNOENTY_SITE_ID }}
