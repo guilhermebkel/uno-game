@@ -1,0 +1,40 @@
+name: Unoenty CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+  
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Build client
+      uses: actions/setup-node@v1
+      with:
+        node-version: 12.x
+    - run: npm install
+    - run: npm run install:unoenty
+    - run: npm run bootstrap
+    - run: npm run build:unoenty
+
+    - name: Publish on Netlify
+      uses: nwtgck/actions-netlify@v1.1
+      with:
+        publish-dir: './packages/unoenty/build'
+        production-branch: master
+        github-token: ${{ secrets.NETLIFY_GITHUB_TOKEN }}
+        deploy-message: "Deploy from GitHub Actions"
+        enable-pull-request-comment: false
+        enable-commit-comment: true
+        overwrites-pull-request-comment: true
+      env:
+        NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+        NETLIFY_SITE_ID: ${{ secrets.UNOENTY_SITE_ID }}
+      timeout-minutes: 1
