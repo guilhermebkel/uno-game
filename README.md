@@ -17,6 +17,14 @@
 		<img alt="mit license" src="https://img.shields.io/github/license/guilhermebkel/uno-game?color=0051ff" />
 	</a>
 </p>
+<p align="center">
+	<a href="https://github.com/guilhermebkel/uno-game">
+		<img alt="unoenty build" src="https://github.com/guilhermebkel/uno-game/workflows/Unoenty%20CI/badge.svg" />
+	</a>
+	<a href="https://github.com/guilhermebkel/uno-game">
+		<img alt="unapy build" src="https://github.com/guilhermebkel/uno-game/workflows/Unapy%20CI/badge.svg" />
+	</a>
+</p>
 
 ## 📌 Overview
 
