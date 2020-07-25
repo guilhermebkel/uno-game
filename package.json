@@ -8,8 +8,10 @@
     "bootstrap": "lerna bootstrap --use-workspaces --hoist && lerna link",
     "list": "lerna ls",
     "deploy": "lerna version",
+    "install:unapy": "lerna exec --scope @uno-game/unapy -- npm install",
     "build:unapy": "lerna run build --scope @uno-game/unapy",
     "start:unapy": "lerna run start --scope @uno-game/unapy",
+    "install:unoenty": "lerna exec --scope @uno-game/unoenty -- npm install",
     "build:unoenty": "lerna run build --scope @uno-game/unoenty"
   },
   "devDependencies": {

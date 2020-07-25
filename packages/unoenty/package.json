@@ -27,6 +27,16 @@
     "typescript": "^3.7.5",
     "@uno-game/error-handler": "*"
   },
+  "devDependencies": {
+    "@types/lodash": "^4.14.157",
+    "@types/react-router-dom": "^5.1.5",
+    "@types/socket.io-client": "^1.4.33",
+    "@uno-game/protocols": "*"
+  },
+  "optionalDependencies": {
+    "@uno-game/error-handler": "*",
+    "@uno-game/protocols": "*"
+  },
   "scripts": {
     "dev": "PORT=4000 npm run start",
     "start": "craco start",
@@ -48,11 +58,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {
-    "@types/lodash": "^4.14.157",
-    "@types/react-router-dom": "^5.1.5",
-    "@types/socket.io-client": "^1.4.33",
-    "@uno-game/protocols": "*"
   }
 }

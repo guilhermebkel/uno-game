@@ -27,6 +27,9 @@
     "module-alias": "^2.2.2",
     "socket.io": "^2.3.0"
   },
+  "optionalDependencies": {
+    "@uno-game/protocols": "*"
+  },
   "_moduleAliases": {
 		"@": "dist"
   }

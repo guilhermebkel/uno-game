@@ -12,6 +12,8 @@ RUN npm install
 
 RUN npm install -g lerna
 
+RUN npm run install:unapy
+
 RUN npm run bootstrap
 
 RUN npm run build:unapy
