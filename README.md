@@ -82,4 +82,4 @@ A simple UNO Game made in Javascript, supposed to be blazing easier and faster t
 - [ ] Adding an account service.
 - [X] Making husky to work.
 - [ ] Adding skeleton loading for pages.
-- [ ] Making CI with Github Actions.
+- [X] Making CI with Github Actions.
