@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => {
 			position: "absolute",
 			top: "50%",
 			left: 0,
-			zIndex: 15,
+			zIndex: 9999,
 			color: "#000",
 			fontWeight: "bolder"
 		},
