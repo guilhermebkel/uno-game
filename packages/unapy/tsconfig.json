@@ -12,7 +12,7 @@
     "rootDir": "src",
     "target": "es6",
     "lib": [
-			"ES2020"
+			"ES2018"
 		],
     "allowJs": true,
     "strictPropertyInitialization": false,
