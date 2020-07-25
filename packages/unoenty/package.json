@@ -15,6 +15,7 @@
     "@types/react-dom": "^16.9.8",
     "@uno-game/error-handler": "*",
     "axios": "^0.19.2",
+    "copy-to-clipboard": "^3.3.1",
     "lottie-web": "^5.6.10",
     "node-sass": "^4.14.1",
     "react": "^16.13.1",

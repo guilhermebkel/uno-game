@@ -1,12 +1,16 @@
 import React, { useState } from "react"
+import copy from "copy-to-clipboard"
 import { useParams, useHistory } from "react-router-dom"
-import { Grid, Button } from "@material-ui/core"
+import { Grid, Button, ButtonGroup } from "@material-ui/core"
 import {
 	ThumbDownOutlined as ThumbDownOutlinedIcon,
-	ThumbUpOutlined as ThumbUpOutlinedIcon
+	ThumbUpOutlined as ThumbUpOutlinedIcon,
+	FileCopyOutlined as FileCopyOutlinedIcon
 } from "@material-ui/icons"
 
 import { useSocketStore } from "@/store/Socket"
+
+import ShareUtil from "@/utils/share"
 
 import useDidMount from "@/hooks/useDidMount"
 import useSocket from "@/hooks/useSocket"
@@ -44,6 +48,14 @@ const Room = () => {
 		})
 	}
 
+	const handleCopyRoomUrl = (event: React.MouseEvent) => {
+		event.preventDefault()
+
+		const roomUrl = ShareUtil.mountGameShareUrl(gameId)
+
+		copy(roomUrl)
+	}
+
 	useDidMount(() => {
 		joinGame()
 		onGameStart()
@@ -56,15 +68,27 @@ const Room = () => {
 					<Grid item sm={12} md={12} lg={12} xl={12} style={{ width: "100%" }}>
 						<Divider size={4} />
 
-						<Button
-							color={socket.currentPlayer.ready ? "primary" : "secondary"}
-							variant="contained"
-							fullWidth
-							onClick={toggleReady}
-							endIcon={socket.currentPlayer.ready ? (<ThumbUpOutlinedIcon />) : (<ThumbDownOutlinedIcon />)}
-						>
-							{socket.currentPlayer.ready ? "READY" : "UNREADY"}
-						</Button>
+						<ButtonGroup fullWidth>
+							<Button
+								color={socket.currentPlayer.ready ? "primary" : "secondary"}
+								variant="contained"
+								fullWidth
+								onClick={toggleReady}
+								endIcon={socket.currentPlayer.ready ? (<ThumbUpOutlinedIcon />) : (<ThumbDownOutlinedIcon />)}
+							>
+								{socket.currentPlayer.ready ? "READY" : "UNREADY"}
+							</Button>
+							<Button
+								endIcon={(<FileCopyOutlinedIcon />)}
+								style={{ maxWidth: "120px", minWidth: "120px" }}
+								variant="contained"
+								color="default"
+								href={ShareUtil.mountGameShareUrl(gameId)}
+								onClick={handleCopyRoomUrl}
+							>
+								Copy Link
+							</Button>
+						</ButtonGroup>
 
 						<Divider size={3} />
 					</Grid>

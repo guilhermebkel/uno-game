@@ -1,8 +1,9 @@
 import socket, { Server as SocketServer } from "socket.io"
 import { Server as HttpServer } from "http"
-import uuid from "uuid"
 
 import ListenerService from "@/Services/ListenerService"
+
+import CryptUtil from "@/Utils/CryptUtil"
 
 import { Player } from "@uno-game/protocols"
 
@@ -37,7 +38,7 @@ class Socket {
 			})
 
 			client.on("CreateGame", () => {
-				const roomId = uuid.v4()
+				const roomId = CryptUtil.makeShortUUID()
 
 				client.join(roomId)
 

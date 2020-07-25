@@ -13,6 +13,7 @@ const Routes = () => (
 		<Route exact path="/game" component={Dashboard} />
 		<Route exact path="/game/:gameId/room" component={Room} />
 		<Route exact path="/game/:gameId/table" component={Table} />
+		<Route exact path="/:gameId" render={(props) => <Redirect to={`/game/${props.match.params.gameId}/room`} />} />
 		<Route path="*" component={PageNotFound} />
 	</Switch>
 )
