@@ -65,7 +65,7 @@ const CardDeckPlaceholder = (props: CardDeckPlaceholderProps) => {
 				PaperProps={{
 					className: classes.playerStateMessage
 				}}
-				style={{ zIndex: 0 }}
+				style={{ zIndex: 1 }}
 			>
 				{playerStateMessage}
 			</Menu>
