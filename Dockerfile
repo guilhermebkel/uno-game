@@ -6,8 +6,6 @@ WORKDIR /uno
 
 COPY . /uno
 
-ENV NODE_ENV production
-
 RUN npm install
 
 RUN npm install -g lerna typescript @types/node
