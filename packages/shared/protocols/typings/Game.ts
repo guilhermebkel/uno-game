@@ -8,7 +8,10 @@ export type GameEvents =
 "GameEnded" |
 "PlayerWon" |
 "PlayerUno" |
-"PlayerJoined"
+"PlayerJoined" |
+"PlayerBlocked" |
+"PlayerBuyFourCards" |
+"PlayerBuyTwoCards"
 
 export type GameStatus =
 "waiting" |

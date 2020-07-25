@@ -391,6 +391,16 @@ class GameService {
 			game.availableCards = available
 		}
 
+		const playerAffected = game?.players?.[game?.nextPlayerIndex]
+
+		if (cardType === "block") {
+			this.emitGameEvent(game.id, "PlayerBlocked", playerAffected.id)
+		} else if (cardType === "buy-4") {
+			this.emitGameEvent(game.id, "PlayerBuyFourCards", playerAffected.id)
+		} else if (cardType === "buy-2") {
+			this.emitGameEvent(game.id, "PlayerBuyTwoCards", playerAffected.id)
+		}
+
 		return game
 	}
 
