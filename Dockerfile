@@ -1,21 +1,22 @@
 FROM node:current-stretch
 
-RUN mkdir -p /uno/packages/unapy
+RUN mkdir -p /uno
 
-WORKDIR /uno/packages/unapy
-
-COPY ./packages/unapy/package.json /uno/packages/unapy
-COPY ./packages/unapy/package-lock.json /uno/packages/unapy
-
-ENV NODE_ENV production
-
-RUN npm ci
+WORKDIR /uno
 
 COPY . /uno
 
-RUN npm run build
+ENV NODE_ENV production
+
+RUN npm install
+
+RUN npm install -g lerna
+
+RUN npm run bootstrap
+
+RUN npm run build:unapy
 
 ENV PORT 80
 EXPOSE 80 3667
 
-CMD [ "npm", "run", "start" ]
+CMD [ "npm", "run", "start:unapy" ]
