@@ -48,10 +48,14 @@ const Room = () => {
 		})
 	}
 
+	const getRoomUrl = () => {
+		return ShareUtil.mountGameShareUrl(gameId)
+	}
+
 	const handleCopyRoomUrl = (event: React.MouseEvent) => {
 		event.preventDefault()
 
-		const roomUrl = ShareUtil.mountGameShareUrl(gameId)
+		const roomUrl = getRoomUrl()
 
 		copy(roomUrl)
 	}
@@ -83,7 +87,7 @@ const Room = () => {
 								style={{ maxWidth: "120px", minWidth: "120px" }}
 								variant="contained"
 								color="default"
-								href={ShareUtil.mountGameShareUrl(gameId)}
+								href={getRoomUrl()}
 								onClick={handleCopyRoomUrl}
 							>
 								Copy Link

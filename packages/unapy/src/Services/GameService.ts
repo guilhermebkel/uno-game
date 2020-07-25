@@ -124,8 +124,22 @@ class GameService {
 
 		const game = this.getGame(gameId)
 
-		if (game?.availableCards?.length === 0) {
-			return this.nextTurn(gameId)
+		/**
+		 * Just to make sure the game will only stop if someone
+		 * wins it.
+		 */
+		if (game.availableCards.length === 0) {
+			const additionalCards = CardService.setupRandomCards()
+
+			game.cards = [
+				...game.cards,
+				...additionalCards
+			]
+
+			game.availableCards = [
+				...game.availableCards,
+				...additionalCards
+			]
 		}
 
 		const available = [...game?.availableCards]
@@ -283,24 +297,6 @@ class GameService {
 		}
 
 		const game = this.getGame(gameId)
-
-		/**
-		 * Just to make sure the game will only stop if someone
-		 * wins it.
-		 */
-		if (game.availableCards.length <= 10) {
-			const additionalCards = CardService.setupRandomCards()
-
-			game.cards = [
-				...game.cards,
-				...additionalCards
-			]
-
-			game.availableCards = [
-				...game.availableCards,
-				...additionalCards
-			]
-		}
 
 		const expectedNextPlayerIndex = game?.nextPlayerIndex
 
