@@ -2,12 +2,12 @@ name: Unoenty CI
 
 on:
   push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+    branches:
+      - master
+    paths:
+      - 'packages/unoenty/**'
 
 jobs:
-
   build:
     runs-on: ubuntu-latest
   
