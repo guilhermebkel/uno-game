@@ -5,9 +5,7 @@
 	],
 	"compilerOptions": {
 		"outDir": "dist",
-		"module": "CommonJS",
 		"esModuleInterop": true,
-		"sourceMap": true,
     "rootDir": "src",
     "target": "es6",
     "lib": [
@@ -19,11 +17,10 @@
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "noImplicitAny": false,
     "resolveJsonModule": true,
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"]
-    }
+		}
 	}
 }
