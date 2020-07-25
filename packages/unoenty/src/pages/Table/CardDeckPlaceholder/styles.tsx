@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => {
 			position: "absolute",
 			top: "50%",
 			left: 0,
-			zIndex: 9999,
+			zIndex: 15,
 			color: "#000",
 			fontWeight: "bolder"
 		},
@@ -37,6 +37,13 @@ const useStyles = makeStyles((theme) => {
 				duration: theme.transitions.duration.standard
 			}),
 			pointerEvents: "none"
+		},
+		playerStateMessage: {
+			backgroundColor: "#EC0000",
+			color: "#FFFFFF",
+			fontWeight: "bolder",
+			fontSize: `${theme.spacing(3)}px`,
+			padding: `${theme.spacing(2)}px ${theme.spacing(4)}px`
 		}
 	}
 })

@@ -338,6 +338,8 @@ class GameService {
 	private buildGameWithCardEffect (gameId: string, cardType: CardTypes): Game {
 		const game = this.getGame(gameId)
 
+		let playerAffected: PlayerData
+
 		if (cardType === "reverse") {
 			if (game.direction === "clockwise") {
 				game.direction = "counterclockwise"
@@ -351,6 +353,9 @@ class GameService {
 		}
 
 		if (cardType === "block") {
+			const nextPlayerIndex = NumberUtil.getSanitizedValueWithBoundaries(game?.nextPlayerIndex, game?.players?.length, 0)
+			playerAffected = game?.players?.[nextPlayerIndex]
+
 			if (game.direction === "clockwise") {
 				game.nextPlayerIndex++
 			} else {
@@ -362,6 +367,7 @@ class GameService {
 			let amountToBuy: number
 
 			const nextPlayerIndex = NumberUtil.getSanitizedValueWithBoundaries(game?.nextPlayerIndex, game?.players?.length, 0)
+			playerAffected = game?.players?.[nextPlayerIndex]
 
 			if (cardType === "buy-2") {
 				amountToBuy = 2
@@ -391,14 +397,12 @@ class GameService {
 			game.availableCards = available
 		}
 
-		const playerAffected = game?.players?.[game?.nextPlayerIndex]
-
 		if (cardType === "block") {
-			this.emitGameEvent(game.id, "PlayerBlocked", playerAffected.id)
+			this.emitGameEvent(game.id, "PlayerBlocked", playerAffected?.id)
 		} else if (cardType === "buy-4") {
-			this.emitGameEvent(game.id, "PlayerBuyFourCards", playerAffected.id)
+			this.emitGameEvent(game.id, "PlayerBuyFourCards", playerAffected?.id)
 		} else if (cardType === "buy-2") {
-			this.emitGameEvent(game.id, "PlayerBuyTwoCards", playerAffected.id)
+			this.emitGameEvent(game.id, "PlayerBuyTwoCards", playerAffected?.id)
 		}
 
 		return game

@@ -122,7 +122,7 @@ const CardDeck = (props: CardDeckProps) => {
 					index={index}
 					style={{
 						transform: `rotate(${getCardInclination(index)}deg)`,
-						zIndex: index,
+						zIndex: (index + 2),
 						left: index * CARD_WIDTH,
 						bottom: getCardElevation(index)
 					}}
