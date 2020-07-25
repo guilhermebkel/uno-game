@@ -8,11 +8,13 @@
 			"node"
 		],
 		"outDir": "dist",
+		"module": "CommonJS",
 		"esModuleInterop": true,
+		"sourceMap": true,
     "rootDir": "src",
     "target": "es6",
     "lib": [
-			"ES2020"
+			"ES2018"
 		],
     "allowJs": true,
     "strictPropertyInitialization": false,
@@ -20,10 +22,11 @@
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
+    "noImplicitAny": false,
     "resolveJsonModule": true,
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"]
-		}
+    }
 	}
 }

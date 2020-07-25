@@ -1,6 +1,9 @@
 import React, { useState } from "react"
 import { useHistory, Link } from "react-router-dom"
 import { Grid, Button, CircularProgress } from "@material-ui/core"
+import {
+	AddCircleOutlineOutlined as AddCircleOutlineOutlinedIcon
+} from "@material-ui/icons"
 
 import { Game } from "@uno-game/protocols"
 
@@ -61,7 +64,7 @@ const Dashboard = () => {
 						variant="contained"
 						fullWidth
 						onClick={handleCreateNewGame}
-						endIcon={loadingCreateGame && (<CircularProgress />)}
+						endIcon={loadingCreateGame ? (<CircularProgress />) : (<AddCircleOutlineOutlinedIcon />)}
 						disabled={loadingCreateGame}
 					>
 						CREATE NEW GAME
