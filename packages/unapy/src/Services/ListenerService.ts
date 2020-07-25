@@ -1,5 +1,5 @@
-import GameService from "@unapy/Services/GameService"
-import PlayerService from "@unapy/Services/PlayerService"
+import GameService from "@/Services/GameService"
+import PlayerService from "@/Services/PlayerService"
 
 /**
  * Usually the class which handles events from client

@@ -1,6 +1,6 @@
-import Storage from "@unoenty/services/storage"
+import Storage from "@/services/storage"
 
-import { Player } from "@shared/protocols/Player"
+import { Player } from "@uno-game/protocols"
 
 class Auth {
 	authKey = "Un0-@uTh"

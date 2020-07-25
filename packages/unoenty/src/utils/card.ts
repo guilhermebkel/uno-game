@@ -1,6 +1,6 @@
-import api from "@unoenty/services/api"
+import api from "@/services/api"
 
-import { CardData } from "@shared/protocols/Card"
+import { CardData } from "@uno-game/protocols"
 
 export const preloadCardPictures = async () => {
 	try {

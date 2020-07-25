@@ -1,6 +1,6 @@
 import io from "socket.io-client"
 
-import serverConfig from "@unoenty/config/server"
+import serverConfig from "@/config/server"
 
 const client = io(serverConfig.apiUrl, {
 	reconnection: true,

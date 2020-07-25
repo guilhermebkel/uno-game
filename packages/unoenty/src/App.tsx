@@ -1,9 +1,9 @@
 import React from "react"
 import { Container } from "@material-ui/core"
 
-import Routes from "@unoenty/routes"
+import Routes from "@/routes"
 
-import SocketProvider from "@unoenty/store/Socket"
+import SocketProvider from "@/store/Socket"
 
 const App = () => {
 	return (

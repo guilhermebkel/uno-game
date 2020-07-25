@@ -1,13 +1,13 @@
 {
-  "name": "unapy",
+  "name": "@uno-game/unapy",
   "version": "0.0.0",
   "description": "The UNO Game API",
-  "main": "dist/index.js",
+  "main": "src/index.ts",
   "scripts": {
-    "start": "node -r module-alias/register dist/unapy/src/index.js",
+    "start": "node -r module-alias/register dist/index.js",
     "dev": "nodemon src/index.ts",
     "dev:resources": "docker-compose up",
-    "build": "rm -rf dist && tsc && cp -r src/Assets dist/unapy/src/Assets"
+    "build": "rm -rf dist && tsc && cp -r src/Assets dist/Assets"
   },
   "devDependencies": {
     "@types/cors": "^2.8.6",
@@ -17,19 +17,17 @@
     "@types/uuid": "^8.0.0",
     "nodemon": "^2.0.4",
     "sucrase": "^3.15.0",
-    "tsconfig-paths": "^3.9.0"
+		"tsconfig-paths": "^3.9.0",
+		"@uno-game/protocols": "*"
   },
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "module-alias": "^2.2.2",
-    "socket.io": "^2.3.0",
-    "typescript": "^3.9.2"
+    "socket.io": "^2.3.0"
   },
   "_moduleAliases": {
-    "@unapy": "dist/unapy/src",
-    "@shared/protocols": "packages/shared/protocols",
-    "@shared/error-handler": "packages/shared/error-handler/src"
+		"@": "dist"
   }
 }

@@ -1,4 +1,4 @@
-import CardService from "@unapy/Services/CardService"
+import CardService from "@/Services/CardService"
 import { Request, Response } from "express"
 
 class CardController {

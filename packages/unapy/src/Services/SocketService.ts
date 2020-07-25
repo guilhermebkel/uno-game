@@ -1,4 +1,4 @@
-import { io } from "@unapy/Core/Socket"
+import { io } from "@/Core/Socket"
 
 class SocketService {
 	emitRoomEvent (roomId: string, event: string, data?: any) {

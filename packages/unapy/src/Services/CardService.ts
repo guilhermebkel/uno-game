@@ -1,10 +1,10 @@
 import uuid from "uuid"
 
-import ArrayUtil from "@unapy/Utils/ArrayUtil"
+import ArrayUtil from "@/Utils/ArrayUtil"
 
-import { CardData, CardTypes, CardColors } from "@shared/protocols/Card"
+import { CardData, CardTypes, CardColors } from "@uno-game/protocols"
 
-import staticFilesConfig from "@unapy/Config/static-files"
+import staticFilesConfig from "@/Config/static-files"
 
 class CardService {
 	private readonly cardTypes: CardTypes[] = [

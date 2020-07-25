@@ -3,14 +3,13 @@ import { Container } from "@material-ui/core"
 import { useDrag } from "react-dnd"
 import { getEmptyImage } from "react-dnd-html5-backend"
 
-import useDidMount from "@unoenty/hooks/useDidMount"
+import useDidMount from "@/hooks/useDidMount"
 
-import { CardData } from "@shared/protocols/Card"
-import { PlayerData } from "@shared/protocols/Player"
+import { PlayerData, CardData } from "@uno-game/protocols"
 
-import useStyles from "@unoenty/pages/Table/CardDeck/styles"
+import useStyles from "@/pages/Table/CardDeck/styles"
 
-import Device from "@unoenty/utils/device"
+import Device from "@/utils/device"
 
 export const CARD_TYPE = "DraggableCard"
 const CARD_WIDTH = Device.isMobile ? 25 : 50

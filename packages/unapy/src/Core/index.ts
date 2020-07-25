@@ -1,5 +1,5 @@
-import Server from "@unapy/Core/Server"
-import Socket from "@unapy/Core/Socket"
+import Server from "@/Core/Server"
+import Socket from "@/Core/Socket"
 
 class Core {
 	async boot() {

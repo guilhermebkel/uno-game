@@ -1,13 +1,13 @@
-import { CardData } from "@shared/protocols/Card"
+import { CardData } from "./Card"
 
-export interface Player {
+export type Player = {
 	id: string
 	name: string
 }
 
 export type PlayerStatus = "online" | "offline"
 
-export interface PlayerData extends Player {
+export type PlayerData = Player & {
 	handCards: CardData[]
 	usedCards: CardData[]
 	status: PlayerStatus
@@ -18,7 +18,7 @@ export interface PlayerData extends Player {
 
 export type CurrentPlayerStatus = "uno" | "winner"
 
-export interface CurrentPlayerInfo {
+export type CurrentPlayerInfo = {
 	id: string
 	status: CurrentPlayerStatus
 }

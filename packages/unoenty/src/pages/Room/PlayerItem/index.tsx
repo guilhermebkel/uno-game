@@ -8,8 +8,8 @@ import {
 } from "@material-ui/core"
 import Chip from "@material-ui/core/Chip"
 
-import useStyles from "@unoenty/pages/Room/PlayerItem/styles"
-import { PlayerData } from "@shared/protocols/Player"
+import useStyles from "@/pages/Room/PlayerItem/styles"
+import { PlayerData } from "@uno-game/protocols"
 
 type PlayerItem = {
 	player: PlayerData

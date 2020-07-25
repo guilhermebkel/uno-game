@@ -21,7 +21,7 @@ export type CardTypes =
 "buy-4" |
 "reverse"
 
-export interface CardData {
+export type CardData = {
 	id: string
 	src: string
 	name: string

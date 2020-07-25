@@ -1,7 +1,6 @@
-import { useSocketStore } from "@unoenty/store/Socket"
+import { useSocketStore } from "@/store/Socket"
 
-import { PlayerData } from "@shared/protocols/Player"
-import { Game } from "@shared/protocols/Game"
+import { PlayerData, Game } from "@uno-game/protocols"
 
 const useSocket = () => {
 	const socketStore = useSocketStore()

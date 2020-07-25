@@ -1,14 +1,13 @@
 import React from "react"
 import { Container, Chip } from "@material-ui/core"
 
-import { CardData } from "@shared/protocols/Card"
-import { PlayerData } from "@shared/protocols/Player"
+import { CardData, PlayerData } from "@uno-game/protocols"
 
-import useStyles from "@unoenty/pages/Table/CardDeckPlaceholder/styles"
+import useStyles from "@/pages/Table/CardDeckPlaceholder/styles"
 
-import cardPlaceholder from "@unoenty/assets/card_placeholder.png"
+import cardPlaceholder from "@/assets/card_placeholder.png"
 
-import Device from "@unoenty/utils/device"
+import Device from "@/utils/device"
 
 const CARD_WIDTH = Device.isMobile ? 15 : 25
 

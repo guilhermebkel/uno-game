@@ -1,6 +1,6 @@
 import { makeStyles } from "@material-ui/core"
 
-import Device from "@unoenty/utils/device"
+import Device from "@/utils/device"
 
 const useStyles = makeStyles((theme) => {
 	const cardContainerSize = Device.isMobile ? 50 : 150

@@ -1,26 +1,26 @@
 {
-  "name": "root",
+  "name": "uno-game",
+  "version": "0.0.0",
   "private": true,
+  "author": "Guilherme Mota <guilhermebromonschenkel@gmail.com>",
+  "license": "MIT",
   "scripts": {
-    "bootstrap": "lerna exec npm install",
+    "bootstrap": "lerna bootstrap --use-workspaces --hoist && lerna link",
     "list": "lerna ls",
     "deploy": "lerna version"
   },
-  "dependencies": {
-    "@material-ui/lab": "^4.0.0-alpha.56",
-    "dotenv": "^8.2.0"
-  },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^2.34.0",
-    "eslint": "^6.6.0",
-    "eslint-config-standard-with-typescript": "^17.0.0",
+    "@typescript-eslint/eslint-plugin": "^3.7.0",
+    "@typescript-eslint/parser": "^3.7.0",
+    "eslint": "^7.5.0",
+    "eslint-config-standard": "^14.1.1",
+    "eslint-import-resolver-typescript": "^2.0.0",
     "eslint-plugin-flowtype": "^5.2.0",
-    "eslint-plugin-import": "^2.21.2",
+    "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-jsx-a11y": "^6.3.1",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-react": "^7.20.3",
-    "eslint-plugin-react-hooks": "^4.0.5",
     "eslint-plugin-standard": "^4.0.1",
     "git-commit-msg-linter": "^2.4.3",
     "husky": "^4.2.5",
@@ -30,6 +30,6 @@
   },
   "workspaces": [
     "packages/*",
-    "packages/shared/**"
+    "packages/shared/*"
   ]
 }

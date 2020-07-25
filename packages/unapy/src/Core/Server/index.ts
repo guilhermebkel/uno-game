@@ -2,7 +2,7 @@ import express from "express"
 import { createServer } from "http"
 import cors from "cors"
 
-import routes from "@unapy/routes"
+import routes from "@/routes"
 
 class Server {
 	private static app = express()

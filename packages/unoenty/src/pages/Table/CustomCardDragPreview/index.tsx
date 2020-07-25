@@ -1,9 +1,9 @@
 import React from "react"
 import { useDragLayer, XYCoord } from "react-dnd"
 
-import { CARD_TYPE } from "@unoenty/pages/Table/CardDeck"
+import { CARD_TYPE } from "@/pages/Table/CardDeck"
 
-import useStyles from "@unoenty/pages/Table/CustomCardDragPreview/styles"
+import useStyles from "@/pages/Table/CustomCardDragPreview/styles"
 
 const CustomCardDragPreview = () => {
   const {

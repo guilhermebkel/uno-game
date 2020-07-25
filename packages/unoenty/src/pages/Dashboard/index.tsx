@@ -2,20 +2,20 @@ import React, { useState } from "react"
 import { useHistory, Link } from "react-router-dom"
 import { Grid, Button, CircularProgress } from "@material-ui/core"
 
-import { Game } from "@shared/protocols/Game"
+import { Game } from "@uno-game/protocols"
 
-import useDidMount from "@unoenty/hooks/useDidMount"
-import useSocket from "@unoenty/hooks/useSocket"
+import useDidMount from "@/hooks/useDidMount"
+import useSocket from "@/hooks/useSocket"
 
-import api from "@unoenty/services/api"
+import api from "@/services/api"
 
-import { Divider, LoadingComponent } from "@unoenty/components"
+import { Divider, LoadingComponent } from "@/components"
 
-import GameItem from "@unoenty/pages/Dashboard/GameItem"
+import GameItem from "@/pages/Dashboard/GameItem"
 
-import useStyles from "@unoenty/pages/Dashboard/styles"
+import useStyles from "@/pages/Dashboard/styles"
 
-import GameListSkeleton from "@unoenty/skeletons/GameList"
+import GameListSkeleton from "@/skeletons/GameList"
 
 const Dashboard = () => {
 	const [games, setGames] = useState<Game[]>([])

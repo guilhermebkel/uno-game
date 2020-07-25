@@ -1,5 +1,5 @@
-import { CardData, CardColors } from "@shared/protocols/Card"
-import { PlayerData } from "@shared/protocols/Player"
+import { CardData, CardColors } from "./Card"
+import { PlayerData } from "./Player"
 
 export type GameEvents =
 "GameStateChanged" |
@@ -23,7 +23,7 @@ export type GameDirection=
 "clockwise" |
 "counterclockwise"
 
-export interface Game {
+export type Game = {
 	/**
 	 * Direction of the game
 	 */

@@ -1,8 +1,8 @@
 import { Router } from "express"
 
-import AssetController from "@unapy/Controllers/AssetController"
-import GameController from "@unapy/Controllers/GameController"
-import CardController from "@unapy/Controllers/CardController"
+import AssetController from "@/Controllers/AssetController"
+import GameController from "@/Controllers/GameController"
+import CardController from "@/Controllers/CardController"
 
 const routes = Router()
 

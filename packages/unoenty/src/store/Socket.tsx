@@ -1,16 +1,16 @@
 import React, { createContext, useContext, useState } from "react"
 import { Socket } from "socket.io-client"
 
-import { preloadCardPictures } from "@unoenty/utils/card"
+import { preloadCardPictures } from "@/utils/card"
 
-import client, { connectSocket } from "@unoenty/services/socket"
-import Auth from "@unoenty/services/auth"
+import client, { connectSocket } from "@/services/socket"
+import Auth from "@/services/auth"
 
-import useDidMount from "@unoenty/hooks/useDidMount"
+import useDidMount from "@/hooks/useDidMount"
 
-import { LoadingApp, LoginDialog } from "@unoenty/components"
+import { LoadingApp, LoginDialog } from "@/components"
 
-import { Game } from "@shared/protocols/Game"
+import { Game } from "@uno-game/protocols"
 
 export interface SocketContextData {
 	io: typeof Socket

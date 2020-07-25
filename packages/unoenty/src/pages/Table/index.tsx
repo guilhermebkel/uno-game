@@ -5,21 +5,21 @@ import { DndProvider } from "react-dnd"
 import { HTML5Backend } from "react-dnd-html5-backend"
 import { TouchBackend } from "react-dnd-touch-backend"
 
-import { useSocketStore } from "@unoenty/store/Socket"
+import { useSocketStore } from "@/store/Socket"
 
-import useDidMount from "@unoenty/hooks/useDidMount"
-import useSocket from "@unoenty/hooks/useSocket"
+import useDidMount from "@/hooks/useDidMount"
+import useSocket from "@/hooks/useSocket"
 
-import { LoadingComponent, Alert } from "@unoenty/components"
+import { LoadingComponent, Alert } from "@/components"
 
-import Device from "@unoenty/utils/device"
+import Device from "@/utils/device"
 
-import CardStack from "@unoenty/pages/Table/CardStack"
-import CardDeck from "@unoenty/pages/Table/CardDeck"
-import CardDeckPlaceholder from "@unoenty/pages/Table/CardDeckPlaceholder"
-import CustomCardDragPreview from "@unoenty/pages/Table/CustomCardDragPreview"
+import CardStack from "@/pages/Table/CardStack"
+import CardDeck from "@/pages/Table/CardDeck"
+import CardDeckPlaceholder from "@/pages/Table/CardDeckPlaceholder"
+import CustomCardDragPreview from "@/pages/Table/CustomCardDragPreview"
 
-import TableSkeleton from "@unoenty/skeletons/Table"
+import TableSkeleton from "@/skeletons/Table"
 
 const Table = () => {
 	const { gameId } = useParams()

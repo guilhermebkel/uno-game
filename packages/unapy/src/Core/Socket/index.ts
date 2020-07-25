@@ -2,9 +2,9 @@ import socket, { Server as SocketServer } from "socket.io"
 import { Server as HttpServer } from "http"
 import uuid from "uuid"
 
-import ListenerService from "@unapy/Services/ListenerService"
+import ListenerService from "@/Services/ListenerService"
 
-import { Player } from "@shared/protocols/Player"
+import { Player } from "@uno-game/protocols"
 
 /**
  * Kept it here to avoid circular dependency problems

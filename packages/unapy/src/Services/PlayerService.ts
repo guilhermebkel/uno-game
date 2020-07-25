@@ -1,4 +1,4 @@
-import { Player } from "@shared/protocols/Player"
+import { Player } from "@uno-game/protocols"
 
 class PlayerService {
 	static players: Map<string, Player> = new Map()

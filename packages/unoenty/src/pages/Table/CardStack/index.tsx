@@ -2,11 +2,11 @@ import React, { useRef } from "react"
 import { Container } from "@material-ui/core"
 import { useDrop } from "react-dnd"
 
-import { CardData } from "@shared/protocols/Card"
+import { CardData } from "@uno-game/protocols"
 
-import { CARD_TYPE } from "@unoenty/pages/Table/CardDeck"
+import { CARD_TYPE } from "@/pages/Table/CardDeck"
 
-import useStyles from "@unoenty/pages/Table/CardStack/styles"
+import useStyles from "@/pages/Table/CardStack/styles"
 
 type Props = {
 	cards: CardData[]

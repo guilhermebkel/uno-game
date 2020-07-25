@@ -1,6 +1,6 @@
 import axios from "axios"
 
-import serverConfig from "@unoenty/config/server"
+import serverConfig from "@/config/server"
 
 const api = axios.create({
 	baseURL: serverConfig.apiUrl

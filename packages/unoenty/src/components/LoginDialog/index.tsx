@@ -10,9 +10,9 @@ import {
 	ThemeProvider
 } from "@material-ui/core"
 
-import Node from "@unoenty/utils/node"
+import Node from "@/utils/node"
 
-import theme from "@unoenty/styles/theme"
+import theme from "@/styles/theme"
 
 type LoginDialogResponse = {
 	name: string
