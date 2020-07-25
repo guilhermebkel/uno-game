@@ -1,6 +1,10 @@
 import React, { useState } from "react"
 import { useParams, useHistory } from "react-router-dom"
 import { Grid, Button } from "@material-ui/core"
+import {
+	ThumbDownOutlined as ThumbDownOutlinedIcon,
+	ThumbUpOutlined as ThumbUpOutlinedIcon
+} from "@material-ui/icons"
 
 import { useSocketStore } from "@/store/Socket"
 
@@ -57,6 +61,7 @@ const Room = () => {
 							variant="contained"
 							fullWidth
 							onClick={toggleReady}
+							endIcon={socket.currentPlayer.ready ? (<ThumbUpOutlinedIcon />) : (<ThumbDownOutlinedIcon />)}
 						>
 							{socket.currentPlayer.ready ? "READY" : "UNREADY"}
 						</Button>
