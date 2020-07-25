@@ -22,3 +22,11 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
         repository: guilhermebkel/unapy
         tags: latest
+
+    - name: Run on production
+      uses: floms/caprover-deploy-action@v1
+      with:
+        host: '${{ secrets.CAPROVER_HOST }}'
+        password: '${{ secrets.CAPROVER_PASSWORD }}'
+        app: 'unapy'
+        image: 'guilhermebkel/unapy:latest'
