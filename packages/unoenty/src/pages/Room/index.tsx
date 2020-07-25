@@ -23,6 +23,7 @@ import PlayerListSkeleton from "@/skeletons/PlayerList"
 
 const Room = () => {
 	const [loadingRoom, setLoadingRoom] = useState(true)
+	const [isLinkCopied, setIsLinkCopied] = useState(false)
 
 	const socketStore = useSocketStore()
 
@@ -58,6 +59,12 @@ const Room = () => {
 		const roomUrl = getRoomUrl()
 
 		copy(roomUrl)
+
+		setIsLinkCopied(true)
+
+		setTimeout(() => {
+			setIsLinkCopied(false)
+		}, 1500)
 	}
 
 	useDidMount(() => {
@@ -90,7 +97,7 @@ const Room = () => {
 								href={getRoomUrl()}
 								onClick={handleCopyRoomUrl}
 							>
-								Copy Link
+								{isLinkCopied ? "Copied!" : "Copy Link"}
 							</Button>
 						</ButtonGroup>
 
