@@ -54,6 +54,16 @@ class GameService {
 		this.emitGameEvent(gameId, "GameCreated", game)
 	}
 
+	gameExists (gameId: string) {
+		const game = GameRepository.getGame(gameId)
+
+		if (game) {
+			return true
+		} else {
+			return false
+		}
+	}
+
 	joinGame (gameId: string, playerId: string) {
 		const game = this.getGame(gameId)
 

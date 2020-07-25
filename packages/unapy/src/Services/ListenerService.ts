@@ -6,7 +6,11 @@ import PlayerService from "@/Services/PlayerService"
  */
 class ListenerService {
 	onJoinGame (gameId: string, playerId: string) {
-		GameService.joinGame(gameId, playerId)
+		const gameExists = GameService.gameExists(gameId)
+
+		if (gameExists) {
+			GameService.joinGame(gameId, playerId)
+		}
 	}
 
 	onCreateGame (gameId: string, playerId: string) {
@@ -18,15 +22,27 @@ class ListenerService {
 	}
 
 	onBuyCard (gameId: string, playerId: string) {
-		GameService.buyCard(playerId, gameId)
+		const gameExists = GameService.gameExists(gameId)
+
+		if (gameExists) {
+			GameService.buyCard(playerId, gameId)
+		}
 	}
 
 	onPutCard (gameId: string, playerId: string, cardId: string) {
-		GameService.putCard(playerId, cardId, gameId)
+		const gameExists = GameService.gameExists(gameId)
+
+		if (gameExists) {
+			GameService.putCard(playerId, cardId, gameId)
+		}
 	}
 
 	onToggleReady (gameId: string, playerId: string) {
-		GameService.toggleReady(playerId, gameId)
+		const gameExists = GameService.gameExists(gameId)
+
+		if (gameExists) {
+			GameService.toggleReady(playerId, gameId)
+		}
 	}
 
 	onSetPlayerData (playerId: string, playerName: string) {
