@@ -4,9 +4,6 @@
 		"../unoenty/**"
 	],
 	"compilerOptions": {
-		"types": [
-			"node"
-		],
 		"outDir": "dist",
 		"module": "CommonJS",
 		"esModuleInterop": true,
