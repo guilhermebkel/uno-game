@@ -10,7 +10,7 @@ ENV NODE_ENV production
 
 RUN npm install
 
-RUN npm install -g lerna typescript
+RUN npm install -g lerna typescript @types/node
 
 RUN npm run install:unapy
 
