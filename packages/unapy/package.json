@@ -17,8 +17,8 @@
     "@types/uuid": "^8.0.0",
     "nodemon": "^2.0.4",
     "sucrase": "^3.15.0",
-		"tsconfig-paths": "^3.9.0",
-		"@uno-game/protocols": "*"
+    "tsconfig-paths": "^3.9.0",
+    "@uno-game/protocols": "*"
   },
   "dependencies": {
     "cors": "^2.8.5",
@@ -31,6 +31,6 @@
     "@uno-game/protocols": "*"
   },
   "_moduleAliases": {
-		"@": "dist"
+    "@": "dist"
   }
 }
