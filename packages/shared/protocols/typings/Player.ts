@@ -5,6 +5,12 @@ export type Player = {
 	name: string
 }
 
+export type PlayerState =
+"Uno" |
+"Blocked" |
+"BuyFourCards" |
+"BuyTwoCards"
+
 export type PlayerStatus = "online" | "offline"
 
 export type PlayerData = Player & {

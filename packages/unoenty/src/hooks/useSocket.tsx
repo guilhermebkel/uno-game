@@ -1,6 +1,6 @@
 import { useSocketStore } from "@/store/Socket"
 
-import { PlayerData, Game } from "@uno-game/protocols"
+import { PlayerData, Game, PlayerState, GameEvents } from "@uno-game/protocols"
 
 const useSocket = () => {
 	const socketStore = useSocketStore()
@@ -77,6 +77,24 @@ const useSocket = () => {
 		socketStore.io.on("PlayerWon", fn)
 	}
 
+	const onPlayerStateChange = (fn: (playerState: PlayerState, playerId: string) => void) => {
+		const events: { [key in GameEvents]?: PlayerState } = {
+			"PlayerUno": "Uno",
+			"PlayerBlocked": "Blocked",
+			"PlayerBuyFourCards": "BuyFourCards",
+			"PlayerBuyTwoCards": "BuyTwoCards"
+		}
+
+		Object.entries(events)
+			.forEach(([event, playerState]) => {
+				socketStore.io.on(event, (playerId: string) => {
+					if (playerState) {
+						fn(playerState, playerId)
+					}
+				})
+			})
+	}
+
 	return {
 		get currentPlayer (): PlayerData {
 			return getCurrentPlayer()
@@ -89,6 +107,7 @@ const useSocket = () => {
 		startGame,
 		onGameStart,
 		onPlayerWon,
+		onPlayerStateChange,
 		buyCard,
 		putCard
 	}
