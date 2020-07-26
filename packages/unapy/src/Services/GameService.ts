@@ -402,6 +402,23 @@ class GameService {
 			if (affectedPlayerCanMakeCardBuyCombo) {
 				this.emitGameEvent(game.id, "CardStackBuyCardsCombo", amountToBuy)
 			} else {
+				/**
+				 * In case there are no more cards to buy.
+				 */
+				if (game.availableCards.length - amountToBuy <= 0) {
+					const additionalCards = CardService.setupRandomCards()
+
+					game.cards = [
+						...game.cards,
+						...additionalCards
+					]
+
+					game.availableCards = [
+						...game.availableCards,
+						...additionalCards
+					]
+				}
+
 				let available = [...game?.availableCards]
 
 				const cards = available.slice(0, amountToBuy)
