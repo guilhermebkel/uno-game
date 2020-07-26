@@ -1,6 +1,11 @@
 import { useSocketStore } from "@/store/Socket"
 
-import { PlayerData, Game, PlayerState, GameEvents } from "@uno-game/protocols"
+import {
+	PlayerData,
+	Game,
+	PlayerState,
+	GameEvents
+} from "@uno-game/protocols"
 
 const useSocket = () => {
 	const socketStore = useSocketStore()
@@ -73,19 +78,23 @@ const useSocket = () => {
 		socketStore.io.on("PlayerWon", fn)
 	}
 
-	const onPlayerStateChange = (fn: (playerState: PlayerState, playerId: string) => void) => {
+	const onCardStackBuyCardsCombo = (fn: (amountToBuy: number) => void) => {
+		socketStore.io.on("CardStackBuyCardsCombo", fn)
+	}
+
+	const onPlayerStateChange = (fn: (playerState: PlayerState, playerId: string, amountToBuy?: number) => void) => {
 		const events: { [key in GameEvents]?: PlayerState } = {
 			"PlayerUno": "Uno",
 			"PlayerBlocked": "Blocked",
-			"PlayerBuyFourCards": "BuyFourCards",
-			"PlayerBuyTwoCards": "BuyTwoCards"
+			"PlayerBuyCards": "BuyCards"
 		}
 
 		Object.entries(events)
 			.forEach(([event, playerState]) => {
-				socketStore.io.on(event, (playerId: string) => {
+				socketStore.io.on(event, (playerId: string, amountToBuy?: number) => {
 					if (playerState) {
-						fn(playerState, playerId)
+						console.log(amountToBuy)
+						fn(playerState, playerId, amountToBuy)
 					}
 				})
 			})
@@ -103,6 +112,7 @@ const useSocket = () => {
 		onGameStart,
 		onPlayerWon,
 		onPlayerStateChange,
+		onCardStackBuyCardsCombo,
 		buyCard,
 		putCard
 	}

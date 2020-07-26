@@ -8,8 +8,7 @@ export type Player = {
 export type PlayerState =
 "Uno" |
 "Blocked" |
-"BuyFourCards" |
-"BuyTwoCards"
+"BuyCards"
 
 export type PlayerStatus = "online" | "offline"
 

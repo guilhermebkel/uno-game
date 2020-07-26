@@ -24,6 +24,13 @@ const useStyles = makeStyles(theme => {
 			transition: theme.transitions.create("all", {
 				duration: theme.transitions.duration.standard
 			})
+		},
+		cardStackStateMessage: {
+			backgroundColor: "#FFFF00",
+			color: "#000000",
+			fontWeight: "bolder",
+			fontSize: `${theme.spacing(3)}px`,
+			padding: `${theme.spacing(1)}px ${theme.spacing(2)}px`
 		}
 	}
 })

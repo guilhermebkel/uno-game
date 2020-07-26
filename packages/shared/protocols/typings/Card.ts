@@ -28,4 +28,8 @@ export type CardData = {
 	color: CardColors
 	type: CardTypes
 	canBeUsed?: boolean
+	/**
+	 * If the card can be mixed with other cards of same type
+	 */
+	canBeCombed?: boolean
 }

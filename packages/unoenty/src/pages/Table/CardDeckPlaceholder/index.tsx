@@ -30,16 +30,14 @@ const CardDeckPlaceholder = (props: CardDeckPlaceholderProps) => {
 
 	const classes = useStyles()
 
-	const handlePlayerStateChange = (playerState: PlayerState, playerId: string) => {
+	const handlePlayerStateChange = (playerState: PlayerState, playerId: string, amountToBuy?: number) => {
 		if (playerId === player?.id) {
 			if (playerState === "Uno") {
 				setPlayerStateMessage("UNO")
 			} else if (playerState === "Blocked") {
 				setPlayerStateMessage("BLOCKED")
-			} else if (playerState === "BuyFourCards") {
-				setPlayerStateMessage("+4")
-			} else if (playerState === "BuyTwoCards") {
-				setPlayerStateMessage("+2")
+			} else if (playerState === "BuyCards") {
+				setPlayerStateMessage(`+${amountToBuy}`)
 			}
 
 			setTimeout(() => {

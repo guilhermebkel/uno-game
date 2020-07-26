@@ -1,4 +1,4 @@
-import { CardData, CardColors } from "./Card"
+import { CardData, CardColors, CardTypes } from "./Card"
 import { PlayerData } from "./Player"
 
 export type GameEvents =
@@ -10,8 +10,8 @@ export type GameEvents =
 "PlayerUno" |
 "PlayerJoined" |
 "PlayerBlocked" |
-"PlayerBuyFourCards" |
-"PlayerBuyTwoCards"
+"PlayerBuyCards" |
+"CardStackBuyCardsCombo"
 
 export type GameStatus =
 "waiting" |
@@ -83,4 +83,8 @@ export type Game = {
 	 * Current players
 	 */
 	players: PlayerData[]
+	/**
+	 * The current card combo count
+	 */
+	currentCardCombo: Array<CardTypes>
 }

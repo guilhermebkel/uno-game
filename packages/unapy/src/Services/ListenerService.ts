@@ -14,39 +14,53 @@ class ListenerService {
 	}
 
 	onCreateGame (gameId: string, playerId: string) {
-		GameService.setupGame(playerId, gameId)
+		const playerExists = PlayerService.playerExists(playerId)
+
+		if (playerExists) {
+			GameService.setupGame(playerId, gameId)
+		}
 	}
 
 	onPlayerDisconnect (playerId: string) {
-		GameService.purgePlayer(playerId)
+		const playerExists = PlayerService.playerExists(playerId)
+
+		if (playerExists) {
+			GameService.purgePlayer(playerId)
+		}
 	}
 
 	onBuyCard (gameId: string, playerId: string) {
 		const gameExists = GameService.gameExists(gameId)
+		const playerExists = PlayerService.playerExists(playerId)
 
-		if (gameExists) {
+		if (gameExists && playerExists) {
 			GameService.buyCard(playerId, gameId)
 		}
 	}
 
 	onPutCard (gameId: string, playerId: string, cardId: string) {
 		const gameExists = GameService.gameExists(gameId)
+		const playerExists = PlayerService.playerExists(playerId)
 
-		if (gameExists) {
+		if (gameExists && playerExists) {
 			GameService.putCard(playerId, cardId, gameId)
 		}
 	}
 
 	onToggleReady (gameId: string, playerId: string) {
 		const gameExists = GameService.gameExists(gameId)
+		const playerExists = PlayerService.playerExists(playerId)
 
-		if (gameExists) {
+		if (gameExists && playerExists) {
 			GameService.toggleReady(playerId, gameId)
 		}
 	}
 
 	onSetPlayerData (playerId: string, playerName: string) {
-		PlayerService.setPlayerData({ id: playerId, name: playerName })
+		PlayerService.setPlayerData({
+			id: playerId,
+			name: playerName
+		})
 	}
 }
 

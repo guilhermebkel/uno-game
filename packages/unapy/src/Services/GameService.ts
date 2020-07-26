@@ -46,7 +46,8 @@ class GameService {
 			usedCards: [],
 			players: [initialPlayer],
 			cards,
-			direction: "clockwise"
+			direction: "clockwise",
+			currentCardCombo: []
 		}
 
 		this.setGameData(gameId, game)
@@ -320,8 +321,9 @@ class GameService {
 		this.setGameData(gameId, game)
 	}
 
-	private emitGameEvent (gameId: string, event: GameEvents, data?: Game | any) {
-		SocketService.emitRoomEvent(gameId, event, data)
+	// eslint-disable-next-line
+	private emitGameEvent (gameId: string, event: GameEvents, ...data: any) {
+		SocketService.emitRoomEvent(gameId, event, ...data)
 	}
 
 	private setGameData (gameId: string, game: Game) {
@@ -362,48 +364,66 @@ class GameService {
 			} else {
 				game.nextPlayerIndex--
 			}
+
+			this.emitGameEvent(game.id, "PlayerBlocked", playerAffected?.id)
 		}
 
 		if (cardType.startsWith("buy-")) {
-			let amountToBuy: number
+			game.currentCardCombo.push(cardType)
 
 			const nextPlayerIndex = NumberUtil.getSanitizedValueWithBoundaries(game?.nextPlayerIndex, game?.players?.length, 0)
 			playerAffected = game?.players?.[nextPlayerIndex]
 
-			if (cardType === "buy-2") {
+			const affectedPlayerCanMakeCardBuyCombo = playerAffected.handCards
+				.some(card => (
+					(card.type === "buy-2" && card.color === game.currentGameColor) ||
+					card.type === "buy-4"
+				))
+
+			const isThereAnyBuyCombo = game.currentCardCombo
+				.some(cardType => cardType === "buy-2" || cardType === "buy-4")
+
+			let amountToBuy = 0
+
+			if (isThereAnyBuyCombo) {
+				game.currentCardCombo.forEach(cardType => {
+					if (cardType === "buy-2") {
+						amountToBuy += 2
+					} else if (cardType === "buy-4") {
+						amountToBuy += 4
+					}
+				})
+			} else if (cardType === "buy-2") {
 				amountToBuy = 2
 			} else if (cardType === "buy-4") {
 				amountToBuy = 4
 			}
 
-			const nextPlayer = game?.players?.[nextPlayerIndex]
+			if (affectedPlayerCanMakeCardBuyCombo) {
+				this.emitGameEvent(game.id, "CardStackBuyCardsCombo", amountToBuy)
+			} else {
+				let available = [...game?.availableCards]
 
-			let available = [...game?.availableCards]
+				const cards = available.slice(0, amountToBuy)
 
-			const cards = available.slice(0, amountToBuy)
+				available = available.slice(amountToBuy, available.length - 1)
 
-			available = available.slice(amountToBuy, available.length - 1)
-
-			game.players = game?.players?.map(player => {
-				if (player.id === nextPlayer.id) {
-					return {
-						...player,
-						handCards: [...cards, ...player?.handCards]
+				game.players = game?.players?.map(player => {
+					if (player.id === playerAffected.id) {
+						return {
+							...player,
+							handCards: [...cards, ...player?.handCards]
+						}
+					} else {
+						return player
 					}
-				} else {
-					return player
-				}
-			})
+				})
 
-			game.availableCards = available
-		}
+				game.availableCards = available
+				game.currentCardCombo = []
 
-		if (cardType === "block") {
-			this.emitGameEvent(game.id, "PlayerBlocked", playerAffected?.id)
-		} else if (cardType === "buy-4") {
-			this.emitGameEvent(game.id, "PlayerBuyFourCards", playerAffected?.id)
-		} else if (cardType === "buy-2") {
-			this.emitGameEvent(game.id, "PlayerBuyTwoCards", playerAffected?.id)
+				this.emitGameEvent(game.id, "PlayerBuyCards", playerAffected?.id, amountToBuy)
+			}
 		}
 
 		return game
@@ -423,7 +443,8 @@ class GameService {
 						handCard.type === "change-color" ||
 						handCard.type === "buy-4" ||
 						topStackCard?.type === handCard.type
-					)
+					),
+					canBeCombed: game.currentCardCombo.includes(handCard.type)
 				}))
 
 				return {
@@ -439,7 +460,8 @@ class GameService {
 					canBuyCard: false,
 					handCards: player?.handCards?.map(handCard => ({
 						...handCard,
-						canBeUsed: false
+						canBeUsed: false,
+						canBeCombed: false
 					}))
 				}
 			}

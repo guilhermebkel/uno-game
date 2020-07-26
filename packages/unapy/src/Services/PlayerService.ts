@@ -10,6 +10,16 @@ class PlayerService {
 	getPlayerData (playerId: string): Player {
 		return PlayerRepository.getPlayerData(playerId)
 	}
+
+	playerExists (playerId: string) {
+		const player = PlayerRepository.getPlayerData(playerId)
+
+		if (player) {
+			return true
+		} else {
+			return false
+		}
+	}
 }
 
 export default new PlayerService()

@@ -1,8 +1,9 @@
 import { io } from "@/Core/Socket"
 
 class SocketService {
-	emitRoomEvent (roomId: string, event: string, data?: any) {
-		io.to(roomId).emit(event, data)
+	// eslint-disable-next-line
+	emitRoomEvent (roomId: string, event: string, ...data: any) {
+		io.to(roomId).emit(event, ...data)
 	}
 }
 
