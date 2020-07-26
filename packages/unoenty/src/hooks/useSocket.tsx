@@ -57,10 +57,6 @@ const useSocket = () => {
 		return game
 	}
 
-	const startGame = (gameId: string) => {
-		socketStore.io.emit("StartGame", gameId)
-	}
-
 	const buyCard = (gameId: string) => {
 		socketStore.io.emit("BuyCard", gameId)
 	}
@@ -104,7 +100,6 @@ const useSocket = () => {
 		},
 		createGame,
 		joinGame,
-		startGame,
 		onGameStart,
 		onPlayerWon,
 		onPlayerStateChange,
