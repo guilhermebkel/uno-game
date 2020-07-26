@@ -33,14 +33,14 @@ class CardService {
 	]
 
 	setupRandomCards () {
-		const initialCards: CardData[] = []
+		const randomCards: CardData[] = []
 
 		this.cardTypes.map(cardType => {
 			this.cardColors.map(cardColor => {
 				const cardPictureSrc = this.buildCardPictureSrc(cardType, cardColor)
 				const cardId = uuid.v4()
 
-				initialCards.push({
+				randomCards.push({
 					id: cardId,
 					src: cardPictureSrc,
 					name: `${cardType}-${cardColor}`,
@@ -50,9 +50,9 @@ class CardService {
 			})
 		})
 
-		ArrayUtil.shuffle(initialCards)
+		ArrayUtil.shuffle(randomCards)
 
-		return initialCards
+		return randomCards
 	}
 
 	private buildCardPictureSrc (cardType: CardTypes, cardColor: CardColors) {
