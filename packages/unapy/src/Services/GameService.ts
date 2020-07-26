@@ -13,6 +13,7 @@ import {
 	CardData,
 	CardTypes
 } from "@uno-game/protocols"
+
 import GameRepository from "@/Repositories/GameRepository"
 
 class GameService {
@@ -70,7 +71,11 @@ class GameService {
 
 		const player = game?.players?.find(player => player.id === playerId)
 
-		if (game.status === "waiting" && game.players.length < game.maxPlayers && !player) {
+		const gameHasNotStarted = game.status === "waiting"
+		const gameIsNotFull = game.players.length < game.maxPlayers
+		const playerIsNotOnGame = !player
+
+		if (gameHasNotStarted && gameIsNotFull && playerIsNotOnGame) {
 			this.addPlayer(gameId, playerId)
 		}
 
@@ -78,12 +83,12 @@ class GameService {
 	}
 
 	purgePlayer (playerId: string) {
-		const games = GameRepository.getGameList()
+		const games = this.getGameList()
 
 		games.forEach(game => {
-			const isPlayerInGame = game?.players?.find(player => player?.id === playerId)
+			const isPlayerOnGame = game?.players?.find(player => player?.id === playerId)
 
-			if (isPlayerInGame) {
+			if (isPlayerOnGame) {
 				this.disconnectPlayer(game?.id, playerId)
 			}
 		})
@@ -130,7 +135,9 @@ class GameService {
 		 * Just to make sure the game will only stop if someone
 		 * wins it.
 		 */
-		if (game.availableCards.length === 0) {
+		const availableCardsAreOver = game.availableCards.length === 0
+
+		if (availableCardsAreOver) {
 			const additionalCards = CardService.setupRandomCards()
 
 			game.cards = [
@@ -368,7 +375,7 @@ class GameService {
 			this.emitGameEvent(game.id, "PlayerBlocked", playerAffected?.id)
 		}
 
-		if (cardType.startsWith("buy-")) {
+		if (cardType === "buy-2" || cardType === "buy-4") {
 			game.currentCardCombo.push(cardType)
 
 			const nextPlayerIndex = NumberUtil.getSanitizedValueWithBoundaries(game?.nextPlayerIndex, game?.players?.length, 0)
@@ -376,28 +383,20 @@ class GameService {
 
 			const affectedPlayerCanMakeCardBuyCombo = playerAffected.handCards
 				.some(card => (
-					(card.type === "buy-2" && card.color === game.currentGameColor) ||
-					card.type === "buy-4"
+					(card.type === "buy-2" && cardType === "buy-4" && card.color === game.currentGameColor) ||
+					(card.type === "buy-2" && cardType === "buy-2") ||
+					(card.type === "buy-4")
 				))
-
-			const isThereAnyBuyCombo = game.currentCardCombo
-				.some(cardType => cardType === "buy-2" || cardType === "buy-4")
 
 			let amountToBuy = 0
 
-			if (isThereAnyBuyCombo) {
-				game.currentCardCombo.forEach(cardType => {
-					if (cardType === "buy-2") {
-						amountToBuy += 2
-					} else if (cardType === "buy-4") {
-						amountToBuy += 4
-					}
-				})
-			} else if (cardType === "buy-2") {
-				amountToBuy = 2
-			} else if (cardType === "buy-4") {
-				amountToBuy = 4
-			}
+			game.currentCardCombo.forEach(cardType => {
+				if (cardType === "buy-2") {
+					amountToBuy += 2
+				} else if (cardType === "buy-4") {
+					amountToBuy += 4
+				}
+			})
 
 			if (affectedPlayerCanMakeCardBuyCombo) {
 				this.emitGameEvent(game.id, "CardStackBuyCardsCombo", amountToBuy)
@@ -405,7 +404,9 @@ class GameService {
 				/**
 				 * In case there are no more cards to buy.
 				 */
-				if (game.availableCards.length - amountToBuy <= 0) {
+				const areThereSufficientCardsToBuy = game.availableCards.length - amountToBuy > 0
+
+				if (!areThereSufficientCardsToBuy) {
 					const additionalCards = CardService.setupRandomCards()
 
 					game.cards = [
