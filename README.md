@@ -43,27 +43,6 @@ A simple UNO Game made in Javascript, supposed to be blazing easier and faster t
 - Git Commit Message Linter
 - ESLint
 
-## 🌇 Case Study
-**What the user is supposed to do**
-1. Go to Dashboard
-2. Create a new room
-3. Get into the created room
-5. Start playing after the room gets filled
-
-**What the user can do**
-- See the existing rooms
-- Send messages to the chat
-- See the messages sent to the chat
-- Invite friends to play together
-- Make automatized plays if he is AFK
-
-**What the user can not do**
-- Make an invalid play (not allowed by server)
-
-**Business rules**
-- A room only exists if there's at least one player inside it
-
-
 ## 👣 Project Scope
 
 - [X] Implementing a basic Table Page which I can use to move and buy cards.
@@ -76,10 +55,21 @@ A simple UNO Game made in Javascript, supposed to be blazing easier and faster t
 - [X] Implementing a server integration with Room Page to make it to work.
 - [ ] Refactoring the Room Page to give it a better looking.
 - [X] Implementing a monorepository manager.
-- [ ] Updating README with new info (new badges, how to get started and so on...).
+- [ ] Updating README with contributors info.
+- [ ] Updating README with screenshots/demo info.
+- [ ] Changing the card assets (in order to avoid copyright issues).
 - [ ] Implementing sounds.
-- [X] Adding a simple account service.
+- [X] Adding a simple account service (with no database).
 - [ ] Adding an account service.
 - [X] Making husky to work.
-- [ ] Adding skeleton loading for pages.
+- [X] Adding skeleton loading for pages.
 - [X] Making CI with Github Actions.
+- [X] Adding Card effects.
+- [ ] Making it able to stack **Buy:2 Cards** till someone does not has any of them and so, the last player buys all the stack together.
+- [ ] Making the front-end able to support 8 players in total.
+- [ ] Being able to change the game color with help of **Buy:4 Card**.
+- [ ] Improving the UX of front-end (adding indicators, etc).
+- [ ] Adding an auto play system when user is afk during the game.
+- [ ] Adding a chat to Game List, Room and Table.
+- [ ] Adding a countdown for every player round.
+- [ ] Adding a score to the game.
