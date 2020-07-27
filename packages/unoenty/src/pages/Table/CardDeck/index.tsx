@@ -1,11 +1,12 @@
 import React, { useRef } from "react"
 import { Container } from "@material-ui/core"
-import { useDrag } from "react-dnd"
+import { useDrag, useDragLayer } from "react-dnd"
 import { getEmptyImage } from "react-dnd-html5-backend"
 
 import useDidMount from "@/hooks/useDidMount"
+import { useCardStore } from "@/store/Card"
 
-import { PlayerData, CardData } from "@uno-game/protocols"
+import { PlayerData, CardData, CardTypes } from "@uno-game/protocols"
 
 import useStyles from "@/pages/Table/CardDeck/styles"
 
@@ -19,12 +20,29 @@ type CardProps = {
 	index: number
 	style: object
 	className: string
+	onClick: () => void
+	selected: boolean
+	isDraggingAnyCard: boolean
+	onDragEnd: () => void
+	canBePartOfCurrentCombo: boolean
 }
 
 const DraggableCard = (props: CardProps) => {
-	const { card, index, style, className } = props
+	const {
+		card,
+		index,
+		style,
+		className,
+		onClick,
+		selected,
+		isDraggingAnyCard,
+		onDragEnd,
+		canBePartOfCurrentCombo
+	} = props
 
 	const draggableCardRef = useRef(null)
+
+	const canCardBeUsed = canBePartOfCurrentCombo || card.canBeUsed
 
   const [{ isDragging }, drag, preview] = useDrag({
     item: {
@@ -33,12 +51,14 @@ const DraggableCard = (props: CardProps) => {
 			index,
 			src: card.src,
 			name: card.name,
+			selected,
 			className
 		},
     collect: monitor => ({
       isDragging: monitor.isDragging()
 		}),
-		canDrag: card.canBeUsed
+		canDrag: canCardBeUsed,
+		end: onDragEnd
   })
 
 	drag(draggableCardRef)
@@ -56,10 +76,15 @@ const DraggableCard = (props: CardProps) => {
 			src={card.src}
 			style={{
 				...style,
-				opacity: isDragging ? 0 : 1,
-				filter: !card.canBeUsed ? "brightness(0.5)" : "saturate(1.5)",
-				pointerEvents: card.canBeUsed ? "all" : "none"
+				opacity: (isDragging || (isDraggingAnyCard && selected)) ? 0 : 1,
+				filter: !canCardBeUsed ? "brightness(0.5)" : "saturate(1.5)",
+				pointerEvents: canCardBeUsed ? "all" : "none",
+				...(selected ? {
+					border: "5px solid #EC0000",
+					borderRadius: "16px"
+				} : {})
 			}}
+			onClick={onClick}
 		/>
   )
 }
@@ -71,6 +96,14 @@ type CardDeckProps = {
 
 const CardDeck = (props: CardDeckProps) => {
 	const { cards } = props
+
+	const {
+    isDraggingAnyCard
+  } = useDragLayer((monitor) => ({
+    isDraggingAnyCard: monitor.isDragging()
+	}))
+	
+	const cardStore = useCardStore()
 
 	const getCardInclination = (index: number) => {
 		const isMiddleCard = Math.round(cards.length / 2) === index
@@ -105,6 +138,37 @@ const CardDeck = (props: CardDeckProps) => {
 
 	const classes = useStyles()
 
+	const onDragEnd = () => {
+		cardStore?.setSelectedCards([])
+	}
+
+	const isCardSelected = (cardId: string) => !!cardStore?.selectedCards?.some(card => card.id === cardId)
+
+	const canBePartOfCurrentCombo = (cardType: CardTypes) => !!cardStore?.selectedCards?.some(card => card.type === cardType)
+
+	const toggleSelectedCard = (cardId: string) => {
+		cardStore?.setSelectedCards(lastState => {
+			const selectedCard = cards.find(card => card.id === cardId)
+
+			const selectedCardTypes = lastState?.map(card => card.type)
+	
+			const isAlreadySelected = isCardSelected(cardId)
+	
+			if (isAlreadySelected) {
+				const cardsWithoutAlreadySelected = lastState?.filter(card => card.id !== cardId)
+				cardStore.setSelectedCards(cardsWithoutAlreadySelected)
+			} else if ((selectedCard && selectedCardTypes?.includes(selectedCard.type)) || !selectedCardTypes?.length) {
+				cardStore.setSelectedCards([
+					...(lastState || []) as any,
+					selectedCard
+				])
+			} else {
+				return (lastState || []) as any
+			}
+		})
+		
+	}
+
 	return (
 		<Container
 			disableGutters
@@ -126,6 +190,11 @@ const CardDeck = (props: CardDeckProps) => {
 						left: index * CARD_WIDTH,
 						bottom: getCardElevation(index)
 					}}
+					onClick={() => toggleSelectedCard(card.id)}
+					selected={isCardSelected(card.id)}
+					isDraggingAnyCard={isDraggingAnyCard}
+					onDragEnd={onDragEnd}
+					canBePartOfCurrentCombo={canBePartOfCurrentCombo(card.type)}
 				/>
 			))}
 		</Container>

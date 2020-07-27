@@ -175,32 +175,34 @@ class GameService {
 		this.setGameData(gameId, game)
 	}
 
-	putCard (playerId: string, cardId: string, gameId: string) {
+	putCard (playerId: string, cardIds: string[], gameId: string) {
 		let game = this.getGame(gameId)
 
 		const player = game?.players?.find(player => player.id === playerId)
 
-		const card = player?.handCards?.find(card => card.id === cardId)
+		const cards = player?.handCards?.filter(card => cardIds.includes(card.id))
 
 		game.players = game?.players?.map(player => {
 			if (player.id === playerId) {
 				return {
 					...player,
-					handCards: player?.handCards?.filter(card => card.id !== cardId),
-					usedCards: [card, ...player?.usedCards]
+					handCards: player?.handCards?.filter(card => !cardIds.includes(card.id)),
+					usedCards: [...cards, ...player?.usedCards]
 				}
 			} else {
 				return player
 			}
 		})
 
-		game.usedCards = [card, ...game?.usedCards]
+		game.usedCards = [...cards, ...game?.usedCards]
 
-		game.currentGameColor = card?.color
+		game.currentGameColor = cards[0]?.color
 
 		this.setGameData(gameId, game)
 
-		game = this.buildGameWithCardEffect(gameId, card?.type)
+		const cardTypes = cards.map(card => card.type)
+
+		game = this.buildGameWithCardEffect(gameId, cardTypes)
 
 		this.setGameData(gameId, game)
 
@@ -345,46 +347,55 @@ class GameService {
 		return game?.usedCards?.[0]
 	}
 
-	private buildGameWithCardEffect (gameId: string, cardType: CardTypes): Game {
+	private buildGameWithCardEffect (gameId: string, cardTypes: CardTypes[]): Game {
 		const game = this.getGame(gameId)
 
 		let playerAffected: PlayerData
 
-		if (cardType === "reverse") {
-			if (game.direction === "clockwise") {
-				game.direction = "counterclockwise"
+		if (cardTypes.every(cardType => cardType === "reverse")) {
+			cardTypes.forEach(() => {
+				if (game.direction === "clockwise") {
+					game.direction = "counterclockwise"
 
-				game.nextPlayerIndex = game.currentPlayerIndex - 1
-			} else {
-				game.direction = "clockwise"
+					game.nextPlayerIndex = game.currentPlayerIndex - 1
+				} else {
+					game.direction = "clockwise"
 
-				game.nextPlayerIndex = game.currentPlayerIndex + 1
-			}
+					game.nextPlayerIndex = game.currentPlayerIndex + 1
+				}
+			})
 		}
 
-		if (cardType === "block") {
-			const nextPlayerIndex = NumberUtil.getSanitizedValueWithBoundaries(game?.nextPlayerIndex, game?.players?.length, 0)
-			playerAffected = game?.players?.[nextPlayerIndex]
+		if (cardTypes.every(cardType => cardType === "block")) {
+			cardTypes.forEach(() => {
+				const nextPlayerIndex = NumberUtil.getSanitizedValueWithBoundaries(game?.nextPlayerIndex, game?.players?.length, 0)
+				playerAffected = game?.players?.[nextPlayerIndex]
 
-			if (game.direction === "clockwise") {
-				game.nextPlayerIndex++
-			} else {
-				game.nextPlayerIndex--
-			}
+				if (game.direction === "clockwise") {
+					game.nextPlayerIndex++
+				} else {
+					game.nextPlayerIndex--
+				}
 
-			this.emitGameEvent(game.id, "PlayerBlocked", playerAffected?.id)
+				this.emitGameEvent(game.id, "PlayerBlocked", playerAffected?.id)
+			})
 		}
 
-		if (cardType === "buy-2" || cardType === "buy-4") {
-			game.currentCardCombo.push(cardType)
+		if (cardTypes.every(cardType => cardType === "buy-2") || cardTypes.every(cardType => cardType === "buy-4")) {
+			const currentCardComboType = cardTypes[0]
+
+			game.currentCardCombo = [
+				...game.currentCardCombo,
+				...cardTypes
+			]
 
 			const nextPlayerIndex = NumberUtil.getSanitizedValueWithBoundaries(game?.nextPlayerIndex, game?.players?.length, 0)
 			playerAffected = game?.players?.[nextPlayerIndex]
 
 			const affectedPlayerCanMakeCardBuyCombo = playerAffected.handCards
 				.some(card => (
-					(card.type === "buy-2" && cardType === "buy-4" && card.color === game.currentGameColor) ||
-					(card.type === "buy-2" && cardType === "buy-2") ||
+					(card.type === "buy-2" && currentCardComboType === "buy-4" && card.color === game.currentGameColor) ||
+					(card.type === "buy-2" && currentCardComboType === "buy-2") ||
 					(card.type === "buy-4")
 				))
 

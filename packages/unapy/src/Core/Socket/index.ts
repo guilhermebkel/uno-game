@@ -55,8 +55,8 @@ class Socket {
 				ListenerService.onBuyCard(roomId, playerData.id)
 			})
 
-			client.on("PutCard", (roomId: string, cardId: string, ) => {
-				ListenerService.onPutCard(roomId, playerData.id, cardId)
+			client.on("PutCard", (roomId: string, cardIds: string[], ) => {
+				ListenerService.onPutCard(roomId, playerData.id, cardIds)
 			})
 
 			client.on("ToggleReady", (roomId: string, ) => {

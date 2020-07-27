@@ -4,6 +4,7 @@ import { useDragLayer, XYCoord } from "react-dnd"
 import { CARD_TYPE } from "@/pages/Table/CardDeck"
 
 import useStyles from "@/pages/Table/CustomCardDragPreview/styles"
+import { useCardStore } from "@/store/Card"
 
 const CustomCardDragPreview = () => {
   const {
@@ -21,6 +22,7 @@ const CustomCardDragPreview = () => {
   }))
 
   const classes = useStyles()
+  const cardStore = useCardStore()
 
   const getItemStyles = (initialOffset: XYCoord | null, currentOffset: XYCoord | null) => {
     if (!initialOffset || !currentOffset) {
@@ -36,6 +38,8 @@ const CustomCardDragPreview = () => {
     return {
       transform,
       WebkitTransform: transform,
+      position: "relative" as any,
+      width: 0
     }
   }
 
@@ -43,7 +47,22 @@ const CustomCardDragPreview = () => {
     return (
       <div className={classes.container} >
         <div style={getItemStyles(initialOffset, currentOffset)}>
-          {itemType === CARD_TYPE && (
+          {itemType === CARD_TYPE && cardStore?.selectedCards?.length ? (
+            <>
+              {cardStore?.selectedCards?.map((card, index) => (
+                <img
+                  alt={card.name}
+                  src={card.src}
+                  className={item.className}
+                  style={{
+                    filter: "saturate(1.5)",
+                    left: +index * 20,
+                    position: "absolute"
+                  }}
+                />
+              ))}
+            </>
+          ) : (
             <img
               alt={item.name}
               src={item.src}

@@ -3,17 +3,17 @@ import { Game } from "@uno-game/protocols"
 class GameRepository {
 	static games: Map<string, Game> = new Map()
 
-	static setGameData (gameId: string, game: Game) {
+	static setGameData (gameId: string, game: Game): void {
 		this.games.set(gameId, game)
 	}
 
-	static getGame (gameId: string) {
+	static getGame (gameId: string): Game {
 		const game = this.games.get(gameId)
 
 		return game
 	}
 
-	static getGameList () {
+	static getGameList (): Game[] {
 		const games: Game[] = []
 
 		for (const game of this.games.values()) {

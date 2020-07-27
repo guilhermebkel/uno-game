@@ -11,9 +11,11 @@ import { CARD_TYPE } from "@/pages/Table/CardDeck"
 
 import useStyles from "@/pages/Table/CardStack/styles"
 
+import { useCardStore } from "@/store/Card"
+
 type Props = {
 	cards: CardData[]
-	onDrop: (cardId: string) => void
+	onDrop: (cardIds: string[]) => void
 }
 
 const CardStack = (props: Props) => {
@@ -21,14 +23,26 @@ const CardStack = (props: Props) => {
 
 	const socket = useSocket()
 
+	const cardStore = useCardStore()
+
 	const { cards, onDrop } = props
 
 	const classes = useStyles()
 	const cardStackRef = useRef()
 
+	const handleDrop = (cardId: string) => {
+		const cardComboIds = cardStore?.selectedCards?.map(card => card.id)
+
+		if (cardComboIds?.length && cards?.length) {
+			onDrop(cardComboIds)
+		} else {
+			onDrop([cardId])
+		}
+	}
+
 	const [{ isHovering }, drop] = useDrop({
     accept: CARD_TYPE,
-		drop: (item: any) => onDrop(item.id),
+		drop: (item: any) => handleDrop(item.id),
 		collect: monitor => ({
 			isHovering: monitor.isOver()
 		})

@@ -3,7 +3,7 @@ import { Player } from "@uno-game/protocols"
 class PlayerRepository {
 	static players: Map<string, Player> = new Map()
 
-	static setPlayerData (playerData: Player) {
+	static setPlayerData (playerData: Player): void {
 		this.players.set(playerData.id, playerData)
 	}
 

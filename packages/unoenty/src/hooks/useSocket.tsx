@@ -66,7 +66,7 @@ const useSocket = () => {
 		socketStore.io.emit("BuyCard", gameId)
 	}
 
-	const putCard = (gameId: string, cardId: string) => {
+	const putCard = (gameId: string, cardId: string[]) => {
 		socketStore.io.emit("PutCard", gameId, cardId)
 	}
 
