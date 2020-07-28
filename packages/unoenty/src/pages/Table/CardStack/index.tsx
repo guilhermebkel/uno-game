@@ -33,7 +33,7 @@ const CardStack = (props: Props) => {
 	const handleDrop = (cardId: string) => {
 		const cardComboIds = cardStore?.selectedCards?.map(card => card.id)
 
-		if (cardComboIds?.length && cards?.length) {
+		if (cardComboIds?.length > 1) {
 			onDrop(cardComboIds)
 		} else {
 			onDrop([cardId])
