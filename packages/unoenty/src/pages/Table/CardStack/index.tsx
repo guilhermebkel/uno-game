@@ -34,7 +34,6 @@ const CardStack = (props: Props) => {
 		const cardComboIds = cardStore?.selectedCards?.reverse().map(card => card.id)
 
 		if (cardComboIds?.length > 1) {
-			console.log(cardStore?.selectedCards)
 			onDrop(cardComboIds)
 		} else {
 			onDrop([cardId])

@@ -562,7 +562,35 @@ class GameService {
 	private endGame (gameId: string) {
 		const game = this.getGame(gameId)
 
+		const cards = CardService.setupRandomCards()
+
 		game.status = "ended"
+
+		game.round = 0
+
+		game.currentPlayerIndex = 0
+
+		game.nextPlayerIndex = 1
+
+		game.availableCards = []
+
+		game.usedCards = []
+
+		game.direction = "clockwise"
+
+		game.currentCardCombo = []
+
+		game.cards = cards
+
+		game.players = game?.players?.map(player => ({
+			...player,
+			canBuyCard: false,
+			handCards: [],
+			isCurrentRoundPlayer: false,
+			ready: false,
+			status: "online",
+			usedCards: []
+		}))
 
 		this.setGameData(gameId, game)
 

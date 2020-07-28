@@ -6,15 +6,18 @@ import {
 	DialogContent,
 	DialogContentText,
 	DialogTitle,
-	ThemeProvider,
-	makeStyles
+	ThemeProvider
 } from "@material-ui/core"
 
 import Node from "@/utils/node"
 
+import { Divider } from "@/components"
+
 import theme from "@/styles/theme"
 
 import "./icons.scss"
+
+import useStyles from "./styles"
 
 interface AlertType {
 	type: "success" | "warning" | "error"
@@ -23,6 +26,7 @@ interface AlertType {
 interface AlertProps {
 	title: string
 	message: string | React.ReactNode
+	customButtons?: JSX.Element[]
 	onClose?: () => any
 }
 
@@ -59,28 +63,12 @@ const icons = {
 	)
 }
 
-const useStyle = makeStyles({
-	content: {
-		display: "flex",
-		flexDirection: "column",
-		alignItems: "center",
-		textAlign: "center"
-	},
-	title: {
-		fontWeight: "bolder",
-		textAlign: "center"
-	},
-	footer: {
-		justifyContent: "center",
-	}
-})
-
 const Alert = (props: AlertProps & AlertType) => {
-	const { type, message, title, onClose } = props
+	const { type, message, title, onClose, customButtons } = props
 
 	const [visible, setVisible] = useState(true)
 
-	const classes = useStyle()
+	const classes = useStyles()
 
 	const handleClose = () => {
 		onClose?.()
@@ -102,6 +90,13 @@ const Alert = (props: AlertProps & AlertType) => {
 					</DialogContentText>
 				</DialogContent>
 				<DialogActions className={classes.footer}>
+					{customButtons?.map(customButton => (
+						<>
+							{customButton}
+
+							<Divider size={1} />
+						</>
+					))}
 					<Button onClick={handleClose} fullWidth={true}>
 						OK
 					</Button>

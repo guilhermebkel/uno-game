@@ -34,7 +34,7 @@ const Room = () => {
 	const { gameId } = useParams()
 
 	const toggleReady = () => {
-		socketStore.io.emit("ToggleReady", gameId)
+		socket.toggleReady(gameId)
 	}
 
 	const joinGame = async () => {

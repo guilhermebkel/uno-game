@@ -62,6 +62,10 @@ const useSocket = () => {
 		return game
 	}
 
+	const toggleReady = (gameId: string) => {
+		socketStore.io.emit("ToggleReady", gameId)
+	}
+
 	const buyCard = (gameId: string) => {
 		socketStore.io.emit("BuyCard", gameId)
 	}
@@ -112,6 +116,7 @@ const useSocket = () => {
 		onPlayerWon,
 		onPlayerStateChange,
 		onCardStackBuyCardsCombo,
+		toggleReady,
 		buyCard,
 		putCard
 	}

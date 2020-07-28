@@ -39,6 +39,10 @@ const Table = () => {
 		socket.putCard(gameId, cardIds)
 	}
 
+	const toggleRetry = () => {
+		socket.toggleReady(gameId)
+	}
+
 	const joinGame = async () => {
 		await socket.joinGame(gameId)
 
@@ -53,8 +57,27 @@ const Table = () => {
 				message: `${player?.name} won the game!`,
 				title: `${player?.name} won!`,
 				onClose: () => {
-					window.location.href = "/game"
-				}
+					window.location.href = "/"
+				},
+				customButtons: [
+					<Button
+						fullWidth
+						color="primary"
+						variant="contained"
+						onClick={toggleRetry}
+						disabled={socket?.currentPlayer?.ready}
+					>
+						{socket?.currentPlayer?.ready ? (
+							"READY (Waiting other players)"
+						) : (
+							"READY"
+						)}
+					</Button>
+				]
+			})
+
+			socket.onGameStart(() => {
+				window.location.reload()
 			})
 		})
 	}
