@@ -26,4 +26,5 @@ export type CurrentPlayerStatus = "uno" | "winner"
 export type CurrentPlayerInfo = {
 	id: string
 	status: CurrentPlayerStatus
+	name: string
 }

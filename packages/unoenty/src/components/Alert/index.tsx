@@ -29,6 +29,7 @@ interface AlertProps {
 	customButtons?: JSX.Element[]
 	closeButtonText?: string
 	onClose?: () => any
+	closable?: boolean
 }
 
 const icons = {
@@ -65,15 +66,25 @@ const icons = {
 }
 
 const Alert = (props: AlertProps & AlertType) => {
-	const { type, message, title, onClose, customButtons, closeButtonText } = props
+	const {
+		type,
+		message,
+		title,
+		onClose,
+		customButtons,
+		closeButtonText,
+		closable
+	} = props
 
 	const [visible, setVisible] = useState(true)
 
 	const classes = useStyles()
 
 	const handleClose = () => {
-		onClose?.()
-		setVisible(false)
+		if (closable !== false) {
+			onClose?.()
+			setVisible(false)
+		}
 	}
 
 	return (
@@ -90,18 +101,22 @@ const Alert = (props: AlertProps & AlertType) => {
 						{message}
 					</DialogContentText>
 				</DialogContent>
-				<DialogActions className={classes.footer}>
-					{customButtons?.map(customButton => (
-						<>
-							{customButton}
+				{(customButtons?.length || closable !== false) && (
+					<DialogActions className={classes.footer}>
+						{customButtons?.map(customButton => (
+							<>
+								{customButton}
 
-							<Divider size={1} />
-						</>
-					))}
-					<Button onClick={handleClose} fullWidth={true}>
-						{closeButtonText || "OK"}
-					</Button>
-				</DialogActions>
+								<Divider size={1} />
+							</>
+						))}
+						{closable !== false && (
+							<Button onClick={handleClose} fullWidth={true}>
+								{closeButtonText || "OK"}
+							</Button>
+						)}
+					</DialogActions>
+				)}
 			</Dialog>
 		</ThemeProvider>
 	)
@@ -127,5 +142,7 @@ Alert.warning = (props: AlertProps) => {
 		<Alert type="warning" {...props} />
 	)
 }
+
+Alert.close = () => Node.unmountComponent("alert")
 
 export default Alert

@@ -47,7 +47,9 @@ const CustomCardDragPreview = () => {
     return (
       <div className={classes.container} >
         <div style={getItemStyles(initialOffset, currentOffset)}>
-          {itemType === CARD_TYPE && cardStore?.selectedCards?.length ? (
+          {itemType === CARD_TYPE &&
+          cardStore?.selectedCards?.length &&
+          cardStore?.selectedCards?.every(card => card.type === item.cardType) ? (
             <>
               {cardStore?.selectedCards?.map((card, index) => (
                 <img

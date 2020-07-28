@@ -19,6 +19,14 @@ class Node {
 	
 		return ReactDOM.render(expectedRendering, node)
 	}
+
+	unmountComponent(id: string) {
+		let node = document.getElementById(id)
+	
+		if (node) {
+			ReactDOM.unmountComponentAtNode(node)
+		}
+	}
 }
 
 export default new Node()

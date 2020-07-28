@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import { Grid, Button, Typography } from "@material-ui/core"
-import { useParams } from "react-router-dom"
+import { useParams, useHistory } from "react-router-dom"
 import { DndProvider } from "react-dnd"
 import { HTML5Backend } from "react-dnd-html5-backend"
 import { TouchBackend } from "react-dnd-touch-backend"
@@ -25,6 +25,7 @@ import TableSkeleton from "@/skeletons/Table"
 
 const Table = () => {
 	const { gameId } = useParams()
+	const history = useHistory()
 
 	const socketStore = useSocketStore()
 	const socket = useSocket()
@@ -41,21 +42,33 @@ const Table = () => {
 
 	const toggleRetry = () => {
 		socket.toggleReady(gameId)
+
+		Alert.warning({
+			title: "Waiting",
+			message: "Waiting for other players to click on retry button...",
+			closable: false
+		})
+
+		socket.onGameStart(() => {
+			Alert.close()
+		})
 	}
 
 	const joinGame = async () => {
-		await socket.joinGame(gameId)
+		const game = await socket.joinGame(gameId)
+
+		if (game.status === "ended") {
+			history.push("/")
+		}
 
 		setLoadingTable(false)
 	}
 
 	const onPlayerWon = () => {
-		socket.onPlayerWon(playerId => {
-			const player = socketStore?.game?.players?.find(player => player.id === playerId)
-
+		socket.onPlayerWon((_, playerName: string) => {
 			Alert.success({
-				message: `${player?.name} won the game!`,
-				title: `${player?.name} won!`,
+				message: `${playerName} won the game!`,
+				title: `${playerName} won!`,
 				closeButtonText: "QUIT",
 				onClose: () => {
 					window.location.href = "/"
@@ -66,19 +79,14 @@ const Table = () => {
 						color="primary"
 						variant="contained"
 						onClick={toggleRetry}
-						disabled={socket?.currentPlayer?.ready}
 					>
-						{socket?.currentPlayer?.ready ? (
+						{(!socket?.currentPlayer) ? (
 							"READY (Waiting for other players)"
 						) : (
 							"READY?"
 						)}
 					</Button>
 				]
-			})
-
-			socket.onGameStart(() => {
-				window.location.reload()
 			})
 		})
 	}

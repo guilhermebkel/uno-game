@@ -50,6 +50,21 @@ class CardService {
 			})
 		})
 
+		this.cardTypes.map(cardType => {
+			this.cardColors.map(cardColor => {
+				const cardPictureSrc = this.buildCardPictureSrc(cardType, cardColor)
+				const cardId = uuid.v4()
+
+				randomCards.push({
+					id: cardId,
+					src: cardPictureSrc,
+					name: `${cardType}-${cardColor}`,
+					color: cardColor,
+					type: cardType
+				})
+			})
+		})
+
 		ArrayUtil.shuffle(randomCards)
 
 		return randomCards

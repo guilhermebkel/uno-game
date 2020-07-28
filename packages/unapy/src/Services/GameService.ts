@@ -139,26 +139,6 @@ class GameService {
 			return
 		}
 
-		/**
-		 * Just to make sure the game will only stop if someone
-		 * wins it.
-		 */
-		const availableCardsAreOver = game.availableCards.length === 0
-
-		if (availableCardsAreOver) {
-			const additionalCards = CardService.setupRandomCards()
-
-			game.cards = [
-				...game.cards,
-				...additionalCards
-			]
-
-			game.availableCards = [
-				...game.availableCards,
-				...additionalCards
-			]
-		}
-
 		const available = [...game?.availableCards]
 
 		const card = available.shift()
@@ -214,7 +194,20 @@ class GameService {
 			}
 		})
 
-		game.usedCards = [...cards, ...game?.usedCards]
+		/**
+		 * We keep flowing the used cards back to stack, in order to help
+		 * keeping the game up till someone wins it.
+		 */
+		const usedCards = [...cards, ...game?.usedCards]
+
+		const inStackCards = usedCards.slice(0, 10)
+		const outStackCards = usedCards.slice(10, usedCards.length)
+
+		game.usedCards = inStackCards
+		game.availableCards = [
+			...game.availableCards,
+			...outStackCards
+		]
 
 		game.currentGameColor = cards[0]?.color
 
@@ -319,7 +312,7 @@ class GameService {
 		const currentPlayerInfo = this.getCurrentPlayerInfo(gameId)
 
 		if (currentPlayerInfo.status === "winner") {
-			this.emitGameEvent(gameId, "PlayerWon", currentPlayerInfo.id)
+			this.emitGameEvent(gameId, "PlayerWon", currentPlayerInfo.id, currentPlayerInfo.name)
 			return this.endGame(gameId)
 		}
 
@@ -436,30 +429,11 @@ class GameService {
 			if (affectedPlayerCanMakeCardBuyCombo) {
 				this.emitGameEvent(game.id, "CardStackBuyCardsCombo", amountToBuy)
 			} else {
-				/**
-				 * In case there are no more cards to buy.
-				 */
-				const areThereSufficientCardsToBuy = game.availableCards.length - amountToBuy > 0
-
-				if (!areThereSufficientCardsToBuy) {
-					const additionalCards = CardService.setupRandomCards()
-
-					game.cards = [
-						...game.cards,
-						...additionalCards
-					]
-
-					game.availableCards = [
-						...game.availableCards,
-						...additionalCards
-					]
-				}
-
 				let available = [...game?.availableCards]
 
 				const cards = available.slice(0, amountToBuy)
 
-				available = available.slice(amountToBuy, available.length - 1)
+				available = available.slice(amountToBuy, available.length)
 
 				game.players = game?.players?.map(player => {
 					if (player.id === playerAffected.id) {
@@ -555,6 +529,7 @@ class GameService {
 
 		return {
 			id: currentPlayerId,
+			name: currentPlayer.name,
 			status
 		}
 	}

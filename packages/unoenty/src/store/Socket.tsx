@@ -1,8 +1,6 @@
 import React, { createContext, useContext, useState } from "react"
 import { Socket } from "socket.io-client"
 
-import { preloadCardPictures } from "@/utils/card"
-
 import client, { connectSocket } from "@/services/socket"
 import Auth from "@/services/auth"
 
@@ -49,8 +47,6 @@ const SocketProvider = (props: SocketProviderProps) => {
 	}
 
 	const connect = async () => {
-		preloadCardPictures()
-
 		let playerId = await connectSocket()
 
 		let playerData = Auth.getPlayerData()

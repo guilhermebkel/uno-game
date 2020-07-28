@@ -78,7 +78,7 @@ const useSocket = () => {
 		socketStore.io.on("GameStarted", fn)
 	}
 
-	const onPlayerWon = (fn: (playerId: string) => void) => {
+	const onPlayerWon = (fn: (playerId: string, playerName: string) => void) => {
 		socketStore.io.on("PlayerWon", fn)
 	}
 

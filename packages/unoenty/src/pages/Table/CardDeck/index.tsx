@@ -25,6 +25,7 @@ type CardProps = {
 	isDraggingAnyCard: boolean
 	onDragEnd: () => void
 	canBePartOfCurrentCombo: boolean
+	isMoreThanOneCardBeingDragged: boolean
 }
 
 const DraggableCard = (props: CardProps) => {
@@ -37,7 +38,8 @@ const DraggableCard = (props: CardProps) => {
 		selected,
 		isDraggingAnyCard,
 		onDragEnd,
-		canBePartOfCurrentCombo
+		canBePartOfCurrentCombo,
+		isMoreThanOneCardBeingDragged
 	} = props
 
 	const draggableCardRef = useRef(null)
@@ -51,6 +53,7 @@ const DraggableCard = (props: CardProps) => {
 			index,
 			src: card.src,
 			name: card.name,
+			cardType: card.type,
 			selected,
 			className
 		},
@@ -76,7 +79,7 @@ const DraggableCard = (props: CardProps) => {
 			src={card.src}
 			style={{
 				...style,
-				opacity: (isDragging || (isDraggingAnyCard && selected)) ? 0 : 1,
+				opacity: (isDragging || (isDraggingAnyCard && isMoreThanOneCardBeingDragged && selected)) ? 0 : 1,
 				filter: !canCardBeUsed ? "brightness(0.5)" : "saturate(1.5)",
 				pointerEvents: canCardBeUsed ? "all" : "none",
 				...(selected ? {
@@ -192,6 +195,7 @@ const CardDeck = (props: CardDeckProps) => {
 					onClick={() => toggleSelectedCard(card.id)}
 					selected={isCardSelected(card.id)}
 					isDraggingAnyCard={isDraggingAnyCard}
+					isMoreThanOneCardBeingDragged={cardStore?.selectedCards?.length > 1}
 					onDragEnd={onDragEnd}
 					canBePartOfCurrentCombo={canBePartOfCurrentCombo(card.type)}
 				/>
