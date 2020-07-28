@@ -56,6 +56,7 @@ const Table = () => {
 			Alert.success({
 				message: `${player?.name} won the game!`,
 				title: `${player?.name} won!`,
+				closeButtonText: "QUIT",
 				onClose: () => {
 					window.location.href = "/"
 				},
@@ -68,7 +69,7 @@ const Table = () => {
 						disabled={socket?.currentPlayer?.ready}
 					>
 						{socket?.currentPlayer?.ready ? (
-							"READY (Waiting other players)"
+							"READY (Waiting for other players)"
 						) : (
 							"READY?"
 						)}

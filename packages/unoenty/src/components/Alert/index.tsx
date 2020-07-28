@@ -27,6 +27,7 @@ interface AlertProps {
 	title: string
 	message: string | React.ReactNode
 	customButtons?: JSX.Element[]
+	closeButtonText?: string
 	onClose?: () => any
 }
 
@@ -64,7 +65,7 @@ const icons = {
 }
 
 const Alert = (props: AlertProps & AlertType) => {
-	const { type, message, title, onClose, customButtons } = props
+	const { type, message, title, onClose, customButtons, closeButtonText } = props
 
 	const [visible, setVisible] = useState(true)
 
@@ -98,7 +99,7 @@ const Alert = (props: AlertProps & AlertType) => {
 						</>
 					))}
 					<Button onClick={handleClose} fullWidth={true}>
-						OK
+						{closeButtonText || "OK"}
 					</Button>
 				</DialogActions>
 			</Dialog>
