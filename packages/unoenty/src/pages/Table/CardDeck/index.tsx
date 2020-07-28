@@ -166,7 +166,6 @@ const CardDeck = (props: CardDeckProps) => {
 				return (lastState || []) as any
 			}
 		})
-		
 	}
 
 	return (

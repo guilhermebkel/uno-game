@@ -347,6 +347,16 @@ class GameService {
 		return game?.usedCards?.[0]
 	}
 
+	private cardCanBeBuyCombed = (game: Game, card: CardData) => {
+		const currentCardComboType = game?.currentCardCombo?.[0]
+
+		return (
+			(card.type === "buy-2" && currentCardComboType === "buy-4" && card.color === game.currentGameColor) ||
+			(card.type === "buy-2" && currentCardComboType === "buy-2") ||
+			(card.type === "buy-4")
+		)
+	}
+
 	private buildGameWithCardEffect (gameId: string, cardTypes: CardTypes[]): Game {
 		const game = this.getGame(gameId)
 
@@ -382,8 +392,6 @@ class GameService {
 		}
 
 		if (cardTypes.every(cardType => cardType === "buy-2") || cardTypes.every(cardType => cardType === "buy-4")) {
-			const currentCardComboType = cardTypes[0]
-
 			game.currentCardCombo = [
 				...game.currentCardCombo,
 				...cardTypes
@@ -393,11 +401,7 @@ class GameService {
 			playerAffected = game?.players?.[nextPlayerIndex]
 
 			const affectedPlayerCanMakeCardBuyCombo = playerAffected.handCards
-				.some(card => (
-					(card.type === "buy-2" && currentCardComboType === "buy-4" && card.color === game.currentGameColor) ||
-					(card.type === "buy-2" && currentCardComboType === "buy-2") ||
-					(card.type === "buy-4")
-				))
+				.some(card => this.cardCanBeBuyCombed(game, card))
 
 			let amountToBuy = 0
 
@@ -473,7 +477,9 @@ class GameService {
 			if (currentPlayerId === player.id) {
 				const handCards = player?.handCards?.map(handCard => ({
 					...handCard,
-					canBeUsed: (
+					canBeUsed: game?.currentCardCombo?.length ? (
+						this.cardCanBeBuyCombed(game, handCard)
+					) : (
 						topStackCard?.color === handCard.color ||
 						handCard.type === "change-color" ||
 						handCard.type === "buy-4" ||
