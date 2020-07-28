@@ -93,7 +93,6 @@ const useSocket = () => {
 			.forEach(([event, playerState]) => {
 				socketStore.io.on(event, (playerId: string, amountToBuy?: number) => {
 					if (playerState) {
-						console.log(amountToBuy)
 						fn(playerState, playerId, amountToBuy)
 					}
 				})
