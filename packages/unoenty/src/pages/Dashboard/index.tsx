@@ -38,7 +38,7 @@ const Dashboard = () => {
 
 		setLoadingCreateGame(false)
 
-		history.push(`/${game.id}/room`)
+		history.push(`/${game.id}`)
 	}
 
 	const getGameList = async () => {
@@ -81,7 +81,7 @@ const Dashboard = () => {
 								<Grid
 									container
 									component={Link}
-									to={`/${game.id}/room`}
+									to={`/${game.id}`}
 									className={classes.gameItemGrid}
 								>
 									<GameItem
