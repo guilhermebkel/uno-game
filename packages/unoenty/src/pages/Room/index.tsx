@@ -38,14 +38,18 @@ const Room = () => {
 	}
 
 	const joinGame = async () => {
-		await socket.joinGame(gameId)
+		const game = await socket.joinGame(gameId)
 
-		setLoadingRoom(false)
+		if (game.status === "playing") {
+			history.push(`/${gameId}/table`)
+		} else {
+			setLoadingRoom(false)
+		}
 	}
 
 	const onGameStart = () => {
 		socket.onGameStart(() => {
-			history.push(`/game/${gameId}/table`)
+			history.push(`/${gameId}/table`)
 		})
 	}
 

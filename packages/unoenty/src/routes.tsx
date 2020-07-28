@@ -1,5 +1,5 @@
 import React from "react"
-import { Route, Switch, Redirect } from "react-router-dom"
+import { Route, Switch } from "react-router-dom"
 
 import { PageNotFound } from "@/components"
 
@@ -9,11 +9,9 @@ import Room from "@/pages/Room"
 
 const Routes = () => (
 	<Switch>
-		<Route exact path="/"><Redirect to="/game" /></Route>
-		<Route exact path="/game" component={Dashboard} />
-		<Route exact path="/game/:gameId/room" component={Room} />
-		<Route exact path="/game/:gameId/table" component={Table} />
-		<Route exact path="/:gameId" render={(props) => <Redirect to={`/game/${props.match.params.gameId}/room`} />} />
+		<Route exact path="/" component={Dashboard} />
+		<Route exact path="/:gameId" component={Room} />
+		<Route exact path="/:gameId/table" component={Table} />
 		<Route path="*" component={PageNotFound} />
 	</Switch>
 )
