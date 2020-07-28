@@ -451,6 +451,12 @@ class GameService {
 				game.availableCards = available
 				game.currentCardCombo = []
 
+				if (game.direction === "clockwise") {
+					game.nextPlayerIndex++
+				} else {
+					game.nextPlayerIndex--
+				}
+
 				this.emitGameEvent(game.id, "PlayerBuyCards", playerAffected?.id, amountToBuy)
 			}
 		}
