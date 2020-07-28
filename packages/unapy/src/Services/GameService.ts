@@ -353,17 +353,17 @@ class GameService {
 		let playerAffected: PlayerData
 
 		if (cardTypes.every(cardType => cardType === "reverse")) {
-			cardTypes.forEach(() => {
-				if (game.direction === "clockwise") {
-					game.direction = "counterclockwise"
+			if (cardTypes.length % 2 === 0) {
+				game.nextPlayerIndex = game.currentPlayerIndex
+			} else if (game.direction === "clockwise") {
+				game.direction = "counterclockwise"
 
-					game.nextPlayerIndex = game.currentPlayerIndex - 1
-				} else {
-					game.direction = "clockwise"
+				game.nextPlayerIndex = game.currentPlayerIndex - 1
+			} else {
+				game.direction = "clockwise"
 
-					game.nextPlayerIndex = game.currentPlayerIndex + 1
-				}
-			})
+				game.nextPlayerIndex = game.currentPlayerIndex + 1
+			}
 		}
 
 		if (cardTypes.every(cardType => cardType === "block")) {
