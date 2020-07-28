@@ -131,6 +131,14 @@ class GameService {
 
 		const game = this.getGame(gameId)
 
+		const player = game?.players?.find(player => player.id === currentPlayerInfo.id)
+
+		const needToBuyCard = player?.handCards?.every(card => !card.canBeUsed)
+
+		if (!needToBuyCard) {
+			return
+		}
+
 		/**
 		 * Just to make sure the game will only stop if someone
 		 * wins it.
@@ -176,11 +184,23 @@ class GameService {
 	}
 
 	putCard (playerId: string, cardIds: string[], gameId: string) {
+		const currentPlayerInfo = this.getCurrentPlayerInfo(gameId)
+
+		if (currentPlayerInfo.id !== playerId) {
+			return
+		}
+
 		let game = this.getGame(gameId)
 
 		const player = game?.players?.find(player => player.id === playerId)
 
-		const cards = player?.handCards?.filter(card => cardIds.includes(card.id))
+		const cards: CardData[] = []
+
+		cardIds.forEach(cardId => {
+			const card = player?.handCards?.find(card => card.id === cardId)
+
+			cards.push(card)
+		})
 
 		game.players = game?.players?.map(player => {
 			if (player.id === playerId) {
