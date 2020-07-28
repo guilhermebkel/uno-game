@@ -70,7 +70,7 @@ const Table = () => {
 						{socket?.currentPlayer?.ready ? (
 							"READY (Waiting other players)"
 						) : (
-							"READY"
+							"READY?"
 						)}
 					</Button>
 				]
