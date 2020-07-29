@@ -38,7 +38,7 @@ const useSocket = () => {
 		/**
 		 * Improves layout location
 		 */
-		if (otherPlayers.length <= 4) {
+		if (socketStore?.game?.players?.length <= 4) {
 			otherPlayers = [
 				otherPlayers[0],
 				{} as any,
