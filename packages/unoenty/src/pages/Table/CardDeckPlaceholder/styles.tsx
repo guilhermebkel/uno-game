@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/core"
 import Device from "@/utils/device"
 
 const useStyles = makeStyles((theme) => {
-	const cardContainerSize = Device.isMobile ? 50 : 150
+	const cardContainerSize = Device.isMobile ? 50 : 120
 
 	return {
 		cardContent: {
@@ -42,8 +42,8 @@ const useStyles = makeStyles((theme) => {
 			backgroundColor: "#EC0000",
 			color: "#FFFFFF",
 			fontWeight: "bolder",
-			fontSize: `${theme.spacing(3)}px`,
-			padding: `${theme.spacing(2)}px ${theme.spacing(4)}px`
+			fontSize: Device.isMobile ? `${theme.spacing(3)}px` : `${theme.spacing(2)}px`,
+			padding: Device.isMobile ? `${theme.spacing(1)}px ${theme.spacing(2)}px` : `${theme.spacing(2)}px ${theme.spacing(4)}px`
 		}
 	}
 })

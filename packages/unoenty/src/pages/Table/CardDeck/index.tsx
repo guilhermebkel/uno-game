@@ -13,7 +13,7 @@ import useStyles from "@/pages/Table/CardDeck/styles"
 import Device from "@/utils/device"
 
 export const CARD_TYPE = "DraggableCard"
-const CARD_WIDTH = Device.isMobile ? 25 : 50
+const CARD_WIDTH = Device.isMobile ? 20 : 40
 
 type CardProps = {
 	card: CardData

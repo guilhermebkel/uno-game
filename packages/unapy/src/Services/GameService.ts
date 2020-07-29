@@ -34,7 +34,7 @@ class GameService {
 		}
 
 		const game: Game = {
-			maxPlayers: 4,
+			maxPlayers: 6,
 			type: "public",
 			status: "waiting",
 			round: 0,

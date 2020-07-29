@@ -12,7 +12,7 @@ import cardPlaceholder from "@/assets/card_placeholder.png"
 
 import Device from "@/utils/device"
 
-const CARD_WIDTH = Device.isMobile ? 15 : 25
+const CARD_WIDTH = Device.isMobile ? 7 : 20
 
 type CardDeckPlaceholderProps = {
 	cards: CardData[]

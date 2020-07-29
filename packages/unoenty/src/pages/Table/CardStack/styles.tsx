@@ -29,7 +29,7 @@ const useStyles = makeStyles(theme => {
 			backgroundColor: "#FFFF00",
 			color: "#000000",
 			fontWeight: "bolder",
-			fontSize: `${theme.spacing(3)}px`,
+			fontSize: Device.isMobile ? `${theme.spacing(3)}px` : `${theme.spacing(2)}px`,
 			padding: `${theme.spacing(1)}px ${theme.spacing(2)}px`
 		}
 	}

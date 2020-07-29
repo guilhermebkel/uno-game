@@ -110,6 +110,11 @@ const Table = () => {
 					<Grid container style={{ height: "100%", overflow: "hidden", padding: "16px" }}>
 						<Grid container>
 							<Grid item xs={2}>
+								<CardDeckPlaceholder
+									cards={socket.otherPlayers?.[1]?.handCards as any}
+									player={socket.otherPlayers?.[1] as any}
+									transform="rotate(135deg)"
+								/>
 								{socket?.currentPlayer?.canBuyCard && (
 									<Button
 										color="primary"
@@ -124,13 +129,18 @@ const Table = () => {
 							<Grid item xs={8}>
 								<Grid container justify="center" alignItems="center">
 									<CardDeckPlaceholder
-										cards={socket.otherPlayers?.[1]?.handCards as any}
-										player={socket.otherPlayers?.[1] as any}
+										cards={socket.otherPlayers?.[2]?.handCards as any}
+										player={socket.otherPlayers?.[2] as any}
 										transform="rotate(180deg)"
 									/>
 								</Grid>
 							</Grid>
 							<Grid item xs={2}>
+								<CardDeckPlaceholder
+									cards={socket.otherPlayers?.[3]?.handCards as any}
+									player={socket.otherPlayers?.[3] as any}
+									transform="rotate3d(2.5, 1, 0, 180deg)"
+								/>
 								<Typography
 									variant="h1"
 									align="center"
@@ -161,8 +171,8 @@ const Table = () => {
 							<Grid item xs={2}>
 								<Grid container justify="flex-end">
 									<CardDeckPlaceholder
-										cards={socket.otherPlayers?.[2]?.handCards as any}
-										player={socket.otherPlayers?.[2] as any}
+										cards={socket.otherPlayers?.[4]?.handCards as any}
+										player={socket.otherPlayers?.[4] as any}
 										transform="rotate3d(1, 1, 0, 180deg)"
 									/>
 								</Grid>
@@ -182,8 +192,8 @@ const Table = () => {
 										</>
 									) : (
 										<CardDeckPlaceholder
-											cards={socket.otherPlayers?.[3]?.handCards as any}
-											player={socket.otherPlayers?.[3] as any}
+											cards={socket.otherPlayers?.[5]?.handCards as any}
+											player={socket.otherPlayers?.[5] as any}
 										/>
 									)}
 								</Grid>
