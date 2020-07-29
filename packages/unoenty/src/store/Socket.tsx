@@ -8,6 +8,8 @@ import useDidMount from "@/hooks/useDidMount"
 
 import { LoadingApp, LoginDialog } from "@/components"
 
+import { preloadCardPictures } from "@/utils/card"
+
 import { Game } from "@uno-game/protocols"
 
 export interface SocketContextData {
@@ -47,6 +49,8 @@ const SocketProvider = (props: SocketProviderProps) => {
 	}
 
 	const connect = async () => {
+		preloadCardPictures()
+
 		let playerId = await connectSocket()
 
 		let playerData = Auth.getPlayerData()

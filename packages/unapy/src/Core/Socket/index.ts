@@ -19,7 +19,13 @@ class Socket {
 	}
 
 	static setupSocket(http: HttpServer) {
-		io = socket(http)
+		const oneSecondInMilliseconds = 1000
+		const twoMinutesInMilliseconds = 120000
+
+		io = socket(http, {
+			pingInterval: oneSecondInMilliseconds,
+			pingTimeout: twoMinutesInMilliseconds
+		})
 	}
 
 	static setupListeners() {
