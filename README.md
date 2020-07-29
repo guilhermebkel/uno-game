@@ -42,6 +42,7 @@ A simple UNO Game made in Javascript, supposed to be blazing easier and faster t
 - Lint Staged
 - Git Commit Message Linter
 - ESLint
+- React DnD
 
 ## 👣 Project Scope
 
