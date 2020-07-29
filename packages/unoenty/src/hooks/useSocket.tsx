@@ -30,10 +30,25 @@ const useSocket = () => {
 		const otherPlayersAfterCurrentPlayer = socketStore?.game?.players?.
 			slice(currentPlayerIndex + 1, socketStore?.game?.players?.length)
 
-		const otherPlayers = [
+		let otherPlayers = [
 			...otherPlayersAfterCurrentPlayer || [],
 			...otherPlayersBeforeCurrentPlayer || []
 		]
+
+		/**
+		 * Improves layout location
+		 */
+		if (otherPlayers.length <= 4) {
+			otherPlayers = [
+				otherPlayers[0],
+				{} as any,
+				otherPlayers[1],
+				{} as any,
+				otherPlayers[2],
+				{} as any,
+				otherPlayers[3]
+			]
+		}
 
 		return (otherPlayers || []) as PlayerData[]
 	}
