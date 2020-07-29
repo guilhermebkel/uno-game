@@ -82,7 +82,7 @@ const Table = () => {
 						disabled={!socket?.currentPlayer}
 					>
 						{(!socket?.currentPlayer) ? (
-							"READY (Waiting for other players)"
+							"Waiting for other players..."
 						) : (
 							"READY?"
 						)}
