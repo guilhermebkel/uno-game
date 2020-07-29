@@ -1,5 +1,6 @@
 import socket, { Server as SocketServer } from "socket.io"
 import { Server as HttpServer } from "http"
+import MsgPackParser from "socket.io-msgpack-parser"
 
 import ListenerService from "@/Services/ListenerService"
 
@@ -24,7 +25,8 @@ class Socket {
 
 		io = socket(http, {
 			pingInterval: oneSecondInMilliseconds,
-			pingTimeout: twoMinutesInMilliseconds
+			pingTimeout: twoMinutesInMilliseconds,
+			...({ parser: MsgPackParser })
 		})
 	}
 

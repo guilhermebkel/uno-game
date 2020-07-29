@@ -1,4 +1,5 @@
 import io from "socket.io-client"
+import MsgPackParser from "socket.io-msgpack-parser"
 
 import serverConfig from "@/config/server"
 
@@ -7,7 +8,8 @@ const client = io(serverConfig.apiUrl, {
 	reconnectionAttempts: Infinity,
 	reconnectionDelay: 1000,
 	reconnectionDelayMax: 5000,
-	randomizationFactor: 0.5
+	randomizationFactor: 0.5,
+	...({ parser: MsgPackParser })
 })
 
 export const connectSocket = async () =>{
