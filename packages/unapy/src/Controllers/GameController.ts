@@ -5,7 +5,16 @@ class GameController {
 	async getGameList (req: Request, res: Response) {
 		const games = GameService.getGameList()
 
-		return res.status(200).json({ games })
+		const gameList = games.map(game => ({
+			id: game.id,
+			title: game.title,
+			status: game.status,
+			players: game.players.map(player => ({ name: player.name }))
+		}))
+
+		return res.status(200).json({
+			games: gameList
+		})
 	}
 }
 
