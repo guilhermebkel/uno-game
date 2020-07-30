@@ -79,13 +79,8 @@ const Table = () => {
 						color="primary"
 						variant="contained"
 						onClick={toggleRetry}
-						disabled={!socket?.currentPlayer}
 					>
-						{(!socket?.currentPlayer) ? (
-							"Waiting for other players..."
-						) : (
-							"READY?"
-						)}
+						READY?
 					</Button>
 				]
 			})
