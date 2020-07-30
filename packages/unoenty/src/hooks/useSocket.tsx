@@ -120,6 +120,10 @@ const useSocket = () => {
 			})
 	}
 
+	const onPong = (fn: (latency: number) => void) => {
+		socketStore.io.on("pong", fn)
+	}
+
 	return {
 		get currentPlayer (): PlayerData {
 			return getCurrentPlayer()
@@ -133,6 +137,7 @@ const useSocket = () => {
 		onPlayerWon,
 		onPlayerStateChange,
 		onCardStackBuyCardsCombo,
+		onPong,
 		toggleReady,
 		buyCard,
 		putCard

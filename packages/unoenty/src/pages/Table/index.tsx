@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { Grid, Button } from "@material-ui/core"
+import { Grid, Button, Typography } from "@material-ui/core"
 import { useParams, useHistory } from "react-router-dom"
 import { DndProvider } from "react-dnd"
 import { HTML5Backend } from "react-dnd-html5-backend"
@@ -9,6 +9,7 @@ import { useSocketStore } from "@/store/Socket"
 
 import useDidMount from "@/hooks/useDidMount"
 import useSocket from "@/hooks/useSocket"
+import useStyles from "./styles"
 
 import { LoadingComponent, Alert, Divider } from "@/components"
 
@@ -24,6 +25,8 @@ import CardProvider from "@/store/Card"
 import TableSkeleton from "@/skeletons/Table"
 
 const Table = () => {
+	const classes = useStyles()
+
 	const { gameId } = useParams()
 	const history = useHistory()
 
@@ -31,6 +34,7 @@ const Table = () => {
 	const socket = useSocket()
 
 	const [loadingTable, setLoadingTable] = useState(true)
+	const [ping, setPing] = useState(0)
 
 	const buyCard = () => {
 		socket.buyCard(gameId)
@@ -87,9 +91,14 @@ const Table = () => {
 		})
 	}
 
+	const handlePong = (latency: number) => {
+		setPing(latency)
+	}
+
 	useDidMount(() => {
 		joinGame()
 		onPlayerWon()
+		socket.onPong(handlePong)
 	})
 
 	return (
@@ -169,7 +178,11 @@ const Table = () => {
 							</Grid>
 						</Grid>
 						<Grid container alignItems="center">
-							<Grid item xs={1}></Grid>
+							<Grid item xs={1}>
+								<Typography className={classes.pingText}>
+									{ping}ms
+								</Typography>
+							</Grid>
 							<Grid item xs={10}>
 								<Grid container justify="center">
 									{socket?.currentPlayer ? (
