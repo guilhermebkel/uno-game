@@ -19,6 +19,8 @@ const useSocket = () => {
 	}
 
 	const getOtherPlayers = (): PlayerData[] => {
+		const totalPlayers = socketStore?.game?.players?.length as number
+		
 		const playerId = socketStore.playerId
 
 		const currentPlayerIndex = socketStore?.game?.players?.
@@ -38,7 +40,7 @@ const useSocket = () => {
 		/**
 		 * Improves layout location
 		 */
-		if (otherPlayers.length <= 4) {
+		if (totalPlayers <= 4) {
 			otherPlayers = [
 				otherPlayers[0],
 				{} as any,
