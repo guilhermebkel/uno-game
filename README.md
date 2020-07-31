@@ -67,8 +67,8 @@ A simple UNO Game made in Javascript, supposed to be blazing easier and faster t
 - [X] Making CI with Github Actions.
 - [X] Adding Card effects.
 - [X] Making it able to stack **Buy:2 Cards** till someone does not has any of them and so, the last player buys all the stack together.
-- [ ] Making the front-end able to support 8 players in total.
-- [ ] Being able to change the game color with help of **Buy:4 Card**.
+- [X] Making the front-end able to support 6 players in total.
+- [X] Being able to change the game color with help of **Buy:4 Card**.
 - [ ] Improving the UX of front-end (adding indicators, etc).
 - [ ] Adding an auto play system when user is afk during the game.
 - [ ] Adding a chat to Game List, Room and Table.
