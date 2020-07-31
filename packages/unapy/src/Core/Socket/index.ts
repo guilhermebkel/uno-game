@@ -6,7 +6,7 @@ import ListenerService from "@/Services/ListenerService"
 
 import CryptUtil from "@/Utils/CryptUtil"
 
-import { Player } from "@uno-game/protocols"
+import { Player, CardColors } from "@uno-game/protocols"
 
 /**
  * Kept it here to avoid circular dependency problems
@@ -63,8 +63,8 @@ class Socket {
 				ListenerService.onBuyCard(roomId, playerData.id)
 			})
 
-			client.on("PutCard", (roomId: string, cardIds: string[], ) => {
-				ListenerService.onPutCard(roomId, playerData.id, cardIds)
+			client.on("PutCard", (roomId: string, cardIds: string[], selectedColor: CardColors) => {
+				ListenerService.onPutCard(roomId, playerData.id, cardIds, selectedColor)
 			})
 
 			client.on("ToggleReady", (roomId: string, ) => {

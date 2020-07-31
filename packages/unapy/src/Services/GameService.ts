@@ -11,7 +11,8 @@ import {
 	CurrentPlayerInfo,
 	CurrentPlayerStatus,
 	CardData,
-	CardTypes
+	CardTypes,
+	CardColors
 } from "@uno-game/protocols"
 
 import GameRepository from "@/Repositories/GameRepository"
@@ -163,7 +164,7 @@ class GameService {
 		this.setGameData(gameId, game)
 	}
 
-	putCard (playerId: string, cardIds: string[], gameId: string) {
+	putCard (playerId: string, cardIds: string[], gameId: string, selectedColor: CardColors) {
 		const currentPlayerInfo = this.getCurrentPlayerInfo(gameId)
 
 		if (currentPlayerInfo.id !== playerId) {
@@ -201,7 +202,18 @@ class GameService {
 		const usedCards = [...cards, ...game?.usedCards]
 
 		const inStackCards = usedCards.slice(0, 10)
-		const outStackCards = usedCards.slice(10, usedCards.length)
+		let outStackCards = usedCards.slice(10, usedCards.length)
+
+		outStackCards = outStackCards.map(card => {
+			if (card.color === "black") {
+				return {
+					...card,
+					src: card.possibleColors.black
+				}
+			} else {
+				return card
+			}
+		})
 
 		game.usedCards = inStackCards
 		game.availableCards = [
@@ -213,9 +225,7 @@ class GameService {
 
 		this.setGameData(gameId, game)
 
-		const cardTypes = cards.map(card => card.type)
-
-		game = this.buildGameWithCardEffect(gameId, cardTypes)
+		game = this.buildGameWithCardEffect(gameId, cards, selectedColor)
 
 		this.setGameData(gameId, game)
 
@@ -370,10 +380,29 @@ class GameService {
 		)
 	}
 
-	private buildGameWithCardEffect (gameId: string, cardTypes: CardTypes[]): Game {
+	private buildGameWithCardEffect (gameId: string, cards: CardData[], selectedColor: CardColors): Game {
+		const cardTypes = cards.map(card => card.type)
+		const cardIds = cards.map(card => card.id)
+
 		const game = this.getGame(gameId)
 
 		let playerAffected: PlayerData
+
+		if (cardTypes.every(cardType => cardType === "change-color" || cardType === "buy-4")) {
+			game.currentGameColor = selectedColor
+
+			game.usedCards = game.usedCards.map(card => {
+				if (cardIds.includes(card.id)) {
+					return {
+						...card,
+						selectedColor,
+						src: card.possibleColors[selectedColor]
+					}
+				} else {
+					return card
+				}
+			})
+		}
 
 		if (cardTypes.every(cardType => cardType === "reverse")) {
 			if (cardTypes.length % 2 === 0) {
@@ -477,7 +506,8 @@ class GameService {
 						topStackCard?.color === handCard.color ||
 						handCard.type === "change-color" ||
 						handCard.type === "buy-4" ||
-						topStackCard?.type === handCard.type
+						topStackCard?.type === handCard.type ||
+						handCard.color === game.currentGameColor
 					),
 					canBeCombed: game.currentCardCombo.includes(handCard.type)
 				}))

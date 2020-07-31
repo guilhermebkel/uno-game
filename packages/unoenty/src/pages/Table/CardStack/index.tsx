@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react"
 import { Container, Menu } from "@material-ui/core"
 import { useDrop } from "react-dnd"
 
-import { CardData } from "@uno-game/protocols"
+import { CardData, CardTypes, CardColors } from "@uno-game/protocols"
 
 import useSocket from "@/hooks/useSocket"
 import useDidMount from "@/hooks/useDidMount"
@@ -13,9 +13,11 @@ import useStyles from "@/pages/Table/CardStack/styles"
 
 import { useCardStore } from "@/store/Card"
 
+import ChangeColorModal from "@/pages/Table/ChangeColorModal"
+
 type Props = {
 	cards: CardData[]
-	onDrop: (cardIds: string[]) => void
+	onDrop: (cardIds: string[], selectedColor: CardColors) => void
 }
 
 const CardStack = (props: Props) => {
@@ -30,19 +32,27 @@ const CardStack = (props: Props) => {
 	const classes = useStyles()
 	const cardStackRef = useRef()
 
-	const handleDrop = (cardId: string) => {
+	const handleDrop = async (card: any) => {
+		let selectedColor: CardColors = "black"
+
+		const isColorEffectCard = (cardType: CardTypes) => cardType === "buy-4" || cardType === "change-color"
+
 		const cardComboIds = cardStore?.selectedCards?.reverse().map(card => card.id)
 
+		if (isColorEffectCard(card.cardType) || cardStore?.selectedCards?.every(card => isColorEffectCard(card.type))) {
+			selectedColor = await ChangeColorModal.open()
+		}
+
 		if (cardComboIds?.length > 1) {
-			onDrop(cardComboIds)
+			onDrop(cardComboIds, selectedColor)
 		} else {
-			onDrop([cardId])
+			onDrop([card.id], selectedColor)
 		}
 	}
 
 	const [{ isHovering }, drop] = useDrop({
     accept: CARD_TYPE,
-		drop: (item: any) => handleDrop(item.id),
+		drop: (item: any) => handleDrop(item),
 		collect: monitor => ({
 			isHovering: monitor.isOver()
 		})

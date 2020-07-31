@@ -1,5 +1,6 @@
 import GameService from "@/Services/GameService"
 import PlayerService from "@/Services/PlayerService"
+import { CardColors } from "@uno-game/protocols"
 
 /**
  * Usually the class which handles events from client
@@ -38,12 +39,12 @@ class ListenerService {
 		}
 	}
 
-	onPutCard (gameId: string, playerId: string, cardIds: string[]) {
+	onPutCard (gameId: string, playerId: string, cardIds: string[], selectedColor: CardColors) {
 		const gameExists = GameService.gameExists(gameId)
 		const playerExists = PlayerService.playerExists(playerId)
 
 		if (gameExists && playerExists) {
-			GameService.putCard(playerId, cardIds, gameId)
+			GameService.putCard(playerId, cardIds, gameId, selectedColor)
 		}
 	}
 

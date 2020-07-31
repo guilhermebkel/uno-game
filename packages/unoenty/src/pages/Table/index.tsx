@@ -24,6 +24,8 @@ import CardProvider from "@/store/Card"
 
 import TableSkeleton from "@/skeletons/Table"
 
+import { CardColors } from "@uno-game/protocols"
+
 const Table = () => {
 	const classes = useStyles()
 
@@ -40,8 +42,8 @@ const Table = () => {
 		socket.buyCard(gameId)
 	}
 
-	const onDrop = (cardIds: string[]) => {
-		socket.putCard(gameId, cardIds)
+	const onDrop = (cardIds: string[], selectedColor: CardColors) => {
+		socket.putCard(gameId, cardIds, selectedColor)
 	}
 
 	const toggleRetry = () => {

@@ -2,7 +2,8 @@ export type CardColors =
 "yellow" |
 "blue" |
 "green" |
-"red"
+"red" |
+"black"
 
 export type CardTypes =
 "0" |
@@ -21,6 +22,10 @@ export type CardTypes =
 "buy-4" |
 "reverse"
 
+type ColorMap = {
+	[key in CardColors]?: string
+}
+
 export type CardData = {
 	id: string
 	src: string
@@ -32,4 +37,6 @@ export type CardData = {
 	 * If the card can be mixed with other cards of same type
 	 */
 	canBeCombed?: boolean
+	selectedColor?: CardColors
+	possibleColors?: ColorMap
 }

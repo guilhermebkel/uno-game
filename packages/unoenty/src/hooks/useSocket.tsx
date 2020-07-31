@@ -4,7 +4,8 @@ import {
 	PlayerData,
 	Game,
 	PlayerState,
-	GameEvents
+	GameEvents,
+	CardColors
 } from "@uno-game/protocols"
 
 const useSocket = () => {
@@ -87,8 +88,8 @@ const useSocket = () => {
 		socketStore.io.emit("BuyCard", gameId)
 	}
 
-	const putCard = (gameId: string, cardId: string[]) => {
-		socketStore.io.emit("PutCard", gameId, cardId)
+	const putCard = (gameId: string, cardIds: string[], selectedColor: CardColors) => {
+		socketStore.io.emit("PutCard", gameId, cardIds, selectedColor)
 	}
 
 	const onGameStart = (fn: Function) => {
