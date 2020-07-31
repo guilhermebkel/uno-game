@@ -11,7 +11,6 @@ import {
 	CurrentPlayerInfo,
 	CurrentPlayerStatus,
 	CardData,
-	CardTypes,
 	CardColors
 } from "@uno-game/protocols"
 
