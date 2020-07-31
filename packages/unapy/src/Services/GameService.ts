@@ -237,7 +237,7 @@ class GameService {
 
 		const allCards = [...game?.cards]
 
-		const currentPlayer = game?.players?.[0]
+		const currentPlayer = game?.players?.[game.currentPlayerIndex]
 
 		game.status = "playing"
 
@@ -565,6 +565,8 @@ class GameService {
 	}
 
 	private endGame (gameId: string) {
+		const winnerInfo = this.getCurrentPlayerInfo(gameId)
+
 		const game = this.getGame(gameId)
 
 		const cards = CardService.setupRandomCards()
@@ -573,9 +575,11 @@ class GameService {
 
 		game.round = 0
 
-		game.currentPlayerIndex = 0
+		const winnerIndex = game.players.findIndex(player => player.id === winnerInfo.id)
 
-		game.nextPlayerIndex = 1
+		game.currentPlayerIndex = winnerIndex
+
+		game.nextPlayerIndex = NumberUtil.getSanitizedValueWithBoundaries(game?.currentPlayerIndex + 1, game?.players?.length, 0)
 
 		game.availableCards = []
 
