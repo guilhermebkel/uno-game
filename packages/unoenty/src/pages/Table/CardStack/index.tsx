@@ -40,7 +40,7 @@ const CardStack = (props: Props) => {
 		const cardComboIds = cardStore?.selectedCards?.reverse().map(card => card.id)
 
 		const isSingleColorEffect = isColorEffectCard(card.cardType)
-		const isComboColorEffect = cardStore?.selectedCards?.length > 1 && cardStore?.selectedCards?.every(card => isColorEffectCard(card.type))
+		const isComboColorEffect = cardComboIds?.length > 1 && cardStore?.selectedCards?.every(card => isColorEffectCard(card.type))
 
 		if (isSingleColorEffect || isComboColorEffect) {
 			selectedColor = await ChangeColorModal.open()
