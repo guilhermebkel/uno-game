@@ -208,6 +208,7 @@ class GameService {
 			if (card.color === "black") {
 				return {
 					...card,
+					selectedColor: null,
 					src: card.possibleColors.black
 				}
 			} else {
