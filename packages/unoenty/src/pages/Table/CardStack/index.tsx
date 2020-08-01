@@ -44,6 +44,10 @@ const CardStack = (props: Props) => {
 
 		if (isSingleColorEffect || isComboColorEffect) {
 			selectedColor = await ChangeColorModal.open()
+
+			if (!selectedColor) {
+				return
+			}
 		}
 
 		if (cardComboIds?.length > 1) {
