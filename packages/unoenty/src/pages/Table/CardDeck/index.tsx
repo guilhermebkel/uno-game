@@ -109,7 +109,7 @@ type CardDeckProps = {
 }
 
 const CardDeck = (props: CardDeckProps) => {
-	const { cards, player } = props
+	const { cards } = props
 
 	const {
     isDraggingAnyCard
@@ -198,10 +198,8 @@ const CardDeck = (props: CardDeckProps) => {
 					className={classes.card}
 					index={index}
 					style={{
-						...(player.isCurrentRoundPlayer ? {
-							transform: `rotate(${getCardInclination(index)}deg)`,
-							bottom: getCardElevation(index)
-						} : {}),
+						transform: `rotate(${getCardInclination(index)}deg)`,
+						bottom: getCardElevation(index),
 						zIndex: (index + 2),
 						left: index * CARD_WIDTH
 					}}

@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react"
 import { Container, Menu } from "@material-ui/core"
 import { useDrop } from "react-dnd"
 
-import { CardData, CardTypes, CardColors } from "@uno-game/protocols"
+import { CardData, CardTypes, CardColors, Game } from "@uno-game/protocols"
 
 import useSocket from "@/hooks/useSocket"
 import useDidMount from "@/hooks/useDidMount"
@@ -17,8 +17,11 @@ import { DraggedCardItem } from "@/pages/Table/CardDeck"
 
 import ChangeColorModal from "@/pages/Table/ChangeColorModal"
 
+import arrowCircle from "@/assets/arrow_circle.png"
+
 type Props = {
 	cards: CardData[]
+	game: Game
 	onDrop: (cardIds: string[], selectedColor: CardColors) => void
 }
 
@@ -29,7 +32,7 @@ const CardStack = (props: Props) => {
 
 	const cardStore = useCardStore()
 
-	const { cards, onDrop } = props
+	const { cards, onDrop, game } = props
 
 	const classes = useStyles()
 	const cardStackRef = useRef()
@@ -122,6 +125,14 @@ const CardStack = (props: Props) => {
 					/>
 				))}
 			</Container>
+			<img
+				className={classes.arrowCircle}
+				alt="arrow circle"
+				style={{
+					transform: `rotate3d(${game?.direction === "clockwise" ? 0 : 180}, -0, 0, 180deg)`
+				}}
+				src={arrowCircle}
+			/>
 		</>
 	)
 }

@@ -14,7 +14,7 @@ const useStyles = makeStyles(theme => {
 			borderRadius: "100%",
 			transition: theme.transitions.create("all", {
 				duration: theme.transitions.duration.standard
-			}),
+			})
 		},
 		card: {
 			height: cardContainerSize,
@@ -31,6 +31,17 @@ const useStyles = makeStyles(theme => {
 			fontWeight: "bolder",
 			fontSize: Device.isMobile ? `${theme.spacing(3)}px` : `${theme.spacing(2)}px`,
 			padding: `${theme.spacing(1)}px ${theme.spacing(2)}px`
+		},
+		arrowCircle: {
+			position: "absolute",
+			width: Device.isMobile ? 150 : 300,
+			height: Device.isMobile ? 130 : 260,
+			opacity: 0.05,
+			zIndex: -1,
+			filter: "invert(100%) sepia(49%) saturate(2%) hue-rotate(207deg) brightness(111%) contrast(101%)",
+			transition: theme.transitions.create("all", {
+				duration: theme.transitions.duration.standard
+			})
 		}
 	}
 })

@@ -153,19 +153,22 @@ const Table = () => {
 								<Grid container justify="center" alignItems="center">
 									<CardStack
 										cards={socketStore?.game?.usedCards as any}
+										game={socketStore?.game as any}
 										onDrop={onDrop}
 									/>
 
-									<Divider size={5} />
-
 									{socket?.currentPlayer?.canBuyCard && (
-										<Button
-											color="primary"
-											variant="contained"
-											onClick={buyCard}
-										>
-											BUY CARD
-										</Button>
+										<>
+											<Divider size={5} />
+
+											<Button
+												color="primary"
+												variant="contained"
+												onClick={buyCard}
+											>
+												BUY CARD
+											</Button>
+										</>
 									)}
 								</Grid>
 							</Grid>
