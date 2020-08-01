@@ -1,9 +1,10 @@
 import React from "react"
 import { useDragLayer, XYCoord } from "react-dnd"
 
-import { CARD_TYPE } from "@/pages/Table/CardDeck"
+import { CARD_TYPE, DraggedCardItem } from "@/pages/Table/CardDeck"
 
 import useStyles from "@/pages/Table/CustomCardDragPreview/styles"
+
 import { useCardStore } from "@/store/Card"
 
 const CustomCardDragPreview = () => {
@@ -14,7 +15,7 @@ const CustomCardDragPreview = () => {
     initialOffset,
     currentOffset
   } = useDragLayer((monitor) => ({
-    item: monitor.getItem(),
+    item: monitor.getItem() as DraggedCardItem,
     itemType: monitor.getItemType(),
     initialOffset: monitor.getInitialSourceClientOffset(),
     currentOffset: monitor.getSourceClientOffset(),

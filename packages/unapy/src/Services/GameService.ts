@@ -388,7 +388,13 @@ class GameService {
 
 		let playerAffected: PlayerData
 
-		if (cardTypes.every(cardType => cardType === "change-color" || cardType === "buy-4")) {
+		const isBuy4Card = cardTypes.every(cardType => cardType === "buy-4")
+		const isBuy2Card = cardTypes.every(cardType => cardType === "buy-2")
+		const isChangeColorCard = cardTypes.every(cardType => cardType === "change-color")
+		const isReverseCard = cardTypes.every(cardType => cardType === "reverse")
+		const isBlockCard = cardTypes.every(cardType => cardType === "block")
+
+		if (isChangeColorCard || isBuy4Card) {
 			game.currentGameColor = selectedColor
 
 			game.usedCards = game.usedCards.map(card => {
@@ -404,7 +410,7 @@ class GameService {
 			})
 		}
 
-		if (cardTypes.every(cardType => cardType === "reverse")) {
+		if (isReverseCard) {
 			if (cardTypes.length % 2 === 0) {
 				game.nextPlayerIndex = game.currentPlayerIndex
 			} else if (game.direction === "clockwise") {
@@ -418,7 +424,7 @@ class GameService {
 			}
 		}
 
-		if (cardTypes.every(cardType => cardType === "block")) {
+		if (isBlockCard) {
 			cardTypes.forEach(() => {
 				const nextPlayerIndex = NumberUtil.getSanitizedValueWithBoundaries(game?.nextPlayerIndex, game?.players?.length, 0)
 				playerAffected = game?.players?.[nextPlayerIndex]
@@ -433,7 +439,7 @@ class GameService {
 			})
 		}
 
-		if (cardTypes.every(cardType => cardType === "buy-2") || cardTypes.every(cardType => cardType === "buy-4")) {
+		if (isBuy2Card || isBuy4Card) {
 			game.currentCardCombo = [
 				...game.currentCardCombo,
 				...cardTypes

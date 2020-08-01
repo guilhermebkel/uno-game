@@ -15,6 +15,17 @@ import Device from "@/utils/device"
 export const CARD_TYPE = "DraggableCard"
 const CARD_WIDTH = Device.isMobile ? 20 : 40
 
+export type DraggedCardItem = {
+	type: "DraggableCard"
+	id: string
+	index: number
+	src: string
+	name: string
+	cardType: CardTypes
+	selected: boolean
+	className: string
+}
+
 type CardProps = {
 	card: CardData
 	index: number
@@ -56,7 +67,7 @@ const DraggableCard = (props: CardProps) => {
 			cardType: card.type,
 			selected,
 			className
-		},
+		} as DraggedCardItem,
     collect: monitor => ({
       isDragging: monitor.isDragging()
 		}),
@@ -98,7 +109,7 @@ type CardDeckProps = {
 }
 
 const CardDeck = (props: CardDeckProps) => {
-	const { cards } = props
+	const { cards, player } = props
 
 	const {
     isDraggingAnyCard
@@ -187,10 +198,12 @@ const CardDeck = (props: CardDeckProps) => {
 					className={classes.card}
 					index={index}
 					style={{
-						transform: `rotate(${getCardInclination(index)}deg)`,
+						...(player.isCurrentRoundPlayer ? {
+							transform: `rotate(${getCardInclination(index)}deg)`,
+							bottom: getCardElevation(index)
+						} : {}),
 						zIndex: (index + 2),
-						left: index * CARD_WIDTH,
-						bottom: getCardElevation(index)
+						left: index * CARD_WIDTH
 					}}
 					onClick={() => toggleSelectedCard(card.id)}
 					selected={isCardSelected(card.id)}

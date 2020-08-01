@@ -13,6 +13,8 @@ import useStyles from "@/pages/Table/CardStack/styles"
 
 import { useCardStore } from "@/store/Card"
 
+import { DraggedCardItem } from "@/pages/Table/CardDeck"
+
 import ChangeColorModal from "@/pages/Table/ChangeColorModal"
 
 type Props = {
@@ -32,8 +34,8 @@ const CardStack = (props: Props) => {
 	const classes = useStyles()
 	const cardStackRef = useRef()
 
-	const handleDrop = async (card: any) => {
-		let selectedColor: CardColors = "black"
+	const handleDrop = async (card: DraggedCardItem) => {
+		let selectedColor = "" as CardColors
 
 		const isColorEffectCard = (cardType: CardTypes) => cardType === "buy-4" || cardType === "change-color"
 

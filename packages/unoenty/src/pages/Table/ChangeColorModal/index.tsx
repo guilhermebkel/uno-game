@@ -8,7 +8,7 @@ import NodeUtil from "@/utils/node"
 
 import { CardColors } from "@uno-game/protocols"
 
-import useStyles from "./styles"
+import useStyles from "@/pages/Table/ChangeColorModal/styles"
 
 const COLORS: Array<CardColors> = ["red", "blue", "green", "yellow"]
 
