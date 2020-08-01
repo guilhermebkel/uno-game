@@ -84,11 +84,11 @@ const CardDeckPlaceholder = (props: CardDeckPlaceholderProps) => {
 				)}
 
 					<Container
-					disableGutters
-					className={classes.cardContainer}
-					maxWidth={false}
-					style={{ transform }}
-				>
+						disableGutters
+						className={classes.cardContainer}
+						maxWidth={false}
+						style={{ transform }}
+					>
 					
 					{cards?.map((card, index) => (
 						<img
