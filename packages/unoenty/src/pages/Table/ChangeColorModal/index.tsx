@@ -25,7 +25,7 @@ const ChangeColorModal = (props: ChangeColorModalProps) => {
 
 	const handleClose = (color: CardColors) => {
 		callback(color)
-		handleClose()
+		setOpened(false)
 	}
 
 	return (
