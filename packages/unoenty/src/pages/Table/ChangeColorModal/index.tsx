@@ -23,14 +23,18 @@ const ChangeColorModal = (props: ChangeColorModalProps) => {
 
 	const [opened, setOpened] = useState(true)
 
-	const handleClose = (color: CardColors) => {
-		callback(color)
+	const handleClose = () => {
 		setOpened(false)
+	}
+
+	const handleSelectColor = (color: CardColors) => {
+		callback(color)
+		handleClose()
 	}
 
 	return (
 		<Dialog
-			onClose={() => handleClose(null as any)}
+			onClose={handleClose}
 			open={opened}
 			PaperProps={{
 				className: classes.dialogPaper
@@ -53,7 +57,7 @@ const ChangeColorModal = (props: ChangeColorModalProps) => {
 								width={36}
 								height={36}
 								style={{ backgroundColor: color }}
-								onClick={() => handleClose(color)}
+								onClick={() => handleSelectColor(color)}
 							/>
 						</Grid>
 					</Grid>
