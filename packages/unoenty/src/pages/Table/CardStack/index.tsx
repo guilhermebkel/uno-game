@@ -129,7 +129,7 @@ const CardStack = (props: Props) => {
 				className={classes.arrowCircle}
 				alt="arrow circle"
 				style={{
-					transform: `rotate3d(${game?.direction === "clockwise" ? 0 : 180}, -0, 0, 180deg)`
+					transform: `rotate3d(${game?.direction === "clockwise" ? 180 : 0}, -0, 0, 180deg)`
 				}}
 				src={arrowCircle}
 			/>
