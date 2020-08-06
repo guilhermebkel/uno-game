@@ -46,9 +46,7 @@ const Table = () => {
 		socket.putCard(gameId, cardIds, selectedColor)
 	}
 
-	const toggleRetry = () => {
-		socket.toggleReady(gameId)
-
+	const waitForRetryModal = () => {
 		Alert.warning({
 			title: "Waiting",
 			message: "Waiting for other players to click on retry button...",
@@ -60,6 +58,33 @@ const Table = () => {
 		})
 	}
 
+	const toggleRetry = () => {
+		socket.toggleReady(gameId)
+
+		waitForRetryModal()
+	}
+
+	const requestRetryModal = () => {
+		Alert.success({
+			message: "In case you want to keep on playing, click on 'READY?' button...",
+			title: "Retry",
+			closeButtonText: "QUIT",
+			onClose: () => {
+				window.location.href = "/"
+			},
+			customButtons: [
+				<Button
+					fullWidth
+					color="primary"
+					variant="contained"
+					onClick={toggleRetry}
+				>
+					READY?
+				</Button>
+			]
+		})
+	}
+
 	const joinGame = async () => {
 		const game = await socket.joinGame(gameId)
 
@@ -67,30 +92,9 @@ const Table = () => {
 
 		if (game.status === "ended") {
 			if (!currentPlayer || currentPlayer?.ready === true) {
-				Alert.warning({
-					title: "Waiting",
-					message: "Waiting for other players to click on retry button...",
-					closable: false
-				})
+				waitForRetryModal()
 			} else if (currentPlayer?.ready === false) {
-				Alert.success({
-					message: "In case you want to keep on playing, click on 'READY?' button...",
-					title: "Retry",
-					closeButtonText: "QUIT",
-					onClose: () => {
-						window.location.href = "/"
-					},
-					customButtons: [
-						<Button
-							fullWidth
-							color="primary"
-							variant="contained"
-							onClick={toggleRetry}
-						>
-							READY?
-						</Button>
-					]
-				})
+				requestRetryModal()
 			} else {
 				history.push("/")
 			}
