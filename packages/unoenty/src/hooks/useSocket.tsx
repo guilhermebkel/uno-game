@@ -11,10 +11,10 @@ import {
 const useSocket = () => {
 	const socketStore = useSocketStore()
 
-	const getCurrentPlayer = (): PlayerData => {
+	const getCurrentPlayer = (players?: PlayerData[]): PlayerData => {
 		const playerId = socketStore.playerId
 
-		const player = socketStore?.game?.players?.find(player => player.id === playerId)
+		const player = (players || socketStore?.game?.players)?.find(player => player.id === playerId)
 
 		return player as PlayerData
 	}
@@ -24,8 +24,12 @@ const useSocket = () => {
 		
 		const playerId = socketStore.playerId
 
-		const currentPlayerIndex = socketStore?.game?.players?.
-			findIndex(player => player.id === playerId) || 0
+		let currentPlayerIndex = socketStore?.game?.players?.
+			findIndex(player => player.id === playerId) as number
+			
+		if (currentPlayerIndex === -1) {
+			currentPlayerIndex = totalPlayers
+		}
 
 		const otherPlayersBeforeCurrentPlayer = socketStore?.game?.players?.
 			slice(0, currentPlayerIndex)
@@ -132,6 +136,7 @@ const useSocket = () => {
 		get otherPlayers (): PlayerData[] {
 			return getOtherPlayers()
 		},
+		getCurrentPlayer,
 		createGame,
 		joinGame,
 		onGameStart,

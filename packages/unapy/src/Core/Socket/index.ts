@@ -27,7 +27,7 @@ class Socket {
 	}
 
 	static setupListeners() {
-		io.on("connection", ListenerService.onConnection)
+		io.on("connection", client => ListenerService.onConnection(client))
 	}
 
 	static get io() {

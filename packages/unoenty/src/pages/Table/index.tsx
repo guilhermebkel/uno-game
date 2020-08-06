@@ -63,8 +63,37 @@ const Table = () => {
 	const joinGame = async () => {
 		const game = await socket.joinGame(gameId)
 
+		const currentPlayer = socket.getCurrentPlayer(game.players)
+
 		if (game.status === "ended") {
-			history.push("/")
+			if (!currentPlayer || currentPlayer?.ready === true) {
+				Alert.warning({
+					title: "Waiting",
+					message: "Waiting for other players to click on retry button...",
+					closable: false
+				})
+			} else if (currentPlayer?.ready === false) {
+				Alert.success({
+					message: "In case you want to keep on playing, click on 'READY?' button...",
+					title: "Retry",
+					closeButtonText: "QUIT",
+					onClose: () => {
+						window.location.href = "/"
+					},
+					customButtons: [
+						<Button
+							fullWidth
+							color="primary"
+							variant="contained"
+							onClick={toggleRetry}
+						>
+							READY?
+						</Button>
+					]
+				})
+			} else {
+				history.push("/")
+			}
 		}
 
 		setLoadingTable(false)
