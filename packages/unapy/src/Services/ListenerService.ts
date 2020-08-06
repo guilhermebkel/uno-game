@@ -1,12 +1,62 @@
+import { Socket } from "socket.io"
+
 import GameService from "@/Services/GameService"
 import PlayerService from "@/Services/PlayerService"
-import { CardColors } from "@uno-game/protocols"
+
+import CryptUtil from "@/Utils/CryptUtil"
+
+import { CardColors, Player } from "@uno-game/protocols"
 
 /**
  * Usually the class which handles events from client
  */
 class ListenerService {
-	onJoinGame (gameId: string, playerId: string) {
+	onConnection (client: Socket) {
+		const playerData = {} as Player
+
+		client.emit("PlayerConnected", client.id)
+
+		client.on("SetPlayerData", (playerId: string, playerName: string) => {
+			playerData.id = playerId
+			playerData.name = playerName
+
+			this.onSetPlayerData(playerId, playerName)
+
+			client.emit("PlayerDataSet")
+		})
+
+		client.on("CreateGame", () => {
+			const roomId = CryptUtil.makeShortUUID()
+
+			client.join(roomId)
+
+			this.onCreateGame(roomId, playerData.id)
+		})
+
+		client.on("JoinGame", (roomId: string) => {
+			client.join(roomId)
+
+			this.onJoinGame(roomId, playerData.id)
+		})
+
+		client.on("BuyCard", (roomId: string) => {
+			this.onBuyCard(roomId, playerData.id)
+		})
+
+		client.on("PutCard", (roomId: string, cardIds: string[], selectedColor: CardColors) => {
+			this.onPutCard(roomId, playerData.id, cardIds, selectedColor)
+		})
+
+		client.on("ToggleReady", (roomId: string) => {
+			this.onToggleReady(roomId, playerData.id)
+		})
+
+		client.on("disconnect", () => {
+			this.onPlayerDisconnect(playerData.id)
+		})
+	}
+
+	private onJoinGame (gameId: string, playerId: string) {
 		const gameExists = GameService.gameExists(gameId)
 
 		if (gameExists) {
@@ -14,7 +64,7 @@ class ListenerService {
 		}
 	}
 
-	onCreateGame (gameId: string, playerId: string) {
+	private onCreateGame (gameId: string, playerId: string) {
 		const playerExists = PlayerService.playerExists(playerId)
 
 		if (playerExists) {
@@ -22,7 +72,7 @@ class ListenerService {
 		}
 	}
 
-	onPlayerDisconnect (playerId: string) {
+	private onPlayerDisconnect (playerId: string) {
 		const playerExists = PlayerService.playerExists(playerId)
 
 		if (playerExists) {
@@ -30,7 +80,7 @@ class ListenerService {
 		}
 	}
 
-	onBuyCard (gameId: string, playerId: string) {
+	private onBuyCard (gameId: string, playerId: string) {
 		const gameExists = GameService.gameExists(gameId)
 		const playerExists = PlayerService.playerExists(playerId)
 
@@ -39,7 +89,7 @@ class ListenerService {
 		}
 	}
 
-	onPutCard (gameId: string, playerId: string, cardIds: string[], selectedColor: CardColors) {
+	private onPutCard (gameId: string, playerId: string, cardIds: string[], selectedColor: CardColors) {
 		const gameExists = GameService.gameExists(gameId)
 		const playerExists = PlayerService.playerExists(playerId)
 
@@ -48,7 +98,7 @@ class ListenerService {
 		}
 	}
 
-	onToggleReady (gameId: string, playerId: string) {
+	private onToggleReady (gameId: string, playerId: string) {
 		const gameExists = GameService.gameExists(gameId)
 		const playerExists = PlayerService.playerExists(playerId)
 
@@ -57,7 +107,7 @@ class ListenerService {
 		}
 	}
 
-	onSetPlayerData (playerId: string, playerName: string) {
+	private onSetPlayerData (playerId: string, playerName: string) {
 		PlayerService.setPlayerData({
 			id: playerId,
 			name: playerName
