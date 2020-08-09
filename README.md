@@ -3,7 +3,7 @@
 </p>	
 
 <h3 align="center">
-  A WIP UNO Game made in Javascript 🎴
+  A UNO Game made in Javascript 🎴
 </h3>
 
 <p align="center">
@@ -24,6 +24,10 @@
 	<a href="https://github.com/guilhermebkel/uno-game">
 		<img alt="unapy build" src="https://github.com/guilhermebkel/uno-game/workflows/Unapy%20CI/badge.svg" />
 	</a>
+</p>
+
+<p align="center">
+	<a href="https://uno.guilherr.me">Click here to play this game</a>
 </p>
 
 ## 📌 Overview
@@ -75,3 +79,26 @@ A simple UNO Game made in Javascript, supposed to be blazing easier and faster t
 - [ ] Adding a countdown for every player round.
 - [ ] Adding a score to the game.
 - [X] Making player able to put more than one card on stack.
+
+## 🚀 Getting started
+
+1. Clone this repository
+2. Run the following commands
+```sh
+npm install # Install all shared dependencies
+npm run install:unapy # Install dependencies for api
+npm run install:unoenty # Install dependencies for client
+npm run bootstrap # Link all packages dependencies together
+```
+3. Run the command bellow inside **packages/unoenty** and **packages/unapy** to start api and client.
+```sh
+npm run dev
+```
+
+Right here everything should be working fine. So, **api** will be available at **http://localhost:5000** and **client** will be available at **http://localhost:4000**.
+
+## 👏 Contributing
+
+1. Clone this repository to your machine.
+2. Create a new branch locally following the **Git Karma** pattern. Ex: feat/my-awesome-feature.
+3. Then, after coding your contribution, make a merge request for your branch.
