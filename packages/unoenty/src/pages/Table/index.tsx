@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { Grid, Button, Typography } from "@material-ui/core"
+import { Grid, Button } from "@material-ui/core"
 import { useParams, useHistory } from "react-router-dom"
 import { DndProvider } from "react-dnd"
 import { HTML5Backend } from "react-dnd-html5-backend"
@@ -9,7 +9,6 @@ import { useSocketStore } from "@/store/Socket"
 
 import useDidMount from "@/hooks/useDidMount"
 import useSocket from "@/hooks/useSocket"
-import useStyles from "./styles"
 
 import { LoadingComponent, Alert, Divider } from "@/components"
 
@@ -19,6 +18,7 @@ import CardStack from "@/pages/Table/CardStack"
 import CardDeck from "@/pages/Table/CardDeck"
 import CardDeckPlaceholder from "@/pages/Table/CardDeckPlaceholder"
 import CustomCardDragPreview from "@/pages/Table/CustomCardDragPreview"
+import Latency from "@/pages/Table/Latency"
 
 import CardProvider from "@/store/Card"
 
@@ -27,8 +27,6 @@ import TableSkeleton from "@/skeletons/Table"
 import { CardColors } from "@uno-game/protocols"
 
 const Table = () => {
-	const classes = useStyles()
-
 	const { gameId } = useParams()
 	const history = useHistory()
 
@@ -36,7 +34,6 @@ const Table = () => {
 	const socket = useSocket()
 
 	const [loadingTable, setLoadingTable] = useState(true)
-	const [ping, setPing] = useState(0)
 
 	const buyCard = () => {
 		socket.buyCard(gameId)
@@ -46,7 +43,7 @@ const Table = () => {
 		socket.putCard(gameId, cardIds, selectedColor)
 	}
 
-	const waitForRetryModal = () => {
+	const openWaitForRetryModal = () => {
 		Alert.warning({
 			title: "Waiting",
 			message: "Waiting for other players to click on retry button...",
@@ -61,10 +58,10 @@ const Table = () => {
 	const toggleRetry = () => {
 		socket.toggleReady(gameId)
 
-		waitForRetryModal()
+		openWaitForRetryModal()
 	}
 
-	const requestRetryModal = () => {
+	const openRequestRetryModal = () => {
 		Alert.success({
 			message: "In case you want to keep on playing, click on 'READY?' button...",
 			title: "Retry",
@@ -92,9 +89,9 @@ const Table = () => {
 
 		if (game.status === "ended") {
 			if (!currentPlayer || currentPlayer?.ready === true) {
-				waitForRetryModal()
+				openWaitForRetryModal()
 			} else if (currentPlayer?.ready === false) {
-				requestRetryModal()
+				openRequestRetryModal()
 			} else {
 				history.push("/")
 			}
@@ -126,14 +123,9 @@ const Table = () => {
 		})
 	}
 
-	const handlePong = (latency: number) => {
-		setPing(latency)
-	}
-
 	useDidMount(() => {
 		joinGame()
 		onPlayerWon()
-		socket.onPong(handlePong)
 	})
 
 	return (
@@ -217,15 +209,14 @@ const Table = () => {
 						</Grid>
 						<Grid container alignItems="center">
 							<Grid item xs={1}>
-								<Typography className={classes.pingText}>
-									{ping}ms
-								</Typography>
+								<Latency />
 							</Grid>
 							<Grid item xs={10}>
 								<Grid container justify="center">
 									{socket?.currentPlayer ? (
 										<>
 											<CustomCardDragPreview />
+
 											<CardDeck
 												cards={socket.currentPlayer?.handCards as any}
 												player={socket.currentPlayer as any}

@@ -101,6 +101,7 @@ const CardStack = (props: Props) => {
 			>
 				{cardStackStateMessage}
 			</Menu>
+
 			<Container
 				disableGutters
 				className={classes.cardContainer}
@@ -125,6 +126,7 @@ const CardStack = (props: Props) => {
 					/>
 				))}
 			</Container>
+
 			<img
 				className={classes.arrowCircle}
 				alt="arrow circle"

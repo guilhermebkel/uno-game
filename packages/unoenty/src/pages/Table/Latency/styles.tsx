@@ -1,7 +1,7 @@
 import { makeStyles } from "@material-ui/core"
 
 const useStyles = makeStyles({
-	pingText: {
+	latencyText: {
 		position: "fixed",
 		bottom: 10,
 		left: 10,

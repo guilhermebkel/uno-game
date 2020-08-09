@@ -60,8 +60,7 @@ A simple UNO Game made in Javascript, supposed to be blazing easier and faster t
 - [X] Implementing a server integration with Room Page to make it to work.
 - [ ] Refactoring the Room Page to give it a better looking.
 - [X] Implementing a monorepository manager.
-- [ ] Updating README with contributors info.
-- [ ] Updating README with screenshots/demo info.
+- [X] Updating README with contributors info.
 - [ ] Changing the card assets (in order to avoid copyright issues).
 - [ ] Implementing sounds.
 - [X] Adding a simple account service (with no database).
