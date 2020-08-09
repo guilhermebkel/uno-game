@@ -12,8 +12,8 @@ const Latency = () => {
 
 	const [latency, setLatency] = useState(0)
 
-	const handlePong = (latencyResult: number) => {
-		setLatency(latencyResult)
+	const handlePong = (latencyResponse: number) => {
+		setLatency(latencyResponse)
 	}
 
 	useDidMount(() => {
