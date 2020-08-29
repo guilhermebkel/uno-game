@@ -88,6 +88,8 @@ npm run install:unapy # Install dependencies for api
 npm run install:unoenty # Install dependencies for client
 npm run bootstrap # Link all packages dependencies together
 ```
+2. Copy the **.env.example** inside **packages/unoenty** and **packages/unapy** turning it into a **.env** file.
+
 3. Run the command bellow inside **packages/unoenty** and **packages/unapy** to start api and client.
 ```sh
 npm run dev
