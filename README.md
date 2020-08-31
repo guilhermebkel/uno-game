@@ -77,6 +77,7 @@ A simple UNO Game made in Javascript, supposed to be blazing easier and faster t
 - [ ] Adding a chat to Game List, Room and Table.
 - [ ] Adding a countdown for every player round.
 - [X] Making player able to put more than one card on stack.
+- [ ] Notificating when a player gets in or out of a room
 
 ## 🚀 Getting started
 
