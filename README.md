@@ -47,6 +47,7 @@ A simple UNO Game made in Javascript, supposed to be blazing easier and faster t
 - Git Commit Message Linter
 - ESLint
 - React DnD
+- MsgPackParser
 
 ## 👣 Project Scope
 
