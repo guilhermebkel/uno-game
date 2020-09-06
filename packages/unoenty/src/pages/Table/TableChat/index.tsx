@@ -20,12 +20,16 @@ import useStyles from "@/pages/Table/TableChat/styles"
 
 import useSocket from "@/hooks/useSocket"
 import useDidMount from "@/hooks/useDidMount"
+import useBackButton from "@/hooks/useBackButton"
 import { useSocketStore } from "@/store/Socket"
+
+import DeviceUtil from "@/utils/device"
 
 const Chat: React.FC = () => {
 	const classes = useStyles()
 	const socket = useSocket()
 	const socketStore = useSocketStore()
+	const backButton = useBackButton()
 
 	const [drawerOpened, setDrawerOpened] = useState(false)
 	const [content, setContent] = useState("")
@@ -41,6 +45,12 @@ const Chat: React.FC = () => {
 		setNotSeenMessagesCount(0)
 	}
 
+	const handleCloseChat = () => {
+		resetNotSeenMessagesCount()
+
+		setDrawerOpened(false)
+	}
+
 	const handleOpenChat = () => {
 		setDrawerOpened(true)
 
@@ -49,12 +59,12 @@ const Chat: React.FC = () => {
 		 * in order to make it to be called after the drawer opens
 		 */
 		setTimeout(() => scrollChatToBottom(), 0)
-	}
 
-	const handleCloseChat = () => {
-		resetNotSeenMessagesCount()
-
-		setDrawerOpened(false)
+		if (DeviceUtil.isMobile) {
+			backButton.handleBackButton(
+				() => handleCloseChat()
+			)
+		}
 	}
 
 	const handleSendChatMessage = () => {
@@ -89,6 +99,14 @@ const Chat: React.FC = () => {
 		event.preventDefault()
 
 		handleSendChatMessage()
+	}
+
+	const onInputFocus = () => {
+		backButton.setActive(false)
+	}
+
+	const onInputBlur = () => {
+		backButton.setActive(true)
 	}
 
 	useDidMount(() => {
@@ -176,6 +194,8 @@ const Chat: React.FC = () => {
 						variant="outlined"
 						className={classes.messageInput}
 						size="small"
+						onFocus={() => onInputFocus()}
+						onBlur={() => onInputBlur()}
 					/>
 
 					<IconButton
