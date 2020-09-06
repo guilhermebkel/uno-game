@@ -8,7 +8,7 @@ import SocketProvider from "@/store/Socket"
 const App = () => {
 	return (
 		<SocketProvider>
-			<Container maxWidth={false}>
+			<Container maxWidth="xl">
 				<Routes />
 			</Container>
 		</SocketProvider>
