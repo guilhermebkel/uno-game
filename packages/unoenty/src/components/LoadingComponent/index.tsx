@@ -7,7 +7,7 @@ type LoadingComponentProps = {
 	loading: boolean
 }
 
-const LoadingComponent = (props: LoadingComponentProps) => {
+const LoadingComponent: React.FC<LoadingComponentProps> = (props) => {
 	const { children, loading, customLoadingElement } = props
 
 	let component

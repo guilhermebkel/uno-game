@@ -130,7 +130,10 @@ const Table = () => {
 	})
 
 	return (
-		<LoadingComponent loading={loadingTable} customLoadingElement={<TableSkeleton />}>
+		<LoadingComponent
+			loading={loadingTable}
+			customLoadingElement={<TableSkeleton />}
+		>
 			<>
 				<TableChat />
 
@@ -142,7 +145,15 @@ const Table = () => {
 							HTML5Backend
 						)}
 					>
-						<Grid container style={{ height: "100%", overflow: "hidden", padding: "16px" }}>
+						<Grid
+							container
+							style={{
+								height: "100%",
+								overflow: "hidden",
+								padding: "16px",
+								userSelect: "none"
+							}}
+						>
 							<Grid container>
 								<Grid item xs={2}>
 									<CardDeckPlaceholder
