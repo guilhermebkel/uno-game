@@ -1,6 +1,7 @@
 import { Socket } from "socket.io"
 
 import GameService from "@/Services/GameService"
+import ChatService from "@/Services/ChatService"
 import PlayerService from "@/Services/PlayerService"
 
 import CryptUtil from "@/Utils/CryptUtil"
@@ -26,29 +27,41 @@ class ListenerService {
 		})
 
 		client.on("CreateGame", () => {
-			const roomId = CryptUtil.makeShortUUID()
+			const gameId = CryptUtil.makeShortUUID()
+			const chatId = CryptUtil.makeShortUUID()
 
-			client.join(roomId)
+			client.join(gameId)
+			client.join(chatId)
 
-			this.onCreateGame(roomId, playerData.id)
+			this.onCreateGame(gameId, playerData.id, chatId)
 		})
 
-		client.on("JoinGame", (roomId: string) => {
-			client.join(roomId)
+		client.on("JoinGame", (gameId: string) => {
+			client.join(gameId)
 
-			this.onJoinGame(roomId, playerData.id)
+			const chatId = GameService.getChatIdByGameId(gameId)
+
+			if (chatId) {
+				client.join(chatId)
+			}
+
+			this.onJoinGame(gameId, playerData.id, chatId)
 		})
 
-		client.on("BuyCard", (roomId: string) => {
-			this.onBuyCard(roomId, playerData.id)
+		client.on("BuyCard", (gameId: string) => {
+			this.onBuyCard(gameId, playerData.id)
 		})
 
-		client.on("PutCard", (roomId: string, cardIds: string[], selectedColor: CardColors) => {
-			this.onPutCard(roomId, playerData.id, cardIds, selectedColor)
+		client.on("PutCard", (gameId: string, cardIds: string[], selectedColor: CardColors) => {
+			this.onPutCard(gameId, playerData.id, cardIds, selectedColor)
 		})
 
-		client.on("ToggleReady", (roomId: string) => {
-			this.onToggleReady(roomId, playerData.id)
+		client.on("SendChatMessage", (chatId: string, content: string) => {
+			this.onSendChatMessage(playerData.id, chatId, content)
+		})
+
+		client.on("ToggleReady", (gameId: string) => {
+			this.onToggleReady(gameId, playerData.id)
 		})
 
 		client.on("disconnect", () => {
@@ -56,19 +69,34 @@ class ListenerService {
 		})
 	}
 
-	private onJoinGame (gameId: string, playerId: string) {
-		const gameExists = GameService.gameExists(gameId)
+	private onSendChatMessage (playerId: string, chatId: string, content: string) {
+		const playerExists = PlayerService.playerExists(playerId)
+		const chatExists = ChatService.chatExists(chatId)
 
-		if (gameExists) {
-			GameService.joinGame(gameId, playerId)
+		if (playerExists && chatExists) {
+			ChatService.pushMessage(playerId, chatId, content)
 		}
 	}
 
-	private onCreateGame (gameId: string, playerId: string) {
+	private onJoinGame (gameId: string, playerId: string, chatId: string) {
+		const gameExists = GameService.gameExists(gameId)
+		const chatExists = ChatService.chatExists(chatId)
+
+		if (gameExists) {
+			GameService.joinGame(gameId, playerId)
+
+			if (chatExists) {
+				ChatService.joinChat(chatId)
+			}
+		}
+	}
+
+	private onCreateGame (gameId: string, playerId: string, chatId: string) {
 		const playerExists = PlayerService.playerExists(playerId)
 
 		if (playerExists) {
-			GameService.setupGame(playerId, gameId)
+			GameService.setupGame(playerId, gameId, chatId)
+			ChatService.setupChat(playerId, chatId)
 		}
 	}
 

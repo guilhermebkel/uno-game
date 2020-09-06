@@ -10,12 +10,14 @@ import { LoadingApp, LoginDialog } from "@/components"
 
 import { preloadCardPictures } from "@/utils/card"
 
-import { Game } from "@uno-game/protocols"
+import { Game, ChatMessage, Chat } from "@uno-game/protocols"
 
 export interface SocketContextData {
 	io: typeof Socket
 	playerId: string
 	game?: Game
+	chat?: Chat
+	addChatMessage: (message: ChatMessage) => void
 	set: (data: Partial<this>) => void
 }
 
@@ -39,6 +41,25 @@ const SocketProvider = (props: SocketProviderProps) => {
 				...(lastState || {}),
 				...data
 			}
+		})
+	}
+
+	const addChatMessage = (message: ChatMessage) => {
+		setSocketData(lastState => {
+			const chat = { ...lastState.chat } as Chat
+
+			chat?.messages?.push(message)
+
+			return {
+				...(lastState || {}),
+				chat
+			}
+		})
+	}
+
+	const onChatStateChanged = () => {
+		client.on("ChatStateChanged", (chat: Chat) => {
+			setData({ chat })
 		})
 	}
 
@@ -77,7 +98,8 @@ const SocketProvider = (props: SocketProviderProps) => {
 		const data: SocketContextData = {
 			io: client,
 			set: setData,
-			playerId
+			playerId,
+			addChatMessage
 		}
 
 		setData(data)
@@ -88,6 +110,7 @@ const SocketProvider = (props: SocketProviderProps) => {
 	useDidMount(() => {
 		connect()
 		onGameStateChanged()
+		onChatStateChanged()
 	})
 
 	return (

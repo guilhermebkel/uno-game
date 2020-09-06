@@ -17,7 +17,7 @@ import {
 import GameRepository from "@/Repositories/GameRepository"
 
 class GameService {
-	setupGame (playerId: string, gameId: string) {
+	setupGame (playerId: string, gameId: string, chatId: string) {
 		const cards = CardService.setupRandomCards()
 
 		const playerData = PlayerService.getPlayerData(playerId)
@@ -39,6 +39,7 @@ class GameService {
 			status: "waiting",
 			round: 0,
 			id: gameId,
+			chatId,
 			currentPlayerIndex: 0,
 			nextPlayerIndex: 1,
 			currentGameColor: null,
@@ -54,6 +55,12 @@ class GameService {
 		this.setGameData(gameId, game)
 
 		this.emitGameEvent(gameId, "GameCreated", game)
+	}
+
+	getChatIdByGameId (gameId: string) {
+		const game = GameRepository.getGame(gameId)
+
+		return game?.chatId
 	}
 
 	gameExists (gameId: string) {

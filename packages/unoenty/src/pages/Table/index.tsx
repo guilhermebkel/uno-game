@@ -19,6 +19,7 @@ import CardDeck from "@/pages/Table/CardDeck"
 import CardDeckPlaceholder from "@/pages/Table/CardDeckPlaceholder"
 import CustomCardDragPreview from "@/pages/Table/CustomCardDragPreview"
 import Latency from "@/pages/Table/Latency"
+import TableChat from "@/pages/Table/TableChat"
 
 import CardProvider from "@/store/Card"
 
@@ -130,111 +131,115 @@ const Table = () => {
 
 	return (
 		<LoadingComponent loading={loadingTable} customLoadingElement={<TableSkeleton />}>
-			<CardProvider>
-				<DndProvider
-					backend={Device.isTouchDevice ? (
-						TouchBackend
-					) : (
-						HTML5Backend
-					)}
-				>
-					<Grid container style={{ height: "100%", overflow: "hidden", padding: "16px" }}>
-						<Grid container>
-							<Grid item xs={2}>
-								<CardDeckPlaceholder
-									cards={socket.otherPlayers?.[1]?.handCards as any}
-									player={socket.otherPlayers?.[1] as any}
-									transform="rotate(135deg)"
-								/>
-							</Grid>
-							<Grid item xs={8}>
-								<Grid container justify="center" alignItems="center">
-									<CardDeckPlaceholder
-										cards={socket.otherPlayers?.[2]?.handCards as any}
-										player={socket.otherPlayers?.[2] as any}
-										transform="rotate(180deg)"
-									/>
-								</Grid>
-							</Grid>
-							<Grid item xs={2}>
-								<CardDeckPlaceholder
-									cards={socket.otherPlayers?.[3]?.handCards as any}
-									player={socket.otherPlayers?.[3] as any}
-									transform="rotate3d(2.5, 1, 0, 180deg)"
-								/>
-							</Grid>
-						</Grid>
-						<Grid container alignItems="center">
-							<Grid item xs={2}>
-								<Grid container justify="flex-start">
-									<CardDeckPlaceholder
-										cards={socket.otherPlayers?.[0]?.handCards as any}
-										player={socket.otherPlayers?.[0] as any}
-										transform="rotate(90deg)"
-									/>
-								</Grid>
-							</Grid>
-							<Grid item xs={8}>
-								<Grid container justify="center" alignItems="center">
-									<CardStack
-										cards={socketStore?.game?.usedCards as any}
-										game={socketStore?.game as any}
-										onDrop={onDrop}
-									/>
+			<>
+				<TableChat />
 
-									{socket?.currentPlayer?.canBuyCard && (
-										<>
-											<Divider size={5} />
-
-											<Button
-												color="primary"
-												variant="contained"
-												onClick={buyCard}
-											>
-												BUY CARD
-											</Button>
-										</>
-									)}
-								</Grid>
-							</Grid>
-							<Grid item xs={2}>
-								<Grid container justify="flex-end">
+				<CardProvider>
+					<DndProvider
+						backend={Device.isTouchDevice ? (
+							TouchBackend
+						) : (
+							HTML5Backend
+						)}
+					>
+						<Grid container style={{ height: "100%", overflow: "hidden", padding: "16px" }}>
+							<Grid container>
+								<Grid item xs={2}>
 									<CardDeckPlaceholder
-										cards={socket.otherPlayers?.[4]?.handCards as any}
-										player={socket.otherPlayers?.[4] as any}
-										transform="rotate3d(1, 1, 0, 180deg)"
+										cards={socket.otherPlayers?.[1]?.handCards as any}
+										player={socket.otherPlayers?.[1] as any}
+										transform="rotate(135deg)"
 									/>
 								</Grid>
-							</Grid>
-						</Grid>
-						<Grid container alignItems="center">
-							<Grid item xs={1}>
-								<Latency />
-							</Grid>
-							<Grid item xs={10}>
-								<Grid container justify="center">
-									{socket?.currentPlayer ? (
-										<>
-											<CustomCardDragPreview />
-
-											<CardDeck
-												cards={socket.currentPlayer?.handCards as any}
-												player={socket.currentPlayer as any}
-											/>
-										</>
-									) : (
+								<Grid item xs={8}>
+									<Grid container justify="center" alignItems="center">
 										<CardDeckPlaceholder
-											cards={socket.otherPlayers?.[5]?.handCards as any}
-											player={socket.otherPlayers?.[5] as any}
+											cards={socket.otherPlayers?.[2]?.handCards as any}
+											player={socket.otherPlayers?.[2] as any}
+											transform="rotate(180deg)"
 										/>
-									)}
+									</Grid>
+								</Grid>
+								<Grid item xs={2}>
+									<CardDeckPlaceholder
+										cards={socket.otherPlayers?.[3]?.handCards as any}
+										player={socket.otherPlayers?.[3] as any}
+										transform="rotate3d(2.5, 1, 0, 180deg)"
+									/>
 								</Grid>
 							</Grid>
-							<Grid item xs={1}></Grid>
+							<Grid container alignItems="center">
+								<Grid item xs={2}>
+									<Grid container justify="flex-start">
+										<CardDeckPlaceholder
+											cards={socket.otherPlayers?.[0]?.handCards as any}
+											player={socket.otherPlayers?.[0] as any}
+											transform="rotate(90deg)"
+										/>
+									</Grid>
+								</Grid>
+								<Grid item xs={8}>
+									<Grid container justify="center" alignItems="center">
+										<CardStack
+											cards={socketStore?.game?.usedCards as any}
+											game={socketStore?.game as any}
+											onDrop={onDrop}
+										/>
+
+										{socket?.currentPlayer?.canBuyCard && (
+											<>
+												<Divider size={5} />
+
+												<Button
+													color="primary"
+													variant="contained"
+													onClick={buyCard}
+												>
+													BUY CARD
+												</Button>
+											</>
+										)}
+									</Grid>
+								</Grid>
+								<Grid item xs={2}>
+									<Grid container justify="flex-end">
+										<CardDeckPlaceholder
+											cards={socket.otherPlayers?.[4]?.handCards as any}
+											player={socket.otherPlayers?.[4] as any}
+											transform="rotate3d(1, 1, 0, 180deg)"
+										/>
+									</Grid>
+								</Grid>
+							</Grid>
+							<Grid container alignItems="center">
+								<Grid item xs={1}>
+									<Latency />
+								</Grid>
+								<Grid item xs={10}>
+									<Grid container justify="center">
+										{socket?.currentPlayer ? (
+											<>
+												<CustomCardDragPreview />
+
+												<CardDeck
+													cards={socket.currentPlayer?.handCards as any}
+													player={socket.currentPlayer as any}
+												/>
+											</>
+										) : (
+											<CardDeckPlaceholder
+												cards={socket.otherPlayers?.[5]?.handCards as any}
+												player={socket.otherPlayers?.[5] as any}
+											/>
+										)}
+									</Grid>
+								</Grid>
+								<Grid item xs={1}></Grid>
+							</Grid>
 						</Grid>
-					</Grid>
-				</DndProvider>
-			</CardProvider>
+					</DndProvider>
+				</CardProvider>
+			</>
 		</LoadingComponent>
 	)
 }

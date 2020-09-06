@@ -5,7 +5,8 @@ import {
 	Game,
 	PlayerState,
 	GameEvents,
-	CardColors
+	CardColors,
+	ChatMessage
 } from "@uno-game/protocols"
 
 const useSocket = () => {
@@ -96,6 +97,10 @@ const useSocket = () => {
 		socketStore.io.emit("PutCard", gameId, cardIds, selectedColor)
 	}
 
+	const sendChatMessage = (chatId: string, content: string) => {
+		socketStore.io.emit("SendChatMessage", chatId, content)
+	}
+
 	const onGameStart = (fn: Function) => {
 		socketStore.io.on("GameStarted", fn)
 	}
@@ -106,6 +111,16 @@ const useSocket = () => {
 
 	const onCardStackBuyCardsCombo = (fn: (amountToBuy: number) => void) => {
 		socketStore.io.on("CardStackBuyCardsCombo", fn)
+	}
+
+	const onNewChatMessage = (fn?: () => void) => {
+		socketStore.io.on("NewMessage", (message: ChatMessage) => {
+			socketStore.addChatMessage(message)
+			
+			if (fn) {
+				fn()
+			}
+		})
 	}
 
 	const onPlayerStateChange = (fn: (playerState: PlayerState, playerId: string, amountToBuy?: number) => void) => {
@@ -139,10 +154,12 @@ const useSocket = () => {
 		getCurrentPlayer,
 		createGame,
 		joinGame,
+		sendChatMessage,
 		onGameStart,
 		onPlayerWon,
 		onPlayerStateChange,
 		onCardStackBuyCardsCombo,
+		onNewChatMessage,
 		onPong,
 		toggleReady,
 		buyCard,
