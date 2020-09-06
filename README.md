@@ -47,6 +47,7 @@ A simple UNO Game made in Javascript, supposed to be blazing easier and faster t
 - Git Commit Message Linter
 - ESLint
 - React DnD
+- MsgPackParser
 
 ## 👣 Project Scope
 
@@ -76,8 +77,8 @@ A simple UNO Game made in Javascript, supposed to be blazing easier and faster t
 - [ ] Adding an auto play system when user is afk during the game.
 - [ ] Adding a chat to Game List, Room and Table.
 - [ ] Adding a countdown for every player round.
-- [ ] Adding a score to the game.
 - [X] Making player able to put more than one card on stack.
+- [ ] Notificating when a player gets in or out of a room
 
 ## 🚀 Getting started
 
@@ -89,6 +90,8 @@ npm run install:unapy # Install dependencies for api
 npm run install:unoenty # Install dependencies for client
 npm run bootstrap # Link all packages dependencies together
 ```
+2. Copy the **.env.example** inside **packages/unoenty** and **packages/unapy** turning it into a **.env** file.
+
 3. Run the command bellow inside **packages/unoenty** and **packages/unapy** to start api and client.
 ```sh
 npm run dev
