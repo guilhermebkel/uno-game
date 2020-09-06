@@ -176,7 +176,6 @@ const Chat: React.FC = () => {
 						variant="outlined"
 						className={classes.messageInput}
 						size="small"
-						autoFocus
 					/>
 
 					<IconButton
