@@ -4,7 +4,9 @@ import {
 	Drawer,
 	Grid,
 	Typography,
-	TextField
+	TextField,
+	Badge,
+	Fab
 } from "@material-ui/core"
 import {
 	ChatOutlined as ChatIcon,
@@ -27,6 +29,7 @@ const Chat: React.FC = () => {
 
 	const [drawerOpened, setDrawerOpened] = useState(false)
 	const [content, setContent] = useState("")
+	const [notSeenMessagesCount, setNotSeenMessagesCount] = useState(0)
 
 	const messageContainerRef = useRef<HTMLElement>(null)
 
@@ -34,13 +37,23 @@ const Chat: React.FC = () => {
 		messageContainerRef.current?.scroll(0, document.body.scrollHeight)
 	}
 
+	const resetNotSeenMessagesCount = () => {
+		setNotSeenMessagesCount(0)
+	}
+
 	const handleOpenChat = () => {
 		setDrawerOpened(true)
 
+		/**
+		 * Workaround to delay this function calling,
+		 * in order to make it to be called after the drawer opens
+		 */
 		setTimeout(() => scrollChatToBottom(), 0)
 	}
 
 	const handleCloseChat = () => {
+		resetNotSeenMessagesCount()
+
 		setDrawerOpened(false)
 	}
 
@@ -54,6 +67,16 @@ const Chat: React.FC = () => {
 		setContent("")
 	}
 
+	const increaseNotSeenMessagesCount = (amount: number) => {
+		setNotSeenMessagesCount(lastState => lastState + amount)
+	}
+
+	const onNewChatMessage = () => {
+		scrollChatToBottom()
+
+		increaseNotSeenMessagesCount(+1)
+	}
+
 	const handleChangeContent = (value: string) => {
 		setContent(value)
 	}
@@ -65,19 +88,28 @@ const Chat: React.FC = () => {
 	}
 
 	useDidMount(() => {
-		socket.onNewChatMessage(() => scrollChatToBottom())
+		socket.onNewChatMessage(() => onNewChatMessage())
 	})
 
 	return (
 		<>
 			{socketStore?.chat && (
-				<IconButton
-					className={classes.openChatButton}
-					onClick={handleOpenChat}
-					size="medium"
+				<Grid
+					container
+					className={classes.openChatButtonContainer}
 				>
-					<ChatIcon />
-				</IconButton>
+					<Fab
+						onClick={handleOpenChat}
+						color="default"
+					>
+						<Badge
+							badgeContent={notSeenMessagesCount}
+							color="primary"
+						>
+							<ChatIcon />
+						</Badge>
+					</Fab>
+				</Grid>
 			)}
 
 			<Drawer
@@ -87,6 +119,7 @@ const Chat: React.FC = () => {
 				PaperProps={{
 					className: classes.drawerPaper
 				}}
+				className={classes.drawer}
 			>
 				<Grid
 					container
