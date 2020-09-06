@@ -38,7 +38,7 @@ const Chat: React.FC = () => {
 	const messageContainerRef = useRef<HTMLElement>(null)
 
 	const scrollChatToBottom = () => {
-		messageContainerRef.current?.scroll(0, document.body.scrollHeight)
+		messageContainerRef.current?.scroll(0, messageContainerRef.current?.scrollHeight)
 	}
 
 	const resetNotSeenMessagesCount = () => {
