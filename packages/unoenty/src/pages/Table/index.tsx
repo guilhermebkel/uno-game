@@ -10,6 +10,8 @@ import { useSocketStore } from "@/store/Socket"
 import useDidMount from "@/hooks/useDidMount"
 import useSocket from "@/hooks/useSocket"
 
+import useStyles from "@/pages/Table/styles"
+
 import { LoadingComponent, Alert, Divider } from "@/components"
 
 import Device from "@/utils/device"
@@ -33,6 +35,7 @@ const Table = () => {
 
 	const socketStore = useSocketStore()
 	const socket = useSocket()
+	const classes = useStyles()
 
 	const [loadingTable, setLoadingTable] = useState(true)
 
@@ -214,6 +217,7 @@ const Table = () => {
 													color="primary"
 													variant="contained"
 													onClick={buyCard}
+													className={classes.buyCardButton}
 												>
 													BUY CARD
 												</Button>
