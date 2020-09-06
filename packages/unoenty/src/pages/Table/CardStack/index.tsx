@@ -80,8 +80,12 @@ const CardStack = (props: Props) => {
 		}, 1500)
 	}
 
-	useDidMount(() => {
+	const onCardStackBuyCardsCombo = () => {
 		socket.onCardStackBuyCardsCombo(handleCardStackBuyCardsCombo)
+	}
+
+	useDidMount(() => {
+		onCardStackBuyCardsCombo()
 	})
 
 	return (

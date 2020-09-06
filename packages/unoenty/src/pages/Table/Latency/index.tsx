@@ -16,8 +16,12 @@ const Latency = () => {
 		setLatency(latencyResponse)
 	}
 
-	useDidMount(() => {
+	const onPong = () => {
 		socket.onPong(handlePong)
+	}
+
+	useDidMount(() => {
+		onPong()
 	})
 
 	return (

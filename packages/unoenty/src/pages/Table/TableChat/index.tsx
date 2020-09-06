@@ -71,10 +71,14 @@ const Chat: React.FC = () => {
 		setNotSeenMessagesCount(lastState => lastState + amount)
 	}
 
-	const onNewChatMessage = () => {
+	const handleNewChatMessage = () => {
 		scrollChatToBottom()
 
 		increaseNotSeenMessagesCount(+1)
+	}
+
+	const onNewChatMessage = () => {
+		socket.onNewChatMessage(() => handleNewChatMessage())
 	}
 
 	const handleChangeContent = (value: string) => {
@@ -88,7 +92,7 @@ const Chat: React.FC = () => {
 	}
 
 	useDidMount(() => {
-		socket.onNewChatMessage(() => onNewChatMessage())
+		onNewChatMessage()
 	})
 
 	return (

@@ -71,9 +71,18 @@ const Room = () => {
 		}, 1500)
 	}
 
-	useDidMount(() => {
+	const setupRoom = () => {
 		joinGame()
 		onGameStart()
+	}
+
+	const onReconnect = () => {
+		socket.onReconnect(() => setupRoom())
+	}
+
+	useDidMount(() => {
+		setupRoom()
+		onReconnect()
 	})
 
 	return (

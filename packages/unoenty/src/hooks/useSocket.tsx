@@ -144,6 +144,14 @@ const useSocket = () => {
 		socketStore.io.on("pong", fn)
 	}
 
+	const onReconnect = (fn: () => void) => {
+		socketStore.io.on("reconnect", () => {
+			if (fn) {
+				fn()
+			}
+		})
+	}
+
 	return {
 		get currentPlayer (): PlayerData {
 			return getCurrentPlayer()
@@ -160,6 +168,7 @@ const useSocket = () => {
 		onPlayerStateChange,
 		onCardStackBuyCardsCombo,
 		onNewChatMessage,
+		onReconnect,
 		onPong,
 		toggleReady,
 		buyCard,

@@ -46,8 +46,12 @@ const CardDeckPlaceholder = (props: CardDeckPlaceholderProps) => {
 		}
 	}
 
-	useDidMount(() => {
+	const onPlayerStateChange = () => {
 		socket.onPlayerStateChange(handlePlayerStateChange)
+	}
+
+	useDidMount(() => {
+		onPlayerStateChange()
 	})
 
 	return (

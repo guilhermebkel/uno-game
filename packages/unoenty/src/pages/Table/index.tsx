@@ -124,9 +124,18 @@ const Table = () => {
 		})
 	}
 
-	useDidMount(() => {
+	const setupTable = () => {
 		joinGame()
 		onPlayerWon()
+	}
+
+	const onReconnect = () => {
+		socket.onReconnect(() => setupTable())
+	}
+
+	useDidMount(() => {
+		setupTable()
+		onReconnect()
 	})
 
 	return (
