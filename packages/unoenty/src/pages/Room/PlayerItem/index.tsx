@@ -3,8 +3,7 @@ import {
 	Card,
 	Avatar,
 	Grid,
-	Typography,
-	ButtonBase
+	Typography
 } from "@material-ui/core"
 import Chip from "@material-ui/core/Chip"
 
@@ -22,7 +21,6 @@ const PlayerItem = (props: PlayerItem) => {
 
 	return (
 		<Card
-			component={ButtonBase}
 			className={classes.cardContainer}
 		>
 			<Grid
