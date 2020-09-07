@@ -1,5 +1,5 @@
 import React, { useRef } from "react"
-import { Container } from "@material-ui/core"
+import { Container, ClickAwayListener } from "@material-ui/core"
 import { useDrag, useDragLayer } from "react-dnd"
 import { getEmptyImage } from "react-dnd-html5-backend"
 
@@ -186,36 +186,50 @@ const CardDeck = (props: CardDeckProps) => {
 		})
 	}
 
+	const unselectAllCards = () => {
+		cardStore?.setSelectedCards([])
+	}
+
+	const handleClickOutsideCardDeck = () => {
+		if (cardStore.selectedCards.length > 0) {
+			unselectAllCards()
+		}
+	}
+
 	return (
-		<Container
-			disableGutters
-			className={classes.cardContainer}
-			maxWidth={false}
-			style={{
-				width: (cards?.length * CARD_WIDTH) + CARD_WIDTH
-			}}
+		<ClickAwayListener
+			onClickAway={handleClickOutsideCardDeck}
 		>
-			{cards?.map((card, index) => (
-				<DraggableCard
-					key={card.id}
-					card={card}
-					className={classes.card}
-					index={index}
-					style={{
-						transform: `rotate(${getCardInclination(index)}deg)`,
-						bottom: getCardElevation(index),
-						zIndex: (index + 2),
-						left: index * CARD_WIDTH
-					}}
-					onClick={() => toggleSelectedCard(card.id)}
-					selected={isCardSelected(card.id)}
-					isDraggingAnyCard={isDraggingAnyCard}
-					isMoreThanOneCardBeingDragged={cardStore?.selectedCards?.length > 1}
-					onDragEnd={onDragEnd}
-					canBePartOfCurrentCombo={canBePartOfCurrentCombo(card.type)}
-				/>
-			))}
-		</Container>
+			<Container
+				disableGutters
+				className={classes.cardContainer}
+				maxWidth={false}
+				style={{
+					width: (cards?.length * CARD_WIDTH) + CARD_WIDTH
+				}}
+			>
+				{cards?.map((card, index) => (
+					<DraggableCard
+						key={card.id}
+						card={card}
+						className={classes.card}
+						index={index}
+						style={{
+							transform: `rotate(${getCardInclination(index)}deg)`,
+							bottom: getCardElevation(index),
+							zIndex: (index + 2),
+							left: index * CARD_WIDTH
+						}}
+						onClick={() => toggleSelectedCard(card.id)}
+						selected={isCardSelected(card.id)}
+						isDraggingAnyCard={isDraggingAnyCard}
+						isMoreThanOneCardBeingDragged={cardStore?.selectedCards?.length > 1}
+						onDragEnd={onDragEnd}
+						canBePartOfCurrentCombo={canBePartOfCurrentCombo(card.type)}
+					/>
+				))}
+			</Container>
+		</ClickAwayListener>
 	)
 }
 
