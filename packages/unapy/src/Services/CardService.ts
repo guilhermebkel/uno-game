@@ -62,6 +62,19 @@ class CardService {
 		return randomCards
 	}
 
+	retrieveRandomCardColor (): CardColors {
+		const cardColors: Array<CardColors> = [
+			"blue",
+			"green",
+			"yellow",
+			"red"
+		]
+
+		ArrayUtil.shuffle(cardColors)
+
+		return cardColors[0]
+	}
+
 	private getCardStack () {
 		const cardStack: CardData[] = []
 

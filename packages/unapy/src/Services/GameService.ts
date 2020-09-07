@@ -1,6 +1,7 @@
 import CardService from "@/Services/CardService"
 import SocketService from "@/Services/SocketService"
 import PlayerService from "@/Services/PlayerService"
+import GameRoundService from "@/Services/GameRoundService"
 
 import NumberUtil from "@/Utils/NumberUtil"
 
@@ -9,9 +10,10 @@ import {
 	GameEvents,
 	PlayerData,
 	CurrentPlayerInfo,
-	CurrentPlayerStatus,
+	CurrentPlayerGameStatus,
 	CardData,
-	CardColors
+	CardColors,
+	PlayerStatus
 } from "@uno-game/protocols"
 
 import GameRepository from "@/Repositories/GameRepository"
@@ -88,6 +90,10 @@ class GameService {
 		}
 
 		game.roundRemainingTimeInSeconds = this.getRoundRemainingTimeInSeconds(gameId)
+
+		if (!playerIsNotOnGame) {
+			game.players = this.buildPlayersWithChangedPlayerStatus(gameId, playerId, "online")
+		}
 
 		this.emitGameEvent(gameId, "PlayerJoined", game)
 	}
@@ -242,8 +248,28 @@ class GameService {
 		this.nextRound(gameId)
 	}
 
+	makeComputedPlay (gameId: string, playerId: string): void {
+		const game = this.getGame(gameId)
+
+		const player = game.players.find(playerItem => playerItem.id === playerId)
+
+		const { handCards } = player
+
+		const usableCard = handCards.find(card => card.canBeUsed)
+
+		if (!usableCard) {
+			this.buyCard(playerId, gameId)
+
+			return this.makeComputedPlay(gameId, playerId)
+		}
+
+		const randomCardColor = CardService.retrieveRandomCardColor()
+
+		this.putCard(playerId, [usableCard.id], gameId, randomCardColor)
+	}
+
 	private getRoundRemainingTimeInSeconds (gameId: string): number {
-		const remainingTimeInSeconds = GameRepository.getGameRoundRemainingTimeInSeconds(gameId)
+		const remainingTimeInSeconds = GameRoundService.getRoundRemainingTimeInSeconds(gameId)
 
 		return remainingTimeInSeconds
 	}
@@ -251,14 +277,20 @@ class GameService {
 	private resetRoundCounter (gameId: string) {
 		const game = this.getGame(gameId)
 
-		GameRepository.resetGameRoundCounter(gameId, {
+		GameRoundService.resetRoundCounter(gameId, {
 			timeoutAction: (gameId) => {
-				this.nextRound(gameId)
+				const currentPlayerInfo = this.getCurrentPlayerInfo(gameId)
+
+				game.players = this.buildPlayersWithChangedPlayerStatus(gameId, currentPlayerInfo.id, "afk")
+
+				this.setGameData(gameId, game)
+
+				this.makeComputedPlay(gameId, currentPlayerInfo.id)
 			},
 			intervalAction: (gameId) => {
 				const gameRoundRemainingTime = this.getRoundRemainingTimeInSeconds(gameId)
 
-				this.emitGameEvent(gameId, "GameRoundRemainingTimeChanged", gameRoundRemainingTime)
+				GameRoundService.emitGameRoundEvent(gameId, "GameRoundRemainingTimeChanged", gameRoundRemainingTime)
 			},
 			gameId,
 			timeInSeconds: game.maxRoundDurationInSeconds
@@ -266,7 +298,24 @@ class GameService {
 	}
 
 	private removeRoundCounter (gameId: string) {
-		GameRepository.removeRoundCounter(gameId)
+		GameRoundService.removeRoundCounter(gameId)
+	}
+
+	private buildPlayersWithChangedPlayerStatus (gameId: string, playerId: string, status: PlayerStatus): PlayerData[] {
+		const game = this.getGame(gameId)
+
+		const playersWithChangedPlayerStatus = game.players.map(player => {
+			if (player.id === playerId) {
+				return {
+					...player,
+					status
+				}
+			}
+
+			return player
+		})
+
+		return playersWithChangedPlayerStatus
 	}
 
 	private startGame (gameId: string) {
@@ -336,16 +385,7 @@ class GameService {
 		}
 
 		if (game.status === "playing") {
-			game.players = game?.players?.map(player => {
-				if (player.id === playerId) {
-					return {
-						...player,
-						status: "offline"
-					}
-				} else {
-					return player
-				}
-			})
+			game.players = this.buildPlayersWithChangedPlayerStatus(gameId, playerId, "offline")
 		}
 
 		this.setGameData(gameId, game)
@@ -362,12 +402,12 @@ class GameService {
 
 		const currentPlayerInfo = this.getCurrentPlayerInfo(gameId)
 
-		if (currentPlayerInfo.status === "winner") {
+		if (currentPlayerInfo.gameStatus === "winner") {
 			this.emitGameEvent(gameId, "PlayerWon", currentPlayerInfo.id, currentPlayerInfo.name)
 			return this.endGame(gameId)
 		}
 
-		if (currentPlayerInfo.status === "uno") {
+		if (currentPlayerInfo.gameStatus === "uno") {
 			this.emitGameEvent(gameId, "PlayerUno", currentPlayerInfo.id)
 		}
 
@@ -392,6 +432,12 @@ class GameService {
 		game.currentPlayerIndex = nextPlayerIndex
 
 		this.setGameData(gameId, game)
+
+		const nextPlayerInfo = this.getCurrentPlayerInfo(gameId)
+
+		if (nextPlayerInfo.playerStatus === "afk") {
+			this.makeComputedPlay(gameId, nextPlayerInfo.id)
+		}
 	}
 
 	// eslint-disable-next-line
@@ -590,24 +636,25 @@ class GameService {
 		const currentPlayer = players[game?.currentPlayerIndex]
 
 		const currentPlayerId = currentPlayer?.id
-		let status: CurrentPlayerStatus
+		let gameStatus: CurrentPlayerGameStatus
 
 		/**
 		 * In case the current player has no card on hand, he's the winner
 		 */
 		if (currentPlayer?.handCards.length === 0) {
-			status = "winner"
+			gameStatus = "winner"
 		/**
 		 * In case the player has only one card, he's made uno
 		 */
 		} else if (currentPlayer?.handCards.length === 1) {
-			status = "uno"
+			gameStatus = "uno"
 		}
 
 		return {
 			id: currentPlayerId,
 			name: currentPlayer.name,
-			status
+			playerStatus: currentPlayer.status,
+			gameStatus
 		}
 	}
 
