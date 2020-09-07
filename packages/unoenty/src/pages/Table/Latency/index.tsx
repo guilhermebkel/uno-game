@@ -4,7 +4,7 @@ import { Typography } from "@material-ui/core"
 import useSocket from "@/hooks/useSocket"
 import useDidMount from "@/hooks/useDidMount"
 
-import useStyles from "./styles"
+import useStyles from "@/pages/Table/Latency/styles"
 
 const Latency = () => {
 	const classes = useStyles()

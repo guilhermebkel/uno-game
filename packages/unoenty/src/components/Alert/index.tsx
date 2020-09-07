@@ -15,9 +15,9 @@ import { Divider } from "@/components"
 
 import theme from "@/styles/theme"
 
-import "./icons.scss"
+import "@/components/Alert/icons.scss"
 
-import useStyles from "./styles"
+import useStyles from "@/components/Alert/styles"
 
 interface AlertType {
 	type: "success" | "warning" | "error"
