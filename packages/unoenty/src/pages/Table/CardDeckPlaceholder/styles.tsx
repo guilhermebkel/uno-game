@@ -27,7 +27,8 @@ const useStyles = makeStyles((theme) => {
 			left: 0,
 			zIndex: 9999,
 			color: "#000000",
-			fontWeight: "bolder"
+			fontWeight: "bolder",
+			maxWidth: 200
 		},
 		card: {
 			height: cardContainerSize,

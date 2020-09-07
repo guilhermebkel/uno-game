@@ -117,7 +117,12 @@ const CardStack = (props: Props) => {
 				}}
 			>
 				{socket?.currentPlayer?.isCurrentRoundPlayer && (
-					<RoundRemainingTime />
+					<RoundRemainingTime
+						style={{
+							top: -50,
+							right: -50
+						}}
+					/>
 				)}
 
 				{cards?.map((card, index) => (

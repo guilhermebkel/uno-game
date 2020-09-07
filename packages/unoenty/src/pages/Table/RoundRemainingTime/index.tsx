@@ -5,13 +5,20 @@ import useStyles from "@/pages/Table/RoundRemainingTime/styles"
 
 import { useSocketStore } from "@/store/Socket"
 
-const RoundRemainingTime = () => {
+type RoundRemainingTimeType = {
+	style?: object
+}
+
+const RoundRemainingTime: React.FC<RoundRemainingTimeType> = (props) => {
+	const { style } = props
+
 	const socketStore = useSocketStore()
 
 	const classes = useStyles()
 
 	return (
 		<Chip
+			style={style}
 			label={socketStore.game?.roundRemainingTimeInSeconds}
 			className={classes.cardChipRoundCounter}
 		/>

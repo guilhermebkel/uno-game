@@ -90,7 +90,12 @@ const CardDeckPlaceholder = (props: CardDeckPlaceholderProps) => {
 				)}
 
 				{player?.isCurrentRoundPlayer && (
-					<RoundRemainingTime />
+					<RoundRemainingTime
+						style={{
+							top: Device.isMobile ? "120%" : "80%",
+							left: 0
+						}}
+					/>
 				)}
 
 				<Container
