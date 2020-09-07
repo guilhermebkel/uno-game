@@ -61,6 +61,7 @@ const Table = () => {
 
 	const toggleRetry = () => {
 		socket.toggleReady(gameId)
+		socket.toggleOnlineStatus(gameId)
 
 		openWaitForRetryModal()
 	}
@@ -127,9 +128,34 @@ const Table = () => {
 		})
 	}
 
+	const handlePlayerGotAwayFromKeyboard = (playerId: string) => {
+		if (socket?.currentPlayer?.id === playerId) {
+			Alert.warning({
+				message: "Are you still playing this game? We'll make auto plays for you till you click on the button below.",
+				title: "Are you there?",
+				onClose: () => socket.toggleOnlineStatus(gameId),
+				customButtons: [
+					<Button
+						fullWidth
+						color="primary"
+						variant="contained"
+						onClick={() => socket.toggleOnlineStatus(gameId)}
+					>
+						I'M HERE
+					</Button>
+				]
+			})
+		}
+	}
+
+	const onPlayerGotAwayFromKeyboard = () => {
+		socket.onPlayerGotAwayFromKeyboard(playerId => handlePlayerGotAwayFromKeyboard(playerId))
+	}
+
 	const setupTable = () => {
 		joinGame()
 		onPlayerWon()
+		onPlayerGotAwayFromKeyboard()
 	}
 
 	const onReconnect = () => {

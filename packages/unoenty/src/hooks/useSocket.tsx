@@ -97,6 +97,10 @@ const useSocket = () => {
 		socketStore.io.emit("PutCard", gameId, cardIds, selectedColor)
 	}
 
+	const toggleOnlineStatus = (gameId: string) => {
+		socketStore.io.emit("ChangePlayerStatus", gameId, "online")
+	}
+
 	const sendChatMessage = (chatId: string, content: string) => {
 		socketStore.io.emit("SendChatMessage", chatId, content)
 	}
@@ -120,6 +124,12 @@ const useSocket = () => {
 			if (fn) {
 				fn()
 			}
+		})
+	}
+
+	const onPlayerGotAwayFromKeyboard = (fn: (playerId: string) => void) => {
+		socketStore.io.on("PlayerGotAwayFromKeyboard", (playerId: string) => {
+			fn(playerId)
 		})
 	}
 
@@ -163,12 +173,14 @@ const useSocket = () => {
 		createGame,
 		joinGame,
 		sendChatMessage,
+		toggleOnlineStatus,
 		onGameStart,
 		onPlayerWon,
 		onPlayerStateChange,
 		onCardStackBuyCardsCombo,
 		onNewChatMessage,
 		onReconnect,
+		onPlayerGotAwayFromKeyboard,
 		onPong,
 		toggleReady,
 		buyCard,

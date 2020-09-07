@@ -6,7 +6,7 @@ import PlayerService from "@/Services/PlayerService"
 
 import CryptUtil from "@/Utils/CryptUtil"
 
-import { CardColors, Player } from "@uno-game/protocols"
+import { CardColors, Player, PlayerStatus } from "@uno-game/protocols"
 
 /**
  * Usually the class which handles events from client
@@ -60,6 +60,10 @@ class ListenerService {
 			this.onSendChatMessage(playerData.id, chatId, content)
 		})
 
+		client.on("ChangePlayerStatus", (gameId: string, playerStatus: PlayerStatus) => {
+			this.onChangePlayerStatus(playerData.id, gameId, playerStatus)
+		})
+
 		client.on("ToggleReady", (gameId: string) => {
 			this.onToggleReady(gameId, playerData.id)
 		})
@@ -67,6 +71,15 @@ class ListenerService {
 		client.on("disconnect", () => {
 			this.onPlayerDisconnect(playerData.id)
 		})
+	}
+
+	private onChangePlayerStatus (playerId: string, gameId: string, playerStatus: PlayerStatus) {
+		const playerExists = PlayerService.playerExists(playerId)
+		const gameExists = GameService.gameExists(gameId)
+
+		if (playerExists && gameExists) {
+			GameService.changePlayerStatus(gameId, playerId, playerStatus)
+		}
 	}
 
 	private onSendChatMessage (playerId: string, chatId: string, content: string) {

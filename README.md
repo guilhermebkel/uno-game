@@ -74,11 +74,11 @@ A simple UNO Game made in Javascript, supposed to be blazing easier and faster t
 - [X] Making the front-end able to support 6 players in total.
 - [X] Being able to change the game color with help of **Buy:4 Card**.
 - [ ] Improving the UX of front-end (adding indicators, etc).
-- [ ] Adding an auto play system when user is afk during the game.
+- [X] Adding an auto play system when user is afk during the game.
 - [X] Adding a chat to Table.
 - [X] Adding a countdown for every player round.
 - [X] Making player able to put more than one card on stack.
-- [ ] Notificating when a player gets in or out of a room
+- [ ] Notify when a player gets in or out of a room
 
 ## 🚀 Getting started
 

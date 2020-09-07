@@ -1,10 +1,14 @@
 import React, { useRef } from "react"
-import { Container, ClickAwayListener } from "@material-ui/core"
+import { useParams } from "react-router-dom"
+import { Container, ClickAwayListener, Button } from "@material-ui/core"
 import { useDrag, useDragLayer } from "react-dnd"
 import { getEmptyImage } from "react-dnd-html5-backend"
 
 import useDidMount from "@/hooks/useDidMount"
 import { useCardStore } from "@/store/Card"
+import useSocket from "@/hooks/useSocket"
+
+import { Alert } from "@/components"
 
 import { PlayerData, CardData, CardTypes } from "@uno-game/protocols"
 
@@ -111,6 +115,8 @@ type CardDeckProps = {
 const CardDeck = (props: CardDeckProps) => {
 	const { cards } = props
 
+	const { gameId } = useParams()
+
 	const {
     isDraggingAnyCard
   } = useDragLayer((monitor) => ({
@@ -118,6 +124,7 @@ const CardDeck = (props: CardDeckProps) => {
 	}))
 	
 	const cardStore = useCardStore()
+	const socket = useSocket()
 
 	const getCardInclination = (index: number) => {
 		const isMiddleCard = Math.round(cards.length / 2) === index
@@ -195,6 +202,50 @@ const CardDeck = (props: CardDeckProps) => {
 			unselectAllCards()
 		}
 	}
+
+	const toggleOnlineStatus = () => {
+		socket.toggleOnlineStatus(gameId)
+
+		Alert.close()
+	}
+
+	const handlePlayerGotAwayFromKeyboard = (playerId: string) => {
+		if (socket?.currentPlayer?.id === playerId) {
+			Alert.warning({
+				message: "Are you still playing this game? We'll make auto plays for you till you click on the button below.",
+				title: "Are you there?",
+				onClose: toggleOnlineStatus,
+				closable: false,
+				customButtons: [
+					<Button
+						fullWidth
+						color="primary"
+						variant="contained"
+						onClick={toggleOnlineStatus}
+					>
+						I'M HERE
+					</Button>
+				]
+			})
+		}
+	}
+
+	const onPlayerGotAwayFromKeyboard = () => {
+		socket.onPlayerGotAwayFromKeyboard(playerId => handlePlayerGotAwayFromKeyboard(playerId))
+	}
+
+	const setupDeck = () => {
+		onPlayerGotAwayFromKeyboard()
+	}
+
+	const onReconnect = () => {
+		socket.onReconnect(() => setupDeck())
+	}
+
+	useDidMount(() => {
+		setupDeck()
+		onReconnect()
+	})
 
 	return (
 		<ClickAwayListener

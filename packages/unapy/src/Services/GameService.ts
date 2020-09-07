@@ -253,6 +253,10 @@ class GameService {
 
 		const player = game.players.find(playerItem => playerItem.id === playerId)
 
+		if (player.status === "online") {
+			return
+		}
+
 		const { handCards } = player
 
 		const usableCard = handCards.find(card => card.canBeUsed)
@@ -266,6 +270,14 @@ class GameService {
 		const randomCardColor = CardService.retrieveRandomCardColor()
 
 		this.putCard(playerId, [usableCard.id], gameId, randomCardColor)
+	}
+
+	changePlayerStatus (gameId: string, playerId: string, playerStatus: PlayerStatus) {
+		const game = this.getGame(gameId)
+
+		game.players = this.buildPlayersWithChangedPlayerStatus(gameId, playerId, playerStatus)
+
+		this.setGameData(gameId, game)
 	}
 
 	private getRoundRemainingTimeInSeconds (gameId: string): number {
@@ -286,6 +298,8 @@ class GameService {
 				this.setGameData(gameId, game)
 
 				this.makeComputedPlay(gameId, currentPlayerInfo.id)
+
+				this.emitGameEvent(gameId, "PlayerGotAwayFromKeyboard", currentPlayerInfo.id)
 			},
 			intervalAction: (gameId) => {
 				const gameRoundRemainingTime = this.getRoundRemainingTimeInSeconds(gameId)
@@ -436,7 +450,9 @@ class GameService {
 		const nextPlayerInfo = this.getCurrentPlayerInfo(gameId)
 
 		if (nextPlayerInfo.playerStatus === "afk") {
-			this.makeComputedPlay(gameId, nextPlayerInfo.id)
+			setTimeout(() => {
+				this.makeComputedPlay(gameId, nextPlayerInfo.id)
+			}, 1000)
 		}
 	}
 
