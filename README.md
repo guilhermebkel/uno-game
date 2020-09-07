@@ -76,7 +76,7 @@ A simple UNO Game made in Javascript, supposed to be blazing easier and faster t
 - [ ] Improving the UX of front-end (adding indicators, etc).
 - [ ] Adding an auto play system when user is afk during the game.
 - [X] Adding a chat to Table.
-- [ ] Adding a countdown for every player round.
+- [X] Adding a countdown for every player round.
 - [X] Making player able to put more than one card on stack.
 - [ ] Notificating when a player gets in or out of a room
 
