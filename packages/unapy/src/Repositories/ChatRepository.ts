@@ -18,9 +18,9 @@ class GameRepository {
 
 		if (chat) {
 			chat.messages.push(message)
-		}
 
-		this.chats.set(chatId, chat)
+			this.chats.set(chatId, chat)
+		}
 	}
 }
 
