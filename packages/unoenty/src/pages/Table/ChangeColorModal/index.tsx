@@ -32,6 +32,7 @@ const ChangeColorModal = (props: ChangeColorModalProps) => {
 		<Dialog
 			onClose={() => handleClose(null as any)}
 			open={opened}
+			className={classes.dialog}
 			PaperProps={{
 				className: classes.dialogPaper
 			}}
