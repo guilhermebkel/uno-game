@@ -21,12 +21,12 @@ const useStyles = makeStyles((theme) => {
 				duration: theme.transitions.duration.standard
 			})
 		},
-		cardChip: {
+		cardChipPlayerName: {
 			position: "absolute",
 			top: "50%",
 			left: 0,
 			zIndex: 9999,
-			color: "#000",
+			color: "#000000",
 			fontWeight: "bolder"
 		},
 		card: {

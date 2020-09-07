@@ -16,6 +16,7 @@ import { useCardStore } from "@/store/Card"
 import { DraggedCardItem } from "@/pages/Table/CardDeck"
 
 import ChangeColorModal from "@/pages/Table/ChangeColorModal"
+import RoundRemainingTime from "@/pages/Table/RoundRemainingTime"
 
 import arrowCircle from "@/assets/arrow_circle.png"
 
@@ -115,6 +116,10 @@ const CardStack = (props: Props) => {
 					backgroundColor: isHovering ? "rgba(255, 255, 255, 0.7)" : "rgba(255, 255, 255, 0.1)"
 				}}
 			>
+				{socket?.currentPlayer?.isCurrentRoundPlayer && (
+					<RoundRemainingTime />
+				)}
+
 				{cards?.map((card, index) => (
 					<img
 						key={card.id}

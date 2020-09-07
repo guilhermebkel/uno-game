@@ -69,6 +69,18 @@ const SocketProvider = (props: SocketProviderProps) => {
 		})
 	}
 
+	const onGameRoundRemainingTimeChanged = () => {
+		client.on("GameRoundRemainingTimeChanged", (remainingTimeInSeconds: number) => {
+			setSocketData(lastState => ({
+				...lastState,
+				game: {
+					...(lastState.game || {}),
+					roundRemainingTimeInSeconds: remainingTimeInSeconds
+				} as Game
+			}))
+		})
+	}
+
 	const connect = async () => {
 		preloadCardPictures()
 
@@ -111,6 +123,7 @@ const SocketProvider = (props: SocketProviderProps) => {
 		connect()
 		onGameStateChanged()
 		onChatStateChanged()
+		onGameRoundRemainingTimeChanged()
 	})
 
 	return (

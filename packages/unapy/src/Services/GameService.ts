@@ -49,7 +49,8 @@ class GameService {
 			players: [initialPlayer],
 			cards,
 			direction: "clockwise",
-			currentCardCombo: []
+			currentCardCombo: [],
+			maxRoundDurationInSeconds: 20
 		}
 
 		this.setGameData(gameId, game)
@@ -85,6 +86,8 @@ class GameService {
 		if (gameHasNotStarted && gameIsNotFull && playerIsNotOnGame) {
 			this.addPlayer(gameId, playerId)
 		}
+
+		game.roundRemainingTimeInSeconds = this.getRoundRemainingTimeInSeconds(gameId)
 
 		this.emitGameEvent(gameId, "PlayerJoined", game)
 	}
@@ -236,7 +239,34 @@ class GameService {
 
 		this.setGameData(gameId, game)
 
-		this.nextTurn(gameId)
+		this.nextRound(gameId)
+	}
+
+	private getRoundRemainingTimeInSeconds (gameId: string): number {
+		const remainingTimeInSeconds = GameRepository.getGameRoundRemainingTimeInSeconds(gameId)
+
+		return remainingTimeInSeconds
+	}
+
+	private resetRoundCounter (gameId: string) {
+		const game = this.getGame(gameId)
+
+		GameRepository.resetGameRoundCounter(gameId, {
+			timeoutAction: (gameId) => {
+				this.nextRound(gameId)
+			},
+			intervalAction: (gameId) => {
+				const gameRoundRemainingTime = this.getRoundRemainingTimeInSeconds(gameId)
+
+				this.emitGameEvent(gameId, "GameRoundRemainingTimeChanged", gameRoundRemainingTime)
+			},
+			gameId,
+			timeInSeconds: game.maxRoundDurationInSeconds
+		})
+	}
+
+	private removeRoundCounter (gameId: string) {
+		GameRepository.removeRoundCounter(gameId)
 	}
 
 	private startGame (gameId: string) {
@@ -272,6 +302,8 @@ class GameService {
 		this.setGameData(gameId, game)
 
 		this.emitGameEvent(gameId, "GameStarted", game)
+
+		this.resetRoundCounter(gameId)
 	}
 
 	private addPlayer (gameId: string, playerId: string) {
@@ -325,7 +357,9 @@ class GameService {
 		return game
 	}
 
-	private nextTurn (gameId: string) {
+	private nextRound (gameId: string) {
+		this.resetRoundCounter(gameId)
+
 		const currentPlayerInfo = this.getCurrentPlayerInfo(gameId)
 
 		if (currentPlayerInfo.status === "winner") {
@@ -615,6 +649,8 @@ class GameService {
 		}))
 
 		this.setGameData(gameId, game)
+
+		this.removeRoundCounter(gameId)
 
 		this.emitGameEvent(gameId, "GameEnded")
 	}

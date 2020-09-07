@@ -11,7 +11,8 @@ export type GameEvents =
 "PlayerJoined" |
 "PlayerBlocked" |
 "PlayerBuyCards" |
-"CardStackBuyCardsCombo"
+"CardStackBuyCardsCombo" |
+"GameRoundRemainingTimeChanged"
 
 export type GameStatus =
 "waiting" |
@@ -43,4 +44,16 @@ export type Game = {
 	cards: CardData[]
 	players: PlayerData[]
 	currentCardCombo: Array<CardTypes>
+	maxRoundDurationInSeconds: number
+	roundRemainingTimeInSeconds?: number
+}
+
+export type GameRoundCounter = {
+	timeoutId?: NodeJS.Timeout
+	intervalId?: NodeJS.Timeout
+	gameId: string
+	timeoutAction: (gameId: string) => void
+	intervalAction: (gameId: string) => void
+	timeInSeconds: number
+	initializedAtMilliseconds?: number
 }

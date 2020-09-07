@@ -10,6 +10,8 @@ import useDidMount from "@/hooks/useDidMount"
 
 import cardPlaceholder from "@/assets/card_placeholder.png"
 
+import RoundRemainingTime from "@/pages/Table/RoundRemainingTime"
+
 import Device from "@/utils/device"
 
 const CARD_WIDTH = Device.isMobile ? 7 : 20
@@ -21,13 +23,13 @@ type CardDeckPlaceholderProps = {
 }
 
 const CardDeckPlaceholder = (props: CardDeckPlaceholderProps) => {
-	const [playerStateMessage, setPlayerStateMessage] = useState<string>("")
 	const cardDeckPlaceholderRef = useRef(null)
-
-	const socket = useSocket()
-
+	
+	const [playerStateMessage, setPlayerStateMessage] = useState<string>("")
+	
 	const { cards, player, transform } = props
-
+	
+	const socket = useSocket()
 	const classes = useStyles()
 
 	const handlePlayerStateChange = (playerState: PlayerState, playerId: string, amountToBuy?: number) => {
@@ -82,9 +84,13 @@ const CardDeckPlaceholder = (props: CardDeckPlaceholderProps) => {
 				{player?.name && (
 					<Chip
 						label={player?.name}
-						className={classes.cardChip}
+						className={classes.cardChipPlayerName}
 						style={{ backgroundColor: player?.isCurrentRoundPlayer ? "#FFE600" : "#E0E0E0" }}
 					/>
+				)}
+
+				{player?.isCurrentRoundPlayer && (
+					<RoundRemainingTime />
 				)}
 
 				<Container
