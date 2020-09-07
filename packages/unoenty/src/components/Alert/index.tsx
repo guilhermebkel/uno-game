@@ -93,6 +93,7 @@ const Alert = (props: AlertProps & AlertType) => {
 				open={visible}
 				onClose={handleClose}
 				fullWidth={true}
+				className={classes.dialog}
 			>
 				<DialogTitle className={classes.title}>{title}</DialogTitle>
 				<DialogContent dividers className={classes.content}>

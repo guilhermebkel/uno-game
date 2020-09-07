@@ -7,7 +7,7 @@ const useStyles = makeStyles(theme => ({
 		right: theme.spacing(2),
 		width: 56,
 		height: 56,
-		zIndex: 9
+		zIndex: 99999
 	},
 	drawer: {
 		zIndex: "999999 !important" as any

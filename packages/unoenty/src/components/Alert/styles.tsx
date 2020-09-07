@@ -14,6 +14,9 @@ const useStyles = makeStyles({
 	footer: {
 		justifyContent: "center",
 		flexDirection: "column"
+	},
+	dialog: {
+		zIndex: "9999 !important" as any
 	}
 })
 

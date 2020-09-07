@@ -94,8 +94,8 @@ const DraggableCard = (props: CardProps) => {
 				filter: !canCardBeUsed ? "brightness(0.5)" : "saturate(1.5)",
 				pointerEvents: canCardBeUsed ? "all" : "none",
 				...(selected ? {
-					border: "5px solid #EC0000",
-					borderRadius: "16px"
+					border: `${Device.isMobile ? "3px" : "5px"} solid #EC0000`,
+					borderRadius: Device.isMobile ? "8px" : "16px"
 				} : {})
 			}}
 			onClick={onClick}
@@ -133,7 +133,9 @@ const CardDeck = (props: CardDeckProps) => {
 			inclination = Math.abs(Math.round(cards.length / 2) - index)
 		}
 
-		return inclination * 4
+		const delta = 4
+
+		return inclination * delta
 	}
 
 	const getCardElevation = (index: number) => {
@@ -147,7 +149,9 @@ const CardDeck = (props: CardDeckProps) => {
 			elevation = - Math.abs(index - Math.round(cards.length / 2))
 		}
 
-		return elevation * 7
+		const delta = Device.isMobile ? 3 : 7
+
+		return elevation * delta
 	}
 
 	const classes = useStyles()

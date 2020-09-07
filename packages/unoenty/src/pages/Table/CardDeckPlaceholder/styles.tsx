@@ -42,8 +42,8 @@ const useStyles = makeStyles((theme) => {
 			backgroundColor: "#EC0000",
 			color: "#FFFFFF",
 			fontWeight: "bolder",
-			fontSize: Device.isMobile ? `${theme.spacing(3)}px` : `${theme.spacing(2)}px`,
-			padding: Device.isMobile ? `${theme.spacing(1)}px ${theme.spacing(2)}px` : `${theme.spacing(2)}px ${theme.spacing(4)}px`
+			fontSize: Device.isMobile ? `${theme.spacing(1.5)}px` : `${theme.spacing(2)}px`,
+			padding: Device.isMobile ? `${theme.spacing(0.5)}px ${theme.spacing(1)}px` : `${theme.spacing(2)}px ${theme.spacing(4)}px`
 		}
 	}
 })
