@@ -119,15 +119,15 @@ const Room = () => {
 				)}
 
 				<Grid item sm={12} md={12} lg={12} xl={12} style={{ width: "100%" }}>
-					{socketStore?.game?.players?.map(player => (
-						<>
+					{socketStore?.game?.players?.map((player, index) => (
+						<React.Fragment key={index}>
 							<PlayerItem
 								key={player.id}
 								player={player}
 							/>
 
 							<Divider size={2} />
-						</>
+						</ React.Fragment>
 					))}
 				</Grid>
 			</Grid>

@@ -12,7 +12,7 @@ const client = io(serverConfig.apiUrl, {
 	...({ parser: MsgPackParser })
 })
 
-export const connectSocket = async () =>{
+export const connectSocket = async () => {
 	return new Promise<string>(resolve => {
 		client.on("PlayerConnected", (playerId: string) => {
 			resolve(playerId)

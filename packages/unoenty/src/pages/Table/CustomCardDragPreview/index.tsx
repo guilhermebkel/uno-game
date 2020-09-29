@@ -31,11 +31,11 @@ const CustomCardDragPreview = () => {
         display: "none"
       }
     }
-  
+
     const { x, y } = currentOffset
 
     const transform = `translate(${x}px, ${y}px)`
-  
+
     return {
       transform,
       WebkitTransform: transform,
@@ -49,30 +49,31 @@ const CustomCardDragPreview = () => {
       <div className={classes.container} >
         <div style={getItemStyles(initialOffset, currentOffset)}>
           {itemType === CARD_TYPE &&
-          cardStore?.selectedCards?.length &&
-          cardStore?.selectedCards?.every(card => card.type === item.cardType) ? (
-            <>
-              {cardStore?.selectedCards?.map((card, index) => (
-                <img
-                  alt={card.name}
-                  src={card.src}
-                  className={item.className}
-                  style={{
-                    filter: "saturate(1.5)",
-                    left: +index * 20,
-                    position: "absolute"
-                  }}
-                />
-              ))}
-            </>
-          ) : (
-            <img
-              alt={item.name}
-              src={item.src}
-              className={item.className}
-              style={{ filter: "saturate(1.5)" }}
-            />
-          )}
+            cardStore?.selectedCards?.length &&
+            cardStore?.selectedCards?.every(card => card.type === item.cardType) ? (
+              <>
+                {cardStore?.selectedCards?.map((card, index) => (
+                  <img
+                    key={index}
+                    alt={card.name}
+                    src={card.src}
+                    className={item.className}
+                    style={{
+                      filter: "saturate(1.5)",
+                      left: +index * 20,
+                      position: "absolute"
+                    }}
+                  />
+                ))}
+              </>
+            ) : (
+              <img
+                alt={item.name}
+                src={item.src}
+                className={item.className}
+                style={{ filter: "saturate(1.5)" }}
+              />
+            )}
         </div>
       </div>
     )

@@ -104,12 +104,12 @@ const Alert = (props: AlertProps & AlertType) => {
 				</DialogContent>
 				{(customButtons?.length || closable !== false) && (
 					<DialogActions className={classes.footer}>
-						{customButtons?.map(customButton => (
-							<>
+						{customButtons?.map((customButton, index) => (
+							<React.Fragment key={index}>
 								{customButton}
 
 								<Divider size={1} />
-							</>
+							</React.Fragment>
 						))}
 						{closable !== false && (
 							<Button onClick={handleClose} fullWidth={true}>

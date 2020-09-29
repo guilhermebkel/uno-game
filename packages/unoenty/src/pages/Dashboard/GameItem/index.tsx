@@ -69,8 +69,8 @@ const GameItem = (props: GameItemProps) => {
 				</Typography>
 
 				<AvatarGroup>
-					{players.map(player => (
-						<Avatar>
+					{players.map((player, index) => (
+						<Avatar key={index}>
 							{player.name[0]}
 						</Avatar>
 					))}

@@ -167,8 +167,8 @@ const Chat: React.FC = () => {
 					className={classes.drawerBodyContainer}
 					innerRef={messageContainerRef}
 				>
-					{socketStore?.chat?.messages?.map(message => (
-						<>
+					{socketStore?.chat?.messages?.map((message, index) => (
+						<React.Fragment key={index}>
 							<Typography
 								variant="body1"
 							>
@@ -176,7 +176,7 @@ const Chat: React.FC = () => {
 							</Typography>
 
 							<Divider size={1} />
-						</>
+						</React.Fragment>
 					))}
 				</Grid>
 
