@@ -237,7 +237,7 @@ const CardDeck = (props: CardDeckProps) => {
 	}
 
 	const onPlayerGotAwayFromKeyboard = () => {
-		//socket.onPlayerGotAwayFromKeyboard(playerId => handlePlayerGotAwayFromKeyboard(playerId))
+		socket.onPlayerGotAwayFromKeyboard(playerId => handlePlayerGotAwayFromKeyboard(playerId))
 	}
 
 	const setupDeck = () => {
