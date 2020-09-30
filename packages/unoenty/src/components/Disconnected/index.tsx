@@ -34,7 +34,6 @@ const Disconnected = () => {
                                 horizontal: 'left',
                         }}
                         open={open}
-                        autoHideDuration={10000}
                         onClose={() => setOpen(false)}
                         action={actions}
                 >
