@@ -3,7 +3,7 @@
 </p>	
 
 <h3 align="center">
-  A UNO Game made in Javascript 🎴
+  An UNO Game made in Javascript 🎴
 </h3>
 
 <p align="center">
