@@ -76,8 +76,8 @@ const Dashboard = () => {
 				<Grid item sm={12} md={12} lg={12} xl={12} style={{ width: "100%" }}>
 					{games
 						.filter(game => game.status === "waiting")
-						.map(game => (
-							<>
+						.map((game, index) => (
+							<React.Fragment key={index}>
 								<Grid
 									container
 									component={Link}
@@ -91,9 +91,9 @@ const Dashboard = () => {
 										status={game.status}
 									/>
 								</Grid>
-								
+
 								<Divider size={2} />
-							</>
+							</React.Fragment>
 						))
 					}
 				</Grid>

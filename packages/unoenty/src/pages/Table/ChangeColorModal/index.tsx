@@ -37,15 +37,15 @@ const ChangeColorModal = (props: ChangeColorModalProps) => {
 				className: classes.dialogPaper
 			}}
 		>
-      <DialogTitle>
+			<DialogTitle>
 				Select a color
 			</DialogTitle>
 
 			<Divider size={3} />
-			
+
 			<Grid container spacing={2}>
-				{COLORS.map(color => (
-					<Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+				{COLORS.map((color, index) => (
+					<Grid key={index} item xs={6} sm={6} md={6} lg={6} xl={6}>
 						<Grid container justify="center">
 							<Skeleton
 								component={ButtonBase}
@@ -62,7 +62,7 @@ const ChangeColorModal = (props: ChangeColorModalProps) => {
 			</Grid>
 
 			<Divider size={3} />
-    </Dialog>
+		</Dialog>
 	)
 }
 

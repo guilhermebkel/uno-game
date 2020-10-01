@@ -20,8 +20,8 @@ const useStyles = makeStyles(theme => createStyles({
 const PlayerListSkeleton = () => {
 	const classes = useStyles()
 
-	const cards = [...new Array(3)].map(() => (
-		<>
+	const cards = [...new Array(3)].map((_, index) => (
+		<React.Fragment key={index}>
 			<Card>
 				<CardContent className={classes.cardContentPlayerItem}>
 					<Grid container justify="space-between">
@@ -49,7 +49,7 @@ const PlayerListSkeleton = () => {
 			</Card>
 
 			<Divider size={2} />
-		</>
+		</React.Fragment>
 	))
 
 	return (
