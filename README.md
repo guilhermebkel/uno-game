@@ -103,3 +103,24 @@ Right here everything should be working fine. So, **api** will be available at *
 1. Clone this repository to your machine.
 2. Create a new branch locally following the **Git Karma** pattern. Ex: feat/my-awesome-feature.
 3. Then, after coding your contribution, make a merge request for your branch.
+
+## 💫 Contributors
+
+Thanks to all the people who contributed on this project!
+
+<table>
+  <tr>
+    <td align="center">
+			<a
+				href="https://github.com/ArcaneDiver" 
+				title="ArcaneDiver"
+			>
+				<img src="https://avatars.githubusercontent.com/ArcaneDiver" width="100px;" alt=""/>
+				<br />
+				<sub>
+					<b>Michele Della Mea</b>
+				</sub>
+			</a>
+		</td>
+  </tr>
+</table>
