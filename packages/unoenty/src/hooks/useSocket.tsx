@@ -161,7 +161,6 @@ const useSocket = () => {
 
 			const playerData = await getPlayerData(playerIdFromRoom);
 
-			console.log("Player Data from reconnetion", playerData)
 			socketStore.set({
 				...socketStore,
 				playerId: playerData.id

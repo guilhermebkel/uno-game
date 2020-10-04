@@ -658,9 +658,9 @@ class GameService {
 		 */
 		if (currentPlayer?.handCards.length === 0) {
 			gameStatus = "winner"
-			/**
-			 * In case the player has only one card, he's made uno
-			 */
+		/**
+		 * In case the player has only one card, he's made uno
+		 */
 		} else if (currentPlayer?.handCards.length === 1) {
 			gameStatus = "uno"
 		}

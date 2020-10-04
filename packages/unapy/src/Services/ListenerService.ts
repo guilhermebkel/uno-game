@@ -52,17 +52,23 @@ class ListenerService {
 			this.onBuyCard(gameId, playerData.id)
 		})
 
-		client.on("PutCard", (gameId: string, cardIds: string[], selectedColor: CardColors) => {
-			this.onPutCard(gameId, playerData.id, cardIds, selectedColor)
-		})
+		client.on(
+			"PutCard",
+			(gameId: string, cardIds: string[], selectedColor: CardColors) => {
+				this.onPutCard(gameId, playerData.id, cardIds, selectedColor)
+			}
+		)
 
 		client.on("SendChatMessage", (chatId: string, content: string) => {
 			this.onSendChatMessage(playerData.id, chatId, content)
 		})
 
-		client.on("ChangePlayerStatus", (gameId: string, playerStatus: PlayerStatus) => {
-			this.onChangePlayerStatus(playerData.id, gameId, playerStatus)
-		})
+		client.on(
+			"ChangePlayerStatus",
+			(gameId: string, playerStatus: PlayerStatus) => {
+				this.onChangePlayerStatus(playerData.id, gameId, playerStatus)
+			}
+		)
 
 		client.on("ToggleReady", (gameId: string) => {
 			this.onToggleReady(gameId, playerData.id)
@@ -73,7 +79,11 @@ class ListenerService {
 		})
 	}
 
-	private onChangePlayerStatus (playerId: string, gameId: string, playerStatus: PlayerStatus) {
+	private onChangePlayerStatus (
+		playerId: string,
+		gameId: string,
+		playerStatus: PlayerStatus
+	) {
 		const playerExists = PlayerService.playerExists(playerId)
 		const gameExists = GameService.gameExists(gameId)
 
@@ -130,7 +140,12 @@ class ListenerService {
 		}
 	}
 
-	private onPutCard (gameId: string, playerId: string, cardIds: string[], selectedColor: CardColors) {
+	private onPutCard (
+		gameId: string,
+		playerId: string,
+		cardIds: string[],
+		selectedColor: CardColors
+	) {
 		const gameExists = GameService.gameExists(gameId)
 		const playerExists = PlayerService.playerExists(playerId)
 
