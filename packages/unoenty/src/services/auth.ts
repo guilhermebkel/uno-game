@@ -5,10 +5,10 @@ import { Player } from "@uno-game/protocols"
 class Auth {
 	authKey = "Un0-@uTh"
 
-	getPlayerData(): Player {
+	getPlayerData() {
 		const authData = Storage.get<Player>(this.authKey)
 
-		return authData as Player
+		return authData
 	}
 
 	setPlayerData(authData: Player) {

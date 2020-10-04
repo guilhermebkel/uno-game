@@ -1,4 +1,5 @@
 import { useSocketStore } from "@/store/Socket"
+import { connectSocket, getPlayerData } from '../services/socket';
 
 import {
 	PlayerData,
@@ -22,12 +23,12 @@ const useSocket = () => {
 
 	const getOtherPlayers = (): PlayerData[] => {
 		const totalPlayers = socketStore?.game?.players?.length as number
-		
+
 		const playerId = socketStore.playerId
 
 		let currentPlayerIndex = socketStore?.game?.players?.
 			findIndex(player => player.id === playerId) as number
-			
+
 		if (currentPlayerIndex === -1) {
 			currentPlayerIndex = totalPlayers
 		}
@@ -120,7 +121,7 @@ const useSocket = () => {
 	const onNewChatMessage = (fn?: () => void) => {
 		socketStore.io.on("NewMessage", (message: ChatMessage) => {
 			socketStore.addChatMessage(message)
-			
+
 			if (fn) {
 				fn()
 			}
@@ -155,18 +156,26 @@ const useSocket = () => {
 	}
 
 	const onReconnect = (fn: () => void) => {
-		socketStore.io.on("reconnect", () => {
-			if (fn) {
-				fn()
-			}
+		socketStore.io.on("reconnect", async () => {
+			const playerIdFromRoom = await connectSocket()
+
+			const playerData = await getPlayerData(playerIdFromRoom);
+
+			console.log("Player Data from reconnetion", playerData)
+			socketStore.set({
+				...socketStore,
+				playerId: playerData.id
+			})
+
+			fn()
 		})
 	}
 
 	return {
-		get currentPlayer (): PlayerData {
+		get currentPlayer(): PlayerData {
 			return getCurrentPlayer()
 		},
-		get otherPlayers (): PlayerData[] {
+		get otherPlayers(): PlayerData[] {
 			return getOtherPlayers()
 		},
 		getCurrentPlayer,

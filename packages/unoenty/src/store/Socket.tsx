@@ -1,12 +1,11 @@
 import React, { createContext, useContext, useState } from "react"
 import { Socket } from "socket.io-client"
 
-import client, { connectSocket } from "@/services/socket"
-import Auth from "@/services/auth"
+import client, { connectSocket, getPlayerData } from "@/services/socket"
 
 import useDidMount from "@/hooks/useDidMount"
 
-import { LoadingApp, LoginDialog } from "@/components"
+import { LoadingApp } from "@/components"
 
 import { preloadCardPictures } from "@/utils/card"
 
@@ -84,40 +83,20 @@ const SocketProvider = (props: SocketProviderProps) => {
 	const connect = async () => {
 		preloadCardPictures()
 
-		let playerId = await connectSocket()
+		const playerId = await connectSocket()
 
-		let playerData = Auth.getPlayerData()
+		const playerData = await getPlayerData(playerId);
 
-		if (playerData) {
-			playerId = playerData.id
-		} else {
-			const loginData = await LoginDialog.open()
-
-			playerData = {
-				id: playerId,
-				name: loginData.name
-			}
-
-			Auth.setPlayerData(playerData)
-		}
-
-		client.emit("SetPlayerData", playerData.id, playerData.name)
-
-		await new Promise<void>((resolve) => {
-			client.on("PlayerDataSet", resolve)
-		})
-
-		const data: SocketContextData = {
+		setData({
 			io: client,
 			set: setData,
-			playerId,
+			playerId: playerData.id,
 			addChatMessage
-		}
-
-		setData(data)
+		})
 
 		setLoading(false)
 	}
+
 
 	useDidMount(() => {
 		connect()
