@@ -6,6 +6,7 @@ import { getEmptyImage } from "react-dnd-html5-backend"
 
 import useDidMount from "@/hooks/useDidMount"
 import { useCardStore } from "@/store/Card"
+import { useSocketStore } from "@/store/Socket"
 import useSocket from "@/hooks/useSocket"
 
 import { Alert } from "@/components"
@@ -61,8 +62,8 @@ const DraggableCard = (props: CardProps) => {
 
 	const canCardBeUsed = canBePartOfCurrentCombo || card.canBeUsed
 
-  const [{ isDragging }, drag, preview] = useDrag({
-    item: {
+	const [{ isDragging }, drag, preview] = useDrag({
+		item: {
 			type: CARD_TYPE,
 			id: card.id,
 			index,
@@ -72,12 +73,12 @@ const DraggableCard = (props: CardProps) => {
 			selected,
 			className
 		} as DraggedCardItem,
-    collect: monitor => ({
-      isDragging: monitor.isDragging()
+		collect: monitor => ({
+			isDragging: monitor.isDragging()
 		}),
 		canDrag: canCardBeUsed,
 		end: onDragEnd
-  })
+	})
 
 	drag(draggableCardRef)
 
@@ -85,7 +86,7 @@ const DraggableCard = (props: CardProps) => {
 		preview(getEmptyImage(), { captureDraggingState: true })
 	})
 
-  return (
+	return (
 		<img
 			ref={draggableCardRef}
 			key={card.name}
@@ -104,7 +105,7 @@ const DraggableCard = (props: CardProps) => {
 			}}
 			onClick={onClick}
 		/>
-  )
+	)
 }
 
 type CardDeckProps = {
@@ -118,12 +119,13 @@ const CardDeck = (props: CardDeckProps) => {
 	const { gameId } = useParams()
 
 	const {
-    isDraggingAnyCard
-  } = useDragLayer((monitor) => ({
-    isDraggingAnyCard: monitor.isDragging()
+		isDraggingAnyCard
+	} = useDragLayer((monitor) => ({
+		isDraggingAnyCard: monitor.isDragging()
 	}))
-	
+
 	const cardStore = useCardStore()
+	const socketStore = useSocketStore()
 	const socket = useSocket()
 
 	const getCardInclination = (index: number) => {
@@ -172,25 +174,32 @@ const CardDeck = (props: CardDeckProps) => {
 	const canBePartOfCurrentCombo = (cardType: CardTypes) => !!cardStore?.selectedCards?.some(card => card.type === cardType)
 
 	const toggleSelectedCard = (cardId: string) => {
-		cardStore?.setSelectedCards(lastState => {
-			const selectedCard = cards.find(card => card.id === cardId)
+		const lastSelectedCards = cardStore.selectedCards
+		const selectedCard = cards.find(card => card.id === cardId)
+		const cardOnTopOfCardStack = socketStore?.game!.usedCards[0]
+		const selectedCardTypes = lastSelectedCards?.map(card => card.type)
 
-			const selectedCardTypes = lastState?.map(card => card.type)
-	
-			const isAlreadySelected = isCardSelected(cardId)
-	
-			if (isAlreadySelected) {
-				const cardsWithoutAlreadySelected = lastState?.filter(card => card.id !== cardId)
-				cardStore.setSelectedCards(cardsWithoutAlreadySelected)
-			} else if ((selectedCard && selectedCardTypes?.includes(selectedCard.type)) || !selectedCardTypes?.length) {
-				cardStore.setSelectedCards([
-					...(lastState || []) as any,
-					selectedCard
-				])
+		const isAlreadySelected = isCardSelected(cardId)
+
+		if (isAlreadySelected) {
+			const cardsWithoutAlreadySelected = lastSelectedCards?.filter(card => card.id !== cardId)
+
+			if (cardOnTopOfCardStack.color === selectedCard?.color) {
+				if (cardsWithoutAlreadySelected[0] && cardsWithoutAlreadySelected[0].type === cardOnTopOfCardStack.type) {
+					cardStore.setSelectedCards(cardsWithoutAlreadySelected)
+				} else {
+					cardStore.setSelectedCards([])
+				}
 			} else {
-				return (lastState || []) as any
+				cardStore.setSelectedCards(cardsWithoutAlreadySelected)
 			}
-		})
+
+		} else if ((selectedCard && selectedCardTypes?.includes(selectedCard.type)) || !selectedCardTypes?.length) {
+			cardStore.setSelectedCards([
+				...(lastSelectedCards || []) as any,
+				selectedCard
+			])
+		}
 	}
 
 	const unselectAllCards = () => {
