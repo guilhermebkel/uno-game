@@ -6,7 +6,7 @@ import { getEmptyImage } from "react-dnd-html5-backend"
 
 import useDidMount from "@/hooks/useDidMount"
 import { useCardStore } from "@/store/Card"
-import { useSocketStore } from '@/store/Socket';
+import { useSocketStore } from "@/store/Socket"
 import useSocket from "@/hooks/useSocket"
 
 import { Alert } from "@/components"
@@ -125,7 +125,7 @@ const CardDeck = (props: CardDeckProps) => {
 	}))
 
 	const cardStore = useCardStore()
-	const socketStore = useSocketStore();
+	const socketStore = useSocketStore()
 	const socket = useSocket()
 
 	const getCardInclination = (index: number) => {
@@ -174,9 +174,9 @@ const CardDeck = (props: CardDeckProps) => {
 	const canBePartOfCurrentCombo = (cardType: CardTypes) => !!cardStore?.selectedCards?.some(card => card.type === cardType)
 
 	const toggleSelectedCard = (cardId: string) => {
-		const lastSelectedCards = cardStore.selectedCards;
+		const lastSelectedCards = cardStore.selectedCards
 		const selectedCard = cards.find(card => card.id === cardId)
-		const cardOnTopOfCardStack = socketStore?.game!.usedCards[0];
+		const cardOnTopOfCardStack = socketStore?.game!.usedCards[0]
 		const selectedCardTypes = lastSelectedCards?.map(card => card.type)
 
 		const isAlreadySelected = isCardSelected(cardId)
