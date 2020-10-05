@@ -1,5 +1,5 @@
 import { useSocketStore } from "@/store/Socket"
-import { connectSocket, getPlayerData } from "../services/socket"
+import { connectSocket, getPlayerData } from "@/services/socket"
 
 import {
 	PlayerData,
