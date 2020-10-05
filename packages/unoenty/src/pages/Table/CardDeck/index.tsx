@@ -185,12 +185,15 @@ const CardDeck = (props: CardDeckProps) => {
 			const cardsWithoutAlreadySelected = lastSelectedCards?.filter(card => card.id !== cardId)
 
 			if (cardOnTopOfCardStack.color === selectedCard?.color) {
-				if (cardsWithoutAlreadySelected.find(card => card.type === cardOnTopOfCardStack.type || card.color === cardOnTopOfCardStack.color))
+				if (cardsWithoutAlreadySelected.find(card => card.type === cardOnTopOfCardStack.type || card.color === cardOnTopOfCardStack.color)) {
 					cardStore.setSelectedCards(cardsWithoutAlreadySelected)
-				else
+				} else {
 					cardStore.setSelectedCards([])
-			} else cardStore.setSelectedCards(cardsWithoutAlreadySelected)
-
+				}
+			} else {
+				cardStore.setSelectedCards(cardsWithoutAlreadySelected)
+			}
+			
 		} else if ((selectedCard && selectedCardTypes?.includes(selectedCard.type)) || !selectedCardTypes?.length) {
 			cardStore.setSelectedCards([
 				...(lastSelectedCards || []) as any,
