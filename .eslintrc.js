@@ -34,6 +34,8 @@ module.exports = {
     "@typescript-eslint/quotes": ["error", "double"],
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/no-extraneous-class": "off",
+    "semi": ["error", "never"],
+    "@typescript-eslint/semi": ["error", "never"]
   },
   settings: {
     "import/resolver": {
