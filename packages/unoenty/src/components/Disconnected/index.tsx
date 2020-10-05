@@ -1,31 +1,31 @@
-import React, { useState } from 'react';
+import React, { useState } from "react"
 
 import { Snackbar, IconButton } from "@material-ui/core"
 import { Alert } from "@material-ui/lab"
-import { Close } from '@material-ui/icons';
+import { Close } from "@material-ui/icons"
 
-import { useSocketStore } from '@/store/Socket';
+import { useSocketStore } from "@/store/Socket"
 
 
 const Disconnected = () => {
-        const { io } = useSocketStore();
+        const { io } = useSocketStore()
 
 
-        const [open, setOpen] = useState(false);
+        const [open, setOpen] = useState(false)
 
         io.on("connect", () => {
-                setOpen(false);
+                setOpen(false)
         })
 
         io.on("disconnect", () => {
-                setOpen(true);
+                setOpen(true)
         })
 
         const actions = (
                 <IconButton aria-label="close" color="inherit" onClick={() => setOpen(false)}>
                         <Close />
                 </IconButton>
-        );
+        )
 
         return (
                 <Snackbar
@@ -40,6 +40,6 @@ const Disconnected = () => {
                         <Alert severity="error">Disconnected</Alert>
                 </Snackbar>
         )
-};
+}
 
-export default Disconnected;
+export default Disconnected

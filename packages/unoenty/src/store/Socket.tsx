@@ -85,7 +85,7 @@ const SocketProvider = (props: SocketProviderProps) => {
 
 		const playerId = await connectSocket()
 
-		const playerData = await getPlayerData(playerId);
+		const playerData = await getPlayerData(playerId)
 
 		setData({
 			io: client,

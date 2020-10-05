@@ -1,5 +1,5 @@
 import { useSocketStore } from "@/store/Socket"
-import { connectSocket, getPlayerData } from '../services/socket';
+import { connectSocket, getPlayerData } from "../services/socket"
 
 import {
 	PlayerData,
@@ -159,7 +159,7 @@ const useSocket = () => {
 		socketStore.io.on("reconnect", async () => {
 			const playerIdFromRoom = await connectSocket()
 
-			const playerData = await getPlayerData(playerIdFromRoom);
+			const playerData = await getPlayerData(playerIdFromRoom)
 
 			socketStore.set({
 				...socketStore,

@@ -1,8 +1,8 @@
 import io from "socket.io-client"
 import MsgPackParser from "socket.io-msgpack-parser"
 
-import { LoginDialog } from '@/components';
-import Auth from '@/services/auth';
+import { LoginDialog } from "@/components"
+import Auth from "@/services/auth"
 
 import serverConfig from "@/config/server"
 
@@ -24,7 +24,7 @@ export const connectSocket = async () => {
 }
 
 export const getPlayerData = async (playerId: string) => {
-	let playerData = Auth.getPlayerData();
+	let playerData = Auth.getPlayerData()
 
 	if (!playerData) {
 		const loginData = await LoginDialog.open()
@@ -41,7 +41,7 @@ export const getPlayerData = async (playerId: string) => {
 
 	await new Promise<void>((resolve) => {
 		client.on("PlayerDataSet", resolve)
-	});
+	})
 
 	return playerData
 }
