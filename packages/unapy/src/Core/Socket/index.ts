@@ -17,11 +17,11 @@ class Socket {
 
 	static setupSocket(http: HttpServer) {
 		const oneSecondInMilliseconds = 1000
-		const twoMinutesInMilliseconds = 120000
+		const twoMilliseconds = 2000
 
 		io = socket(http, {
 			pingInterval: oneSecondInMilliseconds,
-			pingTimeout: twoMinutesInMilliseconds,
+			pingTimeout: twoMilliseconds,
 			...({ parser: MsgPackParser })
 		})
 	}

@@ -1,6 +1,9 @@
 import io from "socket.io-client"
 import MsgPackParser from "socket.io-msgpack-parser"
 
+import { LoginDialog } from "@/components"
+import Auth from "@/services/auth"
+
 import serverConfig from "@/config/server"
 
 const client = io(serverConfig.apiUrl, {
@@ -18,6 +21,29 @@ export const connectSocket = async () => {
 			resolve(playerId)
 		})
 	})
+}
+
+export const getPlayerData = async (playerId: string) => {
+	let playerData = Auth.getPlayerData()
+
+	if (!playerData) {
+		const loginData = await LoginDialog.open()
+
+		playerData = {
+			id: playerId,
+			name: loginData.name
+		}
+
+		Auth.setPlayerData(playerData)
+	}
+
+	client.emit("SetPlayerData", playerData.id, playerData.name)
+
+	await new Promise<void>((resolve) => {
+		client.on("PlayerDataSet", resolve)
+	})
+
+	return playerData
 }
 
 export default client

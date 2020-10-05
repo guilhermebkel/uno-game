@@ -456,7 +456,6 @@ class GameService {
 		}
 	}
 
-	// eslint-disable-next-line
 	private emitGameEvent (gameId: string, event: GameEvents, ...data: any) {
 		SocketService.emitRoomEvent(gameId, event, ...data)
 	}
