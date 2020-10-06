@@ -7,10 +7,29 @@ import {
 	PlayerState,
 	GameEvents,
 	CardColors,
-	ChatMessage
+	ChatMessage,
 } from "@uno-game/protocols"
 
-const useSocket = () => {
+const useSocket = (): {
+	currentPlayer: PlayerData,
+	otherPlayers: PlayerData[],
+	getCurrentPlayer: (players?: PlayerData[] | undefined) => PlayerData,
+	createGame: () => Promise<Game>,
+	joinGame: (gameId: string) => Promise<Game>,
+	toggleReady: (gameId: string) => void,
+	buyCard: (gameId: string) => void,
+	putCard: (gameId: string, cardIds: string[], selectedColor: CardColors) => void,
+	toggleOnlineStatus: (gameId: string) => void,
+	sendChatMessage: (chatId: string, content: string) => void,
+	onGameStart: (fn: () => void) => void,
+	onPlayerWon: (fn: (playerId: string, playerName: string) => void) => void,
+	onCardStackBuyCardsCombo: (fn: (amountToBuy: number) => void) => void,
+	onNewChatMessage: (fn?: () => void) => void,
+	onPlayerGotAwayFromKeyboard: (fn: (playerId: string) => void) => void,
+	onPlayerStateChange: (fn: (playerState: PlayerState, playerId: string, amountToBuy?: number) => void) => void
+	onPong: (fn: (latency: number) => void) => void,
+	onReconnect: (fn: () => void) => void,
+} => {
 	const socketStore = useSocketStore()
 
 	const getCurrentPlayer = (players?: PlayerData[]): PlayerData => {
@@ -41,7 +60,7 @@ const useSocket = () => {
 
 		let otherPlayers = [
 			...otherPlayersAfterCurrentPlayer || [],
-			...otherPlayersBeforeCurrentPlayer || []
+			...otherPlayersBeforeCurrentPlayer || [],
 		]
 
 		/**
@@ -50,12 +69,12 @@ const useSocket = () => {
 		if (totalPlayers <= 4) {
 			otherPlayers = [
 				otherPlayers[0],
-				{} as any,
+				{} as PlayerData,
 				otherPlayers[1],
-				{} as any,
+				{} as PlayerData,
 				otherPlayers[2],
-				{} as any,
-				otherPlayers[3]
+				{} as PlayerData,
+				otherPlayers[3],
 			]
 		}
 
@@ -106,7 +125,7 @@ const useSocket = () => {
 		socketStore.io.emit("SendChatMessage", chatId, content)
 	}
 
-	const onGameStart = (fn: Function) => {
+	const onGameStart = (fn: () => void) => {
 		socketStore.io.on("GameStarted", fn)
 	}
 
@@ -136,9 +155,9 @@ const useSocket = () => {
 
 	const onPlayerStateChange = (fn: (playerState: PlayerState, playerId: string, amountToBuy?: number) => void) => {
 		const events: { [key in GameEvents]?: PlayerState } = {
-			"PlayerUno": "Uno",
-			"PlayerBlocked": "Blocked",
-			"PlayerBuyCards": "BuyCards"
+			PlayerUno: "Uno",
+			PlayerBlocked: "Blocked",
+			PlayerBuyCards: "BuyCards",
 		}
 
 		Object.entries(events)
@@ -163,7 +182,7 @@ const useSocket = () => {
 
 			socketStore.set({
 				...socketStore,
-				playerId: playerData.id
+				playerId: playerData.id,
 			})
 
 			fn()
@@ -171,13 +190,12 @@ const useSocket = () => {
 	}
 
 	return {
-		get currentPlayer(): PlayerData {
+		get currentPlayer (): PlayerData {
 			return getCurrentPlayer()
 		},
-		get otherPlayers(): PlayerData[] {
+		get otherPlayers (): PlayerData[] {
 			return getOtherPlayers()
 		},
-		getCurrentPlayer,
 		createGame,
 		joinGame,
 		sendChatMessage,
@@ -192,7 +210,7 @@ const useSocket = () => {
 		onPong,
 		toggleReady,
 		buyCard,
-		putCard
+		putCard,
 	}
 }
 

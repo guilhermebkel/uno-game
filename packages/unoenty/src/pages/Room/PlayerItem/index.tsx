@@ -1,9 +1,9 @@
-import React from "react"
+import React, { ReactElement } from "react"
 import {
 	Card,
 	Avatar,
 	Grid,
-	Typography
+	Typography,
 } from "@material-ui/core"
 import Chip from "@material-ui/core/Chip"
 
@@ -14,7 +14,7 @@ type PlayerItem = {
 	player: PlayerData
 }
 
-const PlayerItem = (props: PlayerItem) => {
+const PlayerItem = (props: PlayerItem): ReactElement => {
 	const { player } = props
 
 	const classes = useStyles()

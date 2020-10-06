@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from "react"
+import React, { createContext, useContext, useState, ReactElement } from "react"
 import { Socket } from "socket.io-client"
 
 import client, { connectSocket, getPlayerData } from "@/services/socket"
@@ -26,9 +26,9 @@ interface SocketProviderProps {
 
 const SocketStore = createContext<SocketContextData>({} as SocketContextData)
 
-export const useSocketStore = () => useContext(SocketStore)
+export const useSocketStore = (): SocketContextData => useContext(SocketStore)
 
-const SocketProvider = (props: SocketProviderProps) => {
+const SocketProvider = (props: SocketProviderProps): ReactElement => {
 	const { children } = props
 
 	const [loading, setLoading] = useState(true)
@@ -38,7 +38,7 @@ const SocketProvider = (props: SocketProviderProps) => {
 		setSocketData(lastState => {
 			return {
 				...(lastState || {}),
-				...data
+				...data,
 			}
 		})
 	}
@@ -47,11 +47,11 @@ const SocketProvider = (props: SocketProviderProps) => {
 		setSocketData(lastState => {
 			const chat = { ...lastState.chat } as Chat
 
-			chat?.messages?.push(message)
+			chat.messages.push(message)
 
 			return {
 				...(lastState || {}),
-				chat
+				chat,
 			}
 		})
 	}
@@ -74,8 +74,8 @@ const SocketProvider = (props: SocketProviderProps) => {
 				...lastState,
 				game: {
 					...(lastState.game || {}),
-					roundRemainingTimeInSeconds: remainingTimeInSeconds
-				} as Game
+					roundRemainingTimeInSeconds: remainingTimeInSeconds,
+				} as Game,
 			}))
 		})
 	}
@@ -91,12 +91,11 @@ const SocketProvider = (props: SocketProviderProps) => {
 			io: client,
 			set: setData,
 			playerId: playerData.id,
-			addChatMessage
+			addChatMessage,
 		})
 
 		setLoading(false)
 	}
-
 
 	useDidMount(() => {
 		connect()

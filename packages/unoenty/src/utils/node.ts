@@ -2,9 +2,9 @@ import ReactDOM from "react-dom"
 import React from "react"
 
 class Node {
-	renderComponent(id: string, component: React.ReactNode) {
+	renderComponent (id: string, component: React.ReactNode) {
 		let node = document.getElementById(id)
-	
+
 		if (node) {
 			ReactDOM.unmountComponentAtNode(node)
 		} else {
@@ -14,15 +14,15 @@ class Node {
 		}
 
 		const where = document.getElementById("root") || document.body
-			
+
 		const expectedRendering = ReactDOM.createPortal(component, where)
-	
+
 		return ReactDOM.render(expectedRendering, node)
 	}
 
-	unmountComponent(id: string) {
-		let node = document.getElementById(id)
-	
+	unmountComponent (id: string) {
+		const node = document.getElementById(id)
+
 		if (node) {
 			ReactDOM.unmountComponentAtNode(node)
 		}

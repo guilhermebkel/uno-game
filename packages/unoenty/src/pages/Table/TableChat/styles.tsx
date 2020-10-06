@@ -7,19 +7,20 @@ const useStyles = makeStyles(theme => ({
 		right: theme.spacing(2),
 		width: 56,
 		height: 56,
-		zIndex: 99999
+		zIndex: 99999,
 	},
 	drawer: {
-		zIndex: "999999 !important" as any
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		zIndex: "999999 !important" as any,
 	},
 	drawerPaper: {
 		maxWidth: 400,
 		width: "100%",
-		backgroundColor: "#252d33"
+		backgroundColor: "#252d33",
 	},
 	drawerHeaderContainer: {
 		backgroundColor: "#FFFFFF",
-		height: theme.spacing(8)
+		height: theme.spacing(8),
 	},
 	drawerBodyContainer: {
 		color: "#FFFFFF",
@@ -27,26 +28,26 @@ const useStyles = makeStyles(theme => ({
 		height: `calc(100% - ${theme.spacing(18)}px)`,
 		overflowY: "scroll",
 		"&::-webkit-scrollbar": {
-			width: "10px"
+			width: "10px",
 		},
 		"&::-webkit-scrollbar-thumb": {
 			backgroundColor: "rgba(255, 255, 255, 0)",
-			borderRadius: "100px"
+			borderRadius: "100px",
 		},
 		"&:hover::-webkit-scrollbar-thumb": {
-			backgroundColor: "rgba(255, 255, 255, 0.25)"
-		}
+			backgroundColor: "rgba(255, 255, 255, 0.25)",
+		},
 	},
 	drawerFooterContainer: {
 		padding: theme.spacing(2),
 		backgroundColor: "#FFFFFF",
 		position: "absolute",
 		bottom: 0,
-		height: theme.spacing(10)
+		height: theme.spacing(10),
 	},
 	messageInput: {
-		flex: 1
-	}
+		flex: 1,
+	},
 }))
 
 export default useStyles

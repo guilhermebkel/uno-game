@@ -9,11 +9,11 @@ class GameController {
 			id: game.id,
 			title: game.title,
 			status: game.status,
-			players: game.players.map(player => ({ name: player.name }))
+			players: game.players.map(player => ({ name: player.name })),
 		}))
 
 		return res.status(200).json({
-			games: gameList
+			games: gameList,
 		})
 	}
 }

@@ -5,17 +5,17 @@ import { Player } from "@uno-game/protocols"
 class Auth {
 	authKey = "Un0-@uTh"
 
-	getPlayerData() {
+	getPlayerData () {
 		const authData = Storage.get<Player>(this.authKey)
 
 		return authData
 	}
 
-	setPlayerData(authData: Player) {
+	setPlayerData (authData: Player) {
 		Storage.set(this.authKey, authData)
 	}
 
-	logout() {
+	logout () {
 		Storage.delete(this.authKey)
 
 		window.location.href = "/"

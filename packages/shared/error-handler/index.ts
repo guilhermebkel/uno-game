@@ -1,5 +1,5 @@
 class ErrorHandler {
-	handle(error: Error) {
+	handle (error: Error) {
 		console.error(error)
 	}
 }

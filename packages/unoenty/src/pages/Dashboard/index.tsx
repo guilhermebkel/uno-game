@@ -1,8 +1,8 @@
-import React, { useState } from "react"
+import React, { useState, ReactElement } from "react"
 import { useHistory, Link } from "react-router-dom"
 import { Grid, Button, CircularProgress } from "@material-ui/core"
 import {
-	AddCircleOutlineOutlined as AddCircleOutlineOutlinedIcon
+	AddCircleOutlineOutlined as AddCircleOutlineOutlinedIcon,
 } from "@material-ui/icons"
 
 import { Game } from "@uno-game/protocols"
@@ -20,7 +20,7 @@ import useStyles from "@/pages/Dashboard/styles"
 
 import GameListSkeleton from "@/skeletons/GameList"
 
-const Dashboard = () => {
+const Dashboard = (): ReactElement => {
 	const [games, setGames] = useState<Game[]>([])
 
 	const [loadingCreateGame, setLoadingCreateGame] = useState(false)

@@ -1,11 +1,11 @@
 class Storage {
-	get<Data extends object>(key: string): Data | null {
+	get<Data extends Record<string, unknown>> (key: string): Data | null {
 		try {
 			const stringifiedData = localStorage.getItem(key)
 
 			if (stringifiedData) {
 				const parsedData = JSON.parse(stringifiedData)
-				
+
 				return parsedData
 			} else {
 				return null
@@ -16,7 +16,7 @@ class Storage {
 		}
 	}
 
-	set(key: string, data: object) {
+	set (key: string, data: Record<string, unknown>) {
 		try {
 			const stringifiedData = JSON.stringify(data)
 
@@ -26,7 +26,7 @@ class Storage {
 		}
 	}
 
-	delete(key: string) {
+	delete (key: string) {
 		try {
 			localStorage.removeItem(key)
 		} catch (error) {

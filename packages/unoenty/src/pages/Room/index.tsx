@@ -1,11 +1,11 @@
-import React, { useState } from "react"
+import React, { useState, ReactElement } from "react"
 import copy from "copy-to-clipboard"
 import { useParams, useHistory } from "react-router-dom"
 import { Grid, Button, ButtonGroup } from "@material-ui/core"
 import {
 	ThumbDownOutlined as ThumbDownOutlinedIcon,
 	ThumbUpOutlined as ThumbUpOutlinedIcon,
-	FileCopyOutlined as FileCopyOutlinedIcon
+	FileCopyOutlined as FileCopyOutlinedIcon,
 } from "@material-ui/icons"
 
 import { useSocketStore } from "@/store/Socket"
@@ -21,7 +21,7 @@ import PlayerItem from "@/pages/Room/PlayerItem"
 
 import PlayerListSkeleton from "@/skeletons/PlayerList"
 
-const Room = () => {
+const Room = (): ReactElement => {
 	const [loadingRoom, setLoadingRoom] = useState(true)
 	const [isLinkCopied, setIsLinkCopied] = useState(false)
 

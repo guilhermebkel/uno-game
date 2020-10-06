@@ -50,7 +50,7 @@ class GameRoundRepository {
 			...roundCounter,
 			timeoutId: newTimeoutId,
 			intervalId: newIntervalId,
-			initializedAtMilliseconds: Date.now()
+			initializedAtMilliseconds: Date.now(),
 		})
 	}
 

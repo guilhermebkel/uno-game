@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react"
+import React, { useState, useRef, ReactElement } from "react"
 import {
 	IconButton,
 	Drawer,
@@ -6,12 +6,12 @@ import {
 	Typography,
 	TextField,
 	Badge,
-	Fab
+	Fab,
 } from "@material-ui/core"
 import {
 	ChatOutlined as ChatIcon,
 	ArrowBackOutlined as GoBackIcon,
-	Send as SendIcon
+	Send as SendIcon,
 } from "@material-ui/icons"
 
 import { Divider } from "@/components"
@@ -25,7 +25,7 @@ import { useSocketStore } from "@/store/Socket"
 
 import DeviceUtil from "@/utils/device"
 
-const Chat: React.FC = () => {
+const Chat = (): ReactElement => {
 	const classes = useStyles()
 	const socket = useSocket()
 	const socketStore = useSocketStore()
@@ -38,7 +38,9 @@ const Chat: React.FC = () => {
 	const messageContainerRef = useRef<HTMLElement>(null)
 
 	const scrollChatToBottom = () => {
-		messageContainerRef.current?.scroll(0, messageContainerRef.current?.scrollHeight)
+		if (messageContainerRef.current) {
+			messageContainerRef.current.scroll(0, messageContainerRef.current?.scrollHeight)
+		}
 	}
 
 	const resetNotSeenMessagesCount = () => {
@@ -62,7 +64,7 @@ const Chat: React.FC = () => {
 
 		if (DeviceUtil.isMobile) {
 			backButton.handleBackButton(
-				() => handleCloseChat()
+				() => handleCloseChat(),
 			)
 		}
 	}
@@ -139,7 +141,7 @@ const Chat: React.FC = () => {
 				onClose={handleCloseChat}
 				anchor="right"
 				PaperProps={{
-					className: classes.drawerPaper
+					className: classes.drawerPaper,
 				}}
 				className={classes.drawer}
 			>

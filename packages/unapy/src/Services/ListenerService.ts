@@ -56,7 +56,7 @@ class ListenerService {
 			"PutCard",
 			(gameId: string, cardIds: string[], selectedColor: CardColors) => {
 				this.onPutCard(gameId, playerData.id, cardIds, selectedColor)
-			}
+			},
 		)
 
 		client.on("SendChatMessage", (chatId: string, content: string) => {
@@ -67,7 +67,7 @@ class ListenerService {
 			"ChangePlayerStatus",
 			(gameId: string, playerStatus: PlayerStatus) => {
 				this.onChangePlayerStatus(playerData.id, gameId, playerStatus)
-			}
+			},
 		)
 
 		client.on("ToggleReady", (gameId: string) => {
@@ -82,7 +82,7 @@ class ListenerService {
 	private onChangePlayerStatus (
 		playerId: string,
 		gameId: string,
-		playerStatus: PlayerStatus
+		playerStatus: PlayerStatus,
 	) {
 		const playerExists = PlayerService.playerExists(playerId)
 		const gameExists = GameService.gameExists(gameId)
@@ -144,7 +144,7 @@ class ListenerService {
 		gameId: string,
 		playerId: string,
 		cardIds: string[],
-		selectedColor: CardColors
+		selectedColor: CardColors,
 	) {
 		const gameExists = GameService.gameExists(gameId)
 		const playerExists = PlayerService.playerExists(playerId)
@@ -166,7 +166,7 @@ class ListenerService {
 	private onSetPlayerData (playerId: string, playerName: string) {
 		PlayerService.setPlayerData({
 			id: playerId,
-			name: playerName
+			name: playerName,
 		})
 	}
 }

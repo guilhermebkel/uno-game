@@ -6,6 +6,3 @@ dist
 
 # Coverage Report
 coverage
-
-# Index file
-index.ts

@@ -2,7 +2,7 @@ import SocketService from "@/Services/SocketService"
 
 import {
 	GameRoundEvents,
-	GameRoundCounter
+	GameRoundCounter,
 } from "@uno-game/protocols"
 
 import GameRoundRepository from "@/Repositories/GameRoundRepository"

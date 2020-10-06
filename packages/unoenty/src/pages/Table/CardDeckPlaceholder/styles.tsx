@@ -11,15 +11,15 @@ const useStyles = makeStyles((theme) => {
 			height: cardContainerSize,
 			pointerEvents: "none",
 			transition: theme.transitions.create("all", {
-				duration: theme.transitions.duration.standard
-			})
+				duration: theme.transitions.duration.standard,
+			}),
 		},
 		cardContainer: {
 			position: "relative",
 			height: cardContainerSize,
 			transition: theme.transitions.create("all", {
-				duration: theme.transitions.duration.standard
-			})
+				duration: theme.transitions.duration.standard,
+			}),
 		},
 		cardChipPlayerName: {
 			position: "absolute",
@@ -28,24 +28,24 @@ const useStyles = makeStyles((theme) => {
 			zIndex: 9999,
 			color: "#000000",
 			fontWeight: "bolder",
-			maxWidth: 200
+			maxWidth: 200,
 		},
 		card: {
 			height: cardContainerSize,
 			width: "auto",
 			position: "absolute",
 			transition: theme.transitions.create("all", {
-				duration: theme.transitions.duration.standard
+				duration: theme.transitions.duration.standard,
 			}),
-			pointerEvents: "none"
+			pointerEvents: "none",
 		},
 		playerStateMessage: {
 			backgroundColor: "#EC0000",
 			color: "#FFFFFF",
 			fontWeight: "bolder",
 			fontSize: Device.isMobile ? `${theme.spacing(1.5)}px` : `${theme.spacing(2)}px`,
-			padding: Device.isMobile ? `${theme.spacing(0.5)}px ${theme.spacing(1)}px` : `${theme.spacing(2)}px ${theme.spacing(4)}px`
-		}
+			padding: Device.isMobile ? `${theme.spacing(0.5)}px ${theme.spacing(1)}px` : `${theme.spacing(2)}px ${theme.spacing(4)}px`,
+		},
 	}
 })
 

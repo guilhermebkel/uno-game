@@ -1,4 +1,4 @@
-import React from "react"
+import React, { ReactElement } from "react"
 import { Skeleton } from "@material-ui/lab"
 import { Grid, makeStyles, createStyles, Card, CardContent } from "@material-ui/core"
 
@@ -8,16 +8,16 @@ const useStyles = makeStyles(theme => createStyles({
 	cardContentButton: {
 		paddingBottom: `${theme.spacing(1)}px !important`,
 		padding: `${theme.spacing(1)}px !important`,
-		backgroundColor: theme.palette.primary.main
+		backgroundColor: theme.palette.primary.main,
 	},
 	cardContentGameItem: {
 		paddingBottom: `${theme.spacing(3)}px !important`,
 		padding: `${theme.spacing(3)}px !important`,
-		backgroundColor: theme.palette.background.default
-	}
+		backgroundColor: theme.palette.background.default,
+	},
 }))
 
-const GameListSkeleton = () => {
+const GameListSkeleton = (): ReactElement => {
 	const classes = useStyles()
 
 	const cards = [...new Array(3)].map((_, index) => (

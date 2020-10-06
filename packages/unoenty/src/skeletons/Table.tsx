@@ -1,15 +1,15 @@
-import React from "react"
+import React, { ReactElement } from "react"
 import { Skeleton } from "@material-ui/lab"
 import { Grid, makeStyles, createStyles, Card, CardContent } from "@material-ui/core"
 
 const useStyles = makeStyles(theme => createStyles({
 	cardContentCardDeckPlaceholder: {
 		paddingBottom: `${theme.spacing(1)}px !important`,
-		padding: `${theme.spacing(1)}px !important`
-	}
+		padding: `${theme.spacing(1)}px !important`,
+	},
 }))
 
-const TableSkeleton = () => {
+const TableSkeleton = (): ReactElement => {
 	const classes = useStyles()
 
 	return (

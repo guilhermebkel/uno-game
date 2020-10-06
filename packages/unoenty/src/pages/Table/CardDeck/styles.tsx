@@ -10,21 +10,21 @@ const useStyles = makeStyles((theme) => {
 			position: "relative",
 			height: cardContainerSize,
 			transition: theme.transitions.create("all", {
-				duration: theme.transitions.duration.standard
-			})
+				duration: theme.transitions.duration.standard,
+			}),
 		},
 		card: {
 			height: cardContainerSize,
 			width: "auto",
 			position: "absolute",
 			transition: theme.transitions.create("all", {
-				duration: theme.transitions.duration.standard
+				duration: theme.transitions.duration.standard,
 			}),
 			"&:hover": {
 				transform: "translateY(-20px) !important",
-				cursor: "pointer"
-			}
-		}
+				cursor: "pointer",
+			},
+		},
 	}
 })
 

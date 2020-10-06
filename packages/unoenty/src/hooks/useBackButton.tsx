@@ -1,6 +1,9 @@
-let active: boolean = true
+let active = true
 
-const useBackButton = () => {
+const useBackButton = (): {
+	handleBackButton: (onBackButtonPress: () => void) => void,
+	setActive: (value: boolean) => void,
+} => {
 	const setActive = (value: boolean) => {
 		active = value
 	}
@@ -17,8 +20,7 @@ const useBackButton = () => {
 		 * if it goes to the last pathname we trigger the callback function
 		 * since it means the user has gone back with back button.
 		 */
-		window.addEventListener("popstate", function onPopStateChange() {
-
+		window.addEventListener("popstate", function onPopStateChange () {
 			if (lastPathName === window.location.pathname && active) {
 				onBackButtonPress()
 			}
@@ -30,7 +32,7 @@ const useBackButton = () => {
 
 	return {
 		handleBackButton,
-		setActive
+		setActive,
 	}
 }
 
