@@ -12,7 +12,9 @@
     "build:unapy": "lerna run build --scope @uno-game/unapy",
     "start:unapy": "lerna run start --scope @uno-game/unapy",
     "install:unoenty": "lerna exec --scope @uno-game/unoenty -- npm install",
-    "build:unoenty": "lerna run build --scope @uno-game/unoenty"
+    "build:unoenty": "lerna run build --scope @uno-game/unoenty",
+    "lint": "npx eslint --ext .ts,.tsx packages",
+    "lint:fix": "npx eslint  --fix packages"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^3.7.0",
@@ -20,12 +22,13 @@
     "eslint": "^6.6.0",
     "eslint-config-standard": "^14.1.1",
     "eslint-import-resolver-typescript": "^2.0.0",
-    "eslint-plugin-react-hooks": "^4.0.8",
+    "eslint-plugin-flowtype": "^5.2.0",
     "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-jsx-a11y": "^6.3.1",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-react": "^7.20.3",
+    "eslint-plugin-react-hooks": "^4.0.8",
     "eslint-plugin-standard": "^4.0.1",
     "git-commit-msg-linter": "^2.4.3",
     "husky": "^4.2.5",
