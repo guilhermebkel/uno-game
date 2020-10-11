@@ -45,7 +45,8 @@
     "start": "craco start",
     "build": "craco build && cp _redirects build/_redirects",
     "test": "craco test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "typecheck": "tsc --noEmit"
   },
   "browserslist": {
     "production": [
