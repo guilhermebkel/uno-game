@@ -11,14 +11,17 @@
     "install:unapy": "lerna exec --scope @uno-game/unapy -- npm install",
     "build:unapy": "lerna run build --scope @uno-game/unapy",
     "start:unapy": "lerna run start --scope @uno-game/unapy",
+    "typecheck:unapy": "lerna run typecheck --scope @uno-game/unapy",
     "install:unoenty": "lerna exec --scope @uno-game/unoenty -- npm install",
     "build:unoenty": "lerna run build --scope @uno-game/unoenty",
+    "typecheck:unoenty": "lerna run typecheck --scope @uno-game/unoenty",
     "lint": "npx eslint --ext .ts,.tsx packages",
     "lint:fix": "npx eslint  --fix packages"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^3.7.0",
     "@typescript-eslint/parser": "^3.7.0",
+    "cross-env": "^7.0.2",
     "eslint": "^6.6.0",
     "eslint-config-standard": "^14.1.1",
     "eslint-import-resolver-typescript": "^2.0.0",
