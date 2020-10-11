@@ -6,7 +6,7 @@ import useStyles from "@/pages/Table/RoundRemainingTime/styles"
 import { useSocketStore } from "@/store/Socket"
 
 type RoundRemainingTimeType = {
-	style?: object
+	style?: Record<string, unknown>
 }
 
 const RoundRemainingTime: React.FC<RoundRemainingTimeType> = (props) => {

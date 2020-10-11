@@ -6,7 +6,7 @@ import { preloadImage } from "@/utils/image"
 
 import Queue from "@/services/queue"
 
-export const preloadCardPictures = async () => {
+export const preloadCardPictures = async (): Promise<void> => {
 	try {
 		const { data } = await api.get("/cards")
 
@@ -19,7 +19,7 @@ export const preloadCardPictures = async () => {
 		const queue = new Queue(worker, {
 			concurrency: 2,
 			delay: 2000,
-			retries: 3
+			retries: 3,
 		})
 
 		queue.addPayload(cardList)

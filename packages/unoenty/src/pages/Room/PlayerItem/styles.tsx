@@ -8,20 +8,20 @@ const useStyles = makeStyles(theme => ({
 		paddingTop: theme.spacing() * 3,
 		paddingRight: theme.spacing() * 3,
 		paddingBottom: theme.spacing() * 3,
-		display: "flex"
+		display: "flex",
 	},
 	cardContent: {
-		position: "relative"
+		position: "relative",
 	},
 	cardTitle: {
 		color: "#FFFFFF",
-		marginLeft: theme.spacing() * 3
+		marginLeft: theme.spacing() * 3,
 	},
 	cardStatus: {
 		position: "absolute",
 		width: theme.spacing(),
-		height: "100%"
-	}
+		height: "100%",
+	},
 }))
 
 export default useStyles

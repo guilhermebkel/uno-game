@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react"
+import React, { useRef, useState, ReactElement } from "react"
 import { Container, Menu } from "@material-ui/core"
 import { useDrop } from "react-dnd"
 
@@ -7,13 +7,11 @@ import { CardData, CardTypes, CardColors, Game } from "@uno-game/protocols"
 import useSocket from "@/hooks/useSocket"
 import useDidMount from "@/hooks/useDidMount"
 
-import { CARD_TYPE } from "@/pages/Table/CardDeck"
+import { CARD_TYPE, DraggedCardItem } from "@/pages/Table/CardDeck"
 
 import useStyles from "@/pages/Table/CardStack/styles"
 
 import { useCardStore } from "@/store/Card"
-
-import { DraggedCardItem } from "@/pages/Table/CardDeck"
 
 import ChangeColorModal from "@/pages/Table/ChangeColorModal"
 import RoundRemainingTime from "@/pages/Table/RoundRemainingTime"
@@ -26,7 +24,7 @@ type Props = {
 	onDrop: (cardIds: string[], selectedColor: CardColors) => void
 }
 
-const CardStack = (props: Props) => {
+const CardStack = (props: Props): ReactElement => {
 	const [cardStackStateMessage, setCardStackStateMessage] = useState<string>("")
 
 	const socket = useSocket()
@@ -64,13 +62,13 @@ const CardStack = (props: Props) => {
 	}
 
 	const [{ isHovering }, drop] = useDrop({
-    accept: CARD_TYPE,
-		drop: (item: any) => handleDrop(item),
+		accept: CARD_TYPE,
+		drop: (item: DraggedCardItem) => handleDrop(item),
 		collect: monitor => ({
-			isHovering: monitor.isOver()
-		})
+			isHovering: monitor.isOver(),
+		}),
 	})
-	
+
 	drop(cardStackRef)
 
 	const handleCardStackBuyCardsCombo = (amountToBuy: number) => {
@@ -97,10 +95,10 @@ const CardStack = (props: Props) => {
 				open={!!cardStackStateMessage}
 				anchorOrigin={{
 					horizontal: "right",
-					vertical: "bottom"
+					vertical: "bottom",
 				}}
 				PaperProps={{
-					className: classes.cardStackStateMessage
+					className: classes.cardStackStateMessage,
 				}}
 				style={{ zIndex: -1 }}
 			>
@@ -113,14 +111,14 @@ const CardStack = (props: Props) => {
 				maxWidth={false}
 				innerRef={cardStackRef}
 				style={{
-					backgroundColor: isHovering ? "rgba(255, 255, 255, 0.7)" : "rgba(255, 255, 255, 0.1)"
+					backgroundColor: isHovering ? "rgba(255, 255, 255, 0.7)" : "rgba(255, 255, 255, 0.1)",
 				}}
 			>
 				{socket?.currentPlayer?.isCurrentRoundPlayer && (
 					<RoundRemainingTime
 						style={{
 							top: -50,
-							right: -50
+							right: -50,
 						}}
 					/>
 				)}
@@ -135,7 +133,7 @@ const CardStack = (props: Props) => {
 							transform: `rotate(${cards.length - index}rad)`,
 							zIndex: cards.length - index,
 							boxShadow: `0 0 25px ${(index === 0) ? "#000000" : "transparent"}`,
-							filter: (index === 0) ? "saturate(1.5)" : "contrast(0.5)"
+							filter: (index === 0) ? "saturate(1.5)" : "contrast(0.5)",
 						}}
 					/>
 				))}
@@ -145,7 +143,7 @@ const CardStack = (props: Props) => {
 				className={classes.arrowCircle}
 				alt="arrow circle"
 				style={{
-					transform: `rotate3d(${game?.direction === "clockwise" ? 180 : 0}, -0, 0, 180deg)`
+					transform: `rotate3d(${game?.direction === "clockwise" ? 180 : 0}, -0, 0, 180deg)`,
 				}}
 				src={arrowCircle}
 			/>

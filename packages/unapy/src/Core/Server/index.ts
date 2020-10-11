@@ -8,28 +8,28 @@ class Server {
 	private static app = express()
 	static http = createServer(Server.app)
 
-	static async boot() {
+	static async boot (): Promise<void> {
 		Server.setupMiddlewares()
 		Server.setupRoutes()
 		Server.start()
 	}
 
-	private static setupMiddlewares() {
+	private static setupMiddlewares () {
 		const middlewares = [
 			express.json(),
-			cors()
+			cors(),
 		]
 
 		middlewares.map(middleware => Server.app.use(middleware))
 	}
 
-	private static start() {
+	private static start () {
 		Server.http.listen(process.env.PORT, () => {
 			console.log(`Server is running... [PORT ${process.env.PORT}]`)
 		})
 	}
 
-	private static setupRoutes() {
+	private static setupRoutes () {
 		Server.app.use(routes)
 	}
 }

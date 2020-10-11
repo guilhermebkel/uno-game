@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react"
+import React, { useRef, useState, ReactElement } from "react"
 import { Container, Chip, Menu } from "@material-ui/core"
 
 import { CardData, PlayerData, PlayerState } from "@uno-game/protocols"
@@ -22,13 +22,13 @@ type CardDeckPlaceholderProps = {
 	transform?: string
 }
 
-const CardDeckPlaceholder = (props: CardDeckPlaceholderProps) => {
+const CardDeckPlaceholder = (props: CardDeckPlaceholderProps): ReactElement => {
 	const cardDeckPlaceholderRef = useRef(null)
-	
+
 	const [playerStateMessage, setPlayerStateMessage] = useState<string>("")
-	
+
 	const { cards, player, transform } = props
-	
+
 	const socket = useSocket()
 	const classes = useStyles()
 
@@ -64,10 +64,10 @@ const CardDeckPlaceholder = (props: CardDeckPlaceholderProps) => {
 				open={!!playerStateMessage}
 				anchorOrigin={{
 					horizontal: "center",
-					vertical: "bottom"
+					vertical: "bottom",
 				}}
 				PaperProps={{
-					className: classes.playerStateMessage
+					className: classes.playerStateMessage,
 				}}
 				style={{ zIndex: 1 }}
 			>
@@ -93,7 +93,7 @@ const CardDeckPlaceholder = (props: CardDeckPlaceholderProps) => {
 					<RoundRemainingTime
 						style={{
 							top: Device.isMobile ? "120%" : "80%",
-							left: 0
+							left: 0,
 						}}
 					/>
 				)}
@@ -113,7 +113,7 @@ const CardDeckPlaceholder = (props: CardDeckPlaceholderProps) => {
 							style={{
 								zIndex: index,
 								left: index * CARD_WIDTH,
-								filter: player?.isCurrentRoundPlayer ? "none" : "grayscale(1)"
+								filter: player?.isCurrentRoundPlayer ? "none" : "grayscale(1)",
 							}}
 						/>
 					))}

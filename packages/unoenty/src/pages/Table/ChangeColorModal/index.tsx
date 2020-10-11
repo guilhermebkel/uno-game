@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, ReactElement } from "react"
 import { Dialog, DialogTitle, Grid, ButtonBase } from "@material-ui/core"
 import { Skeleton } from "@material-ui/lab"
 
@@ -16,7 +16,7 @@ type ChangeColorModalProps = {
 	callback: (color: CardColors) => void
 }
 
-const ChangeColorModal = (props: ChangeColorModalProps) => {
+const ChangeColorModal = (props: ChangeColorModalProps): ReactElement => {
 	const classes = useStyles()
 
 	const { callback } = props
@@ -30,11 +30,10 @@ const ChangeColorModal = (props: ChangeColorModalProps) => {
 
 	return (
 		<Dialog
-			onClose={() => handleClose(null as any)}
 			open={opened}
 			className={classes.dialog}
 			PaperProps={{
-				className: classes.dialogPaper
+				className: classes.dialogPaper,
 			}}
 		>
 			<DialogTitle>
@@ -66,11 +65,11 @@ const ChangeColorModal = (props: ChangeColorModalProps) => {
 	)
 }
 
-ChangeColorModal.open = (): Promise<CardColors> => new Promise(callback => NodeUtil.renderComponent(
+ChangeColorModal.open = (): Promise<CardColors> => new Promise((resolve) => NodeUtil.renderComponent(
 	"change-color-modal",
 	<ChangeColorModal
-		callback={callback}
-	/>
+		callback={resolve}
+	/>,
 ))
 
 export default ChangeColorModal

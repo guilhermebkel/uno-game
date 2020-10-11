@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, ReactElement } from "react"
 import { Grid, Button } from "@material-ui/core"
 import { useParams, useHistory } from "react-router-dom"
 import { DndProvider } from "react-dnd"
@@ -27,10 +27,10 @@ import CardProvider from "@/store/Card"
 
 import TableSkeleton from "@/skeletons/Table"
 
-import { CardColors } from "@uno-game/protocols"
+import { CardColors, CardData, Game } from "@uno-game/protocols"
 
-const Table = () => {
-	const { gameId } = useParams()
+const Table = (): ReactElement => {
+	const { gameId } = useParams<{ gameId: string }>()
 	const history = useHistory()
 
 	const socketStore = useSocketStore()
@@ -51,7 +51,7 @@ const Table = () => {
 		Alert.warning({
 			title: "Waiting",
 			message: "Waiting for other players to click on retry button...",
-			closable: false
+			closable: false,
 		})
 
 		socket.onGameStart(() => {
@@ -82,8 +82,8 @@ const Table = () => {
 					onClick={toggleRetry}
 				>
 					READY?
-				</Button>
-			]
+				</Button>,
+			],
 		})
 	}
 
@@ -126,8 +126,8 @@ const Table = () => {
 						onClick={toggleRetry}
 					>
 						READY?
-					</Button>
-				]
+					</Button>,
+				],
 			})
 		})
 	}
@@ -168,30 +168,30 @@ const Table = () => {
 								height: "100%",
 								overflow: "hidden",
 								padding: "16px",
-								userSelect: "none"
+								userSelect: "none",
 							}}
 						>
 							<Grid container>
 								<Grid item xs={2}>
 									<CardDeckPlaceholder
-										cards={socket.otherPlayers?.[1]?.handCards as any}
-										player={socket.otherPlayers?.[1] as any}
+										cards={socket.otherPlayers?.[1]?.handCards}
+										player={socket.otherPlayers?.[1]}
 										transform="rotate(135deg)"
 									/>
 								</Grid>
 								<Grid item xs={8}>
 									<Grid container justify="center" alignItems="center">
 										<CardDeckPlaceholder
-											cards={socket.otherPlayers?.[2]?.handCards as any}
-											player={socket.otherPlayers?.[2] as any}
+											cards={socket.otherPlayers?.[2]?.handCards}
+											player={socket.otherPlayers?.[2]}
 											transform="rotate(180deg)"
 										/>
 									</Grid>
 								</Grid>
 								<Grid item xs={2}>
 									<CardDeckPlaceholder
-										cards={socket.otherPlayers?.[3]?.handCards as any}
-										player={socket.otherPlayers?.[3] as any}
+										cards={socket.otherPlayers?.[3]?.handCards}
+										player={socket.otherPlayers?.[3]}
 										transform="rotate3d(2.5, 1, 0, 180deg)"
 									/>
 								</Grid>
@@ -200,8 +200,8 @@ const Table = () => {
 								<Grid item xs={2}>
 									<Grid container justify="flex-start">
 										<CardDeckPlaceholder
-											cards={socket.otherPlayers?.[0]?.handCards as any}
-											player={socket.otherPlayers?.[0] as any}
+											cards={socket.otherPlayers?.[0]?.handCards}
+											player={socket.otherPlayers?.[0]}
 											transform="rotate(90deg)"
 										/>
 									</Grid>
@@ -209,8 +209,8 @@ const Table = () => {
 								<Grid item xs={8}>
 									<Grid container justify="center" alignItems="center">
 										<CardStack
-											cards={socketStore?.game?.usedCards as any}
-											game={socketStore?.game as any}
+											cards={socketStore?.game?.usedCards as CardData[]}
+											game={socketStore.game as Game}
 											onDrop={onDrop}
 										/>
 
@@ -233,8 +233,8 @@ const Table = () => {
 								<Grid item xs={2}>
 									<Grid container justify="flex-end">
 										<CardDeckPlaceholder
-											cards={socket.otherPlayers?.[4]?.handCards as any}
-											player={socket.otherPlayers?.[4] as any}
+											cards={socket.otherPlayers?.[4]?.handCards}
+											player={socket.otherPlayers?.[4]}
 											transform="rotate3d(1, 1, 0, 180deg)"
 										/>
 									</Grid>
@@ -251,14 +251,14 @@ const Table = () => {
 												<CustomCardDragPreview />
 
 												<CardDeck
-													cards={socket.currentPlayer?.handCards as any}
-													player={socket.currentPlayer as any}
+													cards={socket.currentPlayer?.handCards}
+													player={socket.currentPlayer}
 												/>
 											</>
 										) : (
 											<CardDeckPlaceholder
-												cards={socket.otherPlayers?.[5]?.handCards as any}
-												player={socket.otherPlayers?.[5] as any}
+												cards={socket.otherPlayers?.[5]?.handCards}
+												player={socket.otherPlayers?.[5]}
 											/>
 										)}
 									</Grid>

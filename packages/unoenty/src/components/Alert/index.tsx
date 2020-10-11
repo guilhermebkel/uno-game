@@ -6,7 +6,7 @@ import {
 	DialogContent,
 	DialogContentText,
 	DialogTitle,
-	ThemeProvider
+	ThemeProvider,
 } from "@material-ui/core"
 
 import Node from "@/utils/node"
@@ -28,7 +28,7 @@ interface AlertProps {
 	message: string | React.ReactNode
 	customButtons?: JSX.Element[]
 	closeButtonText?: string
-	onClose?: () => any
+	onClose?: () => void
 	closable?: boolean
 }
 
@@ -62,10 +62,10 @@ const icons = {
 				<div className="sa-warning-dot"></div>
 			</div>
 		</div>
-	)
+	),
 }
 
-const Alert = (props: AlertProps & AlertType) => {
+const Alert = (props: AlertProps & AlertType): React.ReactElement => {
 	const {
 		type,
 		message,
@@ -73,7 +73,7 @@ const Alert = (props: AlertProps & AlertType) => {
 		onClose,
 		customButtons,
 		closeButtonText,
-		closable
+		closable,
 	} = props
 
 	const [visible, setVisible] = useState(true)
@@ -82,7 +82,10 @@ const Alert = (props: AlertProps & AlertType) => {
 
 	const handleClose = () => {
 		if (closable !== false) {
-			onClose?.()
+			if (onClose) {
+				onClose()
+			}
+
 			setVisible(false)
 		}
 	}
@@ -126,21 +129,21 @@ const Alert = (props: AlertProps & AlertType) => {
 Alert.success = (props: AlertProps) => {
 	return Node.renderComponent(
 		"alert",
-		<Alert type="success" {...props} />
+		<Alert type="success" {...props} />,
 	)
 }
 
 Alert.error = (props: AlertProps) => {
 	return Node.renderComponent(
 		"alert",
-		<Alert type="error" {...props} />
+		<Alert type="error" {...props} />,
 	)
 }
 
 Alert.warning = (props: AlertProps) => {
 	return Node.renderComponent(
 		"alert",
-		<Alert type="warning" {...props} />
+		<Alert type="warning" {...props} />,
 	)
 }
 

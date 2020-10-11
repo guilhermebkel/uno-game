@@ -1,5 +1,5 @@
 class Device {
-	get isTouchDevice() {
+	get isTouchDevice () {
 		if ("ontouchstart" in window) {
 			return true
 		} else {
@@ -7,7 +7,7 @@ class Device {
 		}
 	}
 
-	get isMobile() {
+	get isMobile () {
 		return window.innerWidth < 600
 	}
 }

@@ -20,14 +20,14 @@ class CardService {
 		"9",
 		"block",
 		"buy-2",
-		"reverse"
+		"reverse",
 	]
 
 	private readonly cardColors: CardColors[] = [
 		"blue",
 		"green",
 		"red",
-		"yellow"
+		"yellow",
 	]
 
 	getAllCards () {
@@ -43,7 +43,7 @@ class CardService {
 					src: cardPictureSrc,
 					name: `${cardType}-${cardColor}`,
 					color: cardColor,
-					type: cardType
+					type: cardType,
 				})
 			})
 		})
@@ -54,7 +54,7 @@ class CardService {
 	setupRandomCards () {
 		const randomCards: CardData[] = [
 			...this.getCardStack(),
-			...this.getCardStack()
+			...this.getCardStack(),
 		]
 
 		ArrayUtil.shuffle(randomCards)
@@ -67,7 +67,7 @@ class CardService {
 			"blue",
 			"green",
 			"yellow",
-			"red"
+			"red",
 		]
 
 		ArrayUtil.shuffle(cardColors)
@@ -88,7 +88,7 @@ class CardService {
 					src: cardPictureSrc,
 					name: `${cardType}-${cardColor}`,
 					color: cardColor,
-					type: cardType
+					type: cardType,
 				})
 			})
 		})
@@ -114,8 +114,8 @@ class CardService {
 					blue: blueCardPictureSrc,
 					yellow: yellowCardPictureSrc,
 					green: greenCardPictureSrc,
-					black: blackCardPictureSrc
-				}
+					black: blackCardPictureSrc,
+				},
 			})
 		}
 
@@ -140,8 +140,8 @@ class CardService {
 					blue: blueCardPictureSrc,
 					yellow: yellowCardPictureSrc,
 					green: greenCardPictureSrc,
-					black: blackCardPictureSrc
-				}
+					black: blackCardPictureSrc,
+				},
 			})
 		}
 

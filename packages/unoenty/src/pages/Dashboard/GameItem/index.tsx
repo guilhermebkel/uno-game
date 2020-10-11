@@ -1,10 +1,10 @@
-import React from "react"
+import React, { ReactElement } from "react"
 import {
 	Card,
 	Avatar,
 	Grid,
 	Typography,
-	ButtonBase
+	ButtonBase,
 } from "@material-ui/core"
 import AvatarGroup from "@material-ui/lab/AvatarGroup"
 import Chip from "@material-ui/core/Chip"
@@ -25,16 +25,16 @@ type ChipPropsMap = {
 const chipStatusMap: ChipPropsMap = {
 	playing: {
 		label: "PLAYING",
-		color: "primary"
+		color: "primary",
 	},
 	waiting: {
 		label: "WAITING",
-		color: "secondary"
+		color: "secondary",
 	},
 	ended: {
 		label: "ENDED",
-		color: "default"
-	}
+		color: "default",
+	},
 }
 
 type GameItemProps = {
@@ -43,7 +43,7 @@ type GameItemProps = {
 	players: PlayerData[]
 }
 
-const GameItem = (props: GameItemProps) => {
+const GameItem = (props: GameItemProps): ReactElement => {
 	const { title, status, players } = props
 
 	const classes = useStyles()

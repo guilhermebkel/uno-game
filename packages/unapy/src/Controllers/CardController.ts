@@ -8,7 +8,7 @@ class CardController {
 		const cardList = cards.map(card => ({ src: card.src }))
 
 		return res.status(200).json({
-			cards: cardList
+			cards: cardList,
 		})
 	}
 }

@@ -13,7 +13,7 @@ import {
 	CurrentPlayerGameStatus,
 	CardData,
 	CardColors,
-	PlayerStatus
+	PlayerStatus,
 } from "@uno-game/protocols"
 
 import GameRepository from "@/Repositories/GameRepository"
@@ -32,7 +32,7 @@ class GameService {
 			status: "online",
 			ready: false,
 			isCurrentRoundPlayer: false,
-			canBuyCard: false
+			canBuyCard: false,
 		}
 
 		const game: Game = {
@@ -52,7 +52,7 @@ class GameService {
 			cards,
 			direction: "clockwise",
 			currentCardCombo: [],
-			maxRoundDurationInSeconds: 20
+			maxRoundDurationInSeconds: 20,
 		}
 
 		this.setGameData(gameId, game)
@@ -117,7 +117,7 @@ class GameService {
 			if (player.id === playerId) {
 				return {
 					...player,
-					ready: !player.ready
+					ready: !player.ready,
 				}
 			} else {
 				return player
@@ -163,7 +163,7 @@ class GameService {
 			if (player.id === playerId) {
 				return {
 					...player,
-					handCards: [card, ...player?.handCards]
+					handCards: [card, ...player?.handCards],
 				}
 			} else {
 				return player
@@ -203,7 +203,7 @@ class GameService {
 				return {
 					...player,
 					handCards: player?.handCards?.filter(card => !cardIds.includes(card.id)),
-					usedCards: [...cards, ...player?.usedCards]
+					usedCards: [...cards, ...player?.usedCards],
 				}
 			} else {
 				return player
@@ -224,7 +224,7 @@ class GameService {
 				return {
 					...card,
 					selectedColor: null,
-					src: card.possibleColors.black
+					src: card.possibleColors.black,
 				}
 			} else {
 				return card
@@ -234,7 +234,7 @@ class GameService {
 		game.usedCards = inStackCards
 		game.availableCards = [
 			...game.availableCards,
-			...outStackCards
+			...outStackCards,
 		]
 
 		game.currentGameColor = cards[0]?.color
@@ -307,7 +307,7 @@ class GameService {
 				GameRoundService.emitGameRoundEvent(gameId, "GameRoundRemainingTimeChanged", gameRoundRemainingTime)
 			},
 			gameId,
-			timeInSeconds: game.maxRoundDurationInSeconds
+			timeInSeconds: game.maxRoundDurationInSeconds,
 		})
 	}
 
@@ -322,7 +322,7 @@ class GameService {
 			if (player.id === playerId) {
 				return {
 					...player,
-					status
+					status,
 				}
 			}
 
@@ -354,9 +354,9 @@ class GameService {
 				isCurrentRoundPlayer: player.id === currentPlayer.id,
 				handCards: handCards.map(handCard => ({
 					...handCard,
-					canBeUsed: player.id === currentPlayer.id
+					canBeUsed: player.id === currentPlayer.id,
 				})),
-				canBuyCard: false
+				canBuyCard: false,
 			}
 		})
 
@@ -384,8 +384,8 @@ class GameService {
 				status: "online",
 				ready: false,
 				isCurrentRoundPlayer: false,
-				canBuyCard: false
-			}
+				canBuyCard: false,
+			},
 		]
 
 		this.setGameData(gameId, game)
@@ -456,7 +456,7 @@ class GameService {
 		}
 	}
 
-	private emitGameEvent (gameId: string, event: GameEvents, ...data: any) {
+	private emitGameEvent (gameId: string, event: GameEvents, ...data: unknown[]) {
 		SocketService.emitRoomEvent(gameId, event, ...data)
 	}
 
@@ -504,7 +504,7 @@ class GameService {
 					return {
 						...card,
 						selectedColor,
-						src: card.possibleColors[selectedColor]
+						src: card.possibleColors[selectedColor],
 					}
 				} else {
 					return card
@@ -544,7 +544,7 @@ class GameService {
 		if (isBuy2Card || isBuy4Card) {
 			game.currentCardCombo = [
 				...game.currentCardCombo,
-				...cardTypes
+				...cardTypes,
 			]
 
 			const nextPlayerIndex = NumberUtil.getSanitizedValueWithBoundaries(game?.nextPlayerIndex, game?.players?.length, 0)
@@ -576,7 +576,7 @@ class GameService {
 					if (player.id === playerAffected.id) {
 						return {
 							...player,
-							handCards: [...cards, ...player?.handCards]
+							handCards: [...cards, ...player?.handCards],
 						}
 					} else {
 						return player
@@ -617,14 +617,14 @@ class GameService {
 						topStackCard?.type === handCard.type ||
 						handCard.color === game.currentGameColor
 					),
-					canBeCombed: game.currentCardCombo.includes(handCard.type)
+					canBeCombed: game.currentCardCombo.includes(handCard.type),
 				}))
 
 				return {
 					...player,
 					isCurrentRoundPlayer: true,
 					canBuyCard: handCards.every(card => !card.canBeUsed),
-					handCards
+					handCards,
 				}
 			} else {
 				return {
@@ -634,8 +634,8 @@ class GameService {
 					handCards: player?.handCards?.map(handCard => ({
 						...handCard,
 						canBeUsed: false,
-						canBeCombed: false
-					}))
+						canBeCombed: false,
+					})),
 				}
 			}
 		})
@@ -669,7 +669,7 @@ class GameService {
 			id: currentPlayerId,
 			name: currentPlayer.name,
 			playerStatus: currentPlayer.status,
-			gameStatus
+			gameStatus,
 		}
 	}
 
@@ -707,7 +707,7 @@ class GameService {
 			isCurrentRoundPlayer: false,
 			ready: false,
 			status: "online",
-			usedCards: []
+			usedCards: [],
 		}))
 
 		this.setGameData(gameId, game)

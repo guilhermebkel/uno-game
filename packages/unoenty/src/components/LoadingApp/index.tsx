@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React, { useEffect, ReactElement } from "react"
 import { Grid, makeStyles, Zoom, Fade } from "@material-ui/core"
 import lottie from "lottie-web"
 import { JackInTheBox, Pulse } from "react-awesome-reveal"
@@ -17,25 +17,25 @@ type LoadingProps = {
 
 const useStyle = makeStyles({
 	container: {
-		height: "100vh"
+		height: "100vh",
 	},
 	loadingAnimation: {
 		width: 400,
-		height: "auto"
+		height: "auto",
 	},
 	logo: {
-		width: "150px"
-	}
+		width: "150px",
+	},
 })
 
-const LoadingApp = (props: LoadingProps) => {
+const LoadingApp = (props: LoadingProps): ReactElement => {
 	const { loading, children, background } = props
 
 	const classes = useStyle()
 
 	const initAnimation = () => {
 		lottie.loadAnimation({
-			container: document.getElementById(LOADING_TAG_ID) as any,
+			container: document.getElementById(LOADING_TAG_ID) as Element,
 			renderer: "canvas",
 			loop: true,
 			autoplay: true,
@@ -74,7 +74,7 @@ const LoadingApp = (props: LoadingProps) => {
 }
 
 LoadingApp.defaultProps = {
-	background: "#222329"
+	background: "#222329",
 }
 
 export default LoadingApp

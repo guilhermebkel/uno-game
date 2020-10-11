@@ -5,19 +5,20 @@ const useStyles = makeStyles({
 		display: "flex",
 		flexDirection: "column",
 		alignItems: "center",
-		textAlign: "center"
+		textAlign: "center",
 	},
 	title: {
 		fontWeight: "bolder",
-		textAlign: "center"
+		textAlign: "center",
 	},
 	footer: {
 		justifyContent: "center",
-		flexDirection: "column"
+		flexDirection: "column",
 	},
 	dialog: {
-		zIndex: "9999 !important" as any
-	}
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		zIndex: "9999 !important" as any,
+	},
 })
 
 export default useStyles

@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, ReactElement } from "react"
 import {
 	Button,
 	Dialog,
@@ -7,7 +7,7 @@ import {
 	DialogContentText,
 	TextField,
 	DialogActions,
-	ThemeProvider
+	ThemeProvider,
 } from "@material-ui/core"
 
 import Node from "@/utils/node"
@@ -19,16 +19,14 @@ type LoginDialogResponse = {
 }
 
 type LoginDialogProps = {
-	callback: (...args: any) => any
+	callback: (response: LoginDialogResponse) => void
 }
 
-const LoginDialog = (props: LoginDialogProps) => {
+const LoginDialog = (props: LoginDialogProps): ReactElement => {
 	const { callback } = props
 
 	const [dialogVisible, setDialogVisible] = useState(true)
 	const [response, setResponse] = useState<LoginDialogResponse>({ name: "" })
-
-	const handleClose = () => {}
 
 	const handleConfirm = () => {
 		setDialogVisible(false)
@@ -45,13 +43,13 @@ const LoginDialog = (props: LoginDialogProps) => {
 	const handleChange = (key: keyof LoginDialogResponse, value: LoginDialogResponse[keyof LoginDialogResponse]) => {
 		setResponse(lastState => ({
 			...lastState,
-			[key]: value
+			[key]: value,
 		}))
 	}
 
 	return (
-    <ThemeProvider theme={theme}>
-      <Dialog open={dialogVisible} onClose={handleClose} aria-labelledby="form-dialog-title">
+		<ThemeProvider theme={theme}>
+			<Dialog open={dialogVisible} aria-labelledby="form-dialog-title">
 				<form onSubmit={handleSubmit}>
 					<DialogTitle id="form-dialog-title">Login</DialogTitle>
 					<DialogContent>
@@ -77,16 +75,16 @@ const LoginDialog = (props: LoginDialogProps) => {
 						</Button>
 					</DialogActions>
 				</form>
-      </Dialog>
-    </ThemeProvider>
-  )
+			</Dialog>
+		</ThemeProvider>
+	)
 }
 
 LoginDialog.open = async (): Promise<LoginDialogResponse> => new Promise(resolve => Node.renderComponent(
 	"login-dialog",
 	<LoginDialog
 		callback={resolve}
-	/>
+	/>,
 ))
 
 export default LoginDialog

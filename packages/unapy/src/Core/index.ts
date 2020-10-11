@@ -2,7 +2,7 @@ import Server from "@/Core/Server"
 import Socket from "@/Core/Socket"
 
 class Core {
-	async boot() {
+	async boot () {
 		await Server.boot()
 		Socket.boot(Server.http)
 	}

@@ -1,6 +1,8 @@
 import io from "socket.io-client"
 import MsgPackParser from "socket.io-msgpack-parser"
 
+import { Player } from "@uno-game/protocols"
+
 import { LoginDialog } from "@/components"
 import Auth from "@/services/auth"
 
@@ -12,10 +14,10 @@ const client = io(serverConfig.apiUrl, {
 	reconnectionDelay: 1000,
 	reconnectionDelayMax: 5000,
 	randomizationFactor: 0.5,
-	...({ parser: MsgPackParser })
+	...({ parser: MsgPackParser }),
 })
 
-export const connectSocket = async () => {
+export const connectSocket = async (): Promise<string> => {
 	return new Promise<string>(resolve => {
 		client.on("PlayerConnected", (playerId: string) => {
 			resolve(playerId)
@@ -23,7 +25,7 @@ export const connectSocket = async () => {
 	})
 }
 
-export const getPlayerData = async (playerId: string) => {
+export const getPlayerData = async (playerId: string): Promise<Player> => {
 	let playerData = Auth.getPlayerData()
 
 	if (!playerData) {
@@ -31,7 +33,7 @@ export const getPlayerData = async (playerId: string) => {
 
 		playerData = {
 			id: playerId,
-			name: loginData.name
+			name: loginData.name,
 		}
 
 		Auth.setPlayerData(playerData)

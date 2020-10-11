@@ -9,12 +9,12 @@ import theme from "@/styles/theme"
 import "@/styles/global.scss"
 
 ReactDOM.render(
-  <React.StrictMode>
-    <ThemeProvider theme={theme}>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </ThemeProvider>
-  </React.StrictMode>,
-  document.getElementById("root")
+	<React.StrictMode>
+		<ThemeProvider theme={theme}>
+			<BrowserRouter>
+				<App />
+			</BrowserRouter>
+		</ThemeProvider>
+	</React.StrictMode>,
+	document.getElementById("root"),
 )

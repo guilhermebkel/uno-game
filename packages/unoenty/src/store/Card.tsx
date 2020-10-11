@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from "react"
+import React, { createContext, useContext, useState, ReactElement } from "react"
 
 import { CardData } from "@uno-game/protocols"
 
@@ -13,9 +13,9 @@ interface CardProviderProps {
 
 const CardStore = createContext<CardContextData>({} as CardContextData)
 
-export const useCardStore = () => useContext(CardStore)
+export const useCardStore = (): CardContextData => useContext(CardStore)
 
-const CardProvider = (props: CardProviderProps) => {
+const CardProvider = (props: CardProviderProps): ReactElement => {
 	const { children } = props
 
 	const [selectedCards, setSelectedCards] = useState<CardData[]>([] as CardData[])
@@ -24,7 +24,7 @@ const CardProvider = (props: CardProviderProps) => {
 		<CardStore.Provider
 			value={{
 				selectedCards,
-				setSelectedCards
+				setSelectedCards,
 			}}
 		>
 			{children}

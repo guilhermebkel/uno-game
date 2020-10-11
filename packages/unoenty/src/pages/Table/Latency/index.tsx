@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, ReactElement } from "react"
 import { Typography } from "@material-ui/core"
 
 import useSocket from "@/hooks/useSocket"
@@ -6,7 +6,7 @@ import useDidMount from "@/hooks/useDidMount"
 
 import useStyles from "@/pages/Table/Latency/styles"
 
-const Latency = () => {
+const Latency = (): ReactElement => {
 	const classes = useStyles()
 	const socket = useSocket()
 

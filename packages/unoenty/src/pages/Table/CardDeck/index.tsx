@@ -1,4 +1,4 @@
-import React, { useRef } from "react"
+import React, { useRef, ReactElement } from "react"
 import { useParams } from "react-router-dom"
 import { Container, ClickAwayListener, Button } from "@material-ui/core"
 import { useDrag, useDragLayer } from "react-dnd"
@@ -11,7 +11,7 @@ import useSocket from "@/hooks/useSocket"
 
 import { Alert } from "@/components"
 
-import { PlayerData, CardData, CardTypes } from "@uno-game/protocols"
+import { PlayerData, CardData, CardTypes, Game } from "@uno-game/protocols"
 
 import useStyles from "@/pages/Table/CardDeck/styles"
 
@@ -34,7 +34,7 @@ export type DraggedCardItem = {
 type CardProps = {
 	card: CardData
 	index: number
-	style: object
+	style: Record<string, unknown>,
 	className: string
 	onClick: () => void
 	selected: boolean
@@ -55,7 +55,7 @@ const DraggableCard = (props: CardProps) => {
 		isDraggingAnyCard,
 		onDragEnd,
 		canBePartOfCurrentCombo,
-		isMoreThanOneCardBeingDragged
+		isMoreThanOneCardBeingDragged,
 	} = props
 
 	const draggableCardRef = useRef(null)
@@ -71,13 +71,13 @@ const DraggableCard = (props: CardProps) => {
 			name: card.name,
 			cardType: card.type,
 			selected,
-			className
+			className,
 		} as DraggedCardItem,
 		collect: monitor => ({
-			isDragging: monitor.isDragging()
+			isDragging: monitor.isDragging(),
 		}),
 		canDrag: canCardBeUsed,
-		end: onDragEnd
+		end: onDragEnd,
 	})
 
 	drag(draggableCardRef)
@@ -100,8 +100,8 @@ const DraggableCard = (props: CardProps) => {
 				pointerEvents: canCardBeUsed ? "all" : "none",
 				...(selected ? {
 					border: `${Device.isMobile ? "3px" : "5px"} solid #EC0000`,
-					borderRadius: Device.isMobile ? "8px" : "16px"
-				} : {})
+					borderRadius: Device.isMobile ? "8px" : "16px",
+				} : {}),
 			}}
 			onClick={onClick}
 		/>
@@ -113,15 +113,15 @@ type CardDeckProps = {
 	player: PlayerData
 }
 
-const CardDeck = (props: CardDeckProps) => {
+const CardDeck = (props: CardDeckProps): ReactElement => {
 	const { cards } = props
 
 	const { gameId } = useParams()
 
 	const {
-		isDraggingAnyCard
+		isDraggingAnyCard,
 	} = useDragLayer((monitor) => ({
-		isDraggingAnyCard: monitor.isDragging()
+		isDraggingAnyCard: monitor.isDragging(),
 	}))
 
 	const cardStore = useCardStore()
@@ -137,7 +137,7 @@ const CardDeck = (props: CardDeckProps) => {
 		if (isMiddleCard) {
 			inclination = 0
 		} else if (isBeforeMiddleCard) {
-			inclination = - Math.abs(index - Math.round(cards.length / 2))
+			inclination = -Math.abs(index - Math.round(cards.length / 2))
 		} else {
 			inclination = Math.abs(Math.round(cards.length / 2) - index)
 		}
@@ -155,7 +155,7 @@ const CardDeck = (props: CardDeckProps) => {
 		if (isMiddleCard) {
 			elevation = 0
 		} else {
-			elevation = - Math.abs(index - Math.round(cards.length / 2))
+			elevation = -Math.abs(index - Math.round(cards.length / 2))
 		}
 
 		const delta = Device.isMobile ? 3 : 7
@@ -166,7 +166,7 @@ const CardDeck = (props: CardDeckProps) => {
 	const classes = useStyles()
 
 	const onDragEnd = () => {
-		cardStore?.setSelectedCards([])
+		cardStore.setSelectedCards([])
 	}
 
 	const isCardSelected = (cardId: string) => !!cardStore?.selectedCards?.some(card => card.id === cardId)
@@ -176,7 +176,7 @@ const CardDeck = (props: CardDeckProps) => {
 	const toggleSelectedCard = (cardId: string) => {
 		const lastSelectedCards = cardStore.selectedCards
 		const selectedCard = cards.find(card => card.id === cardId)
-		const cardOnTopOfCardStack = socketStore?.game!.usedCards[0]
+		const cardOnTopOfCardStack = (socketStore.game as Game).usedCards[0]
 		const selectedCardTypes = lastSelectedCards?.map(card => card.type)
 
 		const isAlreadySelected = isCardSelected(cardId)
@@ -193,17 +193,16 @@ const CardDeck = (props: CardDeckProps) => {
 			} else {
 				cardStore.setSelectedCards(cardsWithoutAlreadySelected)
 			}
-
 		} else if ((selectedCard && selectedCardTypes?.includes(selectedCard.type)) || !selectedCardTypes?.length) {
 			cardStore.setSelectedCards([
-				...(lastSelectedCards || []) as any,
-				selectedCard
+				...(lastSelectedCards || []),
+				selectedCard as CardData,
 			])
 		}
 	}
 
 	const unselectAllCards = () => {
-		cardStore?.setSelectedCards([])
+		cardStore.setSelectedCards([])
 	}
 
 	const handleClickOutsideCardDeck = () => {
@@ -233,8 +232,8 @@ const CardDeck = (props: CardDeckProps) => {
 						onClick={toggleOnlineStatus}
 					>
 						I'M HERE
-					</Button>
-				]
+					</Button>,
+				],
 			})
 		}
 	}
@@ -265,7 +264,7 @@ const CardDeck = (props: CardDeckProps) => {
 				className={classes.cardContainer}
 				maxWidth={false}
 				style={{
-					width: (cards?.length * CARD_WIDTH) + CARD_WIDTH
+					width: (cards?.length * CARD_WIDTH) + CARD_WIDTH,
 				}}
 			>
 				{cards?.map((card, index) => (
@@ -278,7 +277,7 @@ const CardDeck = (props: CardDeckProps) => {
 							transform: `rotate(${getCardInclination(index)}deg)`,
 							bottom: getCardElevation(index),
 							zIndex: (index + 2),
-							left: index * CARD_WIDTH
+							left: index * CARD_WIDTH,
 						}}
 						onClick={() => toggleSelectedCard(card.id)}
 						selected={isCardSelected(card.id)}

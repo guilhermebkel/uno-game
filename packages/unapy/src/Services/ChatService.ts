@@ -4,7 +4,7 @@ import PlayerService from "@/Services/PlayerService"
 import {
 	Chat,
 	ChatMessage,
-	ChatEvents
+	ChatEvents,
 } from "@uno-game/protocols"
 
 import ChatRepository from "@/Repositories/ChatRepository"
@@ -16,7 +16,7 @@ class ChatService {
 		const chat: Chat = {
 			id: chatId,
 			title: playerData.name,
-			messages: []
+			messages: [],
 		}
 
 		this.createChat(chat)
@@ -38,7 +38,7 @@ class ChatService {
 		const message: ChatMessage = {
 			playerId,
 			playerName: playerData.name,
-			content
+			content,
 		}
 
 		ChatRepository.pushMessageToChat(chatId, message)

@@ -8,7 +8,7 @@ class AssetController {
 		const assetsPath = path.join(__dirname, "..", "Assets")
 
 		return express.static(assetsPath, {
-			maxAge: thirtyDaysInMilliseconds
+			maxAge: thirtyDaysInMilliseconds,
 		})(req, res, next)
 	}
 }

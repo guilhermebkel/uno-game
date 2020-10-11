@@ -7,7 +7,8 @@
     "start": "node -r module-alias/register dist/index.js",
     "dev": "nodemon src/index.ts",
     "dev:resources": "docker-compose up",
-    "build": "rm -rf dist && tsc && cp -r src/Assets dist/Assets"
+    "build": "rm -rf dist && tsc && cp -r src/Assets dist/Assets",
+    "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
     "@types/cors": "^2.8.6",

@@ -1,5 +1,5 @@
 class Share {
-	mountGameShareUrl(gameId: string) {
+	mountGameShareUrl (gameId: string) {
 		const baseUrl = window.origin
 
 		return `${baseUrl}/${gameId}`

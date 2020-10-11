@@ -10,27 +10,27 @@ import ListenerService from "@/Services/ListenerService"
 export let io: SocketServer
 
 class Socket {
-	static async boot(http: HttpServer) {
+	static async boot (http: HttpServer): Promise<void> {
 		Socket.setupSocket(http)
 		Socket.setupListeners()
 	}
 
-	static setupSocket(http: HttpServer) {
+	static setupSocket (http: HttpServer): void {
 		const oneSecondInMilliseconds = 1000
 		const twoMilliseconds = 2000
 
 		io = socket(http, {
 			pingInterval: oneSecondInMilliseconds,
 			pingTimeout: twoMilliseconds,
-			...({ parser: MsgPackParser })
+			...({ parser: MsgPackParser }),
 		})
 	}
 
-	static setupListeners() {
+	static setupListeners (): void {
 		io.on("connection", client => ListenerService.onConnection(client))
 	}
 
-	static get io() {
+	static get io (): SocketServer {
 		return io
 	}
 }

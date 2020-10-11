@@ -6,8 +6,8 @@ const useStyles = makeStyles({
 		zIndex: 9999,
 		color: "#000000",
 		backgroundColor: "red",
-		fontWeight: "bolder"
-	}
+		fontWeight: "bolder",
+	},
 })
 
 export default useStyles

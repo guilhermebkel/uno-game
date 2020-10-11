@@ -1,4 +1,4 @@
-import React from "react"
+import React, { ReactElement } from "react"
 import { Container } from "@material-ui/core"
 
 import { Disconnected } from "@/components"
@@ -6,7 +6,7 @@ import Routes from "@/routes"
 
 import SocketProvider from "@/store/Socket"
 
-const App = () => {
+const App = (): ReactElement => {
 	return (
 		<SocketProvider>
 			<Container maxWidth="xl">
