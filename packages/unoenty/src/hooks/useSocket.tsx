@@ -196,6 +196,7 @@ const useSocket = (): {
 		get otherPlayers (): PlayerData[] {
 			return getOtherPlayers()
 		},
+		getCurrentPlayer,
 		createGame,
 		joinGame,
 		sendChatMessage,

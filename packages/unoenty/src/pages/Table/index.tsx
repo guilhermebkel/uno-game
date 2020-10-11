@@ -27,10 +27,10 @@ import CardProvider from "@/store/Card"
 
 import TableSkeleton from "@/skeletons/Table"
 
-import { CardColors } from "@uno-game/protocols"
+import { CardColors, CardData, Game } from "@uno-game/protocols"
 
 const Table = (): ReactElement => {
-	const { gameId } = useParams()
+	const { gameId } = useParams<{ gameId: string }>()
 	const history = useHistory()
 
 	const socketStore = useSocketStore()
@@ -209,8 +209,8 @@ const Table = (): ReactElement => {
 								<Grid item xs={8}>
 									<Grid container justify="center" alignItems="center">
 										<CardStack
-											cards={socketStore?.game?.usedCards}
-											game={socketStore?.game}
+											cards={socketStore?.game?.usedCards as CardData[]}
+											game={socketStore.game as Game}
 											onDrop={onDrop}
 										/>
 

@@ -39,7 +39,7 @@ const CustomCardDragPreview = (): ReactElement => {
 		return {
 			transform,
 			WebkitTransform: transform,
-			position: "relative",
+			position: "relative" as const,
 			width: 0,
 		}
 	}
@@ -78,7 +78,7 @@ const CustomCardDragPreview = (): ReactElement => {
 			</div>
 		)
 	} else {
-		return null
+		return <React.Fragment />
 	}
 }
 

@@ -35,7 +35,7 @@ const LoadingApp = (props: LoadingProps): ReactElement => {
 
 	const initAnimation = () => {
 		lottie.loadAnimation({
-			container: document.getElementById(LOADING_TAG_ID),
+			container: document.getElementById(LOADING_TAG_ID) as Element,
 			renderer: "canvas",
 			loop: true,
 			autoplay: true,

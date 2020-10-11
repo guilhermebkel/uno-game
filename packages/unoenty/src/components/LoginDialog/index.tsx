@@ -19,7 +19,7 @@ type LoginDialogResponse = {
 }
 
 type LoginDialogProps = {
-	callback: (...args: unknown[]) => void
+	callback: (response: LoginDialogResponse) => void
 }
 
 const LoginDialog = (props: LoginDialogProps): ReactElement => {
