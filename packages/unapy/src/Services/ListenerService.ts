@@ -74,6 +74,12 @@ class ListenerService {
 			this.onToggleReady(gameId, playerData.id)
 		})
 
+		client.on("ForceSelfDisconnect", () => {
+			this.onPlayerDisconnect(playerData.id)
+
+			client.emit("SelfDisconnected")
+		})
+
 		client.on("disconnect", () => {
 			this.onPlayerDisconnect(playerData.id)
 		})

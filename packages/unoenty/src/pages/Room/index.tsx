@@ -1,6 +1,6 @@
 import React, { useState, ReactElement } from "react"
 import copy from "copy-to-clipboard"
-import { useParams, useHistory } from "react-router-dom"
+import { useParams, useHistory, Prompt } from "react-router-dom"
 import { Grid, Button, ButtonGroup } from "@material-ui/core"
 import {
 	ThumbDownOutlined as ThumbDownOutlinedIcon,
@@ -31,7 +31,7 @@ const Room = (): ReactElement => {
 
 	const socket = useSocket()
 
-	const { gameId } = useParams()
+	const { gameId } = useParams<{ gameId: string }>()
 
 	const toggleReady = () => {
 		socket.toggleReady(gameId)
@@ -80,58 +80,71 @@ const Room = (): ReactElement => {
 		socket.onReconnect(() => setupRoom())
 	}
 
+	const handleGoOutRoom = (newPathname: string): boolean => {
+		const isGoingOutRoom = !newPathname.includes(gameId)
+
+		if (isGoingOutRoom) {
+			socket.forceSelfDisconnect()
+		}
+
+		return true
+	}
+
 	useDidMount(() => {
 		setupRoom()
 		onReconnect()
 	})
 
 	return (
-		<LoadingComponent loading={loadingRoom} customLoadingElement={<PlayerListSkeleton />}>
-			<Grid container spacing={2}>
-				{socket.currentPlayer && (
+		<>
+			<Prompt message={(props) => handleGoOutRoom(props.pathname)} />
+			<LoadingComponent loading={loadingRoom} customLoadingElement={<PlayerListSkeleton />}>
+				<Grid container spacing={2}>
+					{socket.currentPlayer && (
+						<Grid item sm={12} md={12} lg={12} xl={12} style={{ width: "100%" }}>
+							<Divider size={4} />
+
+							<ButtonGroup fullWidth>
+								<Button
+									color={socket.currentPlayer.ready ? "primary" : "secondary"}
+									variant="contained"
+									fullWidth
+									onClick={toggleReady}
+									endIcon={socket.currentPlayer.ready ? (<ThumbUpOutlinedIcon />) : (<ThumbDownOutlinedIcon />)}
+								>
+									{socket.currentPlayer.ready ? "READY" : "UNREADY"}
+								</Button>
+								<Button
+									endIcon={(<FileCopyOutlinedIcon />)}
+									style={{ maxWidth: "120px", minWidth: "120px" }}
+									variant="contained"
+									color="default"
+									href={getRoomUrl()}
+									onClick={handleCopyRoomUrl}
+								>
+									{isLinkCopied ? "Copied!" : "Copy Link"}
+								</Button>
+							</ButtonGroup>
+
+							<Divider size={3} />
+						</Grid>
+					)}
+
 					<Grid item sm={12} md={12} lg={12} xl={12} style={{ width: "100%" }}>
-						<Divider size={4} />
+						{socketStore?.game?.players?.map((player, index) => (
+							<React.Fragment key={index}>
+								<PlayerItem
+									key={player.id}
+									player={player}
+								/>
 
-						<ButtonGroup fullWidth>
-							<Button
-								color={socket.currentPlayer.ready ? "primary" : "secondary"}
-								variant="contained"
-								fullWidth
-								onClick={toggleReady}
-								endIcon={socket.currentPlayer.ready ? (<ThumbUpOutlinedIcon />) : (<ThumbDownOutlinedIcon />)}
-							>
-								{socket.currentPlayer.ready ? "READY" : "UNREADY"}
-							</Button>
-							<Button
-								endIcon={(<FileCopyOutlinedIcon />)}
-								style={{ maxWidth: "120px", minWidth: "120px" }}
-								variant="contained"
-								color="default"
-								href={getRoomUrl()}
-								onClick={handleCopyRoomUrl}
-							>
-								{isLinkCopied ? "Copied!" : "Copy Link"}
-							</Button>
-						</ButtonGroup>
-
-						<Divider size={3} />
+								<Divider size={2} />
+							</ React.Fragment>
+						))}
 					</Grid>
-				)}
-
-				<Grid item sm={12} md={12} lg={12} xl={12} style={{ width: "100%" }}>
-					{socketStore?.game?.players?.map((player, index) => (
-						<React.Fragment key={index}>
-							<PlayerItem
-								key={player.id}
-								player={player}
-							/>
-
-							<Divider size={2} />
-						</ React.Fragment>
-					))}
 				</Grid>
-			</Grid>
-		</LoadingComponent>
+			</LoadingComponent>
+		</>
 	)
 }
 

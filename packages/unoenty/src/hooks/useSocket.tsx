@@ -29,6 +29,7 @@ const useSocket = (): {
 	onPlayerStateChange: (fn: (playerState: PlayerState, playerId: string, amountToBuy?: number) => void) => void
 	onPong: (fn: (latency: number) => void) => void,
 	onReconnect: (fn: () => void) => void,
+	forceSelfDisconnect: () => Promise<void>
 } => {
 	const socketStore = useSocketStore()
 
@@ -189,6 +190,16 @@ const useSocket = (): {
 		})
 	}
 
+	const forceSelfDisconnect = async (): Promise<void> => {
+		socketStore.io.emit("ForceSelfDisconnect")
+
+		await new Promise(resolve => {
+			socketStore.io.on("SelfDisconnected", async () => {
+				resolve()
+			})
+		})
+	}
+
 	return {
 		get currentPlayer (): PlayerData {
 			return getCurrentPlayer()
@@ -212,6 +223,7 @@ const useSocket = (): {
 		toggleReady,
 		buyCard,
 		putCard,
+		forceSelfDisconnect,
 	}
 }
 

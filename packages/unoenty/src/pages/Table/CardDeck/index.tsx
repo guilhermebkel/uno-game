@@ -116,7 +116,7 @@ type CardDeckProps = {
 const CardDeck = (props: CardDeckProps): ReactElement => {
 	const { cards } = props
 
-	const { gameId } = useParams()
+	const { gameId } = useParams<{ gameId: string }>()
 
 	const {
 		isDraggingAnyCard,
