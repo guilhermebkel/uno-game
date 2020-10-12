@@ -3,6 +3,8 @@ import ReactDOM from "react-dom"
 import { ThemeProvider } from "@material-ui/core"
 import { BrowserRouter } from "react-router-dom"
 
+import * as serviceWorker from "@/services/service-worker"
+
 import App from "@/App"
 
 import theme from "@/styles/theme"
@@ -18,3 +20,5 @@ ReactDOM.render(
 	</React.StrictMode>,
 	document.getElementById("root"),
 )
+
+serviceWorker.register({})

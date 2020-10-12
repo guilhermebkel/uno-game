@@ -6,3 +6,6 @@ dist
 
 # Coverage Report
 coverage
+
+# Service worker file
+service-worker.js

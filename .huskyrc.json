@@ -1,5 +1,5 @@
 {
 	"hooks": {
-		"pre-commit": "cross-env npm run typecheck:unoenty && npm run typecheck:unapy && lint-staged"
+		"pre-commit": "lint-staged"
 	}
 }

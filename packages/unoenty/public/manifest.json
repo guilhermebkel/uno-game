@@ -1,24 +1,25 @@
 {
   "short_name": "UNO Game",
   "name": "UNO Game",
+  "description": "An UNO Game made in Javascript.",
   "icons": [
     {
-      "src": "logo.png",
+      "src": "/images/logo-144.png",
       "type": "image/png",
-      "sizes": "64x64 32x32 24x24 16x16"
+      "sizes": "144x144"
     },
     {
-      "src": "logo.png",
+      "src": "/images/logo-192.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "logo.png",
+      "src": "/images/logo-512.png",
       "type": "image/png",
       "sizes": "512x512"
     }
   ],
-  "start_url": ".",
+  "start_url": "/",
   "display": "standalone",
   "theme_color": "#000000",
   "background_color": "#ffffff"
