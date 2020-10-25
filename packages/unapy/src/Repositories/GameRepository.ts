@@ -1,5 +1,5 @@
 import { Game, GameRoundCounter } from "@uno-game/protocols"
-
+console.log("teste")
 class GameRepository {
 	private static games: Map<string, Game> = new Map()
 	private static gameRoundCounters: Map<string, GameRoundCounter> = new Map()
