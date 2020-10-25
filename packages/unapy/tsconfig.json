@@ -10,7 +10,7 @@
 		"outDir": "dist",
 		"module": "CommonJS",
 		"esModuleInterop": true,
-		"sourceMap": true,
+		"sourceMap": false,
     "rootDir": "src",
     "target": "es6",
     "lib": [
