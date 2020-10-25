@@ -2,7 +2,7 @@
   "name": "@uno-game/unapy",
   "version": "0.0.0",
   "description": "The UNO Game API",
-  "main": "src/index.ts",
+  "main": "dist/index.js",
   "scripts": {
     "start": "node -r module-alias/register dist/index.js",
     "dev": "nodemon src/index.ts",
