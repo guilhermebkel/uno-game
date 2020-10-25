@@ -2,9 +2,5 @@
   "watch": ["src"],
   "ext": "ts",
   "ignore": [],
-  "exec": "node --inspect -r tsconfig-paths/register -r sucrase/register",
-  "env": {
-    "NODE_ENV": "development",
-    "PORT": "5000"
-	}
+  "exec": "node --inspect -r tsconfig-paths/register -r sucrase/register"
 }
