@@ -11,6 +11,7 @@
     "install:unapy": "lerna exec --scope @uno-game/unapy -- npm install",
     "build:unapy": "lerna run build --scope @uno-game/unapy",
     "start:unapy": "lerna run start --scope @uno-game/unapy",
+    "dev:unapy": "lerna run dev --scope @uno-game/unapy",
     "typecheck:unapy": "lerna run typecheck --scope @uno-game/unapy",
     "install:unoenty": "lerna exec --scope @uno-game/unoenty -- npm install",
     "build:unoenty": "lerna run build --scope @uno-game/unoenty",
