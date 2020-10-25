@@ -20,4 +20,4 @@ ENV NODE_ENV production
 
 EXPOSE 80 3667
 
-CMD [ "npm", "run", "dev:unapy" ]
+CMD [ "npm", "run", "start:unapy" ]
