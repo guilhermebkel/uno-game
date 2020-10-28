@@ -1,8 +1,7 @@
-import { Game, GameRoundCounter } from "@uno-game/protocols"
+import { Game } from "@uno-game/protocols"
 
 class GameRepository {
 	private static games: Map<string, Game> = new Map()
-	private static gameRoundCounters: Map<string, GameRoundCounter> = new Map()
 
 	static setGameData (gameId: string, game: Game): void {
 		this.games.set(gameId, game)
