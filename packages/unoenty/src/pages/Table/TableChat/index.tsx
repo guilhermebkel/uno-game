@@ -37,6 +37,9 @@ const Chat = (): ReactElement => {
 
 	const messageContainerRef = useRef<HTMLElement>(null)
 
+	const chatId = socketStore.game?.chatId
+	const chat = socket.getChat(chatId)
+
 	const scrollChatToBottom = () => {
 		if (messageContainerRef.current) {
 			messageContainerRef.current.scroll(0, messageContainerRef.current?.scrollHeight)
@@ -70,8 +73,6 @@ const Chat = (): ReactElement => {
 	}
 
 	const handleSendChatMessage = () => {
-		const chatId = socketStore?.game?.chatId
-
 		if (chatId) {
 			socket.sendChatMessage(chatId, content)
 		}
@@ -117,7 +118,7 @@ const Chat = (): ReactElement => {
 
 	return (
 		<>
-			{socketStore?.chat && (
+			{chat && (
 				<Grid
 					container
 					className={classes.openChatButtonContainer}
@@ -169,7 +170,7 @@ const Chat = (): ReactElement => {
 					className={classes.drawerBodyContainer}
 					innerRef={messageContainerRef}
 				>
-					{socketStore?.chat?.messages?.map((message, index) => (
+					{chat?.messages?.map((message, index) => (
 						<React.Fragment key={index}>
 							<Typography
 								variant="body1"

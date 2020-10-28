@@ -1,6 +1,6 @@
 import React, { useState, ReactElement } from "react"
 import copy from "copy-to-clipboard"
-import { useParams, useHistory, Prompt } from "react-router-dom"
+import { useParams, useHistory } from "react-router-dom"
 import { Grid, Button, ButtonGroup } from "@material-ui/core"
 import {
 	ThumbDownOutlined as ThumbDownOutlinedIcon,
@@ -15,7 +15,7 @@ import ShareUtil from "@/utils/share"
 import useDidMount from "@/hooks/useDidMount"
 import useSocket from "@/hooks/useSocket"
 
-import { Divider, LoadingComponent } from "@/components"
+import { Divider, LoadingComponent, CloseGamePrompt } from "@/components"
 
 import PlayerItem from "@/pages/Room/PlayerItem"
 
@@ -80,16 +80,6 @@ const Room = (): ReactElement => {
 		socket.onReconnect(() => setupRoom())
 	}
 
-	const handleGoOutRoom = (newPathname: string): boolean => {
-		const isGoingOutRoom = !newPathname.includes(gameId)
-
-		if (isGoingOutRoom) {
-			socket.forceSelfDisconnect()
-		}
-
-		return true
-	}
-
 	useDidMount(() => {
 		setupRoom()
 		onReconnect()
@@ -97,7 +87,7 @@ const Room = (): ReactElement => {
 
 	return (
 		<>
-			<Prompt message={(props) => handleGoOutRoom(props.pathname)} />
+			<CloseGamePrompt />
 			<LoadingComponent loading={loadingRoom} customLoadingElement={<PlayerListSkeleton />}>
 				<Grid container spacing={2}>
 					{socket.currentPlayer && (

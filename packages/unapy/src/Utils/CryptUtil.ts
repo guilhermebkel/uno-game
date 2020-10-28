@@ -8,6 +8,12 @@ class CryptUtil {
 
 		return shortVersion
 	}
+
+	makeUUID () {
+		const uuidResult = uuid.v4()
+
+		return uuidResult
+	}
 }
 
 export default new CryptUtil()

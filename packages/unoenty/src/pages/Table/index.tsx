@@ -12,7 +12,12 @@ import useSocket from "@/hooks/useSocket"
 
 import useStyles from "@/pages/Table/styles"
 
-import { LoadingComponent, Alert, Divider } from "@/components"
+import {
+	LoadingComponent,
+	Alert,
+	Divider,
+	CloseGamePrompt,
+} from "@/components"
 
 import Device from "@/utils/device"
 
@@ -152,6 +157,8 @@ const Table = (): ReactElement => {
 			customLoadingElement={<TableSkeleton />}
 		>
 			<>
+				<CloseGamePrompt />
+
 				<TableChat />
 
 				<CardProvider>

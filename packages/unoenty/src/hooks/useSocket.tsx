@@ -8,9 +8,10 @@ import {
 	GameEvents,
 	CardColors,
 	ChatMessage,
+	Chat,
 } from "@uno-game/protocols"
 
-const useSocket = (): {
+type UseSocketResponse = {
 	currentPlayer: PlayerData,
 	otherPlayers: PlayerData[],
 	getCurrentPlayer: (players?: PlayerData[] | undefined) => PlayerData,
@@ -29,12 +30,15 @@ const useSocket = (): {
 	onPlayerStateChange: (fn: (playerState: PlayerState, playerId: string, amountToBuy?: number) => void) => void
 	onPong: (fn: (latency: number) => void) => void,
 	onReconnect: (fn: () => void) => void,
-	forceSelfDisconnect: () => Promise<void>
-} => {
+	forceSelfDisconnect: () => Promise<void>,
+	getChat: (chatId?: string) => Chat | null
+}
+
+const useSocket = (): UseSocketResponse => {
 	const socketStore = useSocketStore()
 
 	const getCurrentPlayer = (players?: PlayerData[]): PlayerData => {
-		const playerId = socketStore.playerId
+		const playerId = socketStore.player?.id
 
 		const player = (players || socketStore?.game?.players)?.find(player => player.id === playerId)
 
@@ -44,7 +48,7 @@ const useSocket = (): {
 	const getOtherPlayers = (): PlayerData[] => {
 		const totalPlayers = socketStore?.game?.players?.length as number
 
-		const playerId = socketStore.playerId
+		const playerId = socketStore.player?.id
 
 		let currentPlayerIndex = socketStore?.game?.players?.
 			findIndex(player => player.id === playerId) as number
@@ -101,7 +105,7 @@ const useSocket = (): {
 			socketStore.io.on("PlayerJoined", resolve)
 		})
 
-		socketStore.set({ game })
+		socketStore.setGameData(game)
 
 		return game
 	}
@@ -139,13 +143,27 @@ const useSocket = (): {
 	}
 
 	const onNewChatMessage = (fn?: () => void) => {
-		socketStore.io.on("NewMessage", (message: ChatMessage) => {
-			socketStore.addChatMessage(message)
+		socketStore.io.on("NewMessage", (chatId: string, message: ChatMessage) => {
+			socketStore.addChatMessage(chatId, message)
 
 			if (fn) {
 				fn()
 			}
 		})
+	}
+
+	const getChat = (chatId?: string): Chat | null => {
+		if (!chatId) {
+			return null
+		}
+
+		const chat = socketStore.chats?.get(chatId)
+
+		if (!chat) {
+			return null
+		}
+
+		return chat
 	}
 
 	const onPlayerGotAwayFromKeyboard = (fn: (playerId: string) => void) => {
@@ -181,10 +199,7 @@ const useSocket = (): {
 
 			const playerData = await getPlayerData(playerIdFromRoom)
 
-			socketStore.set({
-				...socketStore,
-				playerId: playerData.id,
-			})
+			socketStore.setPlayerData(playerData)
 
 			fn()
 		})
@@ -224,6 +239,7 @@ const useSocket = (): {
 		buyCard,
 		putCard,
 		forceSelfDisconnect,
+		getChat,
 	}
 }
 

@@ -1,6 +1,8 @@
 import SocketService from "@/Services/SocketService"
 import PlayerService from "@/Services/PlayerService"
 
+import CryptUtil from "@/Utils/CryptUtil"
+
 import {
 	Chat,
 	ChatMessage,
@@ -35,15 +37,19 @@ class ChatService {
 	pushMessage (playerId: string, chatId: string, content: string) {
 		const playerData = PlayerService.getPlayerData(playerId)
 
+		const id = CryptUtil.makeUUID()
+
 		const message: ChatMessage = {
 			playerId,
 			playerName: playerData.name,
 			content,
+			date: Date.now(),
+			id,
 		}
 
 		ChatRepository.pushMessageToChat(chatId, message)
 
-		this.emitChatEvent(chatId, "NewMessage", message)
+		this.emitChatEvent(chatId, "NewMessage", chatId, message)
 	}
 
 	retrieveChat (chatId: string): Chat {

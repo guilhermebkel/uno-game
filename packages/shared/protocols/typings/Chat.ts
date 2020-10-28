@@ -6,6 +6,8 @@ export type ChatMessage = {
 	playerId: string
 	playerName: string
 	content: string
+	date: number
+	id: string
 }
 
 export type Chat = {
