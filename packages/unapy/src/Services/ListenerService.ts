@@ -191,7 +191,7 @@ class ListenerService {
 			name: playerName,
 		})
 
-		ClientService.dispatchGameHistoryConsolidated()
+		ClientService.dispatchGameHistoryConsolidated(playerId)
 	}
 }
 

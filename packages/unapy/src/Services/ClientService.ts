@@ -5,8 +5,14 @@ import GameService from "@/Services/GameService"
 import ClientRepository from "@/Repositories/ClientRepository"
 
 class ClientService {
-	dispatchGameHistoryConsolidated (): void {
-		const connectedPlayerIds = ClientRepository.getConnectedPlayerIdList()
+	dispatchGameHistoryConsolidated (playerId?: string): void {
+		let connectedPlayerIds: string[] = []
+
+		if (playerId) {
+			connectedPlayerIds = [playerId]
+		} else {
+			connectedPlayerIds = ClientRepository.getConnectedPlayerIdList()
+		}
 
 		connectedPlayerIds.forEach(playerId => {
 			const gameHistory = GameService.retrieveGameHistory(playerId)
