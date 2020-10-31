@@ -5,26 +5,38 @@ import GameService from "@/Services/GameService"
 import ClientRepository from "@/Repositories/ClientRepository"
 
 class ClientService {
-	dispatchGameHistoryConsolidated (playerId: string): void {
-		const gameHistory = GameService.retrieveGameHistory(playerId)
+	dispatchGameHistoryConsolidated (): void {
+		const connectedPlayerIds = ClientRepository.getConnectedPlayerIdList()
 
-		const client = this.getClient(playerId)
+		connectedPlayerIds.forEach(playerId => {
+			const gameHistory = GameService.retrieveGameHistory(playerId)
 
-		if (client && gameHistory) {
-			client.emit("GameHistoryConsolidated", gameHistory)
-		}
+			const client = ClientRepository.getClient(playerId)
+
+			if (gameHistory && client) {
+				client.emit("GameHistoryConsolidated", gameHistory)
+			}
+		})
 	}
 
-	dispatchGameListUpdated (playerId: string): void {
-		const client = this.getClient(playerId)
+	dispatchGameListUpdated (): void {
+		const connectedPlayerIds = ClientRepository.getConnectedPlayerIdList()
 
-		if (client) {
-			client.emit("GameListUpdated")
-		}
+		connectedPlayerIds.forEach(playerId => {
+			const client = this.getClient(playerId)
+
+			if (client) {
+				client.emit("GameListUpdated")
+			}
+		})
 	}
 
-	setClient (playerId: string, client: Socket) {
+	setClient (playerId: string, client: Socket): void {
 		ClientRepository.setClient(playerId, client)
+	}
+
+	destroyClient (playerId: string): void {
+		ClientRepository.destroyClient(playerId)
 	}
 
 	private getClient (playerId: string): Socket {

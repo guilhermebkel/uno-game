@@ -86,6 +86,8 @@ class ListenerService {
 		})
 
 		client.on("disconnect", () => {
+			ClientService.destroyClient(playerData.id)
+
 			this.onPlayerDisconnect(playerData.id)
 		})
 	}
@@ -123,8 +125,8 @@ class ListenerService {
 				ChatService.joinChat(chatId)
 			}
 
-			ClientService.dispatchGameHistoryConsolidated(playerId)
-			ClientService.dispatchGameListUpdated(playerId)
+			ClientService.dispatchGameHistoryConsolidated()
+			ClientService.dispatchGameListUpdated()
 		}
 	}
 
@@ -135,8 +137,8 @@ class ListenerService {
 			GameService.setupGame(playerId, gameId, chatId)
 			ChatService.setupChat(playerId, chatId)
 
-			ClientService.dispatchGameHistoryConsolidated(playerId)
-			ClientService.dispatchGameListUpdated(playerId)
+			ClientService.dispatchGameHistoryConsolidated()
+			ClientService.dispatchGameListUpdated()
 		}
 	}
 
@@ -146,8 +148,8 @@ class ListenerService {
 		if (playerExists) {
 			GameService.purgePlayer(playerId)
 
-			ClientService.dispatchGameHistoryConsolidated(playerId)
-			ClientService.dispatchGameListUpdated(playerId)
+			ClientService.dispatchGameHistoryConsolidated()
+			ClientService.dispatchGameListUpdated()
 		}
 	}
 
@@ -189,7 +191,7 @@ class ListenerService {
 			name: playerName,
 		})
 
-		ClientService.dispatchGameHistoryConsolidated(playerId)
+		ClientService.dispatchGameHistoryConsolidated()
 	}
 }
 
