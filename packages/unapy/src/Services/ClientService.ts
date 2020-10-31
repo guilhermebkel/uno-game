@@ -5,13 +5,21 @@ import GameService from "@/Services/GameService"
 import ClientRepository from "@/Repositories/ClientRepository"
 
 class ClientService {
-	consolidateGameHistory (playerId: string): void {
+	dispatchGameHistoryConsolidated (playerId: string): void {
 		const gameHistory = GameService.retrieveGameHistory(playerId)
 
 		const client = this.getClient(playerId)
 
 		if (client && gameHistory) {
 			client.emit("GameHistoryConsolidated", gameHistory)
+		}
+	}
+
+	dispatchGameListUpdated (playerId: string): void {
+		const client = this.getClient(playerId)
+
+		if (client) {
+			client.emit("GameListUpdated")
 		}
 	}
 

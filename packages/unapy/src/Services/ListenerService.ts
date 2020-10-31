@@ -123,7 +123,8 @@ class ListenerService {
 				ChatService.joinChat(chatId)
 			}
 
-			ClientService.consolidateGameHistory(playerId)
+			ClientService.dispatchGameHistoryConsolidated(playerId)
+			ClientService.dispatchGameListUpdated(playerId)
 		}
 	}
 
@@ -134,7 +135,8 @@ class ListenerService {
 			GameService.setupGame(playerId, gameId, chatId)
 			ChatService.setupChat(playerId, chatId)
 
-			ClientService.consolidateGameHistory(playerId)
+			ClientService.dispatchGameHistoryConsolidated(playerId)
+			ClientService.dispatchGameListUpdated(playerId)
 		}
 	}
 
@@ -144,7 +146,8 @@ class ListenerService {
 		if (playerExists) {
 			GameService.purgePlayer(playerId)
 
-			ClientService.consolidateGameHistory(playerId)
+			ClientService.dispatchGameHistoryConsolidated(playerId)
+			ClientService.dispatchGameListUpdated(playerId)
 		}
 	}
 
@@ -186,7 +189,7 @@ class ListenerService {
 			name: playerName,
 		})
 
-		ClientService.consolidateGameHistory(playerId)
+		ClientService.dispatchGameHistoryConsolidated(playerId)
 	}
 }
 
