@@ -13,6 +13,15 @@ const useStyles = makeStyles(theme => ({
 		marginLeft: theme.spacing(2),
 		color: colors.grayScale[15],
 	},
+	menuTitle: {
+		color: colors.grayScale[7],
+	},
+	listItemIcon: {
+		color: colors.palette.black4,
+	},
+	listItemText: {
+		color: colors.palette.black3,
+	},
 }))
 
 export default useStyles
