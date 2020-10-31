@@ -22,7 +22,7 @@ export interface SocketContextData {
 	game?: Game
 	chats?: Map<string, Chat>
 	player?: Player
-	gameHistory?: GameHistory
+	gameHistory?: GameHistory[]
 	addChatMessage: (chatId: string, message: ChatMessage) => void
 	setGameData: (data: Game) => void
 	setPlayerData: (data: Player) => void
@@ -39,7 +39,7 @@ const SocketProvider: React.FC = (props): ReactElement => {
 	const [player, setPlayer] = useState<Player>({} as Player)
 	const [game, setGame] = useState<Game>({} as Game)
 	const [chats, setChats] = useState<Map<string, Chat>>(new Map())
-	const [gameHistory, setGameHistory] = useState<GameHistory>({} as GameHistory)
+	const [gameHistory, setGameHistory] = useState<GameHistory[]>([])
 
 	const setPlayerData = (data: Player) => {
 		setPlayer(data)
@@ -83,7 +83,7 @@ const SocketProvider: React.FC = (props): ReactElement => {
 	}
 
 	const onGameHistoryConsolidated = () => {
-		client.on("GameHistoryConsolidated", (gameHistory: GameHistory) => {
+		client.on("GameHistoryConsolidated", (gameHistory: GameHistory[]) => {
 			setGameHistory(gameHistory)
 		})
 	}

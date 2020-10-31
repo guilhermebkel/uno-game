@@ -18,6 +18,8 @@ import {
 	Divider,
 } from "@/components"
 
+import { useSocketStore } from "@/store/Socket"
+
 import useStyles from "@/components/Menu/styles"
 
 type MenuProps = {
@@ -26,6 +28,7 @@ type MenuProps = {
 
 const Menu: React.FC<MenuProps> = (props) => {
 	const classes = useStyles()
+	const socketStore = useSocketStore()
 
 	return (
 		<Drawer
@@ -92,6 +95,24 @@ const Menu: React.FC<MenuProps> = (props) => {
 			>
 				LAST GAMES
 			</Typography>
+
+			<Divider size={1} />
+
+			<List>
+				{socketStore.gameHistory
+				?.slice(0, 3)
+				.map(gameHistory => (
+					<ListItem
+						button
+						component={Link}
+						to={`/${gameHistory.gameId}`}
+					>
+						<h1>
+							{gameHistory.name}
+						</h1>
+					</ListItem>
+				))}
+			</List>
 		</Drawer>
 	)
 }
