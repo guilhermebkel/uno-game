@@ -28,13 +28,6 @@ export type GameDirection=
 "clockwise" |
 "counterclockwise"
 
-export type GameHistory = {
-	createdAt: number
-	name: string
-	playersCount: number
-	gameId: string
-}
-
 export type Game = {
 	direction: GameDirection
 	type: GameType

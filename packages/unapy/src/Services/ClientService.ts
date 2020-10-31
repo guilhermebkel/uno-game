@@ -1,6 +1,6 @@
 import { Socket } from "socket.io"
 
-import GameService from "@/Services/GameService"
+import GameHistoryService from "@/Services/GameHistoryService"
 
 import ClientRepository from "@/Repositories/ClientRepository"
 
@@ -15,7 +15,7 @@ class ClientService {
 		}
 
 		connectedPlayerIds.forEach(playerId => {
-			const gameHistory = GameService.retrieveGameHistory(playerId)
+			const gameHistory = GameHistoryService.retrieveGameHistory(playerId)
 
 			const client = ClientRepository.getClient(playerId)
 
