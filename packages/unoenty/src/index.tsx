@@ -8,7 +8,7 @@ import * as serviceWorker from "@/services/service-worker"
 import App from "@/App"
 
 import theme from "@/styles/theme"
-import "@/styles/global.scss"
+import "@/styles/global.css"
 
 ReactDOM.render(
 	<React.StrictMode>

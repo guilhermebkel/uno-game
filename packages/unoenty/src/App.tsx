@@ -8,7 +8,9 @@ import SocketProvider from "@/store/Socket"
 
 const App = (): ReactElement => (
 	<SocketProvider>
-		<Container maxWidth="xl">
+		<Container
+			maxWidth={false}
+		>
 			<Menu />
 			<Routes />
 			<Disconnected />

@@ -42,10 +42,6 @@ export default createMuiTheme({
 	},
 	overrides: {
 		MuiTypography: {
-			h1: {
-				fontWeight: 600,
-				fontSize: "36px",
-			},
 			button: {
 				textTransform: "none",
 			},
@@ -83,6 +79,14 @@ export default createMuiTheme({
 		},
 	},
 	typography: {
-		fontFamily: "Lato",
+		fontFamily: "Ubuntu",
+		h1: {
+			fontWeight: "bold",
+			fontSize: 50,
+		},
+		h3: {
+			fontWeight: "normal",
+			fontSize: 26,
+		},
 	},
 })
