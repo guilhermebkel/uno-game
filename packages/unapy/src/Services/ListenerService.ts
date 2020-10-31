@@ -12,6 +12,8 @@ import { CardColors, Player, PlayerStatus } from "@uno-game/protocols"
  * Usually the class which handles events from client
  */
 class ListenerService {
+	clients: Map<string, Socket> = new Map()
+
 	onConnection (client: Socket) {
 		const playerData = {} as Player
 
@@ -20,6 +22,8 @@ class ListenerService {
 		client.on("SetPlayerData", (playerId: string, playerName: string) => {
 			playerData.id = playerId
 			playerData.name = playerName
+
+			this.setClient(playerId, client)
 
 			this.onSetPlayerData(playerId, playerName)
 
@@ -117,6 +121,8 @@ class ListenerService {
 			if (chatExists) {
 				ChatService.joinChat(chatId)
 			}
+
+			this.consolidateGameHistory(playerId)
 		}
 	}
 
@@ -126,6 +132,8 @@ class ListenerService {
 		if (playerExists) {
 			GameService.setupGame(playerId, gameId, chatId)
 			ChatService.setupChat(playerId, chatId)
+
+			this.consolidateGameHistory(playerId)
 		}
 	}
 
@@ -134,6 +142,8 @@ class ListenerService {
 
 		if (playerExists) {
 			GameService.purgePlayer(playerId)
+
+			this.consolidateGameHistory(playerId)
 		}
 	}
 
@@ -174,6 +184,28 @@ class ListenerService {
 			id: playerId,
 			name: playerName,
 		})
+
+		this.consolidateGameHistory(playerId)
+	}
+
+	private setClient (playerId: string, client: Socket) {
+		this.clients.set(playerId, client)
+	}
+
+	private getClient (playerId: string): Socket {
+		const client = this.clients.get(playerId)
+
+		return client
+	}
+
+	private consolidateGameHistory (playerId: string): void {
+		const gameHistory = GameService.retrieveGameHistory(playerId)
+
+		const client = this.getClient(playerId)
+
+		if (client && gameHistory) {
+			client.emit("GameHistoryConsolidated", gameHistory)
+		}
 	}
 }
 

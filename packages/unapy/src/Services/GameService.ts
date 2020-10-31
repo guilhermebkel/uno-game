@@ -14,6 +14,7 @@ import {
 	CardData,
 	CardColors,
 	PlayerStatus,
+	GameHistory,
 } from "@uno-game/protocols"
 
 import GameRepository from "@/Repositories/GameRepository"
@@ -53,6 +54,7 @@ class GameService {
 			direction: "clockwise",
 			currentCardCombo: [],
 			maxRoundDurationInSeconds: 20,
+			createdAt: Date.now(),
 		}
 
 		this.setGameData(gameId, game)
@@ -278,6 +280,22 @@ class GameService {
 		game.players = this.buildPlayersWithChangedPlayerStatus(gameId, playerId, playerStatus)
 
 		this.setGameData(gameId, game)
+	}
+
+	retrieveGameHistory (playerId: string) {
+		const games = this.getGameList()
+
+		const gameHistory: GameHistory[] = games
+			.sort((a, b) => a.createdAt - b.createdAt)
+			.filter(game => game.players.some(player => player.id === playerId))
+			.map(game => ({
+				createdAt: game.createdAt,
+				name: game.title,
+				gameId: game.id,
+				playersCount: game.players.length,
+			}))
+
+		return gameHistory
 	}
 
 	private getRoundRemainingTimeInSeconds (gameId: string): number {
