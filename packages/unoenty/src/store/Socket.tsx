@@ -9,13 +9,20 @@ import { LoadingApp } from "@/components"
 
 import { preloadCardPictures } from "@/utils/card"
 
-import { Game, ChatMessage, Chat, Player } from "@uno-game/protocols"
+import {
+	Game,
+	ChatMessage,
+	Chat,
+	Player,
+	GameHistory,
+} from "@uno-game/protocols"
 
 export interface SocketContextData {
 	io: typeof Socket
 	game?: Game
 	chats?: Map<string, Chat>
 	player?: Player
+	gameHistory?: GameHistory
 	addChatMessage: (chatId: string, message: ChatMessage) => void
 	setGameData: (data: Game) => void
 	setPlayerData: (data: Player) => void
@@ -32,6 +39,7 @@ const SocketProvider: React.FC = (props): ReactElement => {
 	const [player, setPlayer] = useState<Player>({} as Player)
 	const [game, setGame] = useState<Game>({} as Game)
 	const [chats, setChats] = useState<Map<string, Chat>>(new Map())
+	const [gameHistory, setGameHistory] = useState<GameHistory>({} as GameHistory)
 
 	const setPlayerData = (data: Player) => {
 		setPlayer(data)
@@ -74,6 +82,12 @@ const SocketProvider: React.FC = (props): ReactElement => {
 		})
 	}
 
+	const onGameHistoryConsolidated = () => {
+		client.on("GameHistoryConsolidated", (gameHistory: GameHistory) => {
+			setGameHistory(gameHistory)
+		})
+	}
+
 	const onGameStateChanged = () => {
 		client.on("GameStateChanged", (game: Game) => {
 			setGameData(game)
@@ -106,6 +120,7 @@ const SocketProvider: React.FC = (props): ReactElement => {
 		onGameStateChanged()
 		onChatStateChanged()
 		onGameRoundRemainingTimeChanged()
+		onGameHistoryConsolidated()
 	})
 
 	return (
@@ -118,6 +133,7 @@ const SocketProvider: React.FC = (props): ReactElement => {
 				player,
 				setGameData,
 				game,
+				gameHistory,
 			}}
 		>
 			<LoadingApp loading={loading}>
