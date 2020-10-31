@@ -3,6 +3,7 @@ import { Socket } from "socket.io"
 import GameService from "@/Services/GameService"
 import ChatService from "@/Services/ChatService"
 import PlayerService from "@/Services/PlayerService"
+import ClientService from "@/Services/ClientService"
 
 import CryptUtil from "@/Utils/CryptUtil"
 
@@ -23,7 +24,7 @@ class ListenerService {
 			playerData.id = playerId
 			playerData.name = playerName
 
-			this.setClient(playerId, client)
+			ClientService.setClient(playerId, client)
 
 			this.onSetPlayerData(playerId, playerName)
 
@@ -122,7 +123,7 @@ class ListenerService {
 				ChatService.joinChat(chatId)
 			}
 
-			this.consolidateGameHistory(playerId)
+			ClientService.consolidateGameHistory(playerId)
 		}
 	}
 
@@ -133,7 +134,7 @@ class ListenerService {
 			GameService.setupGame(playerId, gameId, chatId)
 			ChatService.setupChat(playerId, chatId)
 
-			this.consolidateGameHistory(playerId)
+			ClientService.consolidateGameHistory(playerId)
 		}
 	}
 
@@ -143,7 +144,7 @@ class ListenerService {
 		if (playerExists) {
 			GameService.purgePlayer(playerId)
 
-			this.consolidateGameHistory(playerId)
+			ClientService.consolidateGameHistory(playerId)
 		}
 	}
 
@@ -185,27 +186,7 @@ class ListenerService {
 			name: playerName,
 		})
 
-		this.consolidateGameHistory(playerId)
-	}
-
-	private setClient (playerId: string, client: Socket) {
-		this.clients.set(playerId, client)
-	}
-
-	private getClient (playerId: string): Socket {
-		const client = this.clients.get(playerId)
-
-		return client
-	}
-
-	private consolidateGameHistory (playerId: string): void {
-		const gameHistory = GameService.retrieveGameHistory(playerId)
-
-		const client = this.getClient(playerId)
-
-		if (client && gameHistory) {
-			client.emit("GameHistoryConsolidated", gameHistory)
-		}
+		ClientService.consolidateGameHistory(playerId)
 	}
 }
 
