@@ -150,6 +150,7 @@ class ListenerService {
 
 			ClientService.dispatchGameHistoryConsolidated()
 			ClientService.dispatchGameListUpdated()
+			ClientService.disconnectFromAllGames(playerId)
 		}
 	}
 

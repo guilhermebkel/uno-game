@@ -37,6 +37,18 @@ class ClientService {
 		})
 	}
 
+	disconnectFromAllGames (playerId: string): void {
+		const client = this.getClient(playerId)
+
+		if (client) {
+			const gameHistory = GameHistoryService.retrieveGameHistory(playerId)
+
+			gameHistory.forEach(history => {
+				client.leave(history.gameId)
+			})
+		}
+	}
+
 	setClient (playerId: string, client: Socket): void {
 		ClientRepository.setClient(playerId, client)
 	}
