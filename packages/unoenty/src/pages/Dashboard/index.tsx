@@ -9,9 +9,7 @@ import useSocket from "@/hooks/useSocket"
 
 import api from "@/services/api"
 
-import { Divider, LoadingComponent } from "@/components"
-
-import GameItem from "@/pages/Dashboard/GameItem"
+import { Divider, LoadingComponent, GameCard } from "@/components"
 
 import useStyles from "@/pages/Dashboard/styles"
 
@@ -101,7 +99,7 @@ const Dashboard = (): ReactElement => {
 										to: `/${game.id}`,
 									})}
 								>
-									<GameItem
+									<GameCard
 										key={game.id}
 										gameId={game.id}
 										name={game.title}

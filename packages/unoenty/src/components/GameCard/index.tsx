@@ -9,7 +9,7 @@ import { AvatarGroup } from "@material-ui/lab"
 
 import { Divider, Avatar } from "@/components"
 
-import useStyles from "@/pages/Dashboard/GameItem/styles"
+import useStyles from "@/components/GameCard/styles"
 
 import { GameStatus, PlayerData } from "@uno-game/protocols"
 
@@ -23,7 +23,7 @@ const statusButtonTextMap: StatusMap<string> = {
 	waiting: "JOIN",
 }
 
-type GameItemProps = {
+type GameCardProps = {
 	name: string
 	status: GameStatus
 	players: PlayerData[]
@@ -31,7 +31,7 @@ type GameItemProps = {
 	maxPlayers: number
 }
 
-const GameItem: React.FC<GameItemProps> = (props): ReactElement => {
+const GameCard: React.FC<GameCardProps> = (props): ReactElement => {
 	const { name, status, players, gameId, maxPlayers } = props
 
 	const classes = useStyles()
@@ -119,4 +119,4 @@ const GameItem: React.FC<GameItemProps> = (props): ReactElement => {
 	)
 }
 
-export default GameItem
+export default GameCard

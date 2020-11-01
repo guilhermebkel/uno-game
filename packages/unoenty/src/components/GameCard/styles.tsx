@@ -4,7 +4,6 @@ import colors from "@/styles/colors"
 
 const useStyles = makeStyles(theme => ({
 	container: {
-		width: 358,
 		backgroundSize: "cover !important",
 		backgroundPosition: "center !important",
 		borderRadius: theme.spacing(2),
