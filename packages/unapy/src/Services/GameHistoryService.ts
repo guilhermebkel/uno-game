@@ -21,7 +21,7 @@ class GameHistoryService {
 		const games = GameService.getGameList()
 
 		consolidatedGameHistory = games.map(game => {
-			const history = gameHistory.find(historyItem => historyItem.gameId === game.id)
+			const history = gameHistory?.find(historyItem => historyItem.gameId === game.id)
 
 			const data: GameHistory = {
 				createdAt: game.createdAt,
