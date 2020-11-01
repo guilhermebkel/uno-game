@@ -6,16 +6,22 @@ import Routes from "@/routes"
 
 import SocketProvider from "@/store/Socket"
 
-const useStyles = makeStyles({
+import colors from "@/styles/colors"
+
+const useStyles = makeStyles(theme => ({
 	routesContainer: {
 		flex: 1,
 		width: "100%",
 		height: "100%",
+		borderTopLeftRadius: theme.spacing(5),
+		borderBottomLeftRadius: theme.spacing(5),
+		backgroundColor: colors.palette.blue1,
 	},
 	appContainer: {
 		overflowX: "hidden",
+		backgroundColor: colors.grayScale[1],
 	},
-})
+}))
 
 const App = (): ReactElement => {
 	const classes = useStyles()
