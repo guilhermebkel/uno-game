@@ -1,8 +1,9 @@
 import { makeStyles } from "@material-ui/core"
 
+import DeviceUtil from "@/utils/device"
 import colors from "@/styles/colors"
 
-export const PADDING = 4
+export const PADDING = DeviceUtil.isMobile ? 2 : 4
 
 const useStyles = makeStyles(theme => ({
 	drawerPaper: {
@@ -10,6 +11,10 @@ const useStyles = makeStyles(theme => ({
 		backgroundColor: colors.grayScale[1],
 		padding: theme.spacing(PADDING, 0),
 		position: "relative",
+		[theme.breakpoints.down("md")]: {
+			position: "fixed",
+			width: "85%",
+		},
 	},
 	avatarContainer: {
 		padding: theme.spacing(0, PADDING),

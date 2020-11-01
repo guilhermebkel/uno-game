@@ -1,6 +1,6 @@
-import React from "react"
+import React, { useState } from "react"
 import {
-	Drawer,
+	SwipeableDrawer as Drawer,
 	Grid,
 	Typography,
 	List,
@@ -21,6 +21,8 @@ import {
 
 import Auth from "@/services/auth"
 
+import DeviceUtil from "@/utils/device"
+
 import { useSocketStore } from "@/store/Socket"
 
 import useStyles from "@/components/Menu/styles"
@@ -39,14 +41,29 @@ const Menu: React.FC<MenuProps> = (props) => {
 
 	const socketStore = useSocketStore()
 
+	const [opened, setOpened] = useState(!DeviceUtil.isMobile)
+
 	const handleLogout = () => {
 		Auth.logout()
 	}
 
+	const handleCloseMenu = () => {
+		if (DeviceUtil.isMobile) {
+			setOpened(false)
+		}
+	}
+
+	const handleOpenMenu = () => {
+		setOpened(true)
+	}
+
 	return (
 		<Drawer
-			open
-			variant="persistent"
+			open={opened}
+			onClose={handleCloseMenu}
+			onOpen={handleOpenMenu}
+			variant={DeviceUtil.isMobile ? "temporary" : "permanent"}
+			anchor="left"
 			PaperProps={{ className: classes.drawerPaper }}
 		>
 			<Grid
