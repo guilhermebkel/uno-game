@@ -139,13 +139,21 @@ const Room = (): ReactElement => {
 
 						<Divider orientation="horizontal" size={1} />
 
-						{socketStore?.game?.players?.map(player => (
-							<PlayerItem
-								name={player.name}
-								ready={player.ready}
-								playerId={player.id}
-							/>
-						))}
+						<Grid
+							container
+							direction="column"
+							spacing={2}
+						>
+							{socketStore?.game?.players?.map(player => (
+								<Grid item>
+									<PlayerItem
+										name={player.name}
+										ready={player.ready}
+										playerId={player.id}
+									/>
+								</Grid>
+							))}
+						</Grid>
 					</Grid>
 				</Grid>
 			</LoadingComponent>

@@ -48,6 +48,7 @@ const PlayerItem = (props: PlayerItem): ReactElement => {
 					<Grid
 						container
 						direction="column"
+						justify="center"
 						style={{ flex: 1 }}
 					>
 						<Typography
