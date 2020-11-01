@@ -19,6 +19,8 @@ import {
 	Divider,
 } from "@/components"
 
+import Auth from "@/services/auth"
+
 import { useSocketStore } from "@/store/Socket"
 
 import useStyles from "@/components/Menu/styles"
@@ -33,6 +35,10 @@ type MenuProps = {
 const Menu: React.FC<MenuProps> = (props) => {
 	const classes = useStyles()
 	const socketStore = useSocketStore()
+
+	const handleLogout = () => {
+		Auth.logout()
+	}
 
 	return (
 		<Drawer
@@ -135,6 +141,7 @@ const Menu: React.FC<MenuProps> = (props) => {
 					<Button
 						startIcon={<LogoutIcon />}
 						className={classes.logoutButton}
+						onClick={handleLogout}
 					>
 						LOGOUT
 					</Button>

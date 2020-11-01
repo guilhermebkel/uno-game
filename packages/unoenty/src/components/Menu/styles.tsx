@@ -35,7 +35,6 @@ const useStyles = makeStyles(theme => ({
 		color: colors.grayScale[15],
 		padding: theme.spacing(1, 2),
 		"&:hover": {
-			opacity: 0.9,
 			backgroundColor: colors.palette.red1,
 		},
 	},
