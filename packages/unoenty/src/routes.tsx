@@ -10,7 +10,7 @@ import Room from "@/pages/Room"
 const Routes = (): ReactElement => (
 	<Switch>
 		<Route exact path="/" component={Dashboard} />
-		<Route exact path="/:gameId" component={Room} />
+		<Route exact path="/:gameId" render={({ location }) => <Room key={location.pathname} />} />
 		<Route exact path="/:gameId/table" component={Table} />
 		<Route path="*" component={PageNotFound} />
 	</Switch>
