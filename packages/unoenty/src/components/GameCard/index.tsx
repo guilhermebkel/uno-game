@@ -158,7 +158,7 @@ const GameCard: React.FC<GameCardProps> = (props): ReactElement => {
 					<Divider orientation="horizontal" size={1} />
 
 					<AvatarGroup max={maxPlayers}>
-						{players.map(player => (
+						{players?.map(player => (
 							<MaterialAvatar
 								variant="circle"
 								key={player.id}
