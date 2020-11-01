@@ -4,8 +4,6 @@ import { Grid, Typography, Button } from "@material-ui/core"
 
 import useStyles from "@/components/Menu/GameItem/styles"
 
-import colors from "@/styles/colors"
-
 import { statusColorMap } from "@/utils/game"
 
 type GameItemProps = {
