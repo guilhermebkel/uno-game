@@ -7,7 +7,6 @@ import {
 	ListItemIcon,
 	ListItemText,
 	Button,
-	Zoom,
 } from "@material-ui/core"
 import {
 	SportsEsports as GameIcon,
@@ -120,19 +119,17 @@ const Menu: React.FC<MenuProps> = (props) => {
 						{socketStore.gameHistory
 						?.slice(0, 3)
 						.sort((a, b) => b.createdAt - a.createdAt)
-						.map((gameHistory, index) => (
-							<Zoom in timeout={index * 50}>
-								<ListItem
-									to={`/${gameHistory.gameId}`}
+						.map((gameHistory) => (
+							<ListItem
+								to={`/${gameHistory.gameId}`}
+								status={gameHistory.status}
+							>
+								<GameItem
+									playersCount={gameHistory.playersCount}
+									name={gameHistory.name}
 									status={gameHistory.status}
-								>
-									<GameItem
-										playersCount={gameHistory.playersCount}
-										name={gameHistory.name}
-										status={gameHistory.status}
-									/>
-								</ListItem>
-							</Zoom>
+								/>
+							</ListItem>
 						))}
 					</List>
 				</Grid>
