@@ -37,6 +37,9 @@ const useStyles = makeStyles(theme => ({
 	infoIcon: {
 		color: colors.palette.black4,
 	},
+	infoContainer: {
+		flex: 1,
+	},
 }))
 
 export default useStyles

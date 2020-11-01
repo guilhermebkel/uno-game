@@ -102,25 +102,24 @@ const GameCard: React.FC<GameCardProps> = (props): ReactElement => {
 
 						<Divider orientation="vertical" size={1} />
 
-						<Grid item>
-							<Grid
-								container
-								direction="column"
+						<Grid
+							container
+							direction="column"
+							className={classes.infoContainer}
+						>
+							<Typography
+								variant="caption"
+								className={classes.infoText}
 							>
-								<Typography
-									variant="caption"
-									className={classes.infoText}
-								>
-									At least 2 players are needed to start a game.
-								</Typography>
+								At least 2 players are needed to start a game.
+							</Typography>
 
-								<Typography
-									variant="caption"
-									className={classes.infoText}
-								>
-									The game automatically starts when all players are ready.
-								</Typography>
-							</Grid>
+							<Typography
+								variant="caption"
+								className={classes.infoText}
+							>
+								The game automatically starts when all players are ready.
+							</Typography>
 						</Grid>
 					</Grid>
 

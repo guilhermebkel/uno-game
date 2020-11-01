@@ -11,6 +11,8 @@ import { useSocketStore } from "@/store/Socket"
 import useDidMount from "@/hooks/useDidMount"
 import useSocket from "@/hooks/useSocket"
 
+import DeviceUtil from "@/utils/device"
+
 import {
 	Divider,
 	LoadingComponent,
@@ -83,11 +85,12 @@ const Room = (): ReactElement => {
 						container
 						alignItems="center"
 						justify="flex-start"
+						className={classes.pageTitleContainer}
 					>
 						<Typography
 							variant="h1"
 							color="textSecondary"
-							className={customClasses.limitedName}
+							className={`${classes.pageTitle} ${customClasses.limitedName}`}
 						>
 							Room
 							<b
@@ -97,7 +100,11 @@ const Room = (): ReactElement => {
 							</b>
 						</Typography>
 
-						<Divider orientation="vertical" size={5} />
+						{DeviceUtil.isMobile ? (
+							<Divider orientation="horizontal" size={3} />
+						) : (
+							<Divider orientation="vertical" size={5} />
+						)}
 
 						<Button
 							variant="contained"

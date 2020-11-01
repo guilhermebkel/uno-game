@@ -10,6 +10,8 @@ import { Game } from "@uno-game/protocols"
 import useDidMount from "@/hooks/useDidMount"
 import useSocket from "@/hooks/useSocket"
 
+import DeviceUtil from "@/utils/device"
+
 import api from "@/services/api"
 
 import { Divider, LoadingComponent, GameCard } from "@/components"
@@ -66,6 +68,7 @@ const Dashboard = (): ReactElement => {
 					container
 					alignItems="center"
 					justify="flex-start"
+					className={classes.pageTitleContainer}
 				>
 					<Typography
 						variant="h1"
@@ -74,7 +77,11 @@ const Dashboard = (): ReactElement => {
 						Games
 					</Typography>
 
-					<Divider orientation="vertical" size={5} />
+					{DeviceUtil.isMobile ? (
+						<Divider orientation="horizontal" size={3} />
+					) : (
+						<Divider orientation="vertical" size={5} />
+					)}
 
 					<Button
 						variant="contained"
