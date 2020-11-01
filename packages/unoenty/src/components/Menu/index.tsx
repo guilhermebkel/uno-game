@@ -120,8 +120,8 @@ const Menu: React.FC<MenuProps> = (props) => {
 
 					<List>
 						{socketStore.gameHistory
-						?.slice(0, 3)
-						.sort((a, b) => b.createdAt - a.createdAt)
+						?.sort((a, b) => b.createdAt - a.createdAt)
+						.slice(0, 3)
 						.map((gameHistory) => (
 							<ListItem
 								to={`/${gameHistory.gameId}`}
