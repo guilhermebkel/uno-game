@@ -15,6 +15,7 @@ import {
 import useSocket from "@/hooks/useSocket"
 
 import useStyles from "@/pages/Room/PlayerItem/styles"
+import useCustomStyles from "@/styles/custom"
 
 type PlayerItem = {
 	name: string
@@ -28,6 +29,7 @@ const PlayerItem = (props: PlayerItem): ReactElement => {
 	const socket = useSocket()
 
 	const classes = useStyles({ ready })
+	const customClasses = useCustomStyles({})
 
 	return (
 		<Grid
@@ -51,11 +53,16 @@ const PlayerItem = (props: PlayerItem): ReactElement => {
 						justify="center"
 						style={{ flex: 1 }}
 					>
-						<Typography
-							variant="h3"
-							className={classes.title}
+						<Grid
+							container
+							alignItems="center"
 						>
-							{name}
+							<Typography
+								variant="h3"
+								className={`${classes.title} ${customClasses.limitedName}`}
+							>
+								{name}
+							</Typography>
 
 							{socket.currentRoundPlayer?.id === playerId && (
 								<StarIcon
@@ -63,7 +70,7 @@ const PlayerItem = (props: PlayerItem): ReactElement => {
 									className={classes.starIcon}
 								/>
 							)}
-						</Typography>
+						</Grid>
 
 						{socket?.currentPlayer?.id === playerId && (
 							<Typography

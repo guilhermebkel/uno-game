@@ -19,6 +19,7 @@ import {
 } from "@/components"
 
 import useStyles from "@/pages/Room/styles"
+import useCustomStyles from "@/styles/custom"
 
 import PlayerItem from "@/pages/Room/PlayerItem"
 
@@ -30,6 +31,7 @@ const Room = (): ReactElement => {
 	const history = useHistory()
 
 	const classes = useStyles()
+	const customClasses = useCustomStyles({ limitedNameWidth: 500 })
 
 	const socket = useSocket()
 
@@ -85,8 +87,14 @@ const Room = (): ReactElement => {
 						<Typography
 							variant="h1"
 							color="textSecondary"
+							className={customClasses.limitedName}
 						>
-							Room<b className={classes.pageTitleSpotlight}>/{socketStore?.game?.title}</b>
+							Room
+							<b
+								className={classes.pageTitleSpotlight}
+							>
+								/{socketStore?.game?.title}
+							</b>
 						</Typography>
 
 						<Divider orientation="vertical" size={5} />

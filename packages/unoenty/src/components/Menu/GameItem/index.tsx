@@ -3,6 +3,7 @@ import React from "react"
 import { Grid, Typography, Button } from "@material-ui/core"
 
 import useStyles from "@/components/Menu/GameItem/styles"
+import useCustomStyles from "@/styles/custom"
 
 import { statusColorMap } from "@/utils/game"
 
@@ -16,6 +17,7 @@ const GameItem: React.FC<GameItemProps> = (props) => {
 	const { playersCount, name, status } = props
 
 	const classes = useStyles()
+	const customClasses = useCustomStyles({ limitedNameWidth: 70 })
 
 	const color = statusColorMap[status]
 
@@ -35,7 +37,10 @@ const GameItem: React.FC<GameItemProps> = (props) => {
 					color,
 				}}
 			>
-				<Typography variant="h2">
+				<Typography
+					variant="h2"
+					className={customClasses.limitedName}
+				>
 					{name}
 				</Typography>
 

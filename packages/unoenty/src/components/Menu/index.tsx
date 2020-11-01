@@ -24,6 +24,7 @@ import Auth from "@/services/auth"
 import { useSocketStore } from "@/store/Socket"
 
 import useStyles from "@/components/Menu/styles"
+import useCustomStyles from "@/styles/custom"
 
 import GameItem from "@/components/Menu/GameItem"
 import ListItem from "@/components/Menu/ListItem"
@@ -34,6 +35,8 @@ type MenuProps = {
 
 const Menu: React.FC<MenuProps> = (props) => {
 	const classes = useStyles()
+	const customClasses = useCustomStyles({})
+
 	const socketStore = useSocketStore()
 
 	const handleLogout = () => {
@@ -69,7 +72,7 @@ const Menu: React.FC<MenuProps> = (props) => {
 
 						<Typography
 							variant="h3"
-							className={classes.avatarName}
+							className={`${classes.avatarName} ${customClasses.limitedName}`}
 						>
 							{socketStore?.player?.name}
 						</Typography>

@@ -14,6 +14,7 @@ import {
 import { Divider, Avatar } from "@/components"
 
 import useStyles from "@/components/GameCard/styles"
+import useCustomStyles from "@/styles/custom"
 
 import { GameStatus, PlayerData } from "@uno-game/protocols"
 
@@ -41,6 +42,7 @@ const GameCard: React.FC<GameCardProps> = (props): ReactElement => {
 	const { name, status, players, gameId, maxPlayers, mode } = props
 
 	const classes = useStyles()
+	const customClasses = useCustomStyles({})
 
 	const [linkCopied, setLinkCopied] = useState(false)
 
@@ -76,7 +78,7 @@ const GameCard: React.FC<GameCardProps> = (props): ReactElement => {
 			>
 				<Typography
 					variant="h3"
-					className={classes.gameTitle}
+					className={`${classes.gameTitle} ${customClasses.limitedName}`}
 				>
 					{name}
 				</Typography>
