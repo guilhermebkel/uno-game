@@ -12,35 +12,36 @@ class GameHistoryService {
 	}
 
 	private consolidateGameHistory (playerId: string): GameHistory[] {
-		const gameHistory = GameHistoryRepository.getGameHistory(playerId)
+		const gameHistory = GameHistoryRepository.getGameHistory(playerId) || []
 
-		let consolidatedGameHistory: GameHistory[] = [
-			...(gameHistory || []),
-		]
+		const consolidatedGameHistory: GameHistory[] = []
 
 		const games = GameService.getGameList()
 
-		consolidatedGameHistory = games
-			.filter(game => game.players.some(player => player.id === playerId))
-			.map(game => {
-				const history = gameHistory?.find(historyItem => historyItem.gameId === game.id)
+		gameHistory
+			.forEach(history => {
+				const game = games.find(game => game.id === history.gameId)
 
-				const data: GameHistory = {
+				consolidatedGameHistory.push({
 					createdAt: game.createdAt,
 					gameId: game.id,
 					name: game.title,
 					playersCount: game.players.length,
 					status: game.status,
-				}
+				})
+			})
 
-				if (history) {
-					return {
-						...history,
-						...data,
-					}
-				} else {
-					return data
-				}
+		games
+			.filter(game => game.players.some(player => player.id === playerId))
+			.filter(game => !consolidatedGameHistory.some(history => history.gameId === game.id))
+			.forEach(game => {
+				consolidatedGameHistory.push({
+					createdAt: game.createdAt,
+					gameId: game.id,
+					name: game.title,
+					playersCount: game.players.length,
+					status: game.status,
+				})
 			})
 
 		GameHistoryRepository.setGameHistory(playerId, consolidatedGameHistory)
