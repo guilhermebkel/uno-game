@@ -1,21 +1,24 @@
 import React, { useState, ReactElement } from "react"
-import copy from "copy-to-clipboard"
 import { useParams, useHistory } from "react-router-dom"
-import { Grid, Button, ButtonGroup } from "@material-ui/core"
+import { Grid, Button, Typography } from "@material-ui/core"
 import {
-	ThumbDownOutlined as ThumbDownOutlinedIcon,
-	ThumbUpOutlined as ThumbUpOutlinedIcon,
-	FileCopyOutlined as FileCopyOutlinedIcon,
+	Check as ReadyIcon,
+	Close as CancelIcon,
 } from "@material-ui/icons"
 
 import { useSocketStore } from "@/store/Socket"
 
-import ShareUtil from "@/utils/share"
-
 import useDidMount from "@/hooks/useDidMount"
 import useSocket from "@/hooks/useSocket"
 
-import { Divider, LoadingComponent, CloseGamePrompt } from "@/components"
+import {
+	Divider,
+	LoadingComponent,
+	CloseGamePrompt,
+	GameCard,
+} from "@/components"
+
+import useStyles from "@/pages/Room/styles"
 
 import PlayerItem from "@/pages/Room/PlayerItem"
 
@@ -23,11 +26,12 @@ import PlayerListSkeleton from "@/skeletons/PlayerList"
 
 const Room = (): ReactElement => {
 	const [loadingRoom, setLoadingRoom] = useState(true)
-	const [isLinkCopied, setIsLinkCopied] = useState(false)
 
 	const socketStore = useSocketStore()
 
 	const history = useHistory()
+
+	const classes = useStyles()
 
 	const socket = useSocket()
 
@@ -53,24 +57,6 @@ const Room = (): ReactElement => {
 		})
 	}
 
-	const getRoomUrl = () => {
-		return ShareUtil.mountGameShareUrl(gameId)
-	}
-
-	const handleCopyRoomUrl = (event: React.MouseEvent) => {
-		event.preventDefault()
-
-		const roomUrl = getRoomUrl()
-
-		copy(roomUrl)
-
-		setIsLinkCopied(true)
-
-		setTimeout(() => {
-			setIsLinkCopied(false)
-		}, 1500)
-	}
-
 	const setupRoom = () => {
 		joinGame()
 		onGameStart()
@@ -89,47 +75,78 @@ const Room = (): ReactElement => {
 		<>
 			<CloseGamePrompt />
 			<LoadingComponent loading={loadingRoom} customLoadingElement={<PlayerListSkeleton />}>
-				<Grid container spacing={2}>
-					{socket.currentPlayer && (
-						<Grid item sm={12} md={12} lg={12} xl={12} style={{ width: "100%" }}>
-							<Divider orientation="horizontal" size={4} />
+				<Grid
+					container
+					className={classes.container}
+				>
+					<Grid
+						container
+						alignItems="center"
+						justify="flex-start"
+					>
+						<Typography
+							variant="h1"
+							color="textSecondary"
+						>
+							Room<b className={classes.pageTitleSpotlight}>/{socketStore?.game?.title}</b>
+						</Typography>
 
-							<ButtonGroup fullWidth>
-								<Button
-									color={socket.currentPlayer.ready ? "primary" : "secondary"}
-									variant="contained"
-									fullWidth
-									onClick={toggleReady}
-									endIcon={socket.currentPlayer.ready ? (<ThumbUpOutlinedIcon />) : (<ThumbDownOutlinedIcon />)}
-								>
-									{socket.currentPlayer.ready ? "READY" : "UNREADY"}
-								</Button>
-								<Button
-									endIcon={(<FileCopyOutlinedIcon />)}
-									style={{ maxWidth: "120px", minWidth: "120px" }}
-									variant="contained"
-									color="default"
-									href={getRoomUrl()}
-									onClick={handleCopyRoomUrl}
-								>
-									{isLinkCopied ? "Copied!" : "Copy Link"}
-								</Button>
-							</ButtonGroup>
+						<Divider orientation="vertical" size={5} />
 
-							<Divider orientation="horizontal" size={3} />
-						</Grid>
-					)}
+						<Button
+							variant="contained"
+							color="primary"
+							onClick={toggleReady}
+							startIcon={socket?.currentPlayer?.ready ? <CancelIcon /> : <ReadyIcon />}
+						>
+							{socket?.currentPlayer?.ready ? "CANCEL" : "GET READY"}
+						</Button>
+					</Grid>
 
-					<Grid item sm={12} md={12} lg={12} xl={12} style={{ width: "100%" }}>
-						{socketStore?.game?.players?.map((player, index) => (
-							<React.Fragment key={index}>
-								<PlayerItem
-									key={player.id}
-									player={player}
-								/>
+					<Divider orientation="horizontal" size={4} />
 
-								<Divider orientation="horizontal" size={2} />
-							</ React.Fragment>
+					<Grid
+						container
+						direction="column"
+						className={classes.content}
+					>
+						<Typography
+							variant="h2"
+							className={classes.itemTitle}
+						>
+							INFO
+						</Typography>
+
+						<Divider orientation="horizontal" size={1} />
+
+						{socketStore?.game && (
+							<GameCard
+								gameId={socketStore.game.id}
+								maxPlayers={socketStore.game.maxPlayers}
+								name={socketStore.game.title}
+								players={socketStore.game.players}
+								status={socketStore.game.status}
+								mode="info"
+							/>
+						)}
+
+						<Divider orientation="horizontal" size={4} />
+
+						<Typography
+							variant="h2"
+							className={classes.itemTitle}
+						>
+							PLAYERS
+						</Typography>
+
+						<Divider orientation="horizontal" size={1} />
+
+						{socketStore?.game?.players?.map(player => (
+							<PlayerItem
+								name={player.name}
+								ready={player.ready}
+								playerId={player.id}
+							/>
 						))}
 					</Grid>
 				</Grid>

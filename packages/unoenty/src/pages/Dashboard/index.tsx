@@ -1,6 +1,9 @@
 import React, { useState, ReactElement } from "react"
 import { useHistory, Link } from "react-router-dom"
 import { Grid, Typography, Button } from "@material-ui/core"
+import {
+	Add as CreateIcon,
+} from "@material-ui/icons"
 
 import { Game } from "@uno-game/protocols"
 
@@ -78,38 +81,40 @@ const Dashboard = (): ReactElement => {
 					<Button
 						variant="contained"
 						color="primary"
+						startIcon={<CreateIcon />}
 						onClick={handleCreateNewGame}
 						disabled={loadingCreateGame}
 					>
 						CREATE NEW GAME
 					</Button>
+				</Grid>
 
-					<Divider orientation="horizontal" size={4} />
+				<Divider orientation="horizontal" size={4} />
 
-					<Grid
-						container
-						wrap="wrap"
-					>
-						{games
-							.filter(game => game.status !== "ended")
-							.map(game => (
-								<Button
-									{...({
-										component: Link,
-										to: `/${game.id}`,
-									})}
-								>
-									<GameCard
-										key={game.id}
-										gameId={game.id}
-										name={game.title}
-										players={game.players}
-										status={game.status}
-										maxPlayers={game.maxPlayers}
-									/>
-								</Button>
-							))}
-					</Grid>
+				<Grid
+					container
+					wrap="wrap"
+				>
+					{games
+						.filter(game => game.status !== "ended")
+						.map(game => (
+							<Button
+								{...({
+									component: Link,
+									to: `/${game.id}`,
+								})}
+							>
+								<GameCard
+									key={game.id}
+									gameId={game.id}
+									name={game.title}
+									players={game.players}
+									status={game.status}
+									maxPlayers={game.maxPlayers}
+									mode="preview"
+								/>
+							</Button>
+						))}
 				</Grid>
 			</Grid>
 		</LoadingComponent>

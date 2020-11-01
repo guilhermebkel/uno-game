@@ -1,4 +1,5 @@
-import React, { ReactElement } from "react"
+import React, { ReactElement, useState } from "react"
+import copy from "copy-to-clipboard"
 import {
 	Grid,
 	Typography,
@@ -6,6 +7,9 @@ import {
 	Avatar as MaterialAvatar,
 } from "@material-ui/core"
 import { AvatarGroup } from "@material-ui/lab"
+import {
+	InfoOutlined as InfoIcon,
+} from "@material-ui/icons"
 
 import { Divider, Avatar } from "@/components"
 
@@ -14,6 +18,7 @@ import useStyles from "@/components/GameCard/styles"
 import { GameStatus, PlayerData } from "@uno-game/protocols"
 
 import { StatusMap, statusColorMap } from "@/utils/game"
+import ShareUtil from "@/utils/share"
 
 import unoWallpaperImage from "@/assets/uno-wallpaper.png"
 
@@ -29,16 +34,33 @@ type GameCardProps = {
 	players: PlayerData[]
 	gameId: string
 	maxPlayers: number
+	mode: "info" | "preview"
 }
 
 const GameCard: React.FC<GameCardProps> = (props): ReactElement => {
-	const { name, status, players, gameId, maxPlayers } = props
+	const { name, status, players, gameId, maxPlayers, mode } = props
 
 	const classes = useStyles()
+
+	const [linkCopied, setLinkCopied] = useState(false)
 
 	const buttonText = statusButtonTextMap[status]
 	const buttonColor = statusColorMap[status]
 	const remainingSlots = maxPlayers - players.length
+
+	const handleCopyRoomUrl = (event: React.MouseEvent) => {
+		event.preventDefault()
+
+		const roomUrl = ShareUtil.mountGameShareUrl(gameId)
+
+		copy(roomUrl)
+
+		setLinkCopied(true)
+
+		setTimeout(() => {
+			setLinkCopied(false)
+		}, 1500)
+	}
 
 	return (
 		<Grid
@@ -69,6 +91,41 @@ const GameCard: React.FC<GameCardProps> = (props): ReactElement => {
 
 			<Divider orientation="horizontal" size={4} />
 
+			{mode === "info" && (
+				<>
+					<Grid container>
+						<InfoIcon
+							className={classes.infoIcon}
+						/>
+
+						<Divider orientation="vertical" size={1} />
+
+						<Grid item>
+							<Grid
+								container
+								direction="column"
+							>
+								<Typography
+									variant="caption"
+									className={classes.infoText}
+								>
+									At least 2 players are needed to start a game.
+								</Typography>
+
+								<Typography
+									variant="caption"
+									className={classes.infoText}
+								>
+									The game automatically starts when all players are ready.
+								</Typography>
+							</Grid>
+						</Grid>
+					</Grid>
+
+					<Divider orientation="horizontal" size={2} />
+				</>
+			)}
+
 			<Grid
 				container
 				alignItems="flex-end"
@@ -76,11 +133,16 @@ const GameCard: React.FC<GameCardProps> = (props): ReactElement => {
 			>
 				<Button
 					className={classes.button}
+					{...(mode === "info" ? { onClick: handleCopyRoomUrl } : {})}
 					style={{
 						backgroundColor: buttonColor,
 					}}
 				>
-					{buttonText}
+					{mode === "info" ? (
+						linkCopied ? "COPIED!" : "COPY LINK"
+					) : (
+						buttonText
+					)}
 				</Button>
 
 				<Grid item>

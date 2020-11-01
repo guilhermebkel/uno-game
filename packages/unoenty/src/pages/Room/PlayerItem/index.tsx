@@ -1,53 +1,88 @@
 import React, { ReactElement } from "react"
 import {
-	Card,
-	Avatar,
 	Grid,
 	Typography,
 } from "@material-ui/core"
-import Chip from "@material-ui/core/Chip"
+import {
+	Star as StarIcon,
+} from "@material-ui/icons"
+
+import {
+	Avatar,
+	Divider,
+} from "@/components"
+
+import useSocket from "@/hooks/useSocket"
 
 import useStyles from "@/pages/Room/PlayerItem/styles"
-import { PlayerData } from "@uno-game/protocols"
 
 type PlayerItem = {
-	player: PlayerData
+	name: string
+	ready: boolean
+	playerId: string
 }
 
 const PlayerItem = (props: PlayerItem): ReactElement => {
-	const { player } = props
+	const { name, ready, playerId } = props
 
-	const classes = useStyles()
+	const socket = useSocket()
+
+	const classes = useStyles({ ready })
 
 	return (
-		<Card
-			className={classes.cardContainer}
+		<Grid
+			container
+			alignItems="center"
+			justify="space-between"
+			className={classes.container}
 		>
-			<Grid
-				container
-				alignItems="center"
-				justify="space-between"
-				className={classes.cardContent}
-			>
-				<Chip
-					className={classes.cardStatus}
-					color={player.ready ? "primary" : "secondary"}
-				/>
+			<Grid item>
+				<Grid container>
+					<Avatar
+						name={name}
+						size="small"
+					/>
 
-				<Typography className={classes.cardTitle}>
-					{player.name}
-				</Typography>
+					<Divider orientation="vertical" size={2} />
 
-				<Avatar>
-					{player.name[0]}
-				</Avatar>
+					<Grid
+						container
+						direction="column"
+						style={{ flex: 1 }}
+					>
+						<Typography
+							variant="h3"
+							className={classes.title}
+						>
+							{name}
 
-				<Chip
-					label={player.ready ? "READY" : "WAITING"}
-					color={player.ready ? "primary" : "secondary"}
-				/>
+							{socket.currentRoundPlayer?.id === playerId && (
+								<StarIcon
+									fontSize="small"
+									className={classes.starIcon}
+								/>
+							)}
+						</Typography>
+
+						{socket?.currentPlayer?.id === playerId && (
+							<Typography
+								variant="h2"
+								className={classes.description}
+							>
+								(You)
+							</Typography>
+						)}
+					</Grid>
+				</Grid>
 			</Grid>
-		</Card>
+
+			<Typography
+				variant="h2"
+				className={classes.statusText}
+			>
+				{ready ? "READY" : "UNREADY"}
+			</Typography>
+		</Grid>
 	)
 }
 

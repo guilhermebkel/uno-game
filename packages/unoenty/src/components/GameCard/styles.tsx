@@ -31,6 +31,12 @@ const useStyles = makeStyles(theme => ({
 		width: 35,
 		height: 35,
 	},
+	infoText: {
+		color: colors.grayScale[11],
+	},
+	infoIcon: {
+		color: colors.palette.black4,
+	},
 }))
 
 export default useStyles

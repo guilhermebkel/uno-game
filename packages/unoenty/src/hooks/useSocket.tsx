@@ -14,6 +14,7 @@ import {
 type UseSocketResponse = {
 	currentPlayer: PlayerData
 	otherPlayers: PlayerData[]
+	currentRoundPlayer: PlayerData
 	getCurrentPlayer: (players?: PlayerData[] | undefined) => PlayerData
 	createGame: () => Promise<Game>
 	joinGame: (gameId: string) => Promise<Game>
@@ -37,6 +38,14 @@ type UseSocketResponse = {
 
 const useSocket = (): UseSocketResponse => {
 	const socketStore = useSocketStore()
+
+	const getCurrentRoundPlayer = (): PlayerData => {
+		const currentPlayerIndex = socketStore?.game?.currentPlayerIndex as number
+
+		const currentRoundPlayer = socketStore?.game?.players?.[currentPlayerIndex]
+
+		return currentRoundPlayer as PlayerData
+	}
 
 	const getCurrentPlayer = (players?: PlayerData[]): PlayerData => {
 		const playerId = socketStore.player?.id
@@ -226,6 +235,9 @@ const useSocket = (): UseSocketResponse => {
 		},
 		get otherPlayers (): PlayerData[] {
 			return getOtherPlayers()
+		},
+		get currentRoundPlayer (): PlayerData {
+			return getCurrentRoundPlayer()
 		},
 		getCurrentPlayer,
 		createGame,

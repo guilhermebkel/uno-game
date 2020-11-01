@@ -1,26 +1,33 @@
 import { makeStyles } from "@material-ui/core"
 
+import colors from "@/styles/colors"
+
+type UseStylesProps = {
+	ready: boolean
+}
+
 const useStyles = makeStyles(theme => ({
-	cardContainer: {
-		width: "100%",
-		backgroundColor: "#262B2E",
-		height: theme.spacing() * 10,
-		paddingTop: theme.spacing() * 3,
-		paddingRight: theme.spacing() * 3,
-		paddingBottom: theme.spacing() * 3,
+	container: {
+		backgroundColor: colors.grayScale[2],
+		borderRadius: theme.spacing(2),
+		padding: theme.spacing(3),
+	},
+	description: {
+		color: colors.grayScale[12],
+		fontWeight: "lighter",
+	},
+	title: {
+		fontWeight: "bold",
+		color: colors.grayScale[13],
 		display: "flex",
+		alignItems: "center",
 	},
-	cardContent: {
-		position: "relative",
+	statusText: {
+		color: (props: UseStylesProps) => `${props.ready ? colors.palette.green1 : colors.palette.yellow1}`,
 	},
-	cardTitle: {
-		color: "#FFFFFF",
-		marginLeft: theme.spacing() * 3,
-	},
-	cardStatus: {
-		position: "absolute",
-		width: theme.spacing(),
-		height: "100%",
+	starIcon: {
+		color: colors.palette.yellow1,
+		marginLeft: theme.spacing(1),
 	},
 }))
 
