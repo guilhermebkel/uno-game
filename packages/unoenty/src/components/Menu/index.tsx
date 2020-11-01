@@ -6,9 +6,12 @@ import {
 	List,
 	ListItemIcon,
 	ListItemText,
+	Button,
 } from "@material-ui/core"
 import {
 	SportsEsports as GameIcon,
+	ExitToApp as LogoutIcon,
+	GitHub as GithubIcon,
 } from "@material-ui/icons"
 
 import {
@@ -39,78 +42,116 @@ const Menu: React.FC<MenuProps> = (props) => {
 		>
 			<Grid
 				container
-				justify="flex-start"
-				alignItems="center"
+				direction="column"
+				justify="space-between"
+				className={classes.content}
 			>
-				<Avatar
-					size="large"
-					name="Mota"
-				/>
-
-				<Typography
-					variant="h3"
-					className={classes.avatarName}
+				<Grid
+					container
+					direction="column"
 				>
-					Mota
-				</Typography>
-			</Grid>
-
-			<Divider size={2} />
-
-			<Typography
-				variant="h2"
-				className={classes.menuTitle}
-			>
-				PAGES
-			</Typography>
-
-			<Divider size={1} />
-
-			<List>
-				<ListItem to="/">
-					<ListItemIcon>
-						<GameIcon
-							fontSize="large"
-							className={classes.listItemIcon}
-						/>
-					</ListItemIcon>
-					<ListItemText
-						primary="Games"
-						primaryTypographyProps={{
-							variant: "h3",
-							className: classes.listItemText,
-						}}
-					/>
-				</ListItem>
-			</List>
-
-			<Divider size={4} />
-
-			<Typography
-				variant="h2"
-				className={classes.menuTitle}
-			>
-				LAST GAMES
-			</Typography>
-
-			<Divider size={1} />
-
-			<List>
-				{socketStore.gameHistory
-				?.slice(0, 3)
-				.map(gameHistory => (
-					<ListItem
-						to={`/${gameHistory.gameId}`}
-						status={gameHistory.status}
+					<Grid
+						container
+						justify="flex-start"
+						alignItems="center"
+						className={classes.avatarContainer}
 					>
-						<GameItem
-							playersCount={gameHistory.playersCount}
-							name={gameHistory.name}
-							status={gameHistory.status}
+						<Avatar
+							size="large"
+							name="Mota"
 						/>
-					</ListItem>
-				))}
-			</List>
+
+						<Typography
+							variant="h3"
+							className={classes.avatarName}
+						>
+							Mota
+						</Typography>
+					</Grid>
+
+					<Divider size={2} />
+
+					<Typography
+						variant="h2"
+						className={classes.menuTitle}
+					>
+						PAGES
+					</Typography>
+
+					<Divider size={1} />
+
+					<List>
+						<ListItem to="/">
+							<ListItemIcon>
+								<GameIcon
+									fontSize="large"
+									className={classes.listItemIcon}
+								/>
+							</ListItemIcon>
+							<ListItemText
+								primary="Games"
+								primaryTypographyProps={{
+									variant: "h3",
+									className: classes.listItemText,
+								}}
+							/>
+						</ListItem>
+					</List>
+
+					<Divider size={4} />
+
+					<Typography
+						variant="h2"
+						className={classes.menuTitle}
+					>
+						LAST GAMES
+					</Typography>
+
+					<Divider size={1} />
+
+					<List>
+						{socketStore.gameHistory
+						?.slice(0, 3)
+						.map(gameHistory => (
+							<ListItem
+								to={`/${gameHistory.gameId}`}
+								status={gameHistory.status}
+							>
+								<GameItem
+									playersCount={gameHistory.playersCount}
+									name={gameHistory.name}
+									status={gameHistory.status}
+								/>
+							</ListItem>
+						))}
+					</List>
+				</Grid>
+
+				<Grid
+					container
+					direction="column"
+					alignItems="center"
+				>
+					<Button
+						startIcon={<LogoutIcon />}
+						className={classes.logoutButton}
+					>
+						LOGOUT
+					</Button>
+
+					<Divider size={1} />
+
+					<Button
+						variant="text"
+						href="https://github.com/guilhermebkel/uno-game"
+						target="_blank"
+						startIcon={<GithubIcon />}
+						className={classes.githubButton}
+					>
+						Give us a star on Github
+					</Button>
+				</Grid>
+			</Grid>
 		</Drawer>
 	)
 }

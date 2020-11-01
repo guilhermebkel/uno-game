@@ -6,6 +6,8 @@ import { fade } from "@material-ui/core/styles/colorManipulator"
 
 import colors from "@/styles/colors"
 
+import useStyles from "@/components/Menu/ListItem/styles"
+
 type ListItemProps = {
 	to: string
 	status?: GameStatus
@@ -13,6 +15,8 @@ type ListItemProps = {
 
 const ListItem: React.FC<ListItemProps> = (props) => {
 	const { children, to, status } = props
+
+	const classes = useStyles()
 
 	const isSelected = to === "/" ? (
 		window.location.pathname === to
@@ -25,7 +29,7 @@ const ListItem: React.FC<ListItemProps> = (props) => {
 	)
 
 	const getSelectedColor = () => {
-		let selectedColor = getBackground(" #2B2A3C")
+		let selectedColor = getBackground("#2B2A3C")
 
 		if (status === "ended") {
 			selectedColor = getBackground(fade(colors.palette.orange1, 0.3))
@@ -47,6 +51,7 @@ const ListItem: React.FC<ListItemProps> = (props) => {
 			button
 			component={Link}
 			to={to}
+			className={classes.listItem}
 			style={{
 				background: isSelected ? getSelectedColor() : "transparent",
 			}}
