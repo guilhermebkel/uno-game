@@ -14,6 +14,10 @@ import Node from "@/utils/node"
 
 import theme from "@/styles/theme"
 
+import logoImage from "@/assets/logo.png"
+
+import useStyles from "@/components/LoginDialog/styles"
+
 type LoginDialogResponse = {
 	name: string
 }
@@ -27,6 +31,8 @@ const LoginDialog = (props: LoginDialogProps): ReactElement => {
 
 	const [dialogVisible, setDialogVisible] = useState(true)
 	const [response, setResponse] = useState<LoginDialogResponse>({ name: "" })
+
+	const classes = useStyles()
 
 	const handleConfirm = () => {
 		setDialogVisible(false)
@@ -50,10 +56,20 @@ const LoginDialog = (props: LoginDialogProps): ReactElement => {
 	return (
 		<ThemeProvider theme={theme}>
 			<Dialog open={dialogVisible} aria-labelledby="form-dialog-title">
-				<form onSubmit={handleSubmit}>
-					<DialogTitle id="form-dialog-title">Login</DialogTitle>
+				<form
+					onSubmit={handleSubmit}
+					className={classes.form}
+				>
+					<DialogTitle>UNO - Login</DialogTitle>
+
+					<img
+						src={logoImage}
+						alt="logo"
+						className={classes.logo}
+					/>
+
 					<DialogContent>
-						<DialogContentText>
+						<DialogContentText color="textPrimary">
 							You have to choose a name in order to play this game.
 						</DialogContentText>
 						<TextField
