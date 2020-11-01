@@ -1,10 +1,13 @@
 import React from "react"
 import { Prompt, useParams } from "react-router-dom"
+import { Game } from "@uno-game/protocols"
 
 import useSocket from "@/hooks/useSocket"
+import { useSocketStore } from "@/store/Socket"
 
 const CloseGamePrompt: React.FC = () => {
 	const socket = useSocket()
+	const socketStore = useSocketStore()
 
 	const { gameId } = useParams<{ gameId: string }>()
 
@@ -13,6 +16,8 @@ const CloseGamePrompt: React.FC = () => {
 
 		if (isGoingOutRoom) {
 			socket.forceSelfDisconnect()
+
+			socketStore.setGameData({} as Game)
 		}
 
 		return true
