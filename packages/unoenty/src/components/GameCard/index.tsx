@@ -46,7 +46,7 @@ const GameCard: React.FC<GameCardProps> = (props): ReactElement => {
 
 	const buttonText = statusButtonTextMap[status]
 	const buttonColor = statusColorMap[status]
-	const remainingSlots = maxPlayers - players.length
+	const remainingSlots = maxPlayers - (players?.length ?? 0)
 
 	const handleCopyRoomUrl = (event: React.MouseEvent) => {
 		event.preventDefault()
