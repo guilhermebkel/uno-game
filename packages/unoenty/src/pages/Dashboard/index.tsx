@@ -46,8 +46,15 @@ const Dashboard = (): ReactElement => {
 		setLoadingGetGames(false)
 	}
 
+	const onGameListUpdated = () => {
+		socket.onGameListUpdated(() => {
+			getGameList()
+		})
+	}
+
 	useDidMount(() => {
 		getGameList()
+		onGameListUpdated()
 	})
 
 	return (
@@ -85,23 +92,25 @@ const Dashboard = (): ReactElement => {
 						container
 						wrap="wrap"
 					>
-						{games.map(game => (
-							<Button
-								{...({
-									component: Link,
-									to: `/${game.id}`,
-								})}
-							>
-								<GameItem
-									key={game.id}
-									gameId={game.id}
-									name={game.title}
-									players={game.players}
-									status={game.status}
-									maxPlayers={game.maxPlayers}
-								/>
-							</Button>
-						))}
+						{games
+							.filter(game => game.status !== "ended")
+							.map(game => (
+								<Button
+									{...({
+										component: Link,
+										to: `/${game.id}`,
+									})}
+								>
+									<GameItem
+										key={game.id}
+										gameId={game.id}
+										name={game.title}
+										players={game.players}
+										status={game.status}
+										maxPlayers={game.maxPlayers}
+									/>
+								</Button>
+							))}
 					</Grid>
 				</Grid>
 			</Grid>

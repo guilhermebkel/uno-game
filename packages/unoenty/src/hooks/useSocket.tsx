@@ -12,26 +12,27 @@ import {
 } from "@uno-game/protocols"
 
 type UseSocketResponse = {
-	currentPlayer: PlayerData,
-	otherPlayers: PlayerData[],
-	getCurrentPlayer: (players?: PlayerData[] | undefined) => PlayerData,
-	createGame: () => Promise<Game>,
-	joinGame: (gameId: string) => Promise<Game>,
-	toggleReady: (gameId: string) => void,
-	buyCard: (gameId: string) => void,
-	putCard: (gameId: string, cardIds: string[], selectedColor: CardColors) => void,
-	toggleOnlineStatus: (gameId: string) => void,
-	sendChatMessage: (chatId: string, content: string) => void,
-	onGameStart: (fn: () => void) => void,
-	onPlayerWon: (fn: (playerId: string, playerName: string) => void) => void,
-	onCardStackBuyCardsCombo: (fn: (amountToBuy: number) => void) => void,
-	onNewChatMessage: (fn?: () => void) => void,
-	onPlayerGotAwayFromKeyboard: (fn: (playerId: string) => void) => void,
+	currentPlayer: PlayerData
+	otherPlayers: PlayerData[]
+	getCurrentPlayer: (players?: PlayerData[] | undefined) => PlayerData
+	createGame: () => Promise<Game>
+	joinGame: (gameId: string) => Promise<Game>
+	toggleReady: (gameId: string) => void
+	buyCard: (gameId: string) => void
+	putCard: (gameId: string, cardIds: string[], selectedColor: CardColors) => void
+	toggleOnlineStatus: (gameId: string) => void
+	sendChatMessage: (chatId: string, content: string) => void
+	onGameStart: (fn: () => void) => void
+	onPlayerWon: (fn: (playerId: string, playerName: string) => void) => void
+	onCardStackBuyCardsCombo: (fn: (amountToBuy: number) => void) => void
+	onNewChatMessage: (fn?: () => void) => void
+	onPlayerGotAwayFromKeyboard: (fn: (playerId: string) => void) => void
 	onPlayerStateChange: (fn: (playerState: PlayerState, playerId: string, amountToBuy?: number) => void) => void
-	onPong: (fn: (latency: number) => void) => void,
-	onReconnect: (fn: () => void) => void,
-	forceSelfDisconnect: () => Promise<void>,
+	onPong: (fn: (latency: number) => void) => void
+	onReconnect: (fn: () => void) => void
+	forceSelfDisconnect: () => Promise<void>
 	getChat: (chatId?: string) => Chat | null
+	onGameListUpdated: (fn: () => void) => void
 }
 
 const useSocket = (): UseSocketResponse => {
@@ -166,6 +167,10 @@ const useSocket = (): UseSocketResponse => {
 		return chat
 	}
 
+	const onGameListUpdated = (fn: () => void): void => {
+		socketStore.io.on("GameListUpdated", fn)
+	}
+
 	const onPlayerGotAwayFromKeyboard = (fn: (playerId: string) => void) => {
 		socketStore.io.on("PlayerGotAwayFromKeyboard", (playerId: string) => {
 			fn(playerId)
@@ -240,6 +245,7 @@ const useSocket = (): UseSocketResponse => {
 		putCard,
 		forceSelfDisconnect,
 		getChat,
+		onGameListUpdated,
 	}
 }
 
