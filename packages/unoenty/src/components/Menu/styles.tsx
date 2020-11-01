@@ -6,10 +6,10 @@ export const PADDING = 4
 
 const useStyles = makeStyles(theme => ({
 	drawerPaper: {
-		maxWidth: 422,
-		width: "100%",
+		width: 422,
 		backgroundColor: colors.grayScale[1],
 		padding: theme.spacing(PADDING, 0),
+		position: "relative",
 	},
 	avatarContainer: {
 		padding: theme.spacing(0, PADDING),
