@@ -100,6 +100,7 @@ const Dashboard = (): ReactElement => {
 								{...({
 									component: Link,
 									to: `/${game.id}`,
+									className: classes.gameCardButton,
 								})}
 							>
 								<GameCard
