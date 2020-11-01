@@ -28,7 +28,7 @@ const useStyle = makeStyles({
 	},
 })
 
-const LoadingApp = (props: LoadingProps): ReactElement => {
+const LoadingApp: React.FC<LoadingProps> = (props) => {
 	const { loading, children, background } = props
 
 	const classes = useStyle()

@@ -60,7 +60,7 @@ const LoginDialog = (props: LoginDialogProps): ReactElement => {
 					onSubmit={handleSubmit}
 					className={classes.form}
 				>
-					<DialogTitle>UNO - Login</DialogTitle>
+					<DialogTitle>Login</DialogTitle>
 
 					<img
 						src={logoImage}

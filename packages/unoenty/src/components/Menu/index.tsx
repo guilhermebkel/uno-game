@@ -17,6 +17,7 @@ import {
 import {
 	Avatar,
 	Divider,
+	PopConfirm,
 } from "@/components"
 
 import Auth from "@/services/auth"
@@ -44,7 +45,13 @@ const Menu: React.FC<MenuProps> = (props) => {
 	const [opened, setOpened] = useState(!DeviceUtil.isMobile)
 
 	const handleLogout = () => {
-		Auth.logout()
+		PopConfirm.open({
+			title: "Logout",
+			message: "Are you sure you want to logout?",
+			onConfirm: () => {
+				Auth.logout()
+			},
+		})
 	}
 
 	const handleCloseMenu = () => {

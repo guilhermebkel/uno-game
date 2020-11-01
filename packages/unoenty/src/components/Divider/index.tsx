@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react"
+import React from "react"
 
 import theme from "../../styles/theme"
 
@@ -7,7 +7,7 @@ type DividerProps = {
 	orientation: "vertical" | "horizontal"
 }
 
-const Divider = (props: DividerProps): ReactElement => {
+const Divider: React.FC<DividerProps> = (props) => {
 	const { size, orientation } = props
 
 	return (

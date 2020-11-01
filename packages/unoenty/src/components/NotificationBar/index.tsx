@@ -1,11 +1,11 @@
-import React, { useState, ReactElement } from "react"
+import React, { useState } from "react"
 import { Grid, Typography } from "@material-ui/core"
 
 import useStyles from "@/components/NotificationBar/styles"
 
 import { useSocketStore } from "@/store/Socket"
 
-const NotificationBar = (): ReactElement => {
+const NotificationBar: React.FC = () => {
 	const { io } = useSocketStore()
 
 	const [opened, setOpened] = useState(false)
