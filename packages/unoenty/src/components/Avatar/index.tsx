@@ -44,7 +44,7 @@ const Avatar: React.FC<AvatarProps> = (props) => {
 			"#9E3EFF",
 		]
 
-		return colors[0]
+		return colors[name.length % colors.length]
 	}
 
 	const getAvatarSize = () => {

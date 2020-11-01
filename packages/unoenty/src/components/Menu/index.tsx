@@ -64,14 +64,14 @@ const Menu: React.FC<MenuProps> = (props) => {
 					>
 						<Avatar
 							size="large"
-							name="Mota"
+							name={socketStore?.player?.name || ""}
 						/>
 
 						<Typography
 							variant="h3"
 							className={classes.avatarName}
 						>
-							Mota
+							{socketStore?.player?.name}
 						</Typography>
 					</Grid>
 
