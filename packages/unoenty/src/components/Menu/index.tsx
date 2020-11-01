@@ -106,7 +106,7 @@ const Menu: React.FC<MenuProps> = (props) => {
 
 					<Divider orientation="horizontal" size={1} />
 
-					<List>
+					<List onClick={handleCloseMenu}>
 						<ListItem to="/">
 							<ListItemIcon>
 								<GameIcon
@@ -135,7 +135,7 @@ const Menu: React.FC<MenuProps> = (props) => {
 
 					<Divider orientation="horizontal" size={1} />
 
-					<List>
+					<List onClick={handleCloseMenu}>
 						{socketStore.gameHistory
 						?.sort((a, b) => b.createdAt - a.createdAt)
 						.slice(0, 3)
