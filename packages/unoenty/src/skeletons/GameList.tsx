@@ -54,20 +54,12 @@ const GameListSkeleton = (): ReactElement => {
 
 	return (
 		<Grid container direction="column">
-			<Divider orientation="horizontal" size={4} />
-
-			<Card>
-				<CardContent className={classes.cardContentButton}>
-					<Grid container justify="center">
-						<Skeleton
-							animation="wave"
-							variant="rect"
-							height={20}
-							width="10%"
-						/>
-					</Grid>
-				</CardContent>
-			</Card>
+			<Skeleton
+				animation="wave"
+				variant="rect"
+				height={30}
+				width="30%"
+			/>
 
 			<Divider orientation="horizontal" size={5} />
 

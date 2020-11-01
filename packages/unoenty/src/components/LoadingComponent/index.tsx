@@ -1,6 +1,8 @@
 import React from "react"
 import { CircularProgress, Grid, Fade } from "@material-ui/core"
 
+import useStyles from "@/components/LoadingComponent/styles"
+
 type LoadingComponentProps = {
 	children: React.ReactElement
 	customLoadingElement?: React.ReactElement
@@ -10,6 +12,8 @@ type LoadingComponentProps = {
 const LoadingComponent: React.FC<LoadingComponentProps> = (props) => {
 	const { children, loading, customLoadingElement } = props
 
+	const classes = useStyles()
+
 	let component
 
 	if (loading) {
@@ -17,8 +21,13 @@ const LoadingComponent: React.FC<LoadingComponentProps> = (props) => {
 			component = customLoadingElement
 		} else {
 			component = (
-				<Grid container justify="center" alignItems="center">
-					<CircularProgress color="secondary" />
+				<Grid
+					container
+					justify="center"
+					alignItems="center"
+					className={classes.defaultLoadingContainer}
+				>
+					<CircularProgress color="primary" />
 				</Grid>
 			)
 		}

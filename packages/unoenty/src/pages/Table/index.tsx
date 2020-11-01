@@ -30,8 +30,6 @@ import TableChat from "@/pages/Table/TableChat"
 
 import CardProvider from "@/store/Card"
 
-import TableSkeleton from "@/skeletons/Table"
-
 import { CardColors, CardData, Game } from "@uno-game/protocols"
 
 const Table = (): ReactElement => {
@@ -152,10 +150,7 @@ const Table = (): ReactElement => {
 	})
 
 	return (
-		<LoadingComponent
-			loading={loadingTable}
-			customLoadingElement={<TableSkeleton />}
-		>
+		<LoadingComponent loading={loadingTable}>
 			<>
 				<CloseGamePrompt />
 

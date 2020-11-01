@@ -16,8 +16,6 @@ import { Divider, LoadingComponent, GameCard } from "@/components"
 
 import useStyles from "@/pages/Dashboard/styles"
 
-import GameListSkeleton from "@/skeletons/GameList"
-
 const Dashboard = (): ReactElement => {
 	const [games, setGames] = useState<Game[]>([])
 
@@ -59,7 +57,7 @@ const Dashboard = (): ReactElement => {
 	})
 
 	return (
-		<LoadingComponent loading={loadingGetGames} customLoadingElement={<GameListSkeleton />}>
+		<LoadingComponent loading={loadingGetGames}>
 			<Grid
 				container
 				className={classes.container}
@@ -85,7 +83,7 @@ const Dashboard = (): ReactElement => {
 						onClick={handleCreateNewGame}
 						disabled={loadingCreateGame}
 					>
-						CREATE NEW GAME
+						{loadingCreateGame ? "CREATING..." : "CREATE NEW GAME"}
 					</Button>
 				</Grid>
 

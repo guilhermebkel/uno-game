@@ -22,8 +22,6 @@ import useStyles from "@/pages/Room/styles"
 
 import PlayerItem from "@/pages/Room/PlayerItem"
 
-import PlayerListSkeleton from "@/skeletons/PlayerList"
-
 const Room = (): ReactElement => {
 	const [loadingRoom, setLoadingRoom] = useState(true)
 
@@ -74,7 +72,7 @@ const Room = (): ReactElement => {
 	return (
 		<>
 			<CloseGamePrompt />
-			<LoadingComponent loading={loadingRoom} customLoadingElement={<PlayerListSkeleton />}>
+			<LoadingComponent loading={loadingRoom}>
 				<Grid
 					container
 					className={classes.container}
