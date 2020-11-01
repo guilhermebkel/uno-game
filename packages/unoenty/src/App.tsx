@@ -1,7 +1,7 @@
 import React, { ReactElement } from "react"
 import { Grid, makeStyles } from "@material-ui/core"
 
-import { Disconnected, Menu } from "@/components"
+import { NotificationBar, Menu } from "@/components"
 import Routes from "@/routes"
 
 import SocketProvider from "@/store/Socket"
@@ -20,6 +20,11 @@ const useStyles = makeStyles(theme => ({
 	appContainer: {
 		overflowX: "hidden",
 		backgroundColor: colors.grayScale[1],
+		height: "100%",
+	},
+	socketContainer: {
+		height: "100%",
+		flex: 1,
 	},
 }))
 
@@ -30,20 +35,26 @@ const App = (): ReactElement => {
 		<SocketProvider>
 			<Grid
 				container
-				className={classes.appContainer}
+				direction="column"
+				className={classes.socketContainer}
 			>
-				<Menu />
+				<NotificationBar />
 
 				<Grid
 					container
-					className={classes.routesContainer}
+					className={classes.appContainer}
 				>
-					<Grid item sm={12} md={12} lg={12} xl={12}>
-						<Routes />
+					<Menu />
+
+					<Grid
+						container
+						className={classes.routesContainer}
+					>
+						<Grid item sm={12} md={12} lg={12} xl={12}>
+							<Routes />
+						</Grid>
 					</Grid>
 				</Grid>
-
-				<Disconnected />
 			</Grid>
 		</SocketProvider>
 	)
