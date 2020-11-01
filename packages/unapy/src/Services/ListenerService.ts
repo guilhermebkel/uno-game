@@ -124,9 +124,6 @@ class ListenerService {
 			if (chatExists) {
 				ChatService.joinChat(chatId)
 			}
-
-			ClientService.dispatchGameHistoryConsolidated()
-			ClientService.dispatchGameListUpdated()
 		}
 	}
 
@@ -136,9 +133,6 @@ class ListenerService {
 		if (playerExists) {
 			GameService.setupGame(playerId, gameId, chatId)
 			ChatService.setupChat(playerId, chatId)
-
-			ClientService.dispatchGameHistoryConsolidated()
-			ClientService.dispatchGameListUpdated()
 		}
 	}
 
@@ -148,8 +142,6 @@ class ListenerService {
 		if (playerExists) {
 			GameService.purgePlayer(playerId)
 
-			ClientService.dispatchGameHistoryConsolidated()
-			ClientService.dispatchGameListUpdated()
 			ClientService.disconnectFromAllGames(playerId)
 		}
 	}

@@ -9,6 +9,7 @@ export type GameEvents =
 "PlayerWon" |
 "PlayerUno" |
 "PlayerJoined" |
+"PlayerLeft" |
 "PlayerBlocked" |
 "PlayerBuyCards" |
 "CardStackBuyCardsCombo" |

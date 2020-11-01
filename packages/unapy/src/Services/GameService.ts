@@ -2,6 +2,7 @@ import CardService from "@/Services/CardService"
 import SocketService from "@/Services/SocketService"
 import PlayerService from "@/Services/PlayerService"
 import GameRoundService from "@/Services/GameRoundService"
+import ClientService from "@/Services/ClientService"
 
 import NumberUtil from "@/Utils/NumberUtil"
 
@@ -107,6 +108,8 @@ class GameService {
 
 			if (isPlayerOnGame) {
 				this.disconnectPlayer(game?.id, playerId)
+
+				this.emitGameEvent(game?.id, "PlayerLeft", game)
 			}
 		})
 	}
@@ -459,6 +462,21 @@ class GameService {
 
 	private emitGameEvent (gameId: string, event: GameEvents, ...data: unknown[]) {
 		SocketService.emitRoomEvent(gameId, event, ...data)
+
+		const gameUpdateEvents: GameEvents[] = [
+			"GameStarted",
+			"GameCreated",
+			"GameEnded",
+			"PlayerJoined",
+			"PlayerLeft",
+		]
+
+		const isGameUpdateEvent = gameUpdateEvents.some(gameEvent => gameEvent === event)
+
+		if (isGameUpdateEvent) {
+			ClientService.dispatchGameHistoryConsolidated()
+			ClientService.dispatchGameListUpdated()
+		}
 	}
 
 	private setGameData (gameId: string, game: Game) {
