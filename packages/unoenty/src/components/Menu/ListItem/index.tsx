@@ -4,9 +4,15 @@ import { ListItem as MaterialListItem } from "@material-ui/core"
 import { GameStatus } from "@uno-game/protocols"
 import { fade } from "@material-ui/core/styles/colorManipulator"
 
-import colors from "@/styles/colors"
+import { statusColorMap, StatusMap } from "@/utils/game"
 
 import useStyles from "@/components/Menu/ListItem/styles"
+
+const statusBackgroundColorMap: StatusMap<string> = {
+	ended: `linear-gradient(90deg, ${fade(statusColorMap.ended, 0.3)} 0%, #151515 100%)`,
+	playing: `linear-gradient(90deg, ${fade(statusColorMap.playing, 0.3)} 0%, #151515 100%)`,
+	waiting: `linear-gradient(90deg, ${fade(statusColorMap.waiting, 0.3)} 0%, #151515 100%)`,
+}
 
 type ListItemProps = {
 	to: string
@@ -24,27 +30,11 @@ const ListItem: React.FC<ListItemProps> = (props) => {
 		window.location.pathname.includes(to)
 	)
 
-	const getBackground = (color: string) => (
-		`linear-gradient(90deg, ${color} 0%, #151515 100%)`
+	const backgroundColor = status ? (
+		statusBackgroundColorMap[status]
+	) : (
+		"linear-gradient(90deg, #2B2A3C 0%, #151515 100%)"
 	)
-
-	const getSelectedColor = () => {
-		let selectedColor = getBackground("#2B2A3C")
-
-		if (status === "ended") {
-			selectedColor = getBackground(fade(colors.palette.orange1, 0.3))
-		}
-
-		if (status === "waiting") {
-			selectedColor = getBackground(fade(colors.palette.yellow1, 0.3))
-		}
-
-		if (status === "playing") {
-			selectedColor = getBackground(fade(colors.palette.green1, 0.3))
-		}
-
-		return selectedColor
-	}
 
 	return (
 		<MaterialListItem
@@ -53,7 +43,7 @@ const ListItem: React.FC<ListItemProps> = (props) => {
 			to={to}
 			className={classes.listItem}
 			style={{
-				background: isSelected ? getSelectedColor() : "transparent",
+				background: isSelected ? backgroundColor : "transparent",
 			}}
 		>
 			{children}

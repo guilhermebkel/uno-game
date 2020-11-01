@@ -40,7 +40,7 @@ const ChangeColorModal = (props: ChangeColorModalProps): ReactElement => {
 				Select a color
 			</DialogTitle>
 
-			<Divider size={3} />
+			<Divider orientation="horizontal" size={3} />
 
 			<Grid container spacing={2}>
 				{COLORS.map((color, index) => (
@@ -60,7 +60,7 @@ const ChangeColorModal = (props: ChangeColorModalProps): ReactElement => {
 				))}
 			</Grid>
 
-			<Divider size={3} />
+			<Divider orientation="horizontal" size={3} />
 		</Dialog>
 	)
 }

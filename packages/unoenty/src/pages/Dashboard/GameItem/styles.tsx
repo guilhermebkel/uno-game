@@ -1,26 +1,36 @@
 import { makeStyles } from "@material-ui/core"
 
+import colors from "@/styles/colors"
+
 const useStyles = makeStyles(theme => ({
-	cardContainer: {
-		width: "100%",
-		backgroundColor: "#262B2E",
-		height: theme.spacing() * 10,
-		paddingTop: theme.spacing() * 3,
-		paddingRight: theme.spacing() * 3,
-		paddingBottom: theme.spacing() * 3,
-		display: "flex",
+	container: {
+		width: 358,
+		backgroundSize: "cover !important",
+		backgroundPosition: "center !important",
+		borderRadius: theme.spacing(2),
+		padding: theme.spacing(3),
+		boxShadow: "0 5px 25px rgba(0, 0, 0, 0.1)",
 	},
-	cardContent: {
-		position: "relative",
+	gameTitle: {
+		fontWeight: "bold",
+		color: colors.grayScale[11],
 	},
-	cardTitle: {
-		color: "#FFFFFF",
-		marginLeft: theme.spacing() * 3,
+	gameSubTitle: {
+		fontWeight: "normal",
+		color: colors.grayScale[4],
 	},
-	cardStatus: {
-		position: "absolute",
-		width: theme.spacing(),
-		height: "100%",
+	remainingSlotText: {
+		color: colors.grayScale[7],
+		fontWeight: "normal",
+	},
+	button: {
+		width: 90,
+		borderRadius: theme.spacing(1),
+		fontWeight: "bold",
+	},
+	avatar: {
+		width: 35,
+		height: 35,
 	},
 }))
 

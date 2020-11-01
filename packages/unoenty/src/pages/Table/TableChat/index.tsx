@@ -178,7 +178,7 @@ const Chat = (): ReactElement => {
 								<b>{message.playerName}:</b> {message.content}
 							</Typography>
 
-							<Divider size={1} />
+							<Divider orientation="horizontal" size={1} />
 						</React.Fragment>
 					))}
 				</Grid>

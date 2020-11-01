@@ -48,13 +48,13 @@ const GameListSkeleton = (): ReactElement => {
 				</CardContent>
 			</Card>
 
-			<Divider size={2} />
+			<Divider orientation="horizontal" size={2} />
 		</React.Fragment>
 	))
 
 	return (
 		<Grid container direction="column">
-			<Divider size={4} />
+			<Divider orientation="horizontal" size={4} />
 
 			<Card>
 				<CardContent className={classes.cardContentButton}>
@@ -69,7 +69,7 @@ const GameListSkeleton = (): ReactElement => {
 				</CardContent>
 			</Card>
 
-			<Divider size={5} />
+			<Divider orientation="horizontal" size={5} />
 
 			{cards}
 		</Grid>

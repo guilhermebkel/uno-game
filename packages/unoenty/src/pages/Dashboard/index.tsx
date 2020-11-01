@@ -1,9 +1,6 @@
 import React, { useState, ReactElement } from "react"
 import { useHistory, Link } from "react-router-dom"
-import { Grid, Button, CircularProgress } from "@material-ui/core"
-import {
-	AddCircleOutlineOutlined as AddCircleOutlineOutlinedIcon,
-} from "@material-ui/icons"
+import { Grid, Typography, Button } from "@material-ui/core"
 
 import { Game } from "@uno-game/protocols"
 
@@ -55,47 +52,57 @@ const Dashboard = (): ReactElement => {
 
 	return (
 		<LoadingComponent loading={loadingGetGames} customLoadingElement={<GameListSkeleton />}>
-			<Grid container spacing={2}>
-				<Grid item sm={12} md={12} lg={12} xl={12} style={{ width: "100%" }}>
-					<Divider size={4} />
+			<Grid
+				container
+				className={classes.container}
+			>
+				<Grid
+					container
+					alignItems="center"
+					justify="flex-start"
+				>
+					<Typography
+						variant="h1"
+						color="textSecondary"
+					>
+						Games
+					</Typography>
+
+					<Divider orientation="vertical" size={5} />
 
 					<Button
-						color="primary"
 						variant="contained"
-						fullWidth
+						color="primary"
 						onClick={handleCreateNewGame}
-						endIcon={loadingCreateGame ? (<CircularProgress />) : (<AddCircleOutlineOutlinedIcon />)}
 						disabled={loadingCreateGame}
 					>
 						CREATE NEW GAME
 					</Button>
 
-					<Divider size={3} />
-				</Grid>
+					<Divider orientation="horizontal" size={4} />
 
-				<Grid item sm={12} md={12} lg={12} xl={12} style={{ width: "100%" }}>
-					{games
-						.filter(game => game.status === "waiting")
-						.map((game, index) => (
-							<React.Fragment key={index}>
-								<Grid
-									container
-									component={Link}
-									to={`/${game.id}`}
-									className={classes.gameItemGrid}
-								>
-									<GameItem
-										key={game.id}
-										title={game.title}
-										players={game.players}
-										status={game.status}
-									/>
-								</Grid>
-
-								<Divider size={2} />
-							</React.Fragment>
-						))
-					}
+					<Grid
+						container
+						wrap="wrap"
+					>
+						{games.map(game => (
+							<Button
+								{...({
+									component: Link,
+									to: `/${game.id}`,
+								})}
+							>
+								<GameItem
+									key={game.id}
+									gameId={game.id}
+									name={game.title}
+									players={game.players}
+									status={game.status}
+									maxPlayers={game.maxPlayers}
+								/>
+							</Button>
+						))}
+					</Grid>
 				</Grid>
 			</Grid>
 		</LoadingComponent>

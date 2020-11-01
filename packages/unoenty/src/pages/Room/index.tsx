@@ -92,7 +92,7 @@ const Room = (): ReactElement => {
 				<Grid container spacing={2}>
 					{socket.currentPlayer && (
 						<Grid item sm={12} md={12} lg={12} xl={12} style={{ width: "100%" }}>
-							<Divider size={4} />
+							<Divider orientation="horizontal" size={4} />
 
 							<ButtonGroup fullWidth>
 								<Button
@@ -116,7 +116,7 @@ const Room = (): ReactElement => {
 								</Button>
 							</ButtonGroup>
 
-							<Divider size={3} />
+							<Divider orientation="horizontal" size={3} />
 						</Grid>
 					)}
 
@@ -128,7 +128,7 @@ const Room = (): ReactElement => {
 									player={player}
 								/>
 
-								<Divider size={2} />
+								<Divider orientation="horizontal" size={2} />
 							</ React.Fragment>
 						))}
 					</Grid>

@@ -6,6 +6,8 @@ import useStyles from "@/components/Menu/GameItem/styles"
 
 import colors from "@/styles/colors"
 
+import { statusColorMap } from "@/utils/game"
+
 type GameItemProps = {
 	playersCount: number
 	name: string
@@ -17,23 +19,7 @@ const GameItem: React.FC<GameItemProps> = (props) => {
 
 	const classes = useStyles()
 
-	const getColor = () => {
-		let color: string | undefined
-
-		if (status === "waiting") {
-			color = colors.palette.yellow1
-		}
-
-		if (status === "playing") {
-			color = colors.palette.green1
-		}
-
-		if (status === "ended") {
-			color = colors.palette.orange1
-		}
-
-		return color
-	}
+	const color = statusColorMap[status]
 
 	return (
 		<Grid
@@ -42,13 +28,13 @@ const GameItem: React.FC<GameItemProps> = (props) => {
 			alignItems="center"
 			className={classes.container}
 			style={{
-				border: `2px solid ${getColor()}`,
+				border: `2px solid ${color}`,
 			}}
 		>
 			<Grid
 				item
 				style={{
-					color: getColor(),
+					color,
 				}}
 			>
 				<Typography variant="h2">
@@ -63,7 +49,7 @@ const GameItem: React.FC<GameItemProps> = (props) => {
 			<Grid
 				item
 				style={{
-					color: getColor(),
+					color,
 				}}
 			>
 				<Typography variant="caption">
@@ -75,7 +61,7 @@ const GameItem: React.FC<GameItemProps> = (props) => {
 				<Button
 					className={classes.button}
 					style={{
-						backgroundColor: getColor(),
+						backgroundColor: color,
 					}}
 				>
 					JOIN

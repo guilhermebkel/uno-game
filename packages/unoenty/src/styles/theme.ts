@@ -1,31 +1,23 @@
 import { createMuiTheme } from "@material-ui/core"
 
-const palette = {
-	light: {
-		background: "#F9F9F9",
-		text: "#1C2836",
-	},
-	dark: {
-		background: "#1C2836",
-		text: "#FFF",
-	},
-}
+import colors from "@/styles/colors"
 
-const SELECTED_PALETTE = "light"
+const defaultTheme = createMuiTheme()
 
 export default createMuiTheme({
 	palette: {
 		background: {
-			default: palette[SELECTED_PALETTE].background,
+			default: colors.palette.black1,
 		},
 		primary: {
-			main: "#7233EB",
+			main: colors.palette.purple1,
 		},
 		secondary: {
 			main: "#FFD164",
 		},
 		text: {
-			primary: palette[SELECTED_PALETTE].text,
+			primary: colors.grayScale[1],
+			secondary: colors.grayScale[15],
 		},
 		success: {
 			main: "#07C50E",
@@ -41,40 +33,10 @@ export default createMuiTheme({
 		},
 	},
 	overrides: {
-		MuiTypography: {
-			button: {
-				textTransform: "none",
-			},
-		},
 		MuiButton: {
 			root: {
+				borderRadius: defaultTheme.spacing(2),
 				textTransform: "none",
-			},
-		},
-		MuiFormLabel: {
-			root: {
-				color: palette[SELECTED_PALETTE].text,
-			},
-		},
-		MuiFormControlLabel: {
-			root: {
-				color: palette[SELECTED_PALETTE].text,
-			},
-		},
-		MuiInputBase: {
-			root: {
-				color: palette[SELECTED_PALETTE].text,
-				borderColor: palette[SELECTED_PALETTE].text,
-			},
-		},
-		MuiCheckbox: {
-			root: {
-				color: palette[SELECTED_PALETTE].text,
-			},
-		},
-		MuiIconButton: {
-			root: {
-				color: "rgba(255, 255, 255, 1)",
 			},
 		},
 	},

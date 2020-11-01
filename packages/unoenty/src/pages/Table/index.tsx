@@ -223,7 +223,7 @@ const Table = (): ReactElement => {
 
 										{socket?.currentPlayer?.canBuyCard && (
 											<>
-												<Divider size={5} />
+												<Divider orientation="horizontal" size={5} />
 
 												<Button
 													color="primary"

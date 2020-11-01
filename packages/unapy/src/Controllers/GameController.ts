@@ -10,6 +10,7 @@ class GameController {
 			title: game.title,
 			status: game.status,
 			players: game.players.map(player => ({ name: player.name })),
+			maxPlayers: game.maxPlayers,
 		}))
 
 		return res.status(200).json({

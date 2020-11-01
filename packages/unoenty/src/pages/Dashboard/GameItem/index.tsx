@@ -1,87 +1,121 @@
 import React, { ReactElement } from "react"
 import {
-	Card,
-	Avatar,
 	Grid,
 	Typography,
-	ButtonBase,
+	Button,
+	Avatar as MaterialAvatar,
 } from "@material-ui/core"
-import AvatarGroup from "@material-ui/lab/AvatarGroup"
-import Chip from "@material-ui/core/Chip"
+import { AvatarGroup } from "@material-ui/lab"
+
+import { Divider, Avatar } from "@/components"
 
 import useStyles from "@/pages/Dashboard/GameItem/styles"
 
 import { GameStatus, PlayerData } from "@uno-game/protocols"
 
-type ChipProps = {
-	label: "PLAYING" | "WAITING" | "ENDED"
-	color: "primary" | "secondary" | "default"
-}
+import { StatusMap, statusColorMap } from "@/utils/game"
 
-type ChipPropsMap = {
-	[status in GameStatus]: ChipProps
-}
+import unoWallpaperImage from "@/assets/uno-wallpaper.png"
 
-const chipStatusMap: ChipPropsMap = {
-	playing: {
-		label: "PLAYING",
-		color: "primary",
-	},
-	waiting: {
-		label: "WAITING",
-		color: "secondary",
-	},
-	ended: {
-		label: "ENDED",
-		color: "default",
-	},
+const statusButtonTextMap: StatusMap<string> = {
+	playing: "SPECTATE",
+	ended: "",
+	waiting: "JOIN",
 }
 
 type GameItemProps = {
-	title: string
+	name: string
 	status: GameStatus
 	players: PlayerData[]
+	gameId: string
+	maxPlayers: number
 }
 
-const GameItem = (props: GameItemProps): ReactElement => {
-	const { title, status, players } = props
+const GameItem: React.FC<GameItemProps> = (props): ReactElement => {
+	const { name, status, players, gameId, maxPlayers } = props
 
 	const classes = useStyles()
 
+	const buttonText = statusButtonTextMap[status]
+	const buttonColor = statusColorMap[status]
+	const remainingSlots = maxPlayers - players.length
+
 	return (
-		<Card
-			component={ButtonBase}
-			className={classes.cardContainer}
+		<Grid
+			container
+			className={classes.container}
+			style={{
+				background: `linear-gradient(26.73deg, #252525 46.63%, rgba(37, 37, 37, 0.85) 98.21%), url(${unoWallpaperImage})`,
+			}}
 		>
 			<Grid
 				container
-				alignItems="center"
-				justify="space-between"
-				className={classes.cardContent}
+				direction="column"
 			>
-				<Chip
-					className={classes.cardStatus}
-					color={chipStatusMap[status].color}
-				/>
-
-				<Typography className={classes.cardTitle}>
-					{title}
+				<Typography
+					variant="h3"
+					className={classes.gameTitle}
+				>
+					{name}
 				</Typography>
 
-				<AvatarGroup>
-					{players.map((player, index) => (
-						<Avatar key={index}>
-							{player.name[0]}
-						</Avatar>
-					))}
-				</AvatarGroup>
-
-				<Chip
-					label={chipStatusMap[status].label}
-					color={chipStatusMap[status].color}
-				/>
+				<Typography
+					variant="h2"
+					className={classes.gameSubTitle}
+				>
+					#{gameId}
+				</Typography>
 			</Grid>
-		</Card>
+
+			<Divider orientation="horizontal" size={4} />
+
+			<Grid
+				container
+				alignItems="flex-end"
+				justify="space-between"
+			>
+				<Button
+					className={classes.button}
+					style={{
+						backgroundColor: buttonColor,
+					}}
+				>
+					{buttonText}
+				</Button>
+
+				<Grid item>
+					<Typography
+						variant="h2"
+						className={classes.remainingSlotText}
+					>
+						{remainingSlots} {remainingSlots === 1 ? "SLOT" : "SLOTS"} LEFT
+					</Typography>
+
+					<Divider orientation="horizontal" size={1} />
+
+					<AvatarGroup max={maxPlayers}>
+						{players.map(player => (
+							<MaterialAvatar
+								variant="circle"
+								key={player.id}
+								className={classes.avatar}
+							>
+								<Avatar
+									name={player.name}
+									size="small"
+								/>
+							</MaterialAvatar>
+						))}
+						{[...new Array(remainingSlots)].map((_, index) => (
+							<MaterialAvatar
+								key={index}
+								className={classes.avatar}
+							/>
+						))}
+					</AvatarGroup>
+				</Grid>
+			</Grid>
+		</Grid>
 	)
 }
 

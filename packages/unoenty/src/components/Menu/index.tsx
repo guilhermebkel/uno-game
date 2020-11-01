@@ -75,7 +75,7 @@ const Menu: React.FC<MenuProps> = (props) => {
 						</Typography>
 					</Grid>
 
-					<Divider size={4} />
+					<Divider orientation="horizontal" size={4} />
 
 					<Typography
 						variant="h2"
@@ -84,7 +84,7 @@ const Menu: React.FC<MenuProps> = (props) => {
 						PAGES
 					</Typography>
 
-					<Divider size={1} />
+					<Divider orientation="horizontal" size={1} />
 
 					<List>
 						<ListItem to="/">
@@ -104,7 +104,7 @@ const Menu: React.FC<MenuProps> = (props) => {
 						</ListItem>
 					</List>
 
-					<Divider size={4} />
+					<Divider orientation="horizontal" size={4} />
 
 					<Typography
 						variant="h2"
@@ -113,7 +113,7 @@ const Menu: React.FC<MenuProps> = (props) => {
 						LAST GAMES
 					</Typography>
 
-					<Divider size={1} />
+					<Divider orientation="horizontal" size={1} />
 
 					<List>
 						{socketStore.gameHistory
@@ -146,7 +146,7 @@ const Menu: React.FC<MenuProps> = (props) => {
 						LOGOUT
 					</Button>
 
-					<Divider size={1} />
+					<Divider orientation="horizontal" size={1} />
 
 					<Button
 						variant="text"

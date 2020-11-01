@@ -111,7 +111,7 @@ const Alert = (props: AlertProps & AlertType): React.ReactElement => {
 							<React.Fragment key={index}>
 								{customButton}
 
-								<Divider size={1} />
+								<Divider orientation="horizontal" size={1} />
 							</React.Fragment>
 						))}
 						{closable !== false && (
