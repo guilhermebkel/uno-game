@@ -1,5 +1,5 @@
 import React from "react"
-import { Container, Typography, TypographyVariant } from "@material-ui/core"
+import { Container, Typography } from "@material-ui/core"
 import { fade } from "@material-ui/core/styles/colorManipulator"
 
 import useStyles from "@/components/Avatar/styles"
@@ -22,18 +22,18 @@ const Avatar: React.FC<AvatarProps> = (props) => {
 		return upperCasedFirstLetter
 	}
 
-	const getTypographyVariant = () => {
-		let variant: TypographyVariant | undefined
+	const getFontSize = () => {
+		let fontSize: number | undefined
 
 		if (size === "large") {
-			variant = "h1"
+			fontSize = 40
 		}
 
 		if (size === "small") {
-			variant = "h3"
+			fontSize = 20
 		}
 
-		return variant
+		return fontSize
 	}
 
 	const getAvatarColor = () => {
@@ -51,11 +51,11 @@ const Avatar: React.FC<AvatarProps> = (props) => {
 		let avatarSize: number | undefined
 
 		if (size === "large") {
-			avatarSize = 85
+			avatarSize = 65
 		}
 
 		if (size === "small") {
-			avatarSize = 65
+			avatarSize = 45
 		}
 
 		return avatarSize
@@ -81,8 +81,11 @@ const Avatar: React.FC<AvatarProps> = (props) => {
 				}}
 			>
 				<Typography
-					variant={getTypographyVariant()}
+					variant="h1"
 					className={classes.avatarTypography}
+					style={{
+						fontSize: getFontSize(),
+					}}
 				>
 					{getNameMainLetter()}
 				</Typography>

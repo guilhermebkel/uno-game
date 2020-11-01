@@ -75,7 +75,7 @@ const Menu: React.FC<MenuProps> = (props) => {
 						</Typography>
 					</Grid>
 
-					<Divider size={2} />
+					<Divider size={4} />
 
 					<Typography
 						variant="h2"

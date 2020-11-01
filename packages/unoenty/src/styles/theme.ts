@@ -86,11 +86,11 @@ export default createMuiTheme({
 		},
 		h2: {
 			fontWeight: "bold",
-			fontSize: 16,
+			fontSize: 14,
 		},
 		h3: {
 			fontWeight: "normal",
-			fontSize: 26,
+			fontSize: 22,
 		},
 		caption: {
 			fontWeight: "normal",
