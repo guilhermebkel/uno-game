@@ -92,5 +92,9 @@ export default createMuiTheme({
 			fontWeight: "normal",
 			fontSize: 26,
 		},
+		caption: {
+			fontWeight: "normal",
+			fontSize: 12,
+		},
 	},
 })

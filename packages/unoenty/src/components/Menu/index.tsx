@@ -1,11 +1,9 @@
 import React from "react"
-import { Link } from "react-router-dom"
 import {
 	Drawer,
 	Grid,
 	Typography,
 	List,
-	ListItem,
 	ListItemIcon,
 	ListItemText,
 } from "@material-ui/core"
@@ -21,6 +19,9 @@ import {
 import { useSocketStore } from "@/store/Socket"
 
 import useStyles from "@/components/Menu/styles"
+
+import GameItem from "@/components/Menu/GameItem"
+import ListItem from "@/components/Menu/ListItem"
 
 type MenuProps = {
 
@@ -66,11 +67,7 @@ const Menu: React.FC<MenuProps> = (props) => {
 			<Divider size={1} />
 
 			<List>
-				<ListItem
-					button
-					component={Link}
-					to="/"
-				>
+				<ListItem to="/">
 					<ListItemIcon>
 						<GameIcon
 							fontSize="large"
@@ -103,13 +100,14 @@ const Menu: React.FC<MenuProps> = (props) => {
 				?.slice(0, 3)
 				.map(gameHistory => (
 					<ListItem
-						button
-						component={Link}
 						to={`/${gameHistory.gameId}`}
+						status={gameHistory.status}
 					>
-						<h1>
-							{gameHistory.name}
-						</h1>
+						<GameItem
+							playersCount={gameHistory.playersCount}
+							name={gameHistory.name}
+							status={gameHistory.status}
+						/>
 					</ListItem>
 				))}
 			</List>

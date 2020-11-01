@@ -28,6 +28,7 @@ class GameHistoryService {
 				gameId: game.id,
 				name: game.title,
 				playersCount: game.players.length,
+				status: game.status,
 			}
 
 			if (history) {
