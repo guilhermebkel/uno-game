@@ -5,7 +5,7 @@ import useStyles from "@/components/NotificationBar/styles"
 
 import { useSocketStore } from "@/store/Socket"
 
-const Notificationbar = (): ReactElement => {
+const NotificationBar = (): ReactElement => {
 	const { io } = useSocketStore()
 
 	const [opened, setOpened] = useState(false)
@@ -38,4 +38,4 @@ const Notificationbar = (): ReactElement => {
 	)
 }
 
-export default Notificationbar
+export default NotificationBar
