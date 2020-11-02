@@ -76,12 +76,10 @@ const PopConfirm: PopConfirmType & React.FC<PopConfirmProps> = (props): ReactEle
 	)
 }
 
-PopConfirm.open = (props: PopConfirmProps) => {
+PopConfirm.open = (props) => {
 	Node.renderComponent(
 		"pop-confirm",
-		<PopConfirm
-			{...props}
-		/>,
+		<PopConfirm {...props} />,
 	)
 }
 

@@ -19,6 +19,9 @@ const useStyles = makeStyles(theme => ({
 	title: {
 		fontWeight: "bold",
 		color: colors.grayScale[13],
+		[theme.breakpoints.down("md")]: {
+			maxWidth: "100px",
+		},
 	},
 	statusText: {
 		color: (props: UseStylesProps) => `${props.ready ? colors.palette.green1 : colors.palette.yellow1}`,

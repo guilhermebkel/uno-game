@@ -14,7 +14,7 @@ import Node from "@/utils/node"
 
 import theme from "@/styles/theme"
 
-import logoImage from "@/assets/logo.png"
+import logoImage from "@/assets/logo-320.png"
 
 import useStyles from "@/components/LoginDialog/styles"
 
@@ -55,7 +55,12 @@ const LoginDialog = (props: LoginDialogProps): ReactElement => {
 
 	return (
 		<ThemeProvider theme={theme}>
-			<Dialog open={dialogVisible} aria-labelledby="form-dialog-title">
+			<Dialog
+				open={dialogVisible}
+				style={{
+					zIndex: 999999,
+				}}
+			>
 				<form
 					onSubmit={handleSubmit}
 					className={classes.form}

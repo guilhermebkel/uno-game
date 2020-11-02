@@ -5,7 +5,7 @@ import client, { connectSocket, getPlayerData } from "@/services/socket"
 
 import useDidMount from "@/hooks/useDidMount"
 
-import { LoadingApp } from "@/components"
+import { LoadingScene } from "@/components"
 
 import { preloadCardPictures } from "@/utils/card"
 
@@ -112,7 +112,9 @@ const SocketProvider: React.FC = (props): ReactElement => {
 
 		setPlayerData(playerData)
 
-		setLoading(false)
+		setTimeout(() => {
+			setLoading(false)
+		}, 1000)
 	}
 
 	useDidMount(() => {
@@ -136,9 +138,9 @@ const SocketProvider: React.FC = (props): ReactElement => {
 				gameHistory,
 			}}
 		>
-			<LoadingApp loading={loading}>
+			<LoadingScene loading={loading}>
 				{children}
-			</LoadingApp>
+			</LoadingScene>
 		</SocketStore.Provider>
 	)
 }
