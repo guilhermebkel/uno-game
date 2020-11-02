@@ -53,7 +53,7 @@ class GameService {
 			cards,
 			direction: "clockwise",
 			currentCardCombo: [],
-			maxRoundDurationInSeconds: 20,
+			maxRoundDurationInSeconds: 200000,
 			createdAt: Date.now(),
 		}
 

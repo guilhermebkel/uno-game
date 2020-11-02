@@ -1,7 +1,15 @@
 import React, { useRef, useState, ReactElement } from "react"
-import { Container, Chip, Menu } from "@material-ui/core"
+import {
+	Grid,
+	Typography,
+} from "@material-ui/core"
 
 import { CardData, PlayerData, PlayerState } from "@uno-game/protocols"
+
+import {
+	Avatar,
+	Divider,
+} from "@/components"
 
 import useStyles from "@/pages/Table/CardDeckPlaceholder/styles"
 
@@ -17,9 +25,8 @@ import Device from "@/utils/device"
 const CARD_WIDTH = Device.isMobile ? 7 : 20
 
 type CardDeckPlaceholderProps = {
-	cards: CardData[]
 	player: PlayerData
-	transform?: string
+	position?: "left" | "top" | "right"
 }
 
 const CardDeckPlaceholder = (props: CardDeckPlaceholderProps): ReactElement => {
@@ -27,38 +34,72 @@ const CardDeckPlaceholder = (props: CardDeckPlaceholderProps): ReactElement => {
 
 	const [playerStateMessage, setPlayerStateMessage] = useState<string>("")
 
-	const { cards, player, transform } = props
+	const {
+		player,
+	} = props
 
-	const socket = useSocket()
-	const classes = useStyles()
-
-	const handlePlayerStateChange = (playerState: PlayerState, playerId: string, amountToBuy?: number) => {
-		if (playerId === player?.id) {
-			if (playerState === "Uno") {
-				setPlayerStateMessage("UNO")
-			} else if (playerState === "Blocked") {
-				setPlayerStateMessage("BLOCKED")
-			} else if (playerState === "BuyCards") {
-				setPlayerStateMessage(`+${amountToBuy}`)
-			}
-
-			setTimeout(() => {
-				setPlayerStateMessage("")
-			}, 1500)
-		}
-	}
-
-	const onPlayerStateChange = () => {
-		socket.onPlayerStateChange(handlePlayerStateChange)
-	}
-
-	useDidMount(() => {
-		onPlayerStateChange()
+	// const socket = useSocket()
+	const classes = useStyles({
+		isCurrentRoundPlayer: player?.isCurrentRoundPlayer,
 	})
+
+	// const handlePlayerStateChange = (playerState: PlayerState, playerId: string, amountToBuy?: number) => {
+	// 	if (playerId === player?.id) {
+	// 		if (playerState === "Uno") {
+	// 			setPlayerStateMessage("UNO")
+	// 		} else if (playerState === "Blocked") {
+	// 			setPlayerStateMessage("BLOCKED")
+	// 		} else if (playerState === "BuyCards") {
+	// 			setPlayerStateMessage(`+${amountToBuy}`)
+	// 		}
+
+	// 		setTimeout(() => {
+	// 			setPlayerStateMessage("")
+	// 		}, 1500)
+	// 	}
+	// }
+
+	// const onPlayerStateChange = () => {
+	// 	socket.onPlayerStateChange(handlePlayerStateChange)
+	// }
+
+	// useDidMount(() => {
+	// 	onPlayerStateChange()
+	// })
+
+	if (!player?.id) {
+		return <div />
+	}
 
 	return (
 		<>
-			<Menu
+			<Grid
+				container
+				alignItems="center"
+				className={classes.container}
+			>
+				<Grid
+					container
+					className={classes.cardCounterContainer}
+					alignItems="center"
+					justify="center"
+				>
+					<Typography
+						variant="h3"
+						className={classes.cardCounterText}
+					>
+						{player.handCards.length}
+					</Typography>
+				</Grid>
+
+				<Divider orientation="vertical" size={2} />
+
+				<Avatar
+					name={player.name}
+					size="small"
+				/>
+			</Grid>
+			{/* <Menu
 				anchorEl={cardDeckPlaceholderRef?.current}
 				keepMounted
 				open={!!playerStateMessage}
@@ -118,7 +159,7 @@ const CardDeckPlaceholder = (props: CardDeckPlaceholderProps): ReactElement => {
 						/>
 					))}
 				</Container>
-			</Container>
+			</Container> */}
 		</>
 	)
 }

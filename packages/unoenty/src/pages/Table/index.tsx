@@ -180,25 +180,19 @@ const Table = (): ReactElement => {
 							<Grid container>
 								<Grid item xs={2}>
 									<CardDeckPlaceholder
-										cards={socket.otherPlayers?.[1]?.handCards}
 										player={socket.otherPlayers?.[1]}
-										transform="rotate(135deg)"
 									/>
 								</Grid>
 								<Grid item xs={8}>
 									<Grid container justify="center" alignItems="center">
 										<CardDeckPlaceholder
-											cards={socket.otherPlayers?.[2]?.handCards}
 											player={socket.otherPlayers?.[2]}
-											transform="rotate(180deg)"
 										/>
 									</Grid>
 								</Grid>
 								<Grid item xs={2}>
 									<CardDeckPlaceholder
-										cards={socket.otherPlayers?.[3]?.handCards}
 										player={socket.otherPlayers?.[3]}
-										transform="rotate3d(2.5, 1, 0, 180deg)"
 									/>
 								</Grid>
 							</Grid>
@@ -206,9 +200,7 @@ const Table = (): ReactElement => {
 								<Grid item xs={2}>
 									<Grid container justify="flex-start">
 										<CardDeckPlaceholder
-											cards={socket.otherPlayers?.[0]?.handCards}
 											player={socket.otherPlayers?.[0]}
-											transform="rotate(90deg)"
 										/>
 									</Grid>
 								</Grid>
@@ -239,9 +231,7 @@ const Table = (): ReactElement => {
 								<Grid item xs={2}>
 									<Grid container justify="flex-end">
 										<CardDeckPlaceholder
-											cards={socket.otherPlayers?.[4]?.handCards}
 											player={socket.otherPlayers?.[4]}
-											transform="rotate3d(1, 1, 0, 180deg)"
 										/>
 									</Grid>
 								</Grid>
@@ -263,7 +253,6 @@ const Table = (): ReactElement => {
 											</>
 										) : (
 											<CardDeckPlaceholder
-												cards={socket.otherPlayers?.[5]?.handCards}
 												player={socket.otherPlayers?.[5]}
 											/>
 										)}
