@@ -6,7 +6,6 @@ import {
 	Typography,
 	TextField,
 	Badge,
-	Fab,
 } from "@material-ui/core"
 import {
 	ChatOutlined as ChatIcon,
@@ -120,12 +119,11 @@ const Chat = (): ReactElement => {
 		<>
 			{chat && (
 				<Grid
-					container
 					className={classes.openChatButtonContainer}
 				>
-					<Fab
+					<IconButton
 						onClick={handleOpenChat}
-						color="default"
+						className={classes.chatIcon}
 					>
 						<Badge
 							badgeContent={notSeenMessagesCount}
@@ -133,7 +131,7 @@ const Chat = (): ReactElement => {
 						>
 							<ChatIcon />
 						</Badge>
-					</Fab>
+					</IconButton>
 				</Grid>
 			)}
 

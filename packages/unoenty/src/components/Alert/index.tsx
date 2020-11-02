@@ -101,7 +101,7 @@ const Alert = (props: AlertProps & AlertType): React.ReactElement => {
 				<DialogTitle className={classes.title}>{title}</DialogTitle>
 				<DialogContent dividers className={classes.content}>
 					{icons[type]}
-					<DialogContentText>
+					<DialogContentText color="textPrimary">
 						{message}
 					</DialogContentText>
 				</DialogContent>

@@ -49,6 +49,20 @@ const useStyles = makeStyles(theme => ({
 	content: {
 		height: "100%",
 	},
+	menuIconContainer: {
+		position: "fixed",
+		top: 0,
+		left: 0,
+		zIndex: 99999,
+		width: "100%",
+		[theme.breakpoints.down("md")]: {
+			backgroundColor: colors.grayScale[1],
+			boxShadow: "0px 5px 10px rgba(0, 0, 0, 0.25)",
+		},
+	},
+	menuIcon: {
+		color: colors.grayScale[15],
+	},
 }))
 
 export default useStyles

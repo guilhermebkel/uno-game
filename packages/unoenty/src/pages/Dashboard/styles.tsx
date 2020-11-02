@@ -6,6 +6,7 @@ const useStyles = makeStyles(theme => ({
 		[theme.breakpoints.down("md")]: {
 			padding: theme.spacing(1),
 			width: "100vw",
+			marginTop: theme.spacing(8),
 		},
 	},
 	gameCardButton: {

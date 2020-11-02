@@ -7,6 +7,8 @@ import { TouchBackend } from "react-dnd-touch-backend"
 
 import { useSocketStore } from "@/store/Socket"
 
+import { dispatchEvent } from "@/services/event"
+
 import useDidMount from "@/hooks/useDidMount"
 import useSocket from "@/hooks/useSocket"
 
@@ -138,6 +140,8 @@ const Table = (): ReactElement => {
 	const setupTable = () => {
 		joinGame()
 		onPlayerWon()
+
+		dispatchEvent("GameTableOpened")
 	}
 
 	const onReconnect = () => {

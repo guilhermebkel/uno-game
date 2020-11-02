@@ -1,12 +1,12 @@
 import { makeStyles } from "@material-ui/core"
 
+import colors from "@/styles/colors"
+
 const useStyles = makeStyles(theme => ({
 	openChatButtonContainer: {
 		position: "fixed",
-		top: theme.spacing(2),
-		right: theme.spacing(2),
-		width: 56,
-		height: 56,
+		top: 0,
+		right: 0,
 		zIndex: 99999,
 	},
 	drawer: {
@@ -47,6 +47,9 @@ const useStyles = makeStyles(theme => ({
 	},
 	messageInput: {
 		flex: 1,
+	},
+	chatIcon: {
+		color: colors.grayScale[15],
 	},
 }))
 
