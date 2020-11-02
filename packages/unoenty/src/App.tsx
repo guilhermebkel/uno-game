@@ -13,13 +13,7 @@ const useStyles = makeStyles(theme => ({
 		flex: 1,
 		width: "100%",
 		height: "100%",
-		borderTopLeftRadius: theme.spacing(5),
-		borderBottomLeftRadius: theme.spacing(5),
 		backgroundColor: colors.palette.blue1,
-		[theme.breakpoints.down("md")]: {
-			borderTopLeftRadius: 0,
-			borderBottomLeftRadius: 0,
-		},
 	},
 	appContainer: {
 		overflowX: "hidden",
