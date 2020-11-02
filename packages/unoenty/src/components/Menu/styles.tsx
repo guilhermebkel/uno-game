@@ -18,6 +18,7 @@ const useStyles = makeStyles(theme => ({
 	},
 	avatarContainer: {
 		padding: theme.spacing(0, PADDING),
+		flex: 1,
 	},
 	avatarName: {
 		fontWeight: "bold",
@@ -61,6 +62,9 @@ const useStyles = makeStyles(theme => ({
 		},
 	},
 	menuIcon: {
+		color: colors.grayScale[15],
+	},
+	backIcon: {
 		color: colors.grayScale[15],
 	},
 }))

@@ -14,6 +14,7 @@ import {
 	ExitToApp as LogoutIcon,
 	GitHub as GithubIcon,
 	Menu as MenuIcon,
+	ArrowBackIos as BackIcon,
 } from "@material-ui/icons"
 
 import {
@@ -122,21 +123,35 @@ const Menu: React.FC = () => {
 					>
 						<Grid
 							container
-							justify="flex-start"
-							alignItems="center"
-							className={classes.avatarContainer}
+							justify="space-between"
 						>
-							<Avatar
-								size="large"
-								name={socketStore?.player?.name || ""}
-							/>
-
-							<Typography
-								variant="h3"
-								className={`${classes.avatarName} ${customClasses.limitedName}`}
+							<Grid
+								container
+								justify="flex-start"
+								alignItems="center"
+								className={classes.avatarContainer}
 							>
-								{socketStore?.player?.name}
-							</Typography>
+								<Avatar
+									size="large"
+									name={socketStore?.player?.name || ""}
+								/>
+
+								<Typography
+									variant="h3"
+									className={`${classes.avatarName} ${customClasses.limitedName}`}
+								>
+									{socketStore?.player?.name}
+								</Typography>
+							</Grid>
+
+							{(DeviceUtil.isMobile || isTablePage) && (
+								<IconButton
+									onClick={handleCloseMenu}
+									className={classes.backIcon}
+								>
+									<BackIcon />
+								</IconButton>
+							)}
 						</Grid>
 
 						<Divider orientation="horizontal" size={4} />
