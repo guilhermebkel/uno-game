@@ -56,7 +56,7 @@ const CardDeckPlaceholder = (props: CardDeckPlaceholderProps): ReactElement => {
 
 	// const socket = useSocket()
 	const customClasses = useCustomStyles({
-		limitedNameWidth: 20,
+		limitedNameWidth: 40,
 	})
 	const classes = useStyles({
 		isCurrentRoundPlayer: player?.isCurrentRoundPlayer,
