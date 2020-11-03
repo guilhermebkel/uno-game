@@ -11,10 +11,15 @@ import {
 	Divider,
 } from "@/components"
 
+import theme from "@/styles/theme"
+
 import useStyles from "@/pages/Table/CardDeckPlaceholder/styles"
 
 import useSocket from "@/hooks/useSocket"
 import useDidMount from "@/hooks/useDidMount"
+import { useSocketStore } from "@/store/Socket"
+
+import useCustomStyles from "@/styles/custom"
 
 import cardPlaceholder from "@/assets/card_placeholder.png"
 
@@ -32,15 +37,30 @@ type CardDeckPlaceholderProps = {
 const CardDeckPlaceholder = (props: CardDeckPlaceholderProps): ReactElement => {
 	const cardDeckPlaceholderRef = useRef(null)
 
+	const socketStore = useSocketStore()
+
 	const [playerStateMessage, setPlayerStateMessage] = useState<string>("")
 
 	const {
 		player,
 	} = props
 
+	const buildTimerRemainingTimePercentage = () => {
+		const roundRemainingTimeInSeconds = socketStore.game?.roundRemainingTimeInSeconds as number
+		const maxRoundDurationInSeconds = socketStore.game?.maxRoundDurationInSeconds as number
+
+		const roundRemainingTimePercentage = parseInt(((roundRemainingTimeInSeconds / maxRoundDurationInSeconds) * 100).toString(), 10)
+
+		return roundRemainingTimePercentage
+	}
+
 	// const socket = useSocket()
+	const customClasses = useCustomStyles({
+		limitedNameWidth: 20,
+	})
 	const classes = useStyles({
 		isCurrentRoundPlayer: player?.isCurrentRoundPlayer,
+		timerRemainingPercentage: buildTimerRemainingTimePercentage(),
 	})
 
 	// const handlePlayerStateChange = (playerState: PlayerState, playerId: string, amountToBuy?: number) => {
@@ -81,23 +101,65 @@ const CardDeckPlaceholder = (props: CardDeckPlaceholderProps): ReactElement => {
 				<Grid
 					container
 					className={classes.cardCounterContainer}
-					alignItems="center"
-					justify="center"
+					alignItems="flex-end"
 				>
-					<Typography
-						variant="h3"
-						className={classes.cardCounterText}
+					<Grid
+						container
+						className={classes.cardCounterContent}
+						alignItems="center"
+						justify="center"
 					>
-						{player.handCards.length}
-					</Typography>
+						<Typography
+							variant="h3"
+							className={classes.cardCounterText}
+						>
+							{player.handCards.length}
+						</Typography>
+					</Grid>
 				</Grid>
 
 				<Divider orientation="vertical" size={2} />
 
-				<Avatar
-					name={player.name}
-					size="small"
-				/>
+				<Grid
+					container
+					direction="column"
+					alignItems="center"
+					className={classes.avatarContainer}
+				>
+					<Typography
+						variant="h3"
+						className={`${classes.playerName} ${customClasses.limitedName}`}
+					>
+						{player.name}
+					</Typography>
+
+					<Avatar
+						name={player.name}
+						size="small"
+						className={player.isCurrentRoundPlayer ? classes.timer : ""}
+					/>
+				</Grid>
+
+				<Divider orientation="vertical" size={2} />
+
+				<Grid
+					container
+					className={classes.cardContainer}
+				>
+					{player.handCards?.map((card, index) => (
+						<Grid
+							item
+							key={card.id}
+							className={classes.card}
+							style={{
+								zIndex: index,
+								left: index * CARD_WIDTH,
+								filter: player?.isCurrentRoundPlayer ? "none" : "grayscale(1)",
+								// backgroundImage: `url(${cardPlaceholder})`,
+							}}
+						/>
+					))}
+				</Grid>
 			</Grid>
 			{/* <Menu
 				anchorEl={cardDeckPlaceholderRef?.current}

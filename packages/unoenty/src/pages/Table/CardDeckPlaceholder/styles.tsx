@@ -6,10 +6,16 @@ import colors from "@/styles/colors"
 
 type UseStylesProps = {
 	isCurrentRoundPlayer: boolean
+	timerRemainingPercentage: number
 }
+
+const cardProportion = 1.55
 
 const useStyles = makeStyles((theme) => {
 	const cardContainerSize = Device.isMobile ? 50 : 120
+
+	const cardWidth = 50
+	const cardHeight = cardWidth * cardProportion
 
 	return {
 		cardContent: {
@@ -21,8 +27,10 @@ const useStyles = makeStyles((theme) => {
 			}),
 		},
 		cardContainer: {
-			position: "relative",
-			height: cardContainerSize,
+			position: "absolute",
+			top: "50px",
+			left: "125px",
+			transform: "rotate(90deg)",
 			transition: theme.transitions.create("all", {
 				duration: theme.transitions.duration.standard,
 			}),
@@ -37,13 +45,17 @@ const useStyles = makeStyles((theme) => {
 			maxWidth: 200,
 		},
 		card: {
-			height: cardContainerSize,
-			width: "auto",
+			height: cardHeight,
+			width: cardWidth,
 			position: "absolute",
+			pointerEvents: "none",
+			backgroundSize: "cover",
+			backgroundColor: colors.palette.red1,
+			borderRadius: theme.spacing(1),
+			border: `${theme.spacing(0.5)}px solid ${colors.palette.blue1}`,
 			transition: theme.transitions.create("all", {
 				duration: theme.transitions.duration.standard,
 			}),
-			pointerEvents: "none",
 		},
 		playerStateMessage: {
 			backgroundColor: "#EC0000",
@@ -60,8 +72,11 @@ const useStyles = makeStyles((theme) => {
 			color: colors.grayScale[1],
 		},
 		cardCounterContainer: {
+			flex: 1,
+			height: "100%",
+		},
+		cardCounterContent: {
 			position: "relative",
-			marginTop: theme.spacing(6),
 			width: 20,
 			height: 30,
 			backgroundColor: (props: UseStylesProps) => `${props.isCurrentRoundPlayer ? colors.palette.yellow1 : colors.grayScale[12]}`,
@@ -81,8 +96,36 @@ const useStyles = makeStyles((theme) => {
 		},
 		container: {
 			position: "relative",
-			width: 300,
-			height: 300,
+			width: 100,
+			height: 125,
+		},
+		timer: {
+			position: "relative",
+			zIndex: 1,
+			"&::before": {
+				content: "close-quote",
+				position: "absolute",
+				width: "100%",
+				height: (props: UseStylesProps) => `${props.timerRemainingPercentage}%`,
+				opacity: 1,
+				backgroundColor: colors.palette.yellow1,
+				borderRadius: theme.spacing(1),
+				zIndex: -1,
+				bottom: 0,
+				left: 0,
+				boxShadow: `0 0 9px ${colors.palette.yellow1}`,
+				transition: theme.transitions.create("all", {
+					duration: theme.transitions.duration.standard,
+				}),
+			},
+		},
+		avatarContainer: {
+			flex: 1,
+		},
+		playerName: {
+			fontWeight: "bold",
+			color: (props: UseStylesProps) => `${props.isCurrentRoundPlayer ? colors.palette.yellow1 : colors.grayScale[12]}`,
+			marginBottom: theme.spacing(1),
 		},
 	}
 })

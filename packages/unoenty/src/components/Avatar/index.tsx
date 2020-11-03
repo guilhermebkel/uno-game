@@ -7,10 +7,11 @@ import useStyles from "@/components/Avatar/styles"
 type AvatarProps = {
 	size: "small" | "large"
 	name: string
+	className?: string
 }
 
 const Avatar: React.FC<AvatarProps> = (props) => {
-	const { size, name } = props
+	const { size, name, className } = props
 
 	const classes = useStyles()
 
@@ -73,7 +74,7 @@ const Avatar: React.FC<AvatarProps> = (props) => {
 		>
 			<Container
 				disableGutters
-				className={classes.avatarContent}
+				className={`${classes.avatarContent} ${className}`}
 				style={{
 					backgroundColor: getAvatarColor(),
 					width: getAvatarSize(),
