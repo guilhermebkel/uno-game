@@ -131,7 +131,7 @@ const CardDeckPlaceholder: React.FC<CardDeckPlaceholderProps> = (props) => {
 	}
 
 	const customClasses = useCustomStyles({
-		limitedNameWidth: 40,
+		limitedNameWidth: 50,
 	})
 
 	const classes = useStyles({
