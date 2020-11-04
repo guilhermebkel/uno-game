@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from "react"
+import React, { useState } from "react"
 import copy from "copy-to-clipboard"
 import {
 	Grid,
@@ -38,7 +38,7 @@ type GameCardProps = {
 	mode: "info" | "preview"
 }
 
-const GameCard: React.FC<GameCardProps> = (props): ReactElement => {
+const GameCard: React.FC<GameCardProps> = (props) => {
 	const { name, status, players, gameId, maxPlayers, mode } = props
 
 	const classes = useStyles()

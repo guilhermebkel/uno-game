@@ -1,4 +1,4 @@
-import React, { useState, ReactElement } from "react"
+import React, { useState } from "react"
 import { Dialog, DialogTitle, Grid, ButtonBase } from "@material-ui/core"
 import { Skeleton } from "@material-ui/lab"
 
@@ -12,11 +12,15 @@ import useStyles from "@/pages/Table/ChangeColorModal/styles"
 
 const COLORS: Array<CardColors> = ["red", "blue", "green", "yellow"]
 
+type ChangeColorModalType = {
+	open: () => Promise<CardColors>
+}
+
 type ChangeColorModalProps = {
 	callback: (color: CardColors) => void
 }
 
-const ChangeColorModal = (props: ChangeColorModalProps): ReactElement => {
+const ChangeColorModal: ChangeColorModalType & React.FC<ChangeColorModalProps> = (props) => {
 	const classes = useStyles()
 
 	const { callback } = props

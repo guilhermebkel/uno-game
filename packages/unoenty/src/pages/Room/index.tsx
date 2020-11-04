@@ -1,4 +1,4 @@
-import React, { useState, ReactElement } from "react"
+import React, { useState } from "react"
 import { useParams, useHistory } from "react-router-dom"
 import { Grid, Button, Typography } from "@material-ui/core"
 import {
@@ -26,7 +26,7 @@ import useCustomStyles from "@/styles/custom"
 
 import PlayerItem from "@/pages/Room/PlayerItem"
 
-const Room = (): ReactElement => {
+const Room: React.FC = () => {
 	const [loadingRoom, setLoadingRoom] = useState(true)
 
 	const socketStore = useSocketStore()

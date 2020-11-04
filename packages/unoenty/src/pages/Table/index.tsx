@@ -1,4 +1,4 @@
-import React, { useState, ReactElement } from "react"
+import React, { useState } from "react"
 import { Grid, Button } from "@material-ui/core"
 import { useParams, useHistory } from "react-router-dom"
 import { DndProvider } from "react-dnd"
@@ -34,7 +34,7 @@ import CardProvider from "@/store/Card"
 
 import { CardColors, CardData, Game } from "@uno-game/protocols"
 
-const Table = (): ReactElement => {
+const Table: React.FC = () => {
 	const { gameId } = useParams<{ gameId: string }>()
 	const history = useHistory()
 

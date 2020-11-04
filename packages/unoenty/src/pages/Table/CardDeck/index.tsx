@@ -1,4 +1,4 @@
-import React, { useRef, ReactElement } from "react"
+import React, { useRef } from "react"
 import { useParams } from "react-router-dom"
 import { Container, ClickAwayListener, Button } from "@material-ui/core"
 import { useDrag, useDragLayer } from "react-dnd"
@@ -44,7 +44,7 @@ type CardProps = {
 	isMoreThanOneCardBeingDragged: boolean
 }
 
-const DraggableCard = (props: CardProps) => {
+const DraggableCard: React.FC<CardProps> = (props) => {
 	const {
 		card,
 		index,
@@ -113,7 +113,7 @@ type CardDeckProps = {
 	player: PlayerData
 }
 
-const CardDeck = (props: CardDeckProps): ReactElement => {
+const CardDeck: React.FC<CardDeckProps> = (props) => {
 	const { cards } = props
 
 	const { gameId } = useParams<{ gameId: string }>()

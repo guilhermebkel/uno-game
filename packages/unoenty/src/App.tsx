@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react"
+import React from "react"
 import { Grid, makeStyles } from "@material-ui/core"
 
 import { NotificationBar, Menu } from "@/components"
@@ -26,7 +26,7 @@ const useStyles = makeStyles(theme => ({
 	},
 }))
 
-const App = (): ReactElement => {
+const App: React.FC = () => {
 	const classes = useStyles()
 
 	return (

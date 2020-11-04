@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react"
+import React from "react"
 import { Skeleton } from "@material-ui/lab"
 import { Grid, makeStyles, createStyles, Card, CardContent } from "@material-ui/core"
 
@@ -17,7 +17,7 @@ const useStyles = makeStyles(theme => createStyles({
 	},
 }))
 
-const PlayerListSkeleton = (): ReactElement => {
+const PlayerListSkeleton: React.FC = () => {
 	const classes = useStyles()
 
 	const cards = [...new Array(3)].map((_, index) => (

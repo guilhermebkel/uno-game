@@ -1,4 +1,4 @@
-import React, { useState, ReactElement } from "react"
+import React, { useState } from "react"
 import { useHistory, Link } from "react-router-dom"
 import { Grid, Typography, Button } from "@material-ui/core"
 import {
@@ -18,7 +18,7 @@ import { Divider, LoadingComponent, GameCard } from "@/components"
 
 import useStyles from "@/pages/Dashboard/styles"
 
-const Dashboard = (): ReactElement => {
+const Dashboard: React.FC = () => {
 	const [games, setGames] = useState<Game[]>([])
 
 	const [loadingCreateGame, setLoadingCreateGame] = useState(false)

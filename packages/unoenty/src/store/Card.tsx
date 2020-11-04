@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, ReactElement } from "react"
+import React, { createContext, useContext, useState } from "react"
 
 import { CardData } from "@uno-game/protocols"
 
@@ -15,7 +15,7 @@ const CardStore = createContext<CardContextData>({} as CardContextData)
 
 export const useCardStore = (): CardContextData => useContext(CardStore)
 
-const CardProvider = (props: CardProviderProps): ReactElement => {
+const CardProvider: React.FC<CardProviderProps> = (props) => {
 	const { children } = props
 
 	const [selectedCards, setSelectedCards] = useState<CardData[]>([] as CardData[])

@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, ReactElement } from "react"
+import React, { createContext, useContext, useState } from "react"
 import { Socket } from "socket.io-client"
 
 import client, { connectSocket, getPlayerData } from "@/services/socket"
@@ -32,7 +32,7 @@ const SocketStore = createContext<SocketContextData>({} as SocketContextData)
 
 export const useSocketStore = (): SocketContextData => useContext(SocketStore)
 
-const SocketProvider: React.FC = (props): ReactElement => {
+const SocketProvider: React.FC = (props) => {
 	const { children } = props
 
 	const [loading, setLoading] = useState(true)

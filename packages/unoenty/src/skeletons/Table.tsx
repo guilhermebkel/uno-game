@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react"
+import React from "react"
 import { Skeleton } from "@material-ui/lab"
 import { Grid, makeStyles, createStyles, Card, CardContent } from "@material-ui/core"
 
@@ -9,7 +9,7 @@ const useStyles = makeStyles(theme => createStyles({
 	},
 }))
 
-const TableSkeleton = (): ReactElement => {
+const TableSkeleton: React.FC = () => {
 	const classes = useStyles()
 
 	return (

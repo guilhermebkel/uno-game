@@ -1,17 +1,15 @@
-import React, { useRef, useState, ReactElement } from "react"
+import React, { useState } from "react"
 import {
 	Grid,
 	Typography,
 } from "@material-ui/core"
 
-import { CardData, PlayerData, PlayerState } from "@uno-game/protocols"
+import { PlayerData, PlayerState } from "@uno-game/protocols"
 
 import {
 	Avatar,
 	Divider,
 } from "@/components"
-
-import theme from "@/styles/theme"
 
 import useStyles from "@/pages/Table/CardDeckPlaceholder/styles"
 
@@ -21,11 +19,6 @@ import { useSocketStore } from "@/store/Socket"
 
 import useCustomStyles from "@/styles/custom"
 
-import cardPlaceholder from "@/assets/card_placeholder.png"
-
-import RoundRemainingTime from "@/pages/Table/RoundRemainingTime"
-
-import Device from "@/utils/device"
 import { getCardPosition } from "@/utils/card"
 
 const MAX_CARDS = 7
@@ -35,16 +28,15 @@ type CardDeckPlaceholderProps = {
 	position?: "left" | "top" | "right"
 }
 
-const CardDeckPlaceholder = (props: CardDeckPlaceholderProps): ReactElement => {
-	const cardDeckPlaceholderRef = useRef(null)
+const CardDeckPlaceholder: React.FC<CardDeckPlaceholderProps> = (props) => {
+	const { player } = props
 
 	const socketStore = useSocketStore()
+	const socket = useSocket()
 
-	const [playerStateMessage, setPlayerStateMessage] = useState<string>("")
+	const [, setPlayerStateMessage] = useState<string>("")
 
-	const {
-		player,
-	} = props
+	const limitedCards = player?.handCards?.slice(0, MAX_CARDS)
 
 	const buildTimerRemainingTimePercentage = () => {
 		const roundRemainingTimeInSeconds = socketStore.game?.roundRemainingTimeInSeconds as number
@@ -55,38 +47,38 @@ const CardDeckPlaceholder = (props: CardDeckPlaceholderProps): ReactElement => {
 		return roundRemainingTimePercentage
 	}
 
-	// const socket = useSocket()
 	const customClasses = useCustomStyles({
 		limitedNameWidth: 40,
 	})
+
 	const classes = useStyles({
 		isCurrentRoundPlayer: player?.isCurrentRoundPlayer,
 		timerRemainingPercentage: buildTimerRemainingTimePercentage(),
 	})
 
-	// const handlePlayerStateChange = (playerState: PlayerState, playerId: string, amountToBuy?: number) => {
-	// 	if (playerId === player?.id) {
-	// 		if (playerState === "Uno") {
-	// 			setPlayerStateMessage("UNO")
-	// 		} else if (playerState === "Blocked") {
-	// 			setPlayerStateMessage("BLOCKED")
-	// 		} else if (playerState === "BuyCards") {
-	// 			setPlayerStateMessage(`+${amountToBuy}`)
-	// 		}
+	const handlePlayerStateChange = (playerState: PlayerState, playerId: string, amountToBuy?: number) => {
+		if (playerId === player?.id) {
+			if (playerState === "Uno") {
+				setPlayerStateMessage("UNO")
+			} else if (playerState === "Blocked") {
+				setPlayerStateMessage("BLOCKED")
+			} else if (playerState === "BuyCards") {
+				setPlayerStateMessage(`+${amountToBuy}`)
+			}
 
-	// 		setTimeout(() => {
-	// 			setPlayerStateMessage("")
-	// 		}, 1500)
-	// 	}
-	// }
+			setTimeout(() => {
+				setPlayerStateMessage("")
+			}, 1500)
+		}
+	}
 
-	// const onPlayerStateChange = () => {
-	// 	socket.onPlayerStateChange(handlePlayerStateChange)
-	// }
+	const onPlayerStateChange = () => {
+		socket.onPlayerStateChange(handlePlayerStateChange)
+	}
 
-	// useDidMount(() => {
-	// 	onPlayerStateChange()
-	// })
+	useDidMount(() => {
+		onPlayerStateChange()
+	})
 
 	if (!player?.id) {
 		return <div />
@@ -147,18 +139,18 @@ const CardDeckPlaceholder = (props: CardDeckPlaceholderProps): ReactElement => {
 					container
 					className={classes.cardContainer}
 				>
-					{[...player.handCards?.slice(0, MAX_CARDS), undefined].map((card, index) => {
+					{[...limitedCards, undefined].map((card, index) => {
 						const { x, y, inclination } = getCardPosition({
 							cardHeight: 62,
 							cardWidth: 40,
 							cardIndex: index,
-							cardsCount: player.handCards.length,
+							cardsCount: limitedCards.length,
 							expectedCardsCount: 8,
 							maxAngle: 90,
 							radius: 100,
 						})
 
-						const remainingCards = player.handCards.length - MAX_CARDS
+						const remainingCards = limitedCards.length - MAX_CARDS
 						const isPlaceholder = !card?.id
 						const showPlaceholder = isPlaceholder && remainingCards > 0
 
@@ -176,7 +168,6 @@ const CardDeckPlaceholder = (props: CardDeckPlaceholderProps): ReactElement => {
 									top: -y,
 									zIndex: index,
 									left: x,
-									backgroundColor: `url(${cardPlaceholder})`,
 								}}
 							>
 								{showPlaceholder && (

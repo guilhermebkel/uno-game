@@ -1,4 +1,4 @@
-import React, { useState, ReactElement } from "react"
+import React, { useState } from "react"
 import {
 	Button,
 	Dialog,
@@ -23,7 +23,7 @@ type PopConfirmType = {
 	open: (props: PopConfirmProps) => void
 }
 
-const PopConfirm: PopConfirmType & React.FC<PopConfirmProps> = (props): ReactElement => {
+const PopConfirm: PopConfirmType & React.FC<PopConfirmProps> = (props) => {
 	const { title, message, onConfirm } = props
 
 	const [visible, setVisible] = useState(true)

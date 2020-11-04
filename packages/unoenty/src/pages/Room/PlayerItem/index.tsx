@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react"
+import React from "react"
 import {
 	Grid,
 	Typography,
@@ -23,7 +23,7 @@ type PlayerItem = {
 	playerId: string
 }
 
-const PlayerItem = (props: PlayerItem): ReactElement => {
+const PlayerItem: React.FC<PlayerItem> = (props) => {
 	const { name, ready, playerId } = props
 
 	const socket = useSocket()

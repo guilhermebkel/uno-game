@@ -1,4 +1,4 @@
-import React, { useState, ReactElement } from "react"
+import React, { useState } from "react"
 import {
 	Button,
 	Dialog,
@@ -22,11 +22,15 @@ type LoginDialogResponse = {
 	name: string
 }
 
+type LoginDialogType = {
+	open: () => Promise<LoginDialogResponse>
+}
+
 type LoginDialogProps = {
 	callback: (response: LoginDialogResponse) => void
 }
 
-const LoginDialog = (props: LoginDialogProps): ReactElement => {
+const LoginDialog: LoginDialogType & React.FC<LoginDialogProps> = (props) => {
 	const { callback } = props
 
 	const [dialogVisible, setDialogVisible] = useState(true)

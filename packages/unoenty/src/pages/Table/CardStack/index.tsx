@@ -1,4 +1,4 @@
-import React, { useRef, useState, ReactElement } from "react"
+import React, { useRef, useState } from "react"
 import { Container, Menu } from "@material-ui/core"
 import { useDrop } from "react-dnd"
 
@@ -18,13 +18,13 @@ import RoundRemainingTime from "@/pages/Table/RoundRemainingTime"
 
 import arrowCircle from "@/assets/arrow_circle.png"
 
-type Props = {
+type CardStackProps = {
 	cards: CardData[]
 	game: Game
 	onDrop: (cardIds: string[], selectedColor: CardColors) => void
 }
 
-const CardStack = (props: Props): ReactElement => {
+const CardStack: React.FC<CardStackProps> = (props) => {
 	const [cardStackStateMessage, setCardStackStateMessage] = useState<string>("")
 
 	const socket = useSocket()

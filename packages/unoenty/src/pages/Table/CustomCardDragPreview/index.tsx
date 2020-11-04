@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react"
+import React from "react"
 import { useDragLayer, XYCoord } from "react-dnd"
 
 import { CARD_TYPE, DraggedCardItem } from "@/pages/Table/CardDeck"
@@ -7,7 +7,7 @@ import useStyles from "@/pages/Table/CustomCardDragPreview/styles"
 
 import { useCardStore } from "@/store/Card"
 
-const CustomCardDragPreview = (): ReactElement => {
+const CustomCardDragPreview: React.FC = () => {
 	const {
 		itemType,
 		isDragging,

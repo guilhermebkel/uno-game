@@ -1,4 +1,4 @@
-import React, { useState, useRef, ReactElement } from "react"
+import React, { useState, useRef } from "react"
 import {
 	IconButton,
 	Drawer,
@@ -24,7 +24,7 @@ import { useSocketStore } from "@/store/Socket"
 
 import DeviceUtil from "@/utils/device"
 
-const Chat = (): ReactElement => {
+const Chat: React.FC = () => {
 	const classes = useStyles()
 	const socket = useSocket()
 	const socketStore = useSocketStore()

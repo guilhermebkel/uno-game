@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react"
+import React from "react"
 import { Route, Switch } from "react-router-dom"
 
 import { PageNotFound } from "@/components"
@@ -7,7 +7,7 @@ import Dashboard from "@/pages/Dashboard"
 import Table from "@/pages/Table"
 import Room from "@/pages/Room"
 
-const Routes = (): ReactElement => (
+const Routes: React.FC = () => (
 	<Switch>
 		<Route exact path="/" component={Dashboard} />
 		<Route exact path="/:gameId" render={({ location }) => <Room key={location.pathname} />} />

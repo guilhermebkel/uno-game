@@ -19,19 +19,6 @@ import "@/components/Alert/icons.scss"
 
 import useStyles from "@/components/Alert/styles"
 
-interface AlertType {
-	type: "success" | "warning" | "error"
-}
-
-interface AlertProps {
-	title: string
-	message: string | React.ReactNode
-	customButtons?: JSX.Element[]
-	closeButtonText?: string
-	onClose?: () => void
-	closable?: boolean
-}
-
 const icons = {
 	success: (
 		<div className="sa">
@@ -65,7 +52,23 @@ const icons = {
 	),
 }
 
-const Alert = (props: AlertProps & AlertType): React.ReactElement => {
+type AlertProps = {
+	title: string
+	message: string | React.ReactNode
+	customButtons?: JSX.Element[]
+	closeButtonText?: string
+	onClose?: () => void
+	closable?: boolean
+}
+
+type AlertType = {
+	success: (props: AlertProps) => void
+	warning: (props: AlertProps) => void
+	error: (props: AlertProps) => void
+	close: () => void
+}
+
+const Alert: AlertType & React.FC<AlertProps & { type: keyof Omit<AlertType, "close"> }> = (props) => {
 	const {
 		type,
 		message,
