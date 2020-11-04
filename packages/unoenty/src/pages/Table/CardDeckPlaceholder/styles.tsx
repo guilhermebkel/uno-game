@@ -28,8 +28,8 @@ const useStyles = makeStyles((theme) => {
 		},
 		cardContainer: {
 			position: "absolute",
-			top: "70px",
-			left: "20px",
+			top: 90,
+			left: 50,
 			transform: "rotate(60deg)",
 			transition: theme.transitions.create("all", {
 				duration: theme.transitions.duration.standard,
@@ -104,7 +104,6 @@ const useStyles = makeStyles((theme) => {
 			marginBottom: theme.spacing(1),
 		},
 		remainingCardsContainer: {
-			position: "relative",
 			zIndex: 1,
 			"&::before": {
 				content: "close-quote",
@@ -121,8 +120,9 @@ const useStyles = makeStyles((theme) => {
 			fontWeight: "bold",
 			color: colors.palette.black1,
 			transform: "rotate(-90deg)",
-			height: "35px",
-			width: "40px",
+			height: 50,
+			width: 55,
+			textAlign: "center",
 		},
 		playerStateMessageContainer: {
 			position: "absolute",
