@@ -44,6 +44,7 @@ const ListItem: React.FC<ListItemProps> = (props) => {
 			className={classes.listItem}
 			style={{
 				background: isSelected ? backgroundColor : "transparent",
+				opacity: isSelected ? 1 : 0.7,
 			}}
 		>
 			{children}
