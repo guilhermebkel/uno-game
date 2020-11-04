@@ -145,7 +145,7 @@ const CardDeckPlaceholder: React.FC<CardDeckPlaceholderProps> = (props) => {
 							cardWidth: 40,
 							cardIndex: index,
 							cardsCount: limitedCards.length,
-							expectedCardsCount: 8,
+							expectedCardsCount: limitedCards.length,
 							maxAngle: 90,
 							radius: 100,
 						})
