@@ -26,6 +26,7 @@ import cardPlaceholder from "@/assets/card_placeholder.png"
 import RoundRemainingTime from "@/pages/Table/RoundRemainingTime"
 
 import Device from "@/utils/device"
+import { getCardPosition } from "@/utils/card"
 
 const CARD_WIDTH = Device.isMobile ? 7 : 20
 
@@ -146,19 +147,32 @@ const CardDeckPlaceholder = (props: CardDeckPlaceholderProps): ReactElement => {
 					container
 					className={classes.cardContainer}
 				>
-					{player.handCards?.map((card, index) => (
-						<Grid
-							item
-							key={card.id}
-							className={classes.card}
-							style={{
-								zIndex: index,
-								left: index * CARD_WIDTH,
-								filter: player?.isCurrentRoundPlayer ? "none" : "grayscale(1)",
-								// backgroundImage: `url(${cardPlaceholder})`,
-							}}
-						/>
-					))}
+					{player.handCards?.map((card, index) => {
+						const { x, y, inclination } = getCardPosition({
+							cardHeight: 62,
+							cardWidth: 40,
+							cardIndex: index,
+							cardsCount: player.handCards.length,
+							expectedCardsCount: 8,
+							maxAngle: 90,
+							radius: 100,
+						})
+
+						return (
+							<Grid
+								item
+								key={card.id}
+								className={classes.card}
+								style={{
+									transform: `rotate(${inclination}deg)`,
+									top: -y,
+									zIndex: index,
+									left: x,
+									// backgroundImage: `url(${cardPlaceholder})`,
+								}}
+							/>
+						)
+					})}
 				</Grid>
 			</Grid>
 			{/* <Menu

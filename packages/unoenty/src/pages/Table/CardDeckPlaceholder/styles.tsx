@@ -14,7 +14,7 @@ const cardProportion = 1.55
 const useStyles = makeStyles((theme) => {
 	const cardContainerSize = Device.isMobile ? 50 : 120
 
-	const cardWidth = 50
+	const cardWidth = 40
 	const cardHeight = cardWidth * cardProportion
 
 	return {
@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => {
 			position: "absolute",
 			top: "50px",
 			left: "125px",
-			transform: "rotate(90deg)",
+			// transform: "rotate(90deg)",
 			transition: theme.transitions.create("all", {
 				duration: theme.transitions.duration.standard,
 			}),
@@ -50,7 +50,7 @@ const useStyles = makeStyles((theme) => {
 			position: "absolute",
 			pointerEvents: "none",
 			backgroundSize: "cover",
-			backgroundColor: colors.palette.red1,
+			backgroundColor: (props: UseStylesProps) => `${props.isCurrentRoundPlayer ? colors.palette.yellow1 : colors.palette.red1}`,
 			borderRadius: theme.spacing(1),
 			border: `${theme.spacing(0.5)}px solid ${colors.palette.blue1}`,
 			transition: theme.transitions.create("all", {
