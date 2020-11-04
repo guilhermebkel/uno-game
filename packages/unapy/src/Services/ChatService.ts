@@ -68,8 +68,7 @@ class ChatService {
 		ChatRepository.createChat(chatData)
 	}
 
-	// eslint-disable-next-line
-	private emitChatEvent (chatId: string, event: ChatEvents, ...data: any) {
+	private emitChatEvent (chatId: string, event: ChatEvents, ...data: unknown[]) {
 		SocketService.emitRoomEvent(chatId, event, ...data)
 	}
 }

@@ -73,8 +73,7 @@ class GameService {
 		}
 	}
 
-	// eslint-disable-next-line
-	emitGameRoundEvent (gameId: string, event: GameRoundEvents, ...data: any) {
+	emitGameRoundEvent (gameId: string, event: GameRoundEvents, ...data: unknown[]) {
 		SocketService.emitRoomEvent(gameId, event, ...data)
 	}
 }

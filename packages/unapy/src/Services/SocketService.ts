@@ -3,8 +3,7 @@ import { Server as SocketServer } from "socket.io"
 class SocketService {
 	private io: SocketServer
 
-	// eslint-disable-next-line
-	emitRoomEvent (roomId: string, event: string, ...data: any) {
+	emitRoomEvent (roomId: string, event: string, ...data: unknown[]) {
 		// eslint-disable-next-line
 		const socket = this.io as any
 
