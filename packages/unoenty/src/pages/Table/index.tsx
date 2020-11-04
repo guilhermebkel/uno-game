@@ -180,18 +180,21 @@ const Table: React.FC = () => {
 							<Grid container>
 								<Grid item xs={2}>
 									<CardDeckPlaceholder
+										position="top"
 										player={socket.otherPlayers?.[1]}
 									/>
 								</Grid>
 								<Grid item xs={8}>
 									<Grid container justify="center" alignItems="center">
 										<CardDeckPlaceholder
+											position="top"
 											player={socket.otherPlayers?.[2]}
 										/>
 									</Grid>
 								</Grid>
 								<Grid item xs={2}>
 									<CardDeckPlaceholder
+										position="top"
 										player={socket.otherPlayers?.[3]}
 									/>
 								</Grid>
@@ -200,6 +203,7 @@ const Table: React.FC = () => {
 								<Grid item xs={2}>
 									<Grid container justify="flex-start">
 										<CardDeckPlaceholder
+											position="left"
 											player={socket.otherPlayers?.[0]}
 										/>
 									</Grid>
@@ -231,6 +235,7 @@ const Table: React.FC = () => {
 								<Grid item xs={2}>
 									<Grid container justify="flex-end">
 										<CardDeckPlaceholder
+											position="right"
 											player={socket.otherPlayers?.[4]}
 										/>
 									</Grid>
@@ -253,6 +258,7 @@ const Table: React.FC = () => {
 											</>
 										) : (
 											<CardDeckPlaceholder
+												position="top"
 												player={socket.otherPlayers?.[5]}
 											/>
 										)}

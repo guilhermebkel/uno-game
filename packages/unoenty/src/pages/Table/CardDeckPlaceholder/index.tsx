@@ -26,11 +26,74 @@ const MAX_CARDS = 7
 
 type CardDeckPlaceholderProps = {
 	player: PlayerData
-	position?: "left" | "top" | "right"
+	position: "left" | "top" | "right"
+}
+
+type CardDeckPlaceholderPositionStylesMap = {
+	[key in CardDeckPlaceholderProps["position"]]: {
+		cardCounterContainer?: React.CSSProperties
+		cardContainer?: React.CSSProperties
+		remainingCardsText?: React.CSSProperties
+		container?: React.CSSProperties
+	}
+}
+
+const cardDeckPlaceholderPositionStylesMap: CardDeckPlaceholderPositionStylesMap = {
+	left: {
+		cardCounterContainer: {
+			alignItems: "flex-end",
+		},
+		cardContainer: {
+			top: 90,
+			left: 50,
+			transform: "rotate(60deg)",
+		},
+		remainingCardsText: {
+			width: 55,
+			height: 50,
+			transform: "rotate(-90deg)",
+		},
+	},
+	top: {
+		cardCounterContainer: {
+			alignItems: "flex-start",
+		},
+		cardContainer: {
+			top: 110,
+			left: -20,
+			transform: "rotate(145deg)",
+		},
+		remainingCardsText: {
+			width: 20,
+			height: 40,
+			transform: "rotate(90deg)",
+		},
+		container: {
+			flexDirection: "row-reverse",
+		},
+	},
+	right: {
+		cardCounterContainer: {
+			alignItems: "flex-end",
+		},
+		cardContainer: {
+			top: 75,
+			left: -50,
+			transform: "rotate(235deg)",
+		},
+		remainingCardsText: {
+			width: 20,
+			height: 40,
+			transform: "rotate(90deg)",
+		},
+		container: {
+			flexDirection: "row-reverse",
+		},
+	},
 }
 
 const CardDeckPlaceholder: React.FC<CardDeckPlaceholderProps> = (props) => {
-	const { player } = props
+	const { player, position } = props
 
 	const socketStore = useSocketStore()
 	const socket = useSocket()
@@ -38,6 +101,7 @@ const CardDeckPlaceholder: React.FC<CardDeckPlaceholderProps> = (props) => {
 	const [playerStateMessage, setPlayerStateMessage] = useState<string>("")
 
 	const limitedCards = player?.handCards?.slice(0, MAX_CARDS)
+	const positionStyles = cardDeckPlaceholderPositionStylesMap[position]
 
 	const buildTimerRemainingTimePercentage = () => {
 		const roundRemainingTimeInSeconds = socketStore.game?.roundRemainingTimeInSeconds as number
@@ -91,6 +155,7 @@ const CardDeckPlaceholder: React.FC<CardDeckPlaceholderProps> = (props) => {
 				container
 				alignItems="center"
 				className={classes.container}
+				style={positionStyles.container}
 			>
 				<Zoom in={!!playerStateMessage}>
 					<Grid
@@ -111,6 +176,7 @@ const CardDeckPlaceholder: React.FC<CardDeckPlaceholderProps> = (props) => {
 				<Grid
 					container
 					className={classes.cardCounterContainer}
+					style={positionStyles.cardCounterContainer}
 					alignItems="flex-end"
 				>
 					<Grid
@@ -155,6 +221,7 @@ const CardDeckPlaceholder: React.FC<CardDeckPlaceholderProps> = (props) => {
 				<Grid
 					container
 					className={classes.cardContainer}
+					style={positionStyles.cardContainer}
 				>
 					{[...limitedCards, undefined].map((card, index) => {
 						const { x, y, inclination } = getCardPosition({
@@ -191,6 +258,7 @@ const CardDeckPlaceholder: React.FC<CardDeckPlaceholderProps> = (props) => {
 									<Typography
 										variant="h3"
 										className={classes.remainingCardsText}
+										style={positionStyles.remainingCardsText}
 									>
 										+{remainingCards}
 									</Typography>
