@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react"
-import { Container, Menu } from "@material-ui/core"
+import { Container, Menu, Grid } from "@material-ui/core"
 import { useDrop } from "react-dnd"
 
 import { CardData, CardTypes, CardColors, Game } from "@uno-game/protocols"
@@ -61,7 +61,7 @@ const CardStack: React.FC<CardStackProps> = (props) => {
 		}
 	}
 
-	const [{ isHovering }, drop] = useDrop({
+	const [, drop] = useDrop({
 		accept: CARD_TYPE,
 		drop: (item: DraggedCardItem) => handleDrop(item),
 		collect: monitor => ({
@@ -105,39 +105,41 @@ const CardStack: React.FC<CardStackProps> = (props) => {
 				{cardStackStateMessage}
 			</Menu>
 
-			<Container
-				disableGutters
-				className={classes.cardContainer}
-				maxWidth={false}
-				innerRef={cardStackRef}
-				style={{
-					backgroundColor: isHovering ? "rgba(255, 255, 255, 0.7)" : "rgba(255, 255, 255, 0.1)",
-				}}
+			<Grid
+				container
+				className={classes.cardStackContainer}
 			>
-				{socket?.currentPlayer?.isCurrentRoundPlayer && (
-					<RoundRemainingTime
-						style={{
-							top: -50,
-							right: -50,
-						}}
-					/>
-				)}
+				<Container
+					disableGutters
+					className={classes.cardContainer}
+					maxWidth={false}
+					innerRef={cardStackRef}
+				>
+					{socket?.currentPlayer?.isCurrentRoundPlayer && (
+						<RoundRemainingTime
+							style={{
+								top: -50,
+								right: -50,
+							}}
+						/>
+					)}
 
-				{cards?.map((card, index) => (
-					<img
-						key={card.id}
-						className={classes.card}
-						alt={card.name}
-						src={card.src}
-						style={{
-							transform: `rotate(${cards.length - index}rad)`,
-							zIndex: cards.length - index,
-							boxShadow: `0 0 25px ${(index === 0) ? "#000000" : "transparent"}`,
-							filter: (index === 0) ? "saturate(1.5)" : "contrast(0.5)",
-						}}
-					/>
-				))}
-			</Container>
+					{cards?.map((card, index) => (
+						<img
+							key={card.id}
+							className={classes.card}
+							alt={card.name}
+							src={card.src}
+							style={{
+								transform: `rotate(${cards.length - index}rad)`,
+								zIndex: cards.length - index,
+								boxShadow: `0 0 25px ${(index === 0) ? "#000000" : "transparent"}`,
+								filter: (index === 0) ? "saturate(1.5)" : "contrast(0.5)",
+							}}
+						/>
+					))}
+				</Container>
+			</Grid>
 
 			<img
 				className={classes.arrowCircle}

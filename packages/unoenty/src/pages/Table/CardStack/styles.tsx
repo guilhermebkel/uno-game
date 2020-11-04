@@ -1,17 +1,25 @@
 import { makeStyles } from "@material-ui/core"
 
+import colors from "@/styles/colors"
+
 import Device from "@/utils/device"
 
 const useStyles = makeStyles(theme => {
 	const cardContainerSize = Device.isMobile ? 75 : 150
 
 	return {
-		cardContainer: {
-			width: cardContainerSize,
-			height: cardContainerSize,
-			position: "relative",
-			border: "4px solid #000000",
+		cardStackContainer: {
+			padding: theme.spacing(3),
+			backgroundColor: colors.grayScale[2],
+			width: 215,
+			height: 215,
 			borderRadius: "100%",
+			border: `${theme.spacing(1)}px solid ${colors.grayScale[5]}`,
+		},
+		cardContainer: {
+			width: "100%",
+			height: "100%",
+			position: "relative",
 			transition: theme.transitions.create("all", {
 				duration: theme.transitions.duration.standard,
 			}),
