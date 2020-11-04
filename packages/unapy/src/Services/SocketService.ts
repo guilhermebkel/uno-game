@@ -4,14 +4,16 @@ class SocketService {
 	private io: SocketServer
 
 	emitRoomEvent (roomId: string, event: string, ...data: unknown[]) {
-		// eslint-disable-next-line
-		const socket = this.io as any
+		const socket = this.io
 
-		socket.binary(false).to(roomId).emit(event, ...data)
+		socket.to(roomId).emit(event, ...data)
 	}
 
 	setup (socket: SocketServer) {
-		this.io = socket
+		// eslint-disable-next-line
+		const socketWithDisabledBinary = (socket as any).binary(false)
+
+		this.io = socketWithDisabledBinary as SocketServer
 	}
 }
 
