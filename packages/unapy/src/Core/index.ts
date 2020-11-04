@@ -4,7 +4,7 @@ import Socket from "@/Core/Socket"
 class Core {
 	async boot () {
 		await Server.boot()
-		Socket.boot(Server.http)
+		await Socket.boot(Server.http)
 	}
 }
 
