@@ -1,14 +1,6 @@
 import { makeStyles } from "@material-ui/core"
 
 const useStyles = makeStyles(theme => ({
-	container: {
-		padding: theme.spacing(4),
-		[theme.breakpoints.down("md")]: {
-			padding: theme.spacing(1),
-			width: "100vw",
-			marginTop: theme.spacing(8),
-		},
-	},
 	gameCardButton: {
 		maxWidth: 400,
 		[theme.breakpoints.down("md")]: {

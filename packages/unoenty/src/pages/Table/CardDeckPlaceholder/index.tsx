@@ -132,11 +132,11 @@ const CardDeckPlaceholder: React.FC<CardDeckPlaceholderProps> = (props) => {
 
 	const customClasses = useCustomStyles({
 		limitedNameWidth: 50,
+		avatarTimerRemainingPercentage: buildTimerRemainingTimePercentage(),
 	})
 
 	const classes = useStyles({
 		isCurrentRoundPlayer: player?.isCurrentRoundPlayer,
-		timerRemainingPercentage: buildTimerRemainingTimePercentage(),
 	})
 
 	const handlePlayerStateChange = (playerState: PlayerState, playerId: string, amountToBuy?: number) => {
@@ -230,7 +230,7 @@ const CardDeckPlaceholder: React.FC<CardDeckPlaceholderProps> = (props) => {
 					<Avatar
 						name={player.name}
 						size="small"
-						className={player.isCurrentRoundPlayer ? classes.timer : ""}
+						className={player.isCurrentRoundPlayer ? customClasses.avatarTimer : ""}
 					/>
 				</Grid>
 

@@ -85,7 +85,7 @@ const Room: React.FC = () => {
 			<LoadingComponent loading={loadingRoom}>
 				<Grid
 					container
-					className={classes.container}
+					className={customClasses.pageContainer}
 				>
 					<Grid
 						container

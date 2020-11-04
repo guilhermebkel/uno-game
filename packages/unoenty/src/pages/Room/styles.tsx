@@ -3,14 +3,6 @@ import { makeStyles } from "@material-ui/core"
 import colors from "@/styles/colors"
 
 const useStyles = makeStyles(theme => ({
-	container: {
-		padding: theme.spacing(4),
-		[theme.breakpoints.down("md")]: {
-			padding: theme.spacing(1),
-			width: "100vw",
-			marginTop: theme.spacing(8),
-		},
-	},
 	pageTitleSpotlight: {
 		color: colors.grayScale[10],
 	},

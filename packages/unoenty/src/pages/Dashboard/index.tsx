@@ -17,6 +17,7 @@ import api from "@/services/api"
 import { Divider, LoadingComponent, GameCard } from "@/components"
 
 import useStyles from "@/pages/Dashboard/styles"
+import useCustomStyles from "@/styles/custom"
 
 const Dashboard: React.FC = () => {
 	const [games, setGames] = useState<Game[]>([])
@@ -26,6 +27,7 @@ const Dashboard: React.FC = () => {
 
 	const history = useHistory()
 	const classes = useStyles()
+	const customClasses = useCustomStyles({})
 
 	const socket = useSocket()
 
@@ -62,7 +64,7 @@ const Dashboard: React.FC = () => {
 		<LoadingComponent loading={loadingGetGames}>
 			<Grid
 				container
-				className={classes.container}
+				className={customClasses.pageContainer}
 			>
 				<Grid
 					container

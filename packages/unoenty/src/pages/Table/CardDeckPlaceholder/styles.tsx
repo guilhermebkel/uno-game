@@ -6,7 +6,6 @@ import colors from "@/styles/colors"
 
 type UseStylesProps = {
 	isCurrentRoundPlayer: boolean
-	timerRemainingPercentage: number
 }
 
 const cardProportion = 1.55
@@ -74,26 +73,6 @@ const useStyles = makeStyles((theme) => {
 			position: "relative",
 			width: 100,
 			height: 125,
-		},
-		timer: {
-			position: "relative",
-			zIndex: 1,
-			"&::before": {
-				content: "close-quote",
-				position: "absolute",
-				width: "100%",
-				height: (props: UseStylesProps) => `${props.timerRemainingPercentage}%`,
-				opacity: 1,
-				backgroundColor: colors.palette.yellow1,
-				borderRadius: theme.spacing(1),
-				zIndex: -1,
-				bottom: 0,
-				left: 0,
-				boxShadow: `0 0 9px ${colors.palette.yellow1}`,
-				transition: theme.transitions.create("all", {
-					duration: theme.transitions.duration.standard,
-				}),
-			},
 		},
 		avatarContainer: {
 			width: 50,
