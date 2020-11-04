@@ -157,6 +157,7 @@ const CardDeckPlaceholder = (props: CardDeckPlaceholderProps): ReactElement => {
 							maxAngle: 90,
 							radius: 100,
 						})
+
 						const remainingCards = player.handCards.length - MAX_CARDS
 						const isPlaceholder = !card?.id
 						const showPlaceholder = isPlaceholder && remainingCards > 0
