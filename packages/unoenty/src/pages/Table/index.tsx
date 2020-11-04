@@ -258,7 +258,7 @@ const Table: React.FC = () => {
 											</>
 										) : (
 											<CardDeckPlaceholder
-												position="top"
+												position="bottom"
 												player={socket.otherPlayers?.[5]}
 											/>
 										)}

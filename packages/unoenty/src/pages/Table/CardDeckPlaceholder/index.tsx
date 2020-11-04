@@ -26,7 +26,7 @@ const MAX_CARDS = 7
 
 type CardDeckPlaceholderProps = {
 	player: PlayerData
-	position: "left" | "top" | "right"
+	position: "left" | "top" | "right" | "bottom"
 }
 
 type CardDeckPlaceholderPositionStylesMap = {
@@ -85,6 +85,24 @@ const cardDeckPlaceholderPositionStylesMap: CardDeckPlaceholderPositionStylesMap
 			width: 20,
 			height: 40,
 			transform: "rotate(90deg)",
+		},
+		container: {
+			flexDirection: "row-reverse",
+		},
+	},
+	bottom: {
+		cardCounterContainer: {
+			alignItems: "flex-end",
+		},
+		cardContainer: {
+			top: 50,
+			left: -10,
+			transform: "rotate(330deg)",
+		},
+		remainingCardsText: {
+			width: 55,
+			height: 50,
+			transform: "rotate(-90deg)",
 		},
 		container: {
 			flexDirection: "row-reverse",
