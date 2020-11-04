@@ -5,11 +5,11 @@ import colors from "@/styles/colors"
 import Device from "@/utils/device"
 
 const useStyles = makeStyles(theme => {
-	const cardContainerSize = Device.isMobile ? 75 : 150
+	const cardContainerSize = Device.isMobile ? 75 : 120
 
 	return {
 		cardStackContainer: {
-			padding: theme.spacing(3),
+			padding: theme.spacing(4.5),
 			backgroundColor: colors.grayScale[2],
 			width: 215,
 			height: 215,
@@ -32,6 +32,9 @@ const useStyles = makeStyles(theme => {
 			transition: theme.transitions.create("all", {
 				duration: theme.transitions.duration.standard,
 			}),
+			border: `${theme.spacing(0.5)}px solid ${colors.grayScale[13]}`,
+			borderRadius: theme.spacing(2),
+			boxShadow: `0 0 ${theme.spacing(1)}px ${colors.palette.black1}`,
 		},
 		cardStackStateMessage: {
 			backgroundColor: "#FFFF00",

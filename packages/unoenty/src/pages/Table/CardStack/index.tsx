@@ -133,7 +133,6 @@ const CardStack: React.FC<CardStackProps> = (props) => {
 							style={{
 								transform: `rotate(${cards.length - index}rad)`,
 								zIndex: cards.length - index,
-								boxShadow: `0 0 25px ${(index === 0) ? "#000000" : "transparent"}`,
 								filter: (index === 0) ? "saturate(1.5)" : "contrast(0.5)",
 							}}
 						/>
