@@ -28,7 +28,7 @@ import RoundRemainingTime from "@/pages/Table/RoundRemainingTime"
 import Device from "@/utils/device"
 import { getCardPosition } from "@/utils/card"
 
-const CARD_WIDTH = Device.isMobile ? 7 : 20
+const MAX_CARDS = 7
 
 type CardDeckPlaceholderProps = {
 	player: PlayerData
@@ -147,7 +147,7 @@ const CardDeckPlaceholder = (props: CardDeckPlaceholderProps): ReactElement => {
 					container
 					className={classes.cardContainer}
 				>
-					{player.handCards?.map((card, index) => {
+					{[...player.handCards?.slice(0, MAX_CARDS), undefined].map((card, index) => {
 						const { x, y, inclination } = getCardPosition({
 							cardHeight: 62,
 							cardWidth: 40,
@@ -157,20 +157,36 @@ const CardDeckPlaceholder = (props: CardDeckPlaceholderProps): ReactElement => {
 							maxAngle: 90,
 							radius: 100,
 						})
+						const remainingCards = player.handCards.length - MAX_CARDS
+						const isPlaceholder = !card?.id
+						const showPlaceholder = isPlaceholder && remainingCards > 0
+
+						if (isPlaceholder && !showPlaceholder) {
+							return null
+						}
 
 						return (
 							<Grid
 								item
-								key={card.id}
-								className={classes.card}
+								key={card?.id || index}
+								className={`${classes.card} ${showPlaceholder ? classes.remainingCardsContainer : ""}`}
 								style={{
 									transform: `rotate(${inclination}deg)`,
 									top: -y,
 									zIndex: index,
 									left: x,
-									// backgroundImage: `url(${cardPlaceholder})`,
+									backgroundColor: `url(${cardPlaceholder})`,
 								}}
-							/>
+							>
+								{showPlaceholder && (
+									<Typography
+										variant="h3"
+										className={classes.remainingCardsText}
+									>
+										+{remainingCards}
+									</Typography>
+								)}
+							</Grid>
 						)
 					})}
 				</Grid>

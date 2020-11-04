@@ -127,6 +127,27 @@ const useStyles = makeStyles((theme) => {
 			color: (props: UseStylesProps) => `${props.isCurrentRoundPlayer ? colors.palette.yellow1 : colors.grayScale[12]}`,
 			marginBottom: theme.spacing(1),
 		},
+		remainingCardsContainer: {
+			position: "relative",
+			zIndex: 1,
+			"&::before": {
+				content: "close-quote",
+				position: "absolute",
+				width: "100%",
+				height: "100%",
+				backgroundColor: colors.grayScale[6],
+				zIndex: -1,
+				bottom: 0,
+				left: 0,
+			},
+		},
+		remainingCardsText: {
+			fontWeight: "bold",
+			color: colors.palette.black1,
+			transform: "rotate(-90deg)",
+			height: "35px",
+			width: "40px",
+		},
 	}
 })
 
