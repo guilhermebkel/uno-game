@@ -1,5 +1,7 @@
 import { makeStyles } from "@material-ui/core"
 
+import cardConfig from "@/config/card"
+
 import colors from "@/styles/colors"
 
 import Device from "@/utils/device"
@@ -26,7 +28,7 @@ const useStyles = makeStyles(theme => {
 		},
 		card: {
 			height: cardContainerSize,
-			width: "auto",
+			width: cardContainerSize / cardConfig.cardProportion,
 			position: "absolute",
 			left: cardContainerSize * 0.2,
 			transition: theme.transitions.create("all", {
@@ -35,6 +37,7 @@ const useStyles = makeStyles(theme => {
 			border: `${theme.spacing(0.5)}px solid ${colors.grayScale[13]}`,
 			borderRadius: theme.spacing(2),
 			boxShadow: `0 0 ${theme.spacing(1)}px ${colors.palette.black1}`,
+			backgroundColor: colors.grayScale[10],
 		},
 		cardStackStateMessage: {
 			backgroundColor: "#FFFF00",
