@@ -28,9 +28,9 @@ const useStyles = makeStyles((theme) => {
 		},
 		cardContainer: {
 			position: "absolute",
-			top: "50px",
-			left: "125px",
-			// transform: "rotate(90deg)",
+			top: "90px",
+			left: "30px",
+			transform: "rotate(60deg)",
 			transition: theme.transitions.create("all", {
 				duration: theme.transitions.duration.standard,
 			}),
