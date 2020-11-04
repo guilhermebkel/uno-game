@@ -15,7 +15,7 @@ const useStyles = makeStyles(theme => ({
 		top: (props: UseStylesProps) => `${props.opened ? 0 : `-${BAR_HEIGHT}px`}`,
 		left: 0,
 		width: "100%",
-		zIndex: 99999,
+		zIndex: 999999,
 		height: `${BAR_HEIGHT}px`,
 		transition: theme.transitions.create("all", {
 			duration: theme.transitions.duration.standard,

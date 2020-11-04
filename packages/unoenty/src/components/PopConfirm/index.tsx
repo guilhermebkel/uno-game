@@ -13,6 +13,8 @@ import Node from "@/utils/node"
 
 import theme from "@/styles/theme"
 
+import useStyles from "@/components/PopConfirm/styles"
+
 type PopConfirmProps = {
 	title: string
 	message: string
@@ -27,6 +29,8 @@ const PopConfirm: PopConfirmType & React.FC<PopConfirmProps> = (props) => {
 	const { title, message, onConfirm } = props
 
 	const [visible, setVisible] = useState(true)
+
+	const classes = useStyles()
 
 	const handleClose = () => {
 		setVisible(false)
@@ -43,6 +47,7 @@ const PopConfirm: PopConfirmType & React.FC<PopConfirmProps> = (props) => {
 			<Dialog
 				open={visible}
 				onClose={handleClose}
+				className={classes.dialog}
 			>
 				<DialogTitle>{title}</DialogTitle>
 
