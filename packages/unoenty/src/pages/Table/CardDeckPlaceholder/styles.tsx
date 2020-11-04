@@ -35,15 +35,6 @@ const useStyles = makeStyles((theme) => {
 				duration: theme.transitions.duration.standard,
 			}),
 		},
-		cardChipPlayerName: {
-			position: "absolute",
-			top: "50%",
-			left: 0,
-			zIndex: 9999,
-			color: "#000000",
-			fontWeight: "bolder",
-			maxWidth: 200,
-		},
 		card: {
 			height: cardHeight,
 			width: cardWidth,
@@ -57,22 +48,19 @@ const useStyles = makeStyles((theme) => {
 				duration: theme.transitions.duration.standard,
 			}),
 		},
-		playerStateMessage: {
-			backgroundColor: "#EC0000",
-			color: "#FFFFFF",
-			fontWeight: "bolder",
-			fontSize: Device.isMobile ? `${theme.spacing(1.5)}px` : `${theme.spacing(2)}px`,
-			padding: Device.isMobile ? `${theme.spacing(0.5)}px ${theme.spacing(1)}px` : `${theme.spacing(2)}px ${theme.spacing(4)}px`,
-		},
 		cardCounterText: {
 			position: "absolute",
-			top: theme.spacing(1.2),
-			left: theme.spacing(1.5),
+			top: theme.spacing(0.5),
+			left: theme.spacing(0.5),
 			fontWeight: "bold",
+			padding: theme.spacing(0.5),
+			backgroundColor: (props: UseStylesProps) => `${props.isCurrentRoundPlayer ? colors.palette.yellow1 : colors.grayScale[12]}`,
+			border: `${theme.spacing(0.5)}px solid ${colors.palette.blue1}`,
+			borderRadius: theme.spacing(1),
 			color: colors.grayScale[1],
 		},
 		cardCounterContainer: {
-			flex: 1,
+			width: 25,
 			height: "100%",
 		},
 		cardCounterContent: {
@@ -81,18 +69,6 @@ const useStyles = makeStyles((theme) => {
 			height: 30,
 			backgroundColor: (props: UseStylesProps) => `${props.isCurrentRoundPlayer ? colors.palette.yellow1 : colors.grayScale[12]}`,
 			borderRadius: theme.spacing(0.5),
-			zIndex: 1,
-			"&::before": {
-				content: "close-quote",
-				position: "absolute",
-				width: "100%",
-				height: "100%",
-				backgroundColor: (props: UseStylesProps) => `${props.isCurrentRoundPlayer ? colors.palette.yellow1 : colors.grayScale[12]}`,
-				top: theme.spacing(0.5),
-				left: theme.spacing(0.5),
-				borderRadius: theme.spacing(1),
-				border: `${theme.spacing(0.5)}px solid ${colors.palette.blue1}`,
-			},
 		},
 		container: {
 			position: "relative",
@@ -120,7 +96,7 @@ const useStyles = makeStyles((theme) => {
 			},
 		},
 		avatarContainer: {
-			flex: 1,
+			width: 50,
 		},
 		playerName: {
 			fontWeight: "bold",
@@ -147,6 +123,24 @@ const useStyles = makeStyles((theme) => {
 			transform: "rotate(-90deg)",
 			height: "35px",
 			width: "40px",
+		},
+		playerStateMessageContainer: {
+			position: "absolute",
+			top: 0,
+			left: 0,
+			width: "160px",
+			height: "160px",
+			zIndex: 50,
+			borderRadius: "100%",
+		},
+		playerStateMessageText: {
+			color: colors.grayScale[15],
+			textShadow: `1px  1px 0 ${colors.grayScale[1]}, 1px -1px 0 ${colors.grayScale[1]}, -1px  1px 0 ${colors.grayScale[1]}, -1px -1px 0 ${colors.grayScale[1]}`,
+			fontWeight: "bold",
+			backgroundColor: colors.palette.yellow1,
+			padding: theme.spacing(1, 3),
+			boxShadow: `0 0 50px ${colors.grayScale[1]}`,
+			transform: "rotate(-15deg)",
 		},
 	}
 })

@@ -2,6 +2,7 @@ import React, { useState } from "react"
 import {
 	Grid,
 	Typography,
+	Zoom,
 } from "@material-ui/core"
 
 import { PlayerData, PlayerState } from "@uno-game/protocols"
@@ -34,7 +35,7 @@ const CardDeckPlaceholder: React.FC<CardDeckPlaceholderProps> = (props) => {
 	const socketStore = useSocketStore()
 	const socket = useSocket()
 
-	const [, setPlayerStateMessage] = useState<string>("")
+	const [playerStateMessage, setPlayerStateMessage] = useState<string>("")
 
 	const limitedCards = player?.handCards?.slice(0, MAX_CARDS)
 
@@ -59,16 +60,16 @@ const CardDeckPlaceholder: React.FC<CardDeckPlaceholderProps> = (props) => {
 	const handlePlayerStateChange = (playerState: PlayerState, playerId: string, amountToBuy?: number) => {
 		if (playerId === player?.id) {
 			if (playerState === "Uno") {
-				setPlayerStateMessage("UNO")
+				setPlayerStateMessage("UNO!")
 			} else if (playerState === "Blocked") {
-				setPlayerStateMessage("BLOCKED")
+				setPlayerStateMessage("BLOCKED!")
 			} else if (playerState === "BuyCards") {
-				setPlayerStateMessage(`+${amountToBuy}`)
+				setPlayerStateMessage(`BUY ${amountToBuy}!`)
 			}
 
 			setTimeout(() => {
 				setPlayerStateMessage("")
-			}, 1500)
+			}, 2000)
 		}
 	}
 
@@ -91,6 +92,22 @@ const CardDeckPlaceholder: React.FC<CardDeckPlaceholderProps> = (props) => {
 				alignItems="center"
 				className={classes.container}
 			>
+				<Zoom in={!!playerStateMessage}>
+					<Grid
+						container
+						justify="center"
+						alignItems="center"
+						className={classes.playerStateMessageContainer}
+					>
+						<Typography
+							variant="h3"
+							className={classes.playerStateMessageText}
+						>
+							{playerStateMessage}
+						</Typography>
+					</Grid>
+				</Zoom>
+
 				<Grid
 					container
 					className={classes.cardCounterContainer}
@@ -150,7 +167,7 @@ const CardDeckPlaceholder: React.FC<CardDeckPlaceholderProps> = (props) => {
 							radius: 100,
 						})
 
-						const remainingCards = limitedCards.length - MAX_CARDS
+						const remainingCards = player.handCards.length - MAX_CARDS
 						const isPlaceholder = !card?.id
 						const showPlaceholder = isPlaceholder && remainingCards > 0
 
