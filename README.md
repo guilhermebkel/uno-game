@@ -56,10 +56,10 @@ A simple UNO Game made in Javascript, supposed to be blazing easier and faster t
 - [ ] Refactoring the Table Page to give it a better looking.
 - [X] Creating a Dashboard Page which I can use to see open rooms, create new ones and get into the ones I want to.
 - [X] Implementing a server integration with Dashboard Page to make it to work.
-- [ ] Refactoring the Dashboard Page to give it a better looking.
+- [X] Refactoring the Dashboard Page to give it a better looking.
 - [X] Creating a Room Page which I can use to get into a room and see its details.
 - [X] Implementing a server integration with Room Page to make it to work.
-- [ ] Refactoring the Room Page to give it a better looking.
+- [X] Refactoring the Room Page to give it a better looking.
 - [X] Implementing a monorepository manager.
 - [X] Updating README with contributors info.
 - [ ] Changing the card assets (in order to avoid copyright issues).
