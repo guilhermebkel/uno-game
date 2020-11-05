@@ -14,7 +14,6 @@ import useStyles from "@/pages/Table/CardStack/styles"
 import { useCardStore } from "@/store/Card"
 
 import ChangeColorModal from "@/pages/Table/ChangeColorModal"
-import RoundRemainingTime from "@/pages/Table/RoundRemainingTime"
 
 import arrowCircle from "@/assets/arrow_circle.png"
 
@@ -111,19 +110,10 @@ const CardStack: React.FC<CardStackProps> = (props) => {
 			>
 				<Container
 					disableGutters
-					className={classes.cardContainer}
+					className={classes.cardStackContent}
 					maxWidth={false}
 					innerRef={cardStackRef}
 				>
-					{socket?.currentPlayer?.isCurrentRoundPlayer && (
-						<RoundRemainingTime
-							style={{
-								top: -50,
-								right: -50,
-							}}
-						/>
-					)}
-
 					{cards?.map((card, index) => (
 						<img
 							key={card.id}

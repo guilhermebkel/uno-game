@@ -7,7 +7,7 @@ import colors from "@/styles/colors"
 import Device from "@/utils/device"
 
 const useStyles = makeStyles(theme => {
-	const cardContainerSize = Device.isMobile ? 75 : 120
+	const cardHeight = Device.isMobile ? 75 : 120
 
 	return {
 		cardStackContainer: {
@@ -18,7 +18,7 @@ const useStyles = makeStyles(theme => {
 			borderRadius: "100%",
 			border: `${theme.spacing(1)}px solid ${colors.grayScale[5]}`,
 		},
-		cardContainer: {
+		cardStackContent: {
 			width: "100%",
 			height: "100%",
 			position: "relative",
@@ -27,10 +27,10 @@ const useStyles = makeStyles(theme => {
 			}),
 		},
 		card: {
-			height: cardContainerSize,
-			width: cardContainerSize / cardConfig.cardProportion,
+			height: cardHeight,
+			width: cardHeight / cardConfig.cardProportion,
 			position: "absolute",
-			left: cardContainerSize * 0.2,
+			left: cardHeight * 0.2,
 			transition: theme.transitions.create("all", {
 				duration: theme.transitions.duration.standard,
 			}),

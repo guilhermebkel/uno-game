@@ -1,5 +1,7 @@
 import { makeStyles } from "@material-ui/core"
 
+import cardConfig from "@/config/card"
+
 import Device from "@/utils/device"
 
 import colors from "@/styles/colors"
@@ -8,13 +10,11 @@ type UseStylesProps = {
 	isCurrentRoundPlayer: boolean
 }
 
-const cardProportion = 1.55
+export const CARD_WIDTH = 40
+export const CARD_HEIGHT = CARD_WIDTH * cardConfig.cardProportion
 
 const useStyles = makeStyles((theme) => {
 	const cardContainerSize = Device.isMobile ? 50 : 120
-
-	const cardWidth = 40
-	const cardHeight = cardWidth * cardProportion
 
 	return {
 		cardContent: {
@@ -35,8 +35,8 @@ const useStyles = makeStyles((theme) => {
 			}),
 		},
 		card: {
-			height: cardHeight,
-			width: cardWidth,
+			height: CARD_HEIGHT,
+			width: CARD_WIDTH,
 			position: "absolute",
 			pointerEvents: "none",
 			backgroundSize: "cover",

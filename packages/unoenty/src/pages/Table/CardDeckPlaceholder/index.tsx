@@ -12,15 +12,16 @@ import {
 	Divider,
 } from "@/components"
 
-import useStyles from "@/pages/Table/CardDeckPlaceholder/styles"
-
 import useSocket from "@/hooks/useSocket"
 import useDidMount from "@/hooks/useDidMount"
+
 import { useSocketStore } from "@/store/Socket"
 
+import useStyles, { CARD_HEIGHT, CARD_WIDTH } from "@/pages/Table/CardDeckPlaceholder/styles"
 import useCustomStyles from "@/styles/custom"
 
 import { getCardPosition } from "@/utils/card"
+import { buildPercentage } from "@/utils/number"
 
 const MAX_CARDS = 7
 
@@ -40,73 +41,27 @@ type CardDeckPlaceholderPositionStylesMap = {
 
 const cardDeckPlaceholderPositionStylesMap: CardDeckPlaceholderPositionStylesMap = {
 	left: {
-		cardCounterContainer: {
-			alignItems: "flex-end",
-		},
-		cardContainer: {
-			top: 90,
-			left: 50,
-			transform: "rotate(60deg)",
-		},
-		remainingCardsText: {
-			width: 55,
-			height: 50,
-			transform: "rotate(-90deg)",
-		},
+		cardCounterContainer: { alignItems: "flex-end" },
+		cardContainer: { top: 90, left: 50, transform: "rotate(60deg)" },
+		remainingCardsText: { width: 55, height: 50, transform: "rotate(-90deg)" },
 	},
 	top: {
-		cardCounterContainer: {
-			alignItems: "flex-start",
-		},
-		cardContainer: {
-			top: 110,
-			left: -20,
-			transform: "rotate(145deg)",
-		},
-		remainingCardsText: {
-			width: 20,
-			height: 40,
-			transform: "rotate(90deg)",
-		},
-		container: {
-			flexDirection: "row-reverse",
-		},
+		cardCounterContainer: { alignItems: "flex-start" },
+		cardContainer: { top: 110, left: -20, transform: "rotate(145deg)" },
+		remainingCardsText: { width: 20, height: 40, transform: "rotate(90deg)" },
+		container: { flexDirection: "row-reverse" },
 	},
 	right: {
-		cardCounterContainer: {
-			alignItems: "flex-end",
-		},
-		cardContainer: {
-			top: 75,
-			left: -50,
-			transform: "rotate(235deg)",
-		},
-		remainingCardsText: {
-			width: 20,
-			height: 40,
-			transform: "rotate(90deg)",
-		},
-		container: {
-			flexDirection: "row-reverse",
-		},
+		cardCounterContainer: { alignItems: "flex-end" },
+		cardContainer: { top: 75, left: -50, transform: "rotate(235deg)" },
+		remainingCardsText: { width: 20, height: 40, transform: "rotate(90deg)" },
+		container: { flexDirection: "row-reverse" },
 	},
 	bottom: {
-		cardCounterContainer: {
-			alignItems: "flex-end",
-		},
-		cardContainer: {
-			top: 50,
-			left: -10,
-			transform: "rotate(330deg)",
-		},
-		remainingCardsText: {
-			width: 55,
-			height: 50,
-			transform: "rotate(-90deg)",
-		},
-		container: {
-			flexDirection: "row-reverse",
-		},
+		cardCounterContainer: { alignItems: "flex-end" },
+		cardContainer: { top: 50, left: -10, transform: "rotate(330deg)" },
+		remainingCardsText: { width: 55, height: 50, transform: "rotate(-90deg)" },
+		container: { flexDirection: "row-reverse" },
 	},
 }
 
@@ -119,20 +74,15 @@ const CardDeckPlaceholder: React.FC<CardDeckPlaceholderProps> = (props) => {
 	const [playerStateMessage, setPlayerStateMessage] = useState<string>("")
 
 	const limitedCards = player?.handCards?.slice(0, MAX_CARDS)
+	const allCards = player.handCards
 	const positionStyles = cardDeckPlaceholderPositionStylesMap[position]
-
-	const buildTimerRemainingTimePercentage = () => {
-		const roundRemainingTimeInSeconds = socketStore.game?.roundRemainingTimeInSeconds as number
-		const maxRoundDurationInSeconds = socketStore.game?.maxRoundDurationInSeconds as number
-
-		const roundRemainingTimePercentage = parseInt(((roundRemainingTimeInSeconds / maxRoundDurationInSeconds) * 100).toString(), 10)
-
-		return roundRemainingTimePercentage
-	}
 
 	const customClasses = useCustomStyles({
 		limitedNameWidth: 50,
-		avatarTimerRemainingPercentage: buildTimerRemainingTimePercentage(),
+		avatarTimerRemainingPercentage: buildPercentage(
+			socketStore.game?.roundRemainingTimeInSeconds as number,
+			socketStore.game?.maxRoundDurationInSeconds as number,
+		),
 	})
 
 	const classes = useStyles({
@@ -168,186 +118,123 @@ const CardDeckPlaceholder: React.FC<CardDeckPlaceholderProps> = (props) => {
 	}
 
 	return (
-		<>
-			<Grid
-				container
-				alignItems="center"
-				className={classes.container}
-				style={positionStyles.container}
-			>
-				<Zoom in={!!playerStateMessage}>
-					<Grid
-						container
-						justify="center"
-						alignItems="center"
-						className={classes.playerStateMessageContainer}
-					>
-						<Typography
-							variant="h3"
-							className={classes.playerStateMessageText}
-						>
-							{playerStateMessage}
-						</Typography>
-					</Grid>
-				</Zoom>
-
+		<Grid
+			container
+			alignItems="center"
+			className={classes.container}
+			style={positionStyles.container}
+		>
+			<Zoom in={!!playerStateMessage}>
 				<Grid
 					container
-					className={classes.cardCounterContainer}
-					style={positionStyles.cardCounterContainer}
-					alignItems="flex-end"
-				>
-					<Grid
-						container
-						className={classes.cardCounterContent}
-						alignItems="center"
-						justify="center"
-					>
-						<Typography
-							variant="h3"
-							className={classes.cardCounterText}
-						>
-							{player.handCards.length}
-						</Typography>
-					</Grid>
-				</Grid>
-
-				<Divider orientation="vertical" size={2} />
-
-				<Grid
-					container
-					direction="column"
+					justify="center"
 					alignItems="center"
-					className={classes.avatarContainer}
+					className={classes.playerStateMessageContainer}
 				>
 					<Typography
 						variant="h3"
-						className={`${classes.playerName} ${customClasses.limitedName}`}
+						className={classes.playerStateMessageText}
 					>
-						{player.name}
+						{playerStateMessage}
 					</Typography>
-
-					<Avatar
-						name={player.name}
-						size="small"
-						className={player.isCurrentRoundPlayer ? customClasses.avatarTimer : ""}
-					/>
 				</Grid>
+			</Zoom>
 
-				<Divider orientation="vertical" size={2} />
-
+			<Grid
+				container
+				className={classes.cardCounterContainer}
+				style={positionStyles.cardCounterContainer}
+				alignItems="flex-end"
+			>
 				<Grid
 					container
-					className={classes.cardContainer}
-					style={positionStyles.cardContainer}
+					className={classes.cardCounterContent}
+					alignItems="center"
+					justify="center"
 				>
-					{[...limitedCards, undefined].map((card, index) => {
-						const { x, y, inclination } = getCardPosition({
-							cardHeight: 62,
-							cardWidth: 40,
-							cardIndex: index,
-							cardsCount: limitedCards.length,
-							expectedCardsCount: limitedCards.length,
-							maxAngle: 90,
-							radius: 100,
-						})
-
-						const remainingCards = player.handCards.length - MAX_CARDS
-						const isPlaceholder = !card?.id
-						const showPlaceholder = isPlaceholder && remainingCards > 0
-
-						if (isPlaceholder && !showPlaceholder) {
-							return null
-						}
-
-						return (
-							<Grid
-								item
-								key={card?.id || index}
-								className={`${classes.card} ${showPlaceholder ? classes.remainingCardsContainer : ""}`}
-								style={{
-									transform: `rotate(${inclination}deg)`,
-									top: -y,
-									zIndex: index,
-									left: x,
-								}}
-							>
-								{showPlaceholder && (
-									<Typography
-										variant="h3"
-										className={classes.remainingCardsText}
-										style={positionStyles.remainingCardsText}
-									>
-										+{remainingCards}
-									</Typography>
-								)}
-							</Grid>
-						)
-					})}
+					<Typography
+						variant="h3"
+						className={classes.cardCounterText}
+					>
+						{allCards.length}
+					</Typography>
 				</Grid>
 			</Grid>
-			{/* <Menu
-				anchorEl={cardDeckPlaceholderRef?.current}
-				keepMounted
-				open={!!playerStateMessage}
-				anchorOrigin={{
-					horizontal: "center",
-					vertical: "bottom",
-				}}
-				PaperProps={{
-					className: classes.playerStateMessage,
-				}}
-				style={{ zIndex: 1 }}
+
+			<Divider orientation="vertical" size={2} />
+
+			<Grid
+				container
+				direction="column"
+				alignItems="center"
+				className={classes.avatarContainer}
 			>
-				{playerStateMessage}
-			</Menu>
-
-			<Container
-				disableGutters
-				className={classes.cardContainer}
-				maxWidth={false}
-				innerRef={cardDeckPlaceholderRef}
-				style={{ width: (cards?.length * CARD_WIDTH) + CARD_WIDTH	}}
-			>
-				{player?.name && (
-					<Chip
-						label={player?.name}
-						className={classes.cardChipPlayerName}
-						style={{ backgroundColor: player?.isCurrentRoundPlayer ? "#FFE600" : "#E0E0E0" }}
-					/>
-				)}
-
-				{player?.isCurrentRoundPlayer && (
-					<RoundRemainingTime
-						style={{
-							top: Device.isMobile ? "120%" : "80%",
-							left: 0,
-						}}
-					/>
-				)}
-
-				<Container
-					disableGutters
-					className={classes.cardContainer}
-					maxWidth={false}
-					style={{ transform }}
+				<Typography
+					variant="h3"
+					className={`${classes.playerName} ${customClasses.limitedName}`}
 				>
-					{cards?.map((card, index) => (
-						<img
-							key={card.id}
-							className={classes.card}
-							alt="card-placeholder"
-							src={cardPlaceholder}
+					{player.name}
+				</Typography>
+
+				<Avatar
+					name={player.name}
+					size="small"
+					className={player.isCurrentRoundPlayer ? customClasses.avatarTimer : ""}
+				/>
+			</Grid>
+
+			<Divider orientation="vertical" size={2} />
+
+			<Grid
+				container
+				className={classes.cardContainer}
+				style={positionStyles.cardContainer}
+			>
+				{[...limitedCards, undefined].map((card, index) => {
+					const { x, y, inclination } = getCardPosition({
+						cardHeight: CARD_HEIGHT,
+						cardWidth: CARD_WIDTH,
+						cardIndex: index,
+						cardsCount: limitedCards.length,
+						expectedCardsCount: limitedCards.length,
+						maxAngle: 90,
+						radius: 100,
+					})
+
+					const remainingCards = allCards.length - MAX_CARDS
+					const isPlaceholder = !card?.id
+					const showPlaceholder = isPlaceholder && remainingCards > 0
+
+					if (isPlaceholder && !showPlaceholder) {
+						return null
+					}
+
+					return (
+						<Grid
+							item
+							key={card?.id || index}
+							className={`${classes.card} ${showPlaceholder ? classes.remainingCardsContainer : ""}`}
 							style={{
+								transform: `rotate(${inclination}deg)`,
+								top: -y,
 								zIndex: index,
-								left: index * CARD_WIDTH,
-								filter: player?.isCurrentRoundPlayer ? "none" : "grayscale(1)",
+								left: x,
 							}}
-						/>
-					))}
-				</Container>
-			</Container> */}
-		</>
+						>
+							{showPlaceholder && (
+								<Typography
+									variant="h3"
+									className={classes.remainingCardsText}
+									style={positionStyles.remainingCardsText}
+								>
+									+{remainingCards}
+								</Typography>
+							)}
+						</Grid>
+					)
+				})}
+			</Grid>
+		</Grid>
 	)
 }
 
