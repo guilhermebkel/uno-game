@@ -31,6 +31,10 @@ export default createMuiTheme({
 		info: {
 			main: "#222329",
 		},
+		action: {
+			disabledBackground: colors.grayScale[10],
+			disabled: colors.grayScale[2],
+		},
 	},
 	overrides: {
 		MuiButton: {

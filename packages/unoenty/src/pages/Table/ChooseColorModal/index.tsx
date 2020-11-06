@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { Dialog, Grid, ButtonBase } from "@material-ui/core"
+import { Dialog, Grid, ButtonBase, ThemeProvider } from "@material-ui/core"
 
 import { Divider } from "@/components"
 
@@ -10,6 +10,8 @@ import { CardColors } from "@uno-game/protocols"
 import useStyles from "@/pages/Table/ChooseColorModal/styles"
 
 import chooseColorTextImg from "@/assets/texts/choose-a-color.png"
+
+import theme from "@/styles/theme"
 
 type ColoredButtonMap = {
 	[key in CardColors]?: {
@@ -37,15 +39,15 @@ const coloredButtonMap: ColoredButtonMap = {
 	},
 }
 
-type ChooseModalType = {
+type ChooseColorModalType = {
 	open: () => Promise<CardColors>
 }
 
-type ChooseModalProps = {
+type ChooseColorModalProps = {
 	callback: (color: CardColors) => void
 }
 
-const ChooseColorModal: ChooseModalType & React.FC<ChooseModalProps> = (props) => {
+const ChooseColorModal: ChooseColorModalType & React.FC<ChooseColorModalProps> = (props) => {
 	const classes = useStyles()
 
 	const { callback } = props
@@ -58,60 +60,62 @@ const ChooseColorModal: ChooseModalType & React.FC<ChooseModalProps> = (props) =
 	}
 
 	return (
-		<Dialog
-			open={opened}
-			className={classes.dialog}
-			PaperProps={{
-				className: classes.dialogPaper,
-			}}
-		>
-			<Grid
-				container
-				alignItems="center"
-				justify="center"
-				direction="column"
-				className={classes.dialogContainer}
+		<ThemeProvider theme={theme}>
+			<Dialog
+				open={opened}
+				className={classes.dialog}
+				PaperProps={{
+					className: classes.dialogPaper,
+				}}
 			>
-				<Grid
-					container
-					justify="center"
-				>
-					<img
-						src={chooseColorTextImg}
-						alt="Choose a color!"
-					/>
-				</Grid>
-
-				<Divider orientation="horizontal" size={5} />
-
 				<Grid
 					container
 					alignItems="center"
 					justify="center"
-					wrap="wrap"
-					className={classes.colorSelectorContainer}
+					direction="column"
+					className={classes.dialogContainer}
 				>
-					{Object.entries(coloredButtonMap)
-						.map(([colorName, info]) => (
-							<Grid
-								className={classes.colorSelectorButton}
-								component={ButtonBase}
-								style={{
-									backgroundColor: info?.color,
-									border: `8px solid ${info?.borderColor}`,
-									boxShadow: `0 0 16px ${info?.color}`,
-								}}
-								onClick={() => handleClose(colorName as CardColors)}
-							/>
-						))}
+					<Grid
+						container
+						justify="center"
+					>
+						<img
+							src={chooseColorTextImg}
+							alt="Choose a color!"
+						/>
+					</Grid>
+
+					<Divider orientation="horizontal" size={5} />
+
+					<Grid
+						container
+						alignItems="center"
+						justify="center"
+						wrap="wrap"
+						className={classes.colorSelectorContainer}
+					>
+						{Object.entries(coloredButtonMap)
+							.map(([colorName, info]) => (
+								<Grid
+									className={classes.colorSelectorButton}
+									component={ButtonBase}
+									style={{
+										backgroundColor: info?.color,
+										border: `8px solid ${info?.borderColor}`,
+										boxShadow: `0 0 16px ${info?.color}`,
+									}}
+									onClick={() => handleClose(colorName as CardColors)}
+								/>
+							))}
+					</Grid>
 				</Grid>
-			</Grid>
-		</Dialog>
+			</Dialog>
+		</ThemeProvider>
 	)
 }
 
 ChooseColorModal.open = (): Promise<CardColors> => new Promise((resolve) => NodeUtil.renderComponent(
-	"change-color-modal",
+	"choose-color-modal",
 	<ChooseColorModal
 		callback={resolve}
 	/>,
