@@ -2,8 +2,6 @@ import { makeStyles } from "@material-ui/core"
 
 import colors from "@/styles/colors"
 
-const BAR_HEIGHT = 24
-
 type UseStylesProps = {
 	opened: boolean
 }
@@ -11,12 +9,9 @@ type UseStylesProps = {
 const useStyles = makeStyles(theme => ({
 	container: {
 		backgroundColor: colors.palette.red1,
-		position: "fixed",
-		top: (props: UseStylesProps) => `${props.opened ? 0 : `-${BAR_HEIGHT}px`}`,
-		left: 0,
+		opacity: (props: UseStylesProps) => `${props.opened ? 1 : 0}`,
 		width: "100%",
-		zIndex: 999999,
-		height: `${BAR_HEIGHT}px`,
+		height: (props: UseStylesProps) => `${props.opened ? `${theme.spacing(4)}px` : 0}`,
 		transition: theme.transitions.create("all", {
 			duration: theme.transitions.duration.standard,
 		}),

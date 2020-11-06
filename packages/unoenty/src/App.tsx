@@ -19,6 +19,7 @@ const useStyles = makeStyles(theme => ({
 		overflowX: "hidden",
 		backgroundColor: colors.grayScale[1],
 		height: "100%",
+		flex: 1,
 	},
 	socketContainer: {
 		height: "100%",
