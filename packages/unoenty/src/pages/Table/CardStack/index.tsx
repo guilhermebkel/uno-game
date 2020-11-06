@@ -13,7 +13,7 @@ import useStyles from "@/pages/Table/CardStack/styles"
 
 import { useCardStore } from "@/store/Card"
 
-import ChangeColorModal from "@/pages/Table/ChangeColorModal"
+import ChooseColorModal from "@/pages/Table/ChooseColorModal"
 
 import arrowCircle from "@/assets/arrow_circle.png"
 
@@ -46,7 +46,7 @@ const CardStack: React.FC<CardStackProps> = (props) => {
 		const isComboColorEffect = cardComboIds?.length > 1 && cardStore?.selectedCards?.every(card => isColorEffectCard(card.type))
 
 		if (isSingleColorEffect || isComboColorEffect) {
-			selectedColor = await ChangeColorModal.open()
+			selectedColor = await ChooseColorModal.open()
 
 			if (!selectedColor) {
 				return

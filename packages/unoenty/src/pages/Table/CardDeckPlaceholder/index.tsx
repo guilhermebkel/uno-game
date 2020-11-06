@@ -74,7 +74,7 @@ const CardDeckPlaceholder: React.FC<CardDeckPlaceholderProps> = (props) => {
 	const [playerStateMessage, setPlayerStateMessage] = useState<string>("")
 
 	const limitedCards = player?.handCards?.slice(0, MAX_CARDS)
-	const allCards = player.handCards
+	const allCards = player?.handCards
 	const positionStyles = cardDeckPlaceholderPositionStylesMap[position]
 
 	const customClasses = useCustomStyles({

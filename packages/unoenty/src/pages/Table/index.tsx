@@ -27,7 +27,6 @@ import CardStack from "@/pages/Table/CardStack"
 import CardDeck from "@/pages/Table/CardDeck"
 import CardDeckPlaceholder from "@/pages/Table/CardDeckPlaceholder"
 import CustomCardDragPreview from "@/pages/Table/CustomCardDragPreview"
-import Latency from "@/pages/Table/Latency"
 import TableChat from "@/pages/Table/TableChat"
 
 import CardProvider from "@/store/Card"
@@ -242,10 +241,7 @@ const Table: React.FC = () => {
 								</Grid>
 							</Grid>
 							<Grid container alignItems="center">
-								<Grid item xs={1}>
-									<Latency />
-								</Grid>
-								<Grid item xs={10}>
+								<Grid item xs={12}>
 									<Grid container justify="center">
 										{socket?.currentPlayer ? (
 											<>
@@ -264,7 +260,6 @@ const Table: React.FC = () => {
 										)}
 									</Grid>
 								</Grid>
-								<Grid item xs={1}></Grid>
 							</Grid>
 						</Grid>
 					</DndProvider>
