@@ -252,7 +252,15 @@ class GameService {
 		this.nextRound(gameId)
 	}
 
-	makeComputedPlay (gameId: string, playerId: string): void {
+	changePlayerStatus (gameId: string, playerId: string, playerStatus: PlayerStatus) {
+		const game = this.getGame(gameId)
+
+		game.players = this.buildPlayersWithChangedPlayerStatus(gameId, playerId, playerStatus)
+
+		this.setGameData(gameId, game)
+	}
+
+	private makeComputedPlay (gameId: string, playerId: string): void {
 		const game = this.getGame(gameId)
 
 		const player = game.players.find(playerItem => playerItem.id === playerId)
@@ -274,14 +282,6 @@ class GameService {
 		const randomCardColor = CardService.retrieveRandomCardColor()
 
 		this.putCard(playerId, [usableCard.id], gameId, randomCardColor)
-	}
-
-	changePlayerStatus (gameId: string, playerId: string, playerStatus: PlayerStatus) {
-		const game = this.getGame(gameId)
-
-		game.players = this.buildPlayersWithChangedPlayerStatus(gameId, playerId, playerStatus)
-
-		this.setGameData(gameId, game)
 	}
 
 	private getRoundRemainingTimeInSeconds (gameId: string): number {
