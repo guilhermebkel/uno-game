@@ -17,7 +17,7 @@ import useDidMount from "@/hooks/useDidMount"
 
 import { useSocketStore } from "@/store/Socket"
 
-import useStyles, { CARD_HEIGHT, CARD_WIDTH } from "@/pages/Table/CardDeckPlaceholder/styles"
+import useStyles from "@/pages/Table/CardDeckPlaceholder/styles"
 import useCustomStyles from "@/styles/custom"
 
 import { getCardPosition } from "@/utils/card"
@@ -193,8 +193,8 @@ const CardDeckPlaceholder: React.FC<CardDeckPlaceholderProps> = (props) => {
 			>
 				{[...limitedCards, undefined].map((card, index) => {
 					const { x, y, inclination } = getCardPosition({
-						cardHeight: CARD_HEIGHT,
-						cardWidth: CARD_WIDTH,
+						cardHeight: 62,
+						cardWidth: 40,
 						cardIndex: index,
 						cardsCount: limitedCards.length,
 						expectedCardsCount: limitedCards.length,
