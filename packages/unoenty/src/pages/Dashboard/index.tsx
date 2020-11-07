@@ -19,6 +19,8 @@ import { Divider, LoadingComponent, GameCard } from "@/components"
 import useStyles from "@/pages/Dashboard/styles"
 import useCustomStyles from "@/styles/custom"
 
+let isRetrievingGames = false
+
 const Dashboard: React.FC = () => {
 	const [games, setGames] = useState<Game[]>([])
 
@@ -42,11 +44,19 @@ const Dashboard: React.FC = () => {
 	}
 
 	const getGameList = async () => {
+		if (isRetrievingGames) {
+			return
+		}
+
+		isRetrievingGames = true
+
 		const { data } = await api.get("/games")
 
 		setGames(data.games)
 
 		setLoadingGetGames(false)
+
+		isRetrievingGames = false
 	}
 
 	const onGameListUpdated = () => {
