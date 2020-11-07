@@ -318,6 +318,10 @@ class GameService {
 			gameId,
 			timeInSeconds: game.maxRoundDurationInSeconds,
 		})
+
+		const gameRoundRemainingTime = this.getRoundRemainingTimeInSeconds(gameId)
+
+		GameRoundService.emitGameRoundEvent(gameId, "GameRoundRemainingTimeChanged", gameRoundRemainingTime)
 	}
 
 	private removeRoundCounter (gameId: string) {
