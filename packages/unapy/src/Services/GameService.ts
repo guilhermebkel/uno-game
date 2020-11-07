@@ -463,23 +463,11 @@ class GameService {
 		this.setGameData(gameId, game)
 
 		const nextPlayerInfo = this.getCurrentPlayerInfo(gameId)
-		const nextPlayerCanMakeComputedPlay = this.playerCanMakeComputedPlay(nextPlayerInfo.playerStatus)
 
-		if (nextPlayerCanMakeComputedPlay) {
+		if (nextPlayerInfo.playerStatus === "afk") {
 			setTimeout(() => {
 				this.makeComputedPlay(gameId, nextPlayerInfo.id)
 			}, 1000)
-		}
-	}
-
-	private playerCanMakeComputedPlay (playerStatus: PlayerStatus) {
-		const isAfk = playerStatus === "afk"
-		const isOffline = playerStatus === "offline"
-
-		if (isAfk || isOffline) {
-			return true
-		} else {
-			return false
 		}
 	}
 
