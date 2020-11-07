@@ -10,11 +10,12 @@ type UseStylesProps = {
 	isCurrentRoundPlayer: boolean
 }
 
-export const CARD_WIDTH = 40
+export const CARD_WIDTH = Device.isMobile ? 25 : 40
 export const CARD_HEIGHT = CARD_WIDTH * cardConfig.cardProportion
 
 const useStyles = makeStyles((theme) => {
 	const cardContainerSize = Device.isMobile ? 50 : 120
+	const playerStateMessageContainerSize = Device.isMobile ? 90 : 160
 
 	return {
 		cardContent: {
@@ -26,6 +27,7 @@ const useStyles = makeStyles((theme) => {
 			}),
 		},
 		cardContainer: {
+			display: Device.isMobile ? "none" : "flex",
 			position: "absolute",
 			top: 90,
 			left: 50,
@@ -71,8 +73,10 @@ const useStyles = makeStyles((theme) => {
 		},
 		container: {
 			position: "relative",
-			width: 100,
-			height: 125,
+			width: Device.isMobile ? "auto !important" : 100,
+			height: Device.isMobile ? "auto !important" : 125,
+			// eslint-disable-next-line
+			flexDirection: Device.isMobile ? "column !important" as any : "row",
 		},
 		avatarContainer: {
 			width: 50,
@@ -107,8 +111,8 @@ const useStyles = makeStyles((theme) => {
 			position: "absolute",
 			top: 0,
 			left: 0,
-			width: "160px",
-			height: "160px",
+			width: playerStateMessageContainerSize,
+			height: playerStateMessageContainerSize,
 			zIndex: 50,
 			borderRadius: "100%",
 		},
@@ -117,7 +121,7 @@ const useStyles = makeStyles((theme) => {
 			textShadow: `1px  1px 0 ${colors.grayScale[1]}, 1px -1px 0 ${colors.grayScale[1]}, -1px  1px 0 ${colors.grayScale[1]}, -1px -1px 0 ${colors.grayScale[1]}`,
 			fontWeight: "bold",
 			backgroundColor: colors.palette.yellow1,
-			padding: theme.spacing(1, 3),
+			padding: theme.spacing(1, Device.isMobile ? 1.5 : 3),
 			boxShadow: `0 0 50px ${colors.grayScale[1]}`,
 			transform: "rotate(-15deg)",
 		},

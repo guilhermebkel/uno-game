@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => {
 			transition: theme.transitions.create("all", {
 				duration: theme.transitions.duration.standard,
 			}),
-			transform: "translateY(64px)",
+			transform: `translateY(${theme.spacing(Device.isMobile ? 7 : 8)}px)`,
 		},
 		card: {
 			height: cardContainerSize,
@@ -66,12 +66,9 @@ const useStyles = makeStyles((theme) => {
 		title: {
 			fontWeight: "bold",
 			color: colors.grayScale[13],
-			[theme.breakpoints.down("md")]: {
-				maxWidth: "100px",
-			},
 		},
 		avatarContainer: {
-			marginBottom: theme.spacing(2),
+			marginBottom: theme.spacing(Device.isMobile ? 0 : 2),
 		},
 	}
 })

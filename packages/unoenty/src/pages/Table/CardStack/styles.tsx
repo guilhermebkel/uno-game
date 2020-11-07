@@ -8,16 +8,17 @@ import Device from "@/utils/device"
 
 const useStyles = makeStyles(theme => {
 	const cardHeight = Device.isMobile ? 75 : 120
+	const cardStackSize = Device.isMobile ? 120 : 215
 
 	return {
 		cardStackContainer: {
 			position: "relative",
-			padding: theme.spacing(4.5),
+			padding: theme.spacing(Device.isMobile ? 2.25 : 4.5),
 			backgroundColor: colors.grayScale[2],
-			width: 215,
-			height: 215,
+			width: cardStackSize,
+			height: cardStackSize,
 			borderRadius: "100%",
-			border: `${theme.spacing(1)}px solid ${colors.grayScale[5]}`,
+			border: `${theme.spacing(Device.isMobile ? 0.5 : 1)}px solid ${colors.grayScale[5]}`,
 			transition: theme.transitions.create("all", {
 				duration: theme.transitions.duration.standard,
 			}),
