@@ -39,13 +39,14 @@ const useStyles = makeStyles(theme => ({
 		transition: theme.transitions.create("all", {
 			duration: theme.transitions.duration.standard,
 		}),
-		borderRadius: theme.spacing(2),
+		borderRadius: theme.spacing(1),
 		boxShadow: `0 0 ${theme.spacing(1)}px ${colors.palette.black1}`,
 		backgroundColor: colors.grayScale[10],
 		[theme.breakpoints.down("md")]: {
 			height: 75,
 			width: 75 / cardConfig.cardProportion,
 			left: 75 * 0.2,
+			borderRadius: 0,
 		},
 	},
 	cardComboMessageContainer: {

@@ -22,6 +22,7 @@ const useStyles = makeStyles((theme) => ({
 		height: 120,
 		width: "auto",
 		position: "absolute",
+		borderRadius: theme.spacing(1),
 		transition: theme.transitions.create("all", {
 			duration: theme.transitions.duration.standard,
 		}),
