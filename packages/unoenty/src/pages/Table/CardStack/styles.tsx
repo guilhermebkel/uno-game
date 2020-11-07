@@ -46,7 +46,7 @@ const useStyles = makeStyles(theme => ({
 			height: 75,
 			width: 75 / cardConfig.cardProportion,
 			left: 75 * 0.2,
-			borderRadius: 0,
+			borderRadius: theme.spacing(1),
 		},
 	},
 	cardComboMessageContainer: {

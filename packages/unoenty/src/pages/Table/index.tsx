@@ -100,10 +100,6 @@ const Table: React.FC = () => {
 	}
 
 	const onPlayerWon = () => {
-		if (socket.currentPlayer?.status === "afk") {
-			return toggleRetry()
-		}
-
 		socket.onPlayerWon((playerId, playerName: string) => {
 			openGameEndedModal(
 				playerName,
@@ -123,7 +119,7 @@ const Table: React.FC = () => {
 			})
 		})
 	}
-				
+
 	const setupTable = () => {
 		joinGame()
 		onPlayerWon()
@@ -135,8 +131,6 @@ const Table: React.FC = () => {
 	const onReconnect = () => {
 		socket.onReconnect(() => setupTable())
 	}
-
-	
 
 	useDidMount(() => {
 		setupTable()
