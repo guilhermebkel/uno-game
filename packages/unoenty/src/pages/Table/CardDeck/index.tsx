@@ -15,13 +15,15 @@ import { useCardStore } from "@/store/Card"
 import { useSocketStore } from "@/store/Socket"
 import useSocket from "@/hooks/useSocket"
 
-import { Divider } from "@/components"
+import { Divider, Avatar } from "@/components"
 
 import { PlayerData, CardData, CardTypes, Game } from "@uno-game/protocols"
 
 import useStyles from "@/pages/Table/CardDeck/styles"
+import useCustomStyles from "@/styles/custom"
 
 import Device from "@/utils/device"
+import { buildPercentage } from "@/utils/number"
 
 export const CARD_TYPE = "DraggableCard"
 const CARD_WIDTH = Device.isMobile ? 20 : 40
@@ -133,6 +135,14 @@ const CardDeck: React.FC<CardDeckProps> = (props) => {
 	const cardStore = useCardStore()
 	const socketStore = useSocketStore()
 	const socket = useSocket()
+	const classes = useStyles()
+	const customClasses = useCustomStyles({
+		limitedNameWidth: 70,
+		avatarTimerRemainingPercentage: buildPercentage(
+			socketStore.game?.roundRemainingTimeInSeconds as number,
+			socketStore.game?.maxRoundDurationInSeconds as number,
+		),
+	})
 
 	const getCardInclination = (index: number) => {
 		const isMiddleCard = Math.round(cards.length / 2) === index
@@ -168,8 +178,6 @@ const CardDeck: React.FC<CardDeckProps> = (props) => {
 
 		return elevation * delta
 	}
-
-	const classes = useStyles()
 
 	const onDragEnd = () => {
 		cardStore.setSelectedCards([])
@@ -227,7 +235,7 @@ const CardDeck: React.FC<CardDeckProps> = (props) => {
 		>
 			<Grid
 				container
-				alignItems="center"
+				alignItems="flex-end"
 				justify="center"
 				className={classes.cardContainer}
 			>
@@ -289,6 +297,39 @@ const CardDeck: React.FC<CardDeckProps> = (props) => {
 							canBePartOfCurrentCombo={canBePartOfCurrentCombo(card.type)}
 						/>
 					))}
+				</Grid>
+
+				<Grid
+					container
+					justify="center"
+					alignItems="center"
+					className={classes.avatarContainer}
+				>
+					<Avatar
+						name={socket?.currentPlayer?.name}
+						size="small"
+						className={socket?.currentPlayer?.isCurrentRoundPlayer ? customClasses.avatarTimer : ""}
+					/>
+
+					<Divider orientation="vertical" size={2} />
+
+					<Grid item>
+						<Typography
+							variant="h3"
+							className={`${classes.title} ${customClasses.limitedName}`}
+						>
+							{socket?.currentPlayer?.name}
+						</Typography>
+
+						{socket?.currentPlayer?.id && (
+							<Typography
+								variant="h2"
+								className={classes.description}
+							>
+								(You)
+							</Typography>
+						)}
+					</Grid>
 				</Grid>
 			</Grid>
 		</ClickAwayListener>

@@ -6,7 +6,7 @@ import colors from "@/styles/colors"
 import Device from "@/utils/device"
 
 const useStyles = makeStyles((theme) => {
-	const cardContainerSize = Device.isMobile ? 75 : 150
+	const cardContainerSize = Device.isMobile ? 75 : 120
 
 	return {
 		cardContainer: {
@@ -15,10 +15,10 @@ const useStyles = makeStyles((theme) => {
 		},
 		cardContent: {
 			position: "relative",
-			height: cardContainerSize,
 			transition: theme.transitions.create("all", {
 				duration: theme.transitions.duration.standard,
 			}),
+			transform: "translateY(64px)",
 		},
 		card: {
 			height: cardContainerSize,
@@ -58,6 +58,20 @@ const useStyles = makeStyles((theme) => {
 			color: colors.grayScale[14],
 			textAlign: "center",
 			maxWidth: 420,
+		},
+		description: {
+			color: colors.grayScale[12],
+			fontWeight: "lighter",
+		},
+		title: {
+			fontWeight: "bold",
+			color: colors.grayScale[13],
+			[theme.breakpoints.down("md")]: {
+				maxWidth: "100px",
+			},
+		},
+		avatarContainer: {
+			marginBottom: theme.spacing(2),
 		},
 	}
 })

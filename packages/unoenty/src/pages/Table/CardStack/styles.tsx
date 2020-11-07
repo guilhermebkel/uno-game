@@ -38,7 +38,6 @@ const useStyles = makeStyles(theme => {
 			transition: theme.transitions.create("all", {
 				duration: theme.transitions.duration.standard,
 			}),
-			border: `${theme.spacing(0.5)}px solid ${colors.grayScale[13]}`,
 			borderRadius: theme.spacing(2),
 			boxShadow: `0 0 ${theme.spacing(1)}px ${colors.palette.black1}`,
 			backgroundColor: colors.grayScale[10],
