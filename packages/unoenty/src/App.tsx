@@ -15,6 +15,9 @@ const useStyles = makeStyles(theme => ({
 		height: "100%",
 		backgroundColor: colors.palette.blue1,
 	},
+	routesContent: {
+		width: "100%",
+	},
 	appContainer: {
 		overflowX: "hidden",
 		backgroundColor: colors.grayScale[1],
@@ -47,6 +50,7 @@ const App: React.FC = () => {
 
 					<Grid
 						container
+						direction="column"
 						className={classes.routesContainer}
 					>
 						<Routes />
