@@ -11,6 +11,10 @@ const useStyles = makeStyles((theme) => {
 	return {
 		cardContainer: {
 			position: "relative",
+			height: "100%",
+		},
+		cardContent: {
+			position: "relative",
 			height: cardContainerSize,
 			transition: theme.transitions.create("all", {
 				duration: theme.transitions.duration.standard,
@@ -35,17 +39,25 @@ const useStyles = makeStyles((theme) => {
 			backgroundColor: fade(colors.palette.blue1, 0.9),
 			zIndex: 9999,
 			minWidth: 420,
+			height: "100%",
 		},
 		afkButton: {
 			backgroundColor: colors.palette.green1,
+			transition: theme.transitions.create("all", {
+				duration: theme.transitions.duration.standard,
+			}),
 			"&:hover": {
 				backgroundColor: colors.palette.green1,
 				opacity: 0.9,
+				transition: theme.transitions.create("all", {
+					duration: theme.transitions.duration.standard,
+				}),
 			},
 		},
 		afkInfo: {
 			color: colors.grayScale[14],
 			textAlign: "center",
+			maxWidth: 420,
 		},
 	}
 })

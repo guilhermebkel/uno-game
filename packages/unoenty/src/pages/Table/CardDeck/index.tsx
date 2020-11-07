@@ -227,19 +227,16 @@ const CardDeck: React.FC<CardDeckProps> = (props) => {
 		>
 			<Grid
 				container
+				alignItems="center"
+				justify="center"
 				className={classes.cardContainer}
-				style={{
-					width: (cards?.length * CARD_WIDTH) + CARD_WIDTH,
-				}}
 			>
-				<Zoom
-					in
-					// in={socket?.currentPlayer?.status === "afk"}
-				>
+				<Zoom in={socket?.currentPlayer?.status === "afk"}>
 					<Grid
 						container
 						alignItems="center"
 						justify="center"
+						direction="column"
 						className={classes.afkContainer}
 					>
 						<Typography
@@ -265,26 +262,34 @@ const CardDeck: React.FC<CardDeckProps> = (props) => {
 					</Grid>
 				</Zoom>
 
-				{cards?.map((card, index) => (
-					<DraggableCard
-						key={card.id}
-						card={card}
-						className={classes.card}
-						index={index}
-						style={{
-							transform: `rotate(${getCardInclination(index)}deg)`,
-							bottom: getCardElevation(index),
-							zIndex: (index + 2),
-							left: index * CARD_WIDTH,
-						}}
-						onClick={() => toggleSelectedCard(card.id)}
-						selected={isCardSelected(card.id)}
-						isDraggingAnyCard={isDraggingAnyCard}
-						isMoreThanOneCardBeingDragged={cardStore?.selectedCards?.length > 1}
-						onDragEnd={onDragEnd}
-						canBePartOfCurrentCombo={canBePartOfCurrentCombo(card.type)}
-					/>
-				))}
+				<Grid
+					container
+					className={classes.cardContent}
+					style={{
+						width: (cards?.length * CARD_WIDTH) + CARD_WIDTH,
+					}}
+				>
+					{cards?.map((card, index) => (
+						<DraggableCard
+							key={card.id}
+							card={card}
+							className={classes.card}
+							index={index}
+							style={{
+								transform: `rotate(${getCardInclination(index)}deg)`,
+								bottom: getCardElevation(index),
+								zIndex: (index + 2),
+								left: index * CARD_WIDTH,
+							}}
+							onClick={() => toggleSelectedCard(card.id)}
+							selected={isCardSelected(card.id)}
+							isDraggingAnyCard={isDraggingAnyCard}
+							isMoreThanOneCardBeingDragged={cardStore?.selectedCards?.length > 1}
+							onDragEnd={onDragEnd}
+							canBePartOfCurrentCombo={canBePartOfCurrentCombo(card.type)}
+						/>
+					))}
+				</Grid>
 			</Grid>
 		</ClickAwayListener>
 	)

@@ -218,24 +218,22 @@ const Table: React.FC = () => {
 								</Grid>
 							</Grid>
 							<Grid container alignItems="center">
-								<Grid item xs={12}>
-									<Grid container justify="center">
-										{socket?.currentPlayer ? (
-											<>
-												<CustomCardDragPreview />
+								<Grid container justify="center" style={{ height: "100%" }}>
+									{socket?.currentPlayer ? (
+										<>
+											<CustomCardDragPreview />
 
-												<CardDeck
-													cards={socket.currentPlayer?.handCards}
-													player={socket.currentPlayer}
-												/>
-											</>
-										) : (
-											<CardDeckPlaceholder
-												position="bottom"
-												player={socket.otherPlayers?.[5]}
+											<CardDeck
+												cards={socket.currentPlayer?.handCards}
+												player={socket.currentPlayer}
 											/>
-										)}
-									</Grid>
+										</>
+									) : (
+										<CardDeckPlaceholder
+											position="bottom"
+											player={socket.otherPlayers?.[5]}
+										/>
+									)}
 								</Grid>
 							</Grid>
 						</Grid>

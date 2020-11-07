@@ -71,11 +71,17 @@ const useStyles = makeStyles(theme => {
 			backgroundColor: colors.palette.yellow1,
 			color: colors.palette.black1,
 			boxShadow: "0 0 9px #FAFF00",
+			transition: theme.transitions.create("all", {
+				duration: theme.transitions.duration.standard,
+			}),
 			"&:hover": {
 				backgroundColor: colors.palette.yellow1,
 				color: colors.palette.black1,
 				boxShadow: "0 0 9px #FAFF00",
 				opacity: 0.9,
+				transition: theme.transitions.create("all", {
+					duration: theme.transitions.duration.standard,
+				}),
 			},
 		},
 	}
