@@ -44,24 +44,24 @@ const Dashboard: React.FC = () => {
 	}
 
 	const getGameList = async () => {
-		if (isRetrievingGames) {
-			return
-		}
-
-		isRetrievingGames = true
-
 		const { data } = await api.get("/games")
 
 		setGames(data.games)
 
 		setLoadingGetGames(false)
-
-		isRetrievingGames = false
 	}
 
 	const onGameListUpdated = () => {
-		socket.onGameListUpdated(() => {
-			getGameList()
+		socket.onGameListUpdated(async () => {
+			if (isRetrievingGames) {
+				return
+			}
+
+			isRetrievingGames = true
+
+			await getGameList()
+
+			isRetrievingGames = false
 		})
 	}
 
