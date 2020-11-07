@@ -49,9 +49,7 @@ const App: React.FC = () => {
 						container
 						className={classes.routesContainer}
 					>
-						<Grid item sm={12} md={12} lg={12} xl={12}>
-							<Routes />
-						</Grid>
+						<Routes />
 					</Grid>
 				</Grid>
 			</Grid>
