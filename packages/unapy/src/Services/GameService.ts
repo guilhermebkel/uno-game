@@ -298,6 +298,10 @@ class GameService {
 	private resetRoundCounter (gameId: string) {
 		const game = this.getGame(gameId)
 
+		const gameRoundRemainingTime = this.getRoundRemainingTimeInSeconds(gameId)
+
+		GameRoundService.emitGameRoundEvent(gameId, "GameRoundRemainingTimeChanged", gameRoundRemainingTime)
+
 		GameRoundService.resetRoundCounter(gameId, {
 			timeoutAction: (gameId) => {
 				const currentPlayerInfo = this.getCurrentPlayerInfo(gameId)
@@ -318,10 +322,6 @@ class GameService {
 			gameId,
 			timeInSeconds: game.maxRoundDurationInSeconds,
 		})
-
-		const gameRoundRemainingTime = this.getRoundRemainingTimeInSeconds(gameId)
-
-		GameRoundService.emitGameRoundEvent(gameId, "GameRoundRemainingTimeChanged", gameRoundRemainingTime)
 	}
 
 	private removeRoundCounter (gameId: string) {
