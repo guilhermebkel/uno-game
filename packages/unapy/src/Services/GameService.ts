@@ -413,6 +413,10 @@ class GameService {
 			game.players = game?.players?.filter(player => player.id !== playerId)
 		}
 
+		if (game.status === "playing") {
+			game.players = this.buildPlayersWithChangedPlayerStatus(gameId, playerId, "offline")
+		}
+
 		this.setGameData(gameId, game)
 	}
 
@@ -459,11 +463,23 @@ class GameService {
 		this.setGameData(gameId, game)
 
 		const nextPlayerInfo = this.getCurrentPlayerInfo(gameId)
+		const nextPlayerCanMakeComputedPlay = this.playerCanMakeComputedPlay(nextPlayerInfo.playerStatus)
 
-		if (nextPlayerInfo.playerStatus === "afk") {
+		if (nextPlayerCanMakeComputedPlay) {
 			setTimeout(() => {
 				this.makeComputedPlay(gameId, nextPlayerInfo.id)
 			}, 1000)
+		}
+	}
+
+	private playerCanMakeComputedPlay (playerStatus: PlayerStatus) {
+		const isAfk = playerStatus === "afk"
+		const isOffline = playerStatus === "offline"
+
+		if (isAfk || isOffline) {
+			return true
+		} else {
+			return false
 		}
 	}
 
