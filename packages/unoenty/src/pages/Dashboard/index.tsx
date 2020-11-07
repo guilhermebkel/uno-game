@@ -11,6 +11,7 @@ import useDidMount from "@/hooks/useDidMount"
 import useSocket from "@/hooks/useSocket"
 
 import DeviceUtil from "@/utils/device"
+import { orderByCreatedAtDesc } from "@/utils/game"
 
 import api from "@/services/api"
 
@@ -113,6 +114,7 @@ const Dashboard: React.FC = () => {
 					wrap="wrap"
 				>
 					{games
+						.sort(orderByCreatedAtDesc)
 						.filter(game => game.status !== "ended")
 						.map(game => (
 							<Button

@@ -27,6 +27,7 @@ import Auth from "@/services/auth"
 import { onEvent } from "@/services/event"
 
 import DeviceUtil from "@/utils/device"
+import { orderByCreatedAtDesc } from "@/utils/game"
 
 import { useSocketStore } from "@/store/Socket"
 
@@ -196,7 +197,7 @@ const Menu: React.FC = () => {
 
 						<List onClick={handleCloseMenu}>
 							{socketStore.gameHistory
-							?.sort((a, b) => b.createdAt - a.createdAt)
+							?.sort(orderByCreatedAtDesc)
 							.slice(0, 3)
 							.map((gameHistory) => (
 								<ListItem

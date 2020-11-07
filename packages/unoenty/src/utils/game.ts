@@ -11,3 +11,6 @@ export const statusColorMap: StatusMap<string> = {
 	playing: colors.palette.green1,
 	waiting: colors.palette.yellow1,
 }
+
+// eslint-disable-next-line
+export const orderByCreatedAtDesc = (a: any, b: any) => b.createdAt - a.createdAt
