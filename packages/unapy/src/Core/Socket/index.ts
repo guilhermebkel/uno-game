@@ -19,7 +19,7 @@ class Socket {
 
 		this.io = socket(http, {
 			pingInterval: oneSecondInMilliseconds,
-			pingTimeout: oneSecondInMilliseconds,
+			pingTimeout: oneSecondInMilliseconds * 2,
 			...({ parser: MsgPackParser }),
 		})
 	}
