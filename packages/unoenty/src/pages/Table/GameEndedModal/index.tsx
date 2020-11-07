@@ -32,6 +32,7 @@ type GameEndedModalProps = {
 	isCurrentPlayer?: boolean
 	onPlayAgain?: (() => void) | (() => Promise<void>)
 	onQuit?: (() => void) | (() => Promise<void>)
+	isWaitingForNewGame?: boolean
 }
 
 const GameEndedModal: GameEndedModalType & React.FC<GameEndedModalProps> = (props) => {
@@ -43,9 +44,10 @@ const GameEndedModal: GameEndedModalType & React.FC<GameEndedModalProps> = (prop
 		isCurrentPlayer,
 		onPlayAgain,
 		onQuit,
+		isWaitingForNewGame,
 	} = props
 
-	const [loadingPlayAgain, setLoadingPlayAgain] = useState(false)
+	const [loadingPlayAgain, setLoadingPlayAgain] = useState(isWaitingForNewGame)
 
 	const handlePlayAgain = () => {
 		if (onPlayAgain) {

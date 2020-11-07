@@ -13,6 +13,7 @@ import {
 
 type UseSocketResponse = {
 	currentPlayer: PlayerData
+	winner: PlayerData | null
 	otherPlayers: PlayerData[]
 	currentRoundPlayer: PlayerData
 	getCurrentPlayer: (players?: PlayerData[] | undefined) => PlayerData
@@ -45,6 +46,18 @@ const useSocket = (): UseSocketResponse => {
 		const currentRoundPlayer = socketStore?.game?.players?.[currentPlayerIndex]
 
 		return currentRoundPlayer as PlayerData
+	}
+
+	const getWinner = (): PlayerData | null => {
+		if (socketStore?.game?.status !== "ended") {
+			return null
+		}
+
+		/**
+		 * After the game status is set to 'ended'
+		 * the winner becomes the current round player.
+		 */
+		return getCurrentRoundPlayer()
 	}
 
 	const getCurrentPlayer = (players?: PlayerData[]): PlayerData => {
@@ -230,6 +243,9 @@ const useSocket = (): UseSocketResponse => {
 	}
 
 	return {
+		get winner (): PlayerData | null {
+			return getWinner()
+		},
 		get currentPlayer (): PlayerData {
 			return getCurrentPlayer()
 		},

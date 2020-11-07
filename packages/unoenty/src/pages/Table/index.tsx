@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { Grid, Button } from "@material-ui/core"
+import { Grid } from "@material-ui/core"
 import { useParams, useHistory } from "react-router-dom"
 import { DndProvider } from "react-dnd"
 import { HTML5Backend } from "react-dnd-html5-backend"
@@ -14,7 +14,6 @@ import useSocket from "@/hooks/useSocket"
 
 import {
 	LoadingComponent,
-	Alert,
 	CloseGamePrompt,
 } from "@/components"
 
@@ -25,6 +24,7 @@ import CardDeck from "@/pages/Table/CardDeck"
 import CardDeckPlaceholder from "@/pages/Table/CardDeckPlaceholder"
 import CustomCardDragPreview from "@/pages/Table/CustomCardDragPreview"
 import TableChat from "@/pages/Table/TableChat"
+import GameEndedModal from "@/pages/Table/GameEndedModal"
 
 import CardProvider from "@/store/Card"
 
@@ -43,43 +43,26 @@ const Table: React.FC = () => {
 		socket.putCard(gameId, cardIds, selectedColor)
 	}
 
-	const openWaitForRetryModal = () => {
-		Alert.warning({
-			title: "Waiting",
-			message: "Waiting for other players to click on retry button...",
-			closable: false,
-		})
-
-		socket.onGameStart(() => {
-			Alert.close()
-		})
-	}
-
 	const toggleRetry = () => {
 		socket.toggleReady(gameId)
 		socket.toggleOnlineStatus(gameId)
-
-		openWaitForRetryModal()
 	}
 
-	const openRequestRetryModal = () => {
-		Alert.success({
-			message: "In case you want to keep on playing, click on 'READY?' button...",
-			title: "Retry",
-			closeButtonText: "QUIT",
-			onClose: () => {
+	const openGameEndedModal = (
+		winnerPlayerName: string,
+		isCurrentPlayer: boolean,
+		isWaitingForNewGame: boolean,
+	) => {
+		GameEndedModal.open({
+			winnerPlayerName,
+			isCurrentPlayer,
+			isWaitingForNewGame,
+			onPlayAgain: () => {
+				toggleRetry()
+			},
+			onQuit: () => {
 				window.location.href = "/"
 			},
-			customButtons: [
-				<Button
-					fullWidth
-					color="primary"
-					variant="contained"
-					onClick={toggleRetry}
-				>
-					READY?
-				</Button>,
-			],
 		})
 	}
 
@@ -88,11 +71,22 @@ const Table: React.FC = () => {
 
 		const currentPlayer = socket.getCurrentPlayer(game.players)
 
+		const playerWinnerName = socket?.winner?.name as string
+		const isCurrentPlayer = socket?.winner?.id === socket?.currentPlayer?.id
+
 		if (game.status === "ended") {
 			if (!currentPlayer || currentPlayer?.ready === true) {
-				openWaitForRetryModal()
+				openGameEndedModal(
+					playerWinnerName,
+					isCurrentPlayer,
+					true,
+				)
 			} else if (currentPlayer?.ready === false) {
-				openRequestRetryModal()
+				openGameEndedModal(
+					playerWinnerName,
+					isCurrentPlayer,
+					false,
+				)
 			} else {
 				history.push("/")
 			}
@@ -106,25 +100,12 @@ const Table: React.FC = () => {
 			return toggleRetry()
 		}
 
-		socket.onPlayerWon((_, playerName: string) => {
-			Alert.success({
-				message: `${playerName} won the game!`,
-				title: `${playerName} won!`,
-				closeButtonText: "QUIT",
-				onClose: () => {
-					window.location.href = "/"
-				},
-				customButtons: [
-					<Button
-						fullWidth
-						color="primary"
-						variant="contained"
-						onClick={toggleRetry}
-					>
-						READY?
-					</Button>,
-				],
-			})
+		socket.onPlayerWon((playerId, playerName: string) => {
+			openGameEndedModal(
+				playerName,
+				playerId === socket?.currentPlayer?.id,
+				false,
+			)
 		})
 	}
 
