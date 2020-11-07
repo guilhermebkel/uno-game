@@ -17,6 +17,7 @@ import useSocket from "@/hooks/useSocket"
 import {
 	LoadingComponent,
 	CloseGamePrompt,
+	LoadingScene,
 } from "@/components"
 
 import Device from "@/utils/device"
@@ -112,9 +113,21 @@ const Table: React.FC = () => {
 		})
 	}
 
+	const onGameStart = () => {
+		socket.onGameStart(() => {
+			LoadingScene.run({
+				onStart: () => {
+					GameEndedModal.close()
+				},
+				duration: 2000,
+			})
+		})
+	}
+				
 	const setupTable = () => {
 		joinGame()
 		onPlayerWon()
+		onGameStart()
 
 		dispatchEvent("GameTableOpened")
 	}
@@ -122,6 +135,8 @@ const Table: React.FC = () => {
 	const onReconnect = () => {
 		socket.onReconnect(() => setupTable())
 	}
+
+	
 
 	useDidMount(() => {
 		setupTable()
