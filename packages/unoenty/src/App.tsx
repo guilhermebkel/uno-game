@@ -15,9 +15,6 @@ const useStyles = makeStyles(theme => ({
 		height: "100%",
 		backgroundColor: colors.palette.blue1,
 	},
-	routesContent: {
-		width: "100%",
-	},
 	appContainer: {
 		overflowX: "hidden",
 		backgroundColor: colors.grayScale[1],
