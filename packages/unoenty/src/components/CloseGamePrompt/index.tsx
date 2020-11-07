@@ -15,7 +15,7 @@ const CloseGamePrompt: React.FC = () => {
 		const isGoingOutRoom = !newPathname.includes(gameId)
 
 		if (isGoingOutRoom) {
-			socket.forceSelfDisconnect()
+			socket.forceSelfDisconnect(gameId)
 
 			socketStore.setGameData({} as Game)
 		}

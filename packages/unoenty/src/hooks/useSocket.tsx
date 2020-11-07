@@ -32,7 +32,7 @@ type UseSocketResponse = {
 	onPlayerStateChange: (fn: (playerState: PlayerState, playerId: string, amountToBuy?: number) => void) => void
 	onPong: (fn: (latency: number) => void) => void
 	onReconnect: (fn: () => void) => void
-	forceSelfDisconnect: () => Promise<void>
+	forceSelfDisconnect: (gameId: string) => Promise<void>
 	getChat: (chatId?: string) => Chat | null
 	onGameListUpdated: (fn: () => void) => void
 }
@@ -232,8 +232,8 @@ const useSocket = (): UseSocketResponse => {
 		})
 	}
 
-	const forceSelfDisconnect = async (): Promise<void> => {
-		socketStore.io.emit("ForceSelfDisconnect")
+	const forceSelfDisconnect = async (gameId: string): Promise<void> => {
+		socketStore.io.emit("ForceSelfDisconnect", gameId)
 
 		await new Promise(resolve => {
 			socketStore.io.on("SelfDisconnected", async () => {
