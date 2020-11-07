@@ -413,10 +413,6 @@ class GameService {
 			game.players = game?.players?.filter(player => player.id !== playerId)
 		}
 
-		if (game.status === "playing") {
-			game.players = this.buildPlayersWithChangedPlayerStatus(gameId, playerId, "offline")
-		}
-
 		this.setGameData(gameId, game)
 	}
 
