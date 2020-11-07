@@ -74,9 +74,10 @@ const Table: React.FC = () => {
 		const game = await socket.joinGame(gameId)
 
 		const currentPlayer = socket.getCurrentPlayer(game.players)
+		const winnerPlayer = socket.getWinner(game)
 
-		const playerWinnerName = socket?.winner?.name as string
-		const isCurrentPlayer = socket?.winner?.id === socket?.currentPlayer?.id
+		const playerWinnerName = winnerPlayer?.name as string
+		const isCurrentPlayer = winnerPlayer?.id === currentPlayer?.id
 
 		if (game.status === "ended") {
 			if (!currentPlayer || currentPlayer?.ready === true) {

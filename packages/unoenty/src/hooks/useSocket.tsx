@@ -16,6 +16,7 @@ type UseSocketResponse = {
 	winner: PlayerData | null
 	otherPlayers: PlayerData[]
 	currentRoundPlayer: PlayerData
+	getWinner: (game?: Game) => PlayerData | null
 	getCurrentPlayer: (players?: PlayerData[] | undefined) => PlayerData
 	createGame: () => Promise<Game>
 	joinGame: (gameId: string) => Promise<Game>
@@ -48,8 +49,10 @@ const useSocket = (): UseSocketResponse => {
 		return currentRoundPlayer as PlayerData
 	}
 
-	const getWinner = (): PlayerData | null => {
-		if (socketStore?.game?.status !== "ended") {
+	const getWinner = (game?: Game): PlayerData | null => {
+		const gameFallback = game || socketStore?.game
+
+		if (gameFallback?.status !== "ended") {
 			return null
 		}
 
@@ -57,13 +60,18 @@ const useSocket = (): UseSocketResponse => {
 		 * After the game status is set to 'ended'
 		 * the winner becomes the current round player.
 		 */
-		return getCurrentRoundPlayer()
+		const winnerPlayerIndex = gameFallback?.currentPlayerIndex as number
+		const winnerPlayer = gameFallback?.players?.[winnerPlayerIndex]
+
+		return winnerPlayer
 	}
 
 	const getCurrentPlayer = (players?: PlayerData[]): PlayerData => {
 		const playerId = socketStore.player?.id
 
-		const player = (players || socketStore?.game?.players)?.find(player => player.id === playerId)
+		const playersFallback = players || socketStore?.game?.players
+
+		const player = playersFallback?.find(player => player.id === playerId)
 
 		return player as PlayerData
 	}
@@ -256,6 +264,7 @@ const useSocket = (): UseSocketResponse => {
 			return getCurrentRoundPlayer()
 		},
 		getCurrentPlayer,
+		getWinner,
 		createGame,
 		joinGame,
 		sendChatMessage,
