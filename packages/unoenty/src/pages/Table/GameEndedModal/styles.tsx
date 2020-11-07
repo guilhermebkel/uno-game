@@ -15,14 +15,11 @@ const useStyles = makeStyles(theme => ({
 		width: "100%",
 		height: "100%",
 		borderRadius: theme.spacing(2),
-	},
-	dialogTitle: {
-		textAlign: "center",
-		fontWeight: "bold",
-		fontSize: 60,
-		color: colors.grayScale[3],
-		border: "4px solid #F3F3F3",
-		textShadow: "0px 5px 5px rgba(0, 0, 0, 0.25)",
+		[theme.breakpoints.down("md")]: {
+			maxWidth: "100%",
+			height: "auto",
+			padding: theme.spacing(2, 0),
+		},
 	},
 	dialogContainer: {
 		height: "100%",
@@ -44,6 +41,10 @@ const useStyles = makeStyles(theme => ({
 		boxShadow: "9px 0 12px rgba(0, 0, 0, 0.5)",
 		borderRadius: theme.spacing(2),
 		maxWidth: "80%",
+		[theme.breakpoints.down("md")]: {
+			flexDirection: "column",
+			justifyContent: "center",
+		},
 	},
 	playAgainButton: {
 		backgroundColor: "#E0CE2D",
@@ -58,6 +59,17 @@ const useStyles = makeStyles(theme => ({
 	},
 	quitButton: {
 		color: colors.grayScale[15],
+	},
+	trophyImage: {
+		[theme.breakpoints.down("md")]: {
+			width: 100,
+		},
+	},
+	wonImage: {
+		[theme.breakpoints.down("md")]: {
+			marginTop: theme.spacing(2),
+			width: 90,
+		},
 	},
 }))
 

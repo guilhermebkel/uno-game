@@ -82,6 +82,7 @@ const ChooseColorModal: ChooseColorModalType & React.FC<ChooseColorModalProps> =
 						<img
 							src={chooseColorTextImg}
 							alt="Choose a color!"
+							className={classes.chooseColorImg}
 						/>
 					</Grid>
 

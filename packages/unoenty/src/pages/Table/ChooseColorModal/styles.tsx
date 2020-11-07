@@ -1,7 +1,5 @@
 import { makeStyles } from "@material-ui/core"
 
-import colors from "@/styles/colors"
-
 const useStyles = makeStyles(theme => ({
 	dialog: {
 		// eslint-disable-next-line
@@ -15,14 +13,11 @@ const useStyles = makeStyles(theme => ({
 		width: "100%",
 		height: "100%",
 		borderRadius: theme.spacing(2),
-	},
-	dialogTitle: {
-		textAlign: "center",
-		fontWeight: "bold",
-		fontSize: 60,
-		color: colors.grayScale[3],
-		border: "4px solid #F3F3F3",
-		textShadow: "0px 5px 5px rgba(0, 0, 0, 0.25)",
+		[theme.breakpoints.down("md")]: {
+			height: "auto",
+			maxWidth: "100%",
+			padding: theme.spacing(2, 0),
+		},
 	},
 	dialogContainer: {
 		height: "100%",
@@ -30,12 +25,26 @@ const useStyles = makeStyles(theme => ({
 	colorSelectorContainer: {
 		width: 225,
 		height: 225,
+		[theme.breakpoints.down("md")]: {
+			width: 158,
+			height: 158,
+		},
 	},
 	colorSelectorButton: {
 		width: 80,
 		height: 80,
 		borderRadius: theme.spacing(2),
 		margin: theme.spacing(2),
+		[theme.breakpoints.down("md")]: {
+			width: 60,
+			height: 60,
+			margin: theme.spacing(1),
+		},
+	},
+	chooseColorImg: {
+		[theme.breakpoints.down("md")]: {
+			width: 172,
+		},
 	},
 }))
 

@@ -86,6 +86,7 @@ const GameEndedModal: GameEndedModalType & React.FC<GameEndedModalProps> = (prop
 						<img
 							src={trophyImg}
 							alt="Trophy"
+							className={classes.trophyImage}
 						/>
 					</Grid>
 
@@ -137,7 +138,11 @@ const GameEndedModal: GameEndedModalType & React.FC<GameEndedModalProps> = (prop
 							</Grid>
 						</Grid>
 
-						<img src={wonTextImg} alt="Won!" />
+						<img
+							src={wonTextImg}
+							alt="Won!"
+							className={classes.wonImage}
+						/>
 					</Grid>
 
 					<Divider orientation="horizontal" size={5} />
