@@ -35,6 +35,7 @@ const useStyles = makeStyles((theme) => {
 			transition: theme.transitions.create("all", {
 				duration: theme.transitions.duration.standard,
 			}),
+			opacity: (props: UseStylesProps) => `${props.isCurrentRoundPlayer ? 1 : 0.5}`,
 		},
 		card: {
 			height: CARD_HEIGHT,
@@ -63,6 +64,7 @@ const useStyles = makeStyles((theme) => {
 		cardCounterContainer: {
 			width: 25,
 			height: "100%",
+			opacity: (props: UseStylesProps) => `${props.isCurrentRoundPlayer ? 1 : 0.5}`,
 		},
 		cardCounterContent: {
 			position: "relative",
@@ -80,6 +82,7 @@ const useStyles = makeStyles((theme) => {
 		},
 		avatarContainer: {
 			width: 50,
+			opacity: (props: UseStylesProps) => `${props.isCurrentRoundPlayer ? 1 : 0.5}`,
 		},
 		playerName: {
 			fontWeight: "bold",

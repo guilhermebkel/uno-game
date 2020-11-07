@@ -304,6 +304,9 @@ const CardDeck: React.FC<CardDeckProps> = (props) => {
 					justify="center"
 					alignItems="center"
 					className={classes.avatarContainer}
+					style={{
+						opacity: socket?.currentPlayer?.isCurrentRoundPlayer ? 1 : 0.5,
+					}}
 				>
 					<Avatar
 						name={socket?.currentPlayer?.name}
