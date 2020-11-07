@@ -96,7 +96,9 @@ class GameService {
 			this.addPlayer(gameId, playerId)
 		}
 
-		game.roundRemainingTimeInSeconds = this.getRoundRemainingTimeInSeconds(gameId)
+		const gameRoundRemainingTimeInSeconds = this.getRoundRemainingTimeInSeconds(gameId)
+
+		GameRoundService.emitGameRoundEvent(gameId, "GameRoundRemainingTimeChanged", gameRoundRemainingTimeInSeconds)
 
 		if (!playerIsNotOnGame) {
 			game.players = this.buildPlayersWithChangedPlayerStatus(gameId, playerId, "online")

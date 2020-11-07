@@ -47,6 +47,5 @@ export type Game = {
 	players: PlayerData[]
 	currentCardCombo: CurrentCardCombo
 	maxRoundDurationInSeconds: number
-	roundRemainingTimeInSeconds?: number
 	createdAt: number
 }

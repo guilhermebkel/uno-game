@@ -80,7 +80,7 @@ const CardDeckPlaceholder: React.FC<CardDeckPlaceholderProps> = (props) => {
 	const customClasses = useCustomStyles({
 		limitedNameWidth: 50,
 		avatarTimerRemainingPercentage: buildPercentage(
-			socketStore.game?.roundRemainingTimeInSeconds as number,
+			socketStore.gameRoundRemainingTimeInSeconds as number,
 			socketStore.game?.maxRoundDurationInSeconds as number,
 		),
 	})

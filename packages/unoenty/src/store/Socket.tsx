@@ -24,6 +24,7 @@ export interface SocketContextData {
 	chats?: Map<string, Chat>
 	player?: Player
 	gameHistory?: GameHistory[]
+	gameRoundRemainingTimeInSeconds?: number
 	addChatMessage: (chatId: string, message: ChatMessage) => void
 	setGameData: (data: Game) => void
 	setPlayerData: (data: Player) => void
@@ -41,6 +42,7 @@ const SocketProvider: React.FC = (props) => {
 	const [game, setGame] = useState<Game>({} as Game)
 	const [chats, setChats] = useState<Map<string, Chat>>(new Map())
 	const [gameHistory, setGameHistory] = useState<GameHistory[]>([])
+	const [gameRoundRemainingTimeInSeconds, setGameRoundRemainingTimeInSeconds] = useState<number>(0)
 
 	const setPlayerData = (data: Player) => {
 		setPlayer(data)
@@ -97,10 +99,7 @@ const SocketProvider: React.FC = (props) => {
 
 	const onGameRoundRemainingTimeChanged = () => {
 		client.on("GameRoundRemainingTimeChanged", (remainingTimeInSeconds: number) => {
-			setGame(lastState => ({
-				...(lastState || {}),
-				roundRemainingTimeInSeconds: remainingTimeInSeconds,
-			}))
+			setGameRoundRemainingTimeInSeconds(remainingTimeInSeconds)
 		})
 	}
 
@@ -138,6 +137,7 @@ const SocketProvider: React.FC = (props) => {
 				setGameData,
 				game,
 				gameHistory,
+				gameRoundRemainingTimeInSeconds,
 			}}
 		>
 			<LoadingScene loading={loading}>
