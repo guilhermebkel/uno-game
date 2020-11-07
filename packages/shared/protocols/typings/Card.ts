@@ -40,3 +40,8 @@ export type CardData = {
 	selectedColor?: CardColors
 	possibleColors?: ColorMap
 }
+
+export type CurrentCardCombo = {
+	cardTypes: Array<CardTypes>
+	amountToBuy: number
+}

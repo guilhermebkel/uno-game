@@ -11,12 +11,16 @@ const useStyles = makeStyles(theme => {
 
 	return {
 		cardStackContainer: {
+			position: "relative",
 			padding: theme.spacing(4.5),
 			backgroundColor: colors.grayScale[2],
 			width: 215,
 			height: 215,
 			borderRadius: "100%",
 			border: `${theme.spacing(1)}px solid ${colors.grayScale[5]}`,
+			transition: theme.transitions.create("all", {
+				duration: theme.transitions.duration.standard,
+			}),
 		},
 		cardStackContent: {
 			width: "100%",
@@ -39,23 +43,24 @@ const useStyles = makeStyles(theme => {
 			boxShadow: `0 0 ${theme.spacing(1)}px ${colors.palette.black1}`,
 			backgroundColor: colors.grayScale[10],
 		},
-		cardStackStateMessage: {
-			backgroundColor: "#FFFF00",
-			color: "#000000",
-			fontWeight: "bolder",
-			fontSize: Device.isMobile ? `${theme.spacing(3)}px` : `${theme.spacing(2)}px`,
-			padding: `${theme.spacing(1)}px ${theme.spacing(2)}px`,
-		},
-		arrowCircle: {
+		cardComboMessageContainer: {
 			position: "absolute",
-			width: Device.isMobile ? 150 : 300,
-			height: Device.isMobile ? 130 : 260,
-			opacity: 0.05,
-			zIndex: -1,
-			filter: "invert(100%) sepia(49%) saturate(2%) hue-rotate(207deg) brightness(111%) contrast(101%)",
-			transition: theme.transitions.create("all", {
-				duration: theme.transitions.duration.standard,
-			}),
+			top: -15,
+			right: -15,
+			width: 50,
+			height: 50,
+			backgroundColor: colors.grayScale[1],
+			boxShadow: "0 0 9px #D34141",
+			borderRadius: theme.spacing(2),
+			padding: theme.spacing(1),
+		},
+		cardComboMessage: {
+			color: colors.palette.red1,
+			boxShadow: "5px 0 5px rgba(0, 0, 0, 0.25)",
+		},
+		cardComboTitle: {
+			position: "absolute",
+			bottom: -16,
 		},
 	}
 })

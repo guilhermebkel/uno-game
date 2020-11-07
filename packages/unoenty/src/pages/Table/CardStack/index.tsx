@@ -1,11 +1,8 @@
-import React, { useRef, useState } from "react"
-import { Container, Menu, Grid } from "@material-ui/core"
+import React, { useRef } from "react"
+import { Grid, Typography, Zoom } from "@material-ui/core"
 import { useDrop } from "react-dnd"
 
 import { CardData, CardTypes, CardColors, Game } from "@uno-game/protocols"
-
-import useSocket from "@/hooks/useSocket"
-import useDidMount from "@/hooks/useDidMount"
 
 import { CARD_TYPE, DraggedCardItem } from "@/pages/Table/CardDeck"
 
@@ -15,7 +12,7 @@ import { useCardStore } from "@/store/Card"
 
 import ChooseColorModal from "@/pages/Table/ChooseColorModal"
 
-import arrowCircle from "@/assets/arrow_circle.png"
+import currentComboTextImg from "@/assets/texts/current-combo.png"
 
 type CardStackProps = {
 	cards: CardData[]
@@ -23,11 +20,9 @@ type CardStackProps = {
 	onDrop: (cardIds: string[], selectedColor: CardColors) => void
 }
 
+let lastAmountToBuy = 0
+
 const CardStack: React.FC<CardStackProps> = (props) => {
-	const [cardStackStateMessage, setCardStackStateMessage] = useState<string>("")
-
-	const socket = useSocket()
-
 	const cardStore = useCardStore()
 
 	const { cards, onDrop, game } = props
@@ -60,7 +55,11 @@ const CardStack: React.FC<CardStackProps> = (props) => {
 		}
 	}
 
-	const [, drop] = useDrop({
+	if (game?.currentCardCombo?.amountToBuy > 0) {
+		lastAmountToBuy = game?.currentCardCombo?.amountToBuy
+	}
+
+	const [{ isHovering }, drop] = useDrop({
 		accept: CARD_TYPE,
 		drop: (item: DraggedCardItem) => handleDrop(item),
 		collect: monitor => ({
@@ -70,49 +69,42 @@ const CardStack: React.FC<CardStackProps> = (props) => {
 
 	drop(cardStackRef)
 
-	const handleCardStackBuyCardsCombo = (amountToBuy: number) => {
-		setCardStackStateMessage(`+${amountToBuy}`)
-
-		setTimeout(() => {
-			setCardStackStateMessage("")
-		}, 1500)
-	}
-
-	const onCardStackBuyCardsCombo = () => {
-		socket.onCardStackBuyCardsCombo(handleCardStackBuyCardsCombo)
-	}
-
-	useDidMount(() => {
-		onCardStackBuyCardsCombo()
-	})
-
 	return (
 		<>
-			<Menu
-				anchorEl={cardStackRef?.current}
-				keepMounted
-				open={!!cardStackStateMessage}
-				anchorOrigin={{
-					horizontal: "right",
-					vertical: "bottom",
-				}}
-				PaperProps={{
-					className: classes.cardStackStateMessage,
-				}}
-				style={{ zIndex: -1 }}
-			>
-				{cardStackStateMessage}
-			</Menu>
-
 			<Grid
 				container
 				className={classes.cardStackContainer}
+				innerRef={cardStackRef}
+				style={{
+					backgroundColor: isHovering ? "rgba(255, 255, 255, 0.1)" : "",
+				}}
 			>
-				<Container
-					disableGutters
+				<Zoom
+					in={!!game?.currentCardCombo?.amountToBuy}
+				>
+					<Grid
+						container
+						className={classes.cardComboMessageContainer}
+						justify="center"
+					>
+						<Typography
+							variant="h2"
+							className={classes.cardComboMessage}
+						>
+							+{game?.currentCardCombo?.amountToBuy || lastAmountToBuy}
+						</Typography>
+
+						<img
+							src={currentComboTextImg}
+							alt="Current combo"
+							className={classes.cardComboTitle}
+						/>
+					</Grid>
+				</Zoom>
+
+				<Grid
+					container
 					className={classes.cardStackContent}
-					maxWidth={false}
-					innerRef={cardStackRef}
 				>
 					{cards?.map((card, index) => (
 						<img
@@ -127,17 +119,8 @@ const CardStack: React.FC<CardStackProps> = (props) => {
 							}}
 						/>
 					))}
-				</Container>
+				</Grid>
 			</Grid>
-
-			<img
-				className={classes.arrowCircle}
-				alt="arrow circle"
-				style={{
-					transform: `rotate3d(${game?.direction === "clockwise" ? 180 : 0}, -0, 0, 180deg)`,
-				}}
-				src={arrowCircle}
-			/>
 		</>
 	)
 }

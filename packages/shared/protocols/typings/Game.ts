@@ -1,4 +1,4 @@
-import { CardData, CardColors, CardTypes } from "./Card"
+import { CardData, CardColors, CurrentCardCombo } from "./Card"
 import { PlayerData } from "./Player"
 
 export type GameEvents =
@@ -25,7 +25,7 @@ export type GameType =
 "private" |
 "public"
 
-export type GameDirection=
+export type GameDirection =
 "clockwise" |
 "counterclockwise"
 
@@ -45,7 +45,7 @@ export type Game = {
 	usedCards: CardData[]
 	cards: CardData[]
 	players: PlayerData[]
-	currentCardCombo: Array<CardTypes>
+	currentCardCombo: CurrentCardCombo
 	maxRoundDurationInSeconds: number
 	roundRemainingTimeInSeconds?: number
 	createdAt: number

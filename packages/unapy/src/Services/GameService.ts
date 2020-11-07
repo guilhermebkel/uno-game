@@ -52,7 +52,10 @@ class GameService {
 			players: [initialPlayer],
 			cards,
 			direction: "clockwise",
-			currentCardCombo: [],
+			currentCardCombo: {
+				cardTypes: [],
+				amountToBuy: 0,
+			},
 			maxRoundDurationInSeconds: 200000,
 			createdAt: Date.now(),
 		}
@@ -492,7 +495,7 @@ class GameService {
 	}
 
 	private cardCanBeBuyCombed = (game: Game, card: CardData) => {
-		const currentCardComboType = game?.currentCardCombo?.[0]
+		const currentCardComboType = game?.currentCardCombo?.cardTypes?.[0]
 
 		return (
 			(card.type === "buy-2" && currentCardComboType === "buy-4" && card.color === game.currentGameColor) ||
@@ -561,8 +564,8 @@ class GameService {
 		}
 
 		if (isBuy2Card || isBuy4Card) {
-			game.currentCardCombo = [
-				...game.currentCardCombo,
+			game.currentCardCombo.cardTypes = [
+				...game.currentCardCombo.cardTypes,
 				...cardTypes,
 			]
 
@@ -572,24 +575,22 @@ class GameService {
 			const affectedPlayerCanMakeCardBuyCombo = playerAffected.handCards
 				.some(card => this.cardCanBeBuyCombed(game, card))
 
-			let amountToBuy = 0
-
-			game.currentCardCombo.forEach(cardType => {
+			game.currentCardCombo.cardTypes.forEach(cardType => {
 				if (cardType === "buy-2") {
-					amountToBuy += 2
+					game.currentCardCombo.amountToBuy += 2
 				} else if (cardType === "buy-4") {
-					amountToBuy += 4
+					game.currentCardCombo.amountToBuy += 4
 				}
 			})
 
-			if (affectedPlayerCanMakeCardBuyCombo) {
-				this.emitGameEvent(game.id, "CardStackBuyCardsCombo", amountToBuy)
-			} else {
+			if (!affectedPlayerCanMakeCardBuyCombo) {
+				this.emitGameEvent(game.id, "PlayerBuyCards", playerAffected?.id, game.currentCardCombo.amountToBuy)
+
 				let available = [...game?.availableCards]
 
-				const cards = available.slice(0, amountToBuy)
+				const cards = available.slice(0, game.currentCardCombo.amountToBuy)
 
-				available = available.slice(amountToBuy, available.length)
+				available = available.slice(game.currentCardCombo.amountToBuy, available.length)
 
 				game.players = game?.players?.map(player => {
 					if (player.id === playerAffected.id) {
@@ -603,15 +604,17 @@ class GameService {
 				})
 
 				game.availableCards = available
-				game.currentCardCombo = []
+
+				game.currentCardCombo = {
+					cardTypes: [],
+					amountToBuy: 0,
+				}
 
 				if (game.direction === "clockwise") {
 					game.nextPlayerIndex++
 				} else {
 					game.nextPlayerIndex--
 				}
-
-				this.emitGameEvent(game.id, "PlayerBuyCards", playerAffected?.id, amountToBuy)
 			}
 		}
 
@@ -627,7 +630,7 @@ class GameService {
 			if (currentPlayerId === player.id) {
 				const handCards = player?.handCards?.map(handCard => ({
 					...handCard,
-					canBeUsed: game?.currentCardCombo?.length ? (
+					canBeUsed: game?.currentCardCombo?.cardTypes.length ? (
 						this.cardCanBeBuyCombed(game, handCard)
 					) : (
 						topStackCard?.color === handCard.color ||
@@ -636,7 +639,7 @@ class GameService {
 						topStackCard?.type === handCard.type ||
 						handCard.color === game.currentGameColor
 					),
-					canBeCombed: game.currentCardCombo.includes(handCard.type),
+					canBeCombed: game.currentCardCombo.cardTypes.includes(handCard.type),
 				}))
 
 				return {
@@ -715,7 +718,10 @@ class GameService {
 
 		game.direction = "clockwise"
 
-		game.currentCardCombo = []
+		game.currentCardCombo = {
+			cardTypes: [],
+			amountToBuy: 0,
+		}
 
 		game.cards = cards
 
