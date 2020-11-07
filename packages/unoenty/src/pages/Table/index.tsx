@@ -7,6 +7,8 @@ import { TouchBackend } from "react-dnd-touch-backend"
 
 import { useSocketStore } from "@/store/Socket"
 
+import useStyles from "@/pages/Table/styles"
+
 import { dispatchEvent } from "@/services/event"
 
 import useDidMount from "@/hooks/useDidMount"
@@ -36,6 +38,7 @@ const Table: React.FC = () => {
 
 	const socketStore = useSocketStore()
 	const socket = useSocket()
+	const classes = useStyles()
 
 	const [loadingTable, setLoadingTable] = useState(true)
 
@@ -142,21 +145,16 @@ const Table: React.FC = () => {
 					>
 						<Grid
 							container
-							style={{
-								height: "100%",
-								overflow: "hidden",
-								padding: "16px",
-								userSelect: "none",
-							}}
+							className={classes.tableContainer}
 						>
 							<Grid container>
-								<Grid item xs={2}>
+								<Grid item xs={2} className={classes.topCardStackContainer}>
 									<CardDeckPlaceholder
 										position="top"
 										player={socket.otherPlayers?.[1]}
 									/>
 								</Grid>
-								<Grid item xs={8}>
+								<Grid item xs={8} className={classes.topCardStackContainer}>
 									<Grid container justify="center" alignItems="center">
 										<CardDeckPlaceholder
 											position="top"
@@ -164,7 +162,7 @@ const Table: React.FC = () => {
 										/>
 									</Grid>
 								</Grid>
-								<Grid item xs={2}>
+								<Grid item xs={2} className={classes.topCardStackContainer}>
 									<CardDeckPlaceholder
 										position="top"
 										player={socket.otherPlayers?.[3]}

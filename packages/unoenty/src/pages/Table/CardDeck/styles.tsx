@@ -13,9 +13,9 @@ const useStyles = makeStyles((theme) => ({
 		transition: theme.transitions.create("all", {
 			duration: theme.transitions.duration.standard,
 		}),
-		transform: `translateY(${theme.spacing(8)}px)`,
+		transform: `translateY(${theme.spacing(6)}px)`,
 		[theme.breakpoints.down("md")]: {
-			transform: `translateY(${theme.spacing(7)}px)`,
+			transform: `translateY(${theme.spacing(5)}px)`,
 		},
 	},
 	card: {
