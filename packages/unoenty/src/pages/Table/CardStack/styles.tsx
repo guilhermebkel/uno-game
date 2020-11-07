@@ -62,6 +62,22 @@ const useStyles = makeStyles(theme => {
 			position: "absolute",
 			bottom: -16,
 		},
+		buyCardContainer: {
+			position: "absolute",
+			bottom: -64,
+			left: 0,
+		},
+		buyCardButton: {
+			backgroundColor: colors.palette.yellow1,
+			color: colors.palette.black1,
+			boxShadow: "0 0 9px #FAFF00",
+			"&:hover": {
+				backgroundColor: colors.palette.yellow1,
+				color: colors.palette.black1,
+				boxShadow: "0 0 9px #FAFF00",
+				opacity: 0.9,
+			},
+		},
 	}
 })
 

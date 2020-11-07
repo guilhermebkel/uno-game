@@ -1,6 +1,12 @@
 import React, { useRef } from "react"
 import { useParams } from "react-router-dom"
-import { Container, ClickAwayListener, Button } from "@material-ui/core"
+import {
+	Grid,
+	ClickAwayListener,
+	Button,
+	Typography,
+	Zoom,
+} from "@material-ui/core"
 import { useDrag, useDragLayer } from "react-dnd"
 import { getEmptyImage } from "react-dnd-html5-backend"
 
@@ -9,7 +15,7 @@ import { useCardStore } from "@/store/Card"
 import { useSocketStore } from "@/store/Socket"
 import useSocket from "@/hooks/useSocket"
 
-import { Alert } from "@/components"
+import { Divider } from "@/components"
 
 import { PlayerData, CardData, CardTypes, Game } from "@uno-game/protocols"
 
@@ -213,60 +219,52 @@ const CardDeck: React.FC<CardDeckProps> = (props) => {
 
 	const toggleOnlineStatus = () => {
 		socket.toggleOnlineStatus(gameId)
-
-		Alert.close()
 	}
-
-	const handlePlayerGotAwayFromKeyboard = (playerId: string) => {
-		if (socket?.currentPlayer?.id === playerId) {
-			Alert.warning({
-				message: "Are you still playing this game? We'll make auto plays for you till you click on the button below.",
-				title: "Are you there?",
-				onClose: toggleOnlineStatus,
-				closable: false,
-				customButtons: [
-					<Button
-						fullWidth
-						color="primary"
-						variant="contained"
-						onClick={toggleOnlineStatus}
-					>
-						I'M HERE
-					</Button>,
-				],
-			})
-		}
-	}
-
-	const onPlayerGotAwayFromKeyboard = () => {
-		socket.onPlayerGotAwayFromKeyboard(playerId => handlePlayerGotAwayFromKeyboard(playerId))
-	}
-
-	const setupDeck = () => {
-		onPlayerGotAwayFromKeyboard()
-	}
-
-	const onReconnect = () => {
-		socket.onReconnect(() => setupDeck())
-	}
-
-	useDidMount(() => {
-		setupDeck()
-		onReconnect()
-	})
 
 	return (
 		<ClickAwayListener
 			onClickAway={handleClickOutsideCardDeck}
 		>
-			<Container
-				disableGutters
+			<Grid
+				container
 				className={classes.cardContainer}
-				maxWidth={false}
 				style={{
 					width: (cards?.length * CARD_WIDTH) + CARD_WIDTH,
 				}}
 			>
+				<Zoom
+					in
+					// in={socket?.currentPlayer?.status === "afk"}
+				>
+					<Grid
+						container
+						alignItems="center"
+						justify="center"
+						className={classes.afkContainer}
+					>
+						<Typography
+							variant="body1"
+							className={classes.afkInfo}
+						>
+							We noticed you are afk, so we are making random plays
+							{" "}
+							automatically for you. In case you want to keep playing by
+							{" "}
+							yourself, click on the button below.
+						</Typography>
+
+						<Divider orientation="horizontal" size={2} />
+
+						<Button
+							variant="contained"
+							className={classes.afkButton}
+							onClick={toggleOnlineStatus}
+						>
+							I'M HERE
+						</Button>
+					</Grid>
+				</Zoom>
+
 				{cards?.map((card, index) => (
 					<DraggableCard
 						key={card.id}
@@ -287,7 +285,7 @@ const CardDeck: React.FC<CardDeckProps> = (props) => {
 						canBePartOfCurrentCombo={canBePartOfCurrentCombo(card.type)}
 					/>
 				))}
-			</Container>
+			</Grid>
 		</ClickAwayListener>
 	)
 }

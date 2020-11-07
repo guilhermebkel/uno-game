@@ -12,12 +12,9 @@ import { dispatchEvent } from "@/services/event"
 import useDidMount from "@/hooks/useDidMount"
 import useSocket from "@/hooks/useSocket"
 
-import useStyles from "@/pages/Table/styles"
-
 import {
 	LoadingComponent,
 	Alert,
-	Divider,
 	CloseGamePrompt,
 } from "@/components"
 
@@ -39,13 +36,8 @@ const Table: React.FC = () => {
 
 	const socketStore = useSocketStore()
 	const socket = useSocket()
-	const classes = useStyles()
 
 	const [loadingTable, setLoadingTable] = useState(true)
-
-	const buyCard = () => {
-		socket.buyCard(gameId)
-	}
 
 	const onDrop = (cardIds: string[], selectedColor: CardColors) => {
 		socket.putCard(gameId, cardIds, selectedColor)
@@ -214,21 +206,6 @@ const Table: React.FC = () => {
 											game={socketStore.game as Game}
 											onDrop={onDrop}
 										/>
-
-										{socket?.currentPlayer?.canBuyCard && (
-											<>
-												<Divider orientation="horizontal" size={5} />
-
-												<Button
-													color="primary"
-													variant="contained"
-													onClick={buyCard}
-													className={classes.buyCardButton}
-												>
-													BUY CARD
-												</Button>
-											</>
-										)}
 									</Grid>
 								</Grid>
 								<Grid item xs={2}>

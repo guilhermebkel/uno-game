@@ -1,5 +1,5 @@
 import React, { useRef } from "react"
-import { Grid, Typography, Zoom } from "@material-ui/core"
+import { Grid, Typography, Zoom, Button } from "@material-ui/core"
 import { useDrop } from "react-dnd"
 
 import { CardData, CardTypes, CardColors, Game } from "@uno-game/protocols"
@@ -14,6 +14,8 @@ import ChooseColorModal from "@/pages/Table/ChooseColorModal"
 
 import currentComboTextImg from "@/assets/texts/current-combo.png"
 
+import useSocket from "@/hooks/useSocket"
+
 type CardStackProps = {
 	cards: CardData[]
 	game: Game
@@ -24,11 +26,16 @@ let lastAmountToBuy = 0
 
 const CardStack: React.FC<CardStackProps> = (props) => {
 	const cardStore = useCardStore()
+	const socket = useSocket()
 
 	const { cards, onDrop, game } = props
 
 	const classes = useStyles()
 	const cardStackRef = useRef()
+
+	const buyCard = () => {
+		socket.buyCard(game.id)
+	}
 
 	const handleDrop = async (card: DraggedCardItem) => {
 		let selectedColor = "" as CardColors
@@ -101,6 +108,22 @@ const CardStack: React.FC<CardStackProps> = (props) => {
 						/>
 					</Grid>
 				</Zoom>
+
+				{socket?.currentPlayer?.canBuyCard && (
+					<Grid
+						container
+						justify="center"
+						className={classes.buyCardContainer}
+					>
+						<Button
+							variant="contained"
+							onClick={buyCard}
+							className={classes.buyCardButton}
+						>
+							BUY CARD
+						</Button>
+					</Grid>
+				)}
 
 				<Grid
 					container
