@@ -49,36 +49,6 @@ A simple UNO Game made in Javascript, supposed to be blazing easier and faster t
 - React DnD
 - MsgPackParser
 
-## 👣 Project Scope
-
-- [X] Implementing a basic Table Page which I can use to move and buy cards.
-- [X] Implementing a server integration with Table Page to make it to work.
-- [ ] Refactoring the Table Page to give it a better looking.
-- [X] Creating a Dashboard Page which I can use to see open rooms, create new ones and get into the ones I want to.
-- [X] Implementing a server integration with Dashboard Page to make it to work.
-- [X] Refactoring the Dashboard Page to give it a better looking.
-- [X] Creating a Room Page which I can use to get into a room and see its details.
-- [X] Implementing a server integration with Room Page to make it to work.
-- [X] Refactoring the Room Page to give it a better looking.
-- [X] Implementing a monorepository manager.
-- [X] Updating README with contributors info.
-- [ ] Changing the card assets (in order to avoid copyright issues).
-- [ ] Implementing sounds.
-- [X] Adding a simple account service (with no database).
-- [ ] Adding an account service.
-- [X] Making husky to work.
-- [X] Adding skeleton loading for pages.
-- [X] Making CI with Github Actions.
-- [X] Adding Card effects.
-- [X] Making it able to stack **Buy:2 Cards** till someone does not has any of them and so, the last player buys all the stack together.
-- [X] Making the front-end able to support 6 players in total.
-- [X] Being able to change the game color with help of **Buy:4 Card**.
-- [X] Adding an auto play system when user is afk during the game.
-- [X] Adding a chat to Table.
-- [X] Adding a countdown for every player round.
-- [X] Making player able to put more than one card on stack.
-- [ ] Notify when a player gets in or out of a room
-
 ## 🚀 Getting started
 
 1. Clone this repository
