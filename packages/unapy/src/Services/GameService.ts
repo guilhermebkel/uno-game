@@ -6,6 +6,8 @@ import ClientService from "@/Services/ClientService"
 
 import NumberUtil from "@/Utils/NumberUtil"
 
+import environmentConfig from "@/Config/environment"
+
 import {
 	Game,
 	GameEvents,
@@ -56,7 +58,7 @@ class GameService {
 				cardTypes: [],
 				amountToBuy: 0,
 			},
-			maxRoundDurationInSeconds: 200000,
+			maxRoundDurationInSeconds: environmentConfig.isDev ? 200000 : 20,
 			createdAt: Date.now(),
 		}
 
