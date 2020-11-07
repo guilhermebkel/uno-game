@@ -577,6 +577,8 @@ class GameService {
 			const affectedPlayerCanMakeCardBuyCombo = playerAffected.handCards
 				.some(card => this.cardCanBeBuyCombed(game, card))
 
+			game.currentCardCombo.amountToBuy = 0
+
 			game.currentCardCombo.cardTypes.forEach(cardType => {
 				if (cardType === "buy-2") {
 					game.currentCardCombo.amountToBuy += 2
