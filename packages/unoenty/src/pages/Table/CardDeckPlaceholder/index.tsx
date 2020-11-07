@@ -133,6 +133,7 @@ const CardDeckPlaceholder: React.FC<CardDeckPlaceholderProps> = (props) => {
 				>
 					<Typography
 						variant="h3"
+						align="center"
 						className={classes.playerStateMessageText}
 					>
 						{playerStateMessage}

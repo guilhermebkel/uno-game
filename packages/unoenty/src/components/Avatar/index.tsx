@@ -2,6 +2,8 @@ import React from "react"
 import { Container, Typography } from "@material-ui/core"
 import { fade } from "@material-ui/core/styles/colorManipulator"
 
+import Device from "@/utils/device"
+
 import useStyles from "@/components/Avatar/styles"
 
 type AvatarProps = {
@@ -56,7 +58,7 @@ const Avatar: React.FC<AvatarProps> = (props) => {
 		}
 
 		if (size === "small") {
-			avatarSize = 45
+			avatarSize = Device.isMobile ? 40 : 45
 		}
 
 		return avatarSize
