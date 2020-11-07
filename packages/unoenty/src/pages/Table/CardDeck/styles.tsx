@@ -38,7 +38,6 @@ const useStyles = makeStyles((theme) => {
 			top: 0,
 			backgroundColor: fade(colors.palette.blue1, 0.9),
 			zIndex: 9999,
-			minWidth: 420,
 			height: "100%",
 		},
 		afkButton: {
