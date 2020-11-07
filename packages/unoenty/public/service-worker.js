@@ -8,8 +8,8 @@ self.addEventListener("install", function (event) {
 	 * succeeded or not.
 	 */
 	event.waitUntil(
-		caches.open(CACHE_NAME).then(function (cache) {
-			return cache.addAll(urlsToCache)
-		}),
+		// caches.open(CACHE_NAME).then(function (cache) {
+		// 	return cache.addAll(urlsToCache)
+		// }),
 	)
 })
