@@ -19,7 +19,6 @@ import useSocket from "@/hooks/useSocket"
 type CardStackProps = {
 	cards: CardData[]
 	game: Game
-	onDrop: (cardIds: string[], selectedColor: CardColors) => void
 }
 
 let lastAmountToBuy = 0
@@ -28,13 +27,17 @@ const CardStack: React.FC<CardStackProps> = (props) => {
 	const cardStore = useCardStore()
 	const socket = useSocket()
 
-	const { cards, onDrop, game } = props
+	const { cards, game } = props
 
 	const classes = useStyles()
 	const cardStackRef = useRef()
 
 	const buyCard = () => {
 		socket.buyCard(game.id)
+	}
+
+	const putCard = (cardIds: string[], selectedColor: CardColors) => {
+		socket.putCard(game.id, cardIds, selectedColor)
 	}
 
 	const handleDrop = async (card: DraggedCardItem) => {
@@ -56,9 +59,9 @@ const CardStack: React.FC<CardStackProps> = (props) => {
 		}
 
 		if (cardComboIds?.length > 1) {
-			onDrop(cardComboIds, selectedColor)
+			putCard(cardComboIds, selectedColor)
 		} else {
-			onDrop([card.id], selectedColor)
+			putCard([card.id], selectedColor)
 		}
 	}
 

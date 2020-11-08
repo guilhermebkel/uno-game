@@ -31,7 +31,7 @@ import GameEndedModal from "@/pages/Table/GameEndedModal"
 
 import CardProvider from "@/store/Card"
 
-import { CardColors, CardData, Game } from "@uno-game/protocols"
+import { CardData, Game } from "@uno-game/protocols"
 
 const Table: React.FC = () => {
 	const { gameId } = useParams<{ gameId: string }>()
@@ -42,10 +42,6 @@ const Table: React.FC = () => {
 	const classes = useStyles()
 
 	const [loadingTable, setLoadingTable] = useState(true)
-
-	const onDrop = (cardIds: string[], selectedColor: CardColors) => {
-		socket.putCard(gameId, cardIds, selectedColor)
-	}
 
 	const toggleRetry = () => {
 		socket.toggleReady(gameId)
@@ -193,7 +189,6 @@ const Table: React.FC = () => {
 										<CardStack
 											cards={socketStore?.game?.usedCards as CardData[]}
 											game={socketStore.game as Game}
-											onDrop={onDrop}
 										/>
 									</Grid>
 								</Grid>
