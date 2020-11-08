@@ -145,6 +145,9 @@ const useSocket = (): UseSocketResponse => {
 	const toggleReady = (gameId: string) => {
 		socketStore.io.emit("ToggleReady", gameId)
 
+		/**
+		 * Little trick to improve response time
+		 */
 		socketStore.setGameData({
 			...socketStore?.game as Game,
 			players: socketStore?.game?.players?.map(player => {
@@ -167,6 +170,9 @@ const useSocket = (): UseSocketResponse => {
 	const putCard = (gameId: string, cardIds: string[], selectedColor: CardColors) => {
 		socketStore.io.emit("PutCard", gameId, cardIds, selectedColor)
 
+		/**
+		 * Little trick to improve response time
+		 */
 		const player = socketStore?.game?.players?.find(player => player.id === socketStore?.player?.id)
 
 		if (!player) {
@@ -185,6 +191,17 @@ const useSocket = (): UseSocketResponse => {
 
 		socketStore.setGameData({
 			...socketStore?.game as Game,
+			players: socketStore?.game?.players?.map(player => {
+				if (player.id === socketStore?.player?.id) {
+					return {
+						...player,
+						handCards: player.handCards
+							.filter(handCard => !cardIds.includes(handCard.id)),
+					}
+				}
+
+				return player
+			}) as PlayerData[],
 			usedCards: [
 				...cards,
 				...socketStore?.game?.usedCards as CardData[],

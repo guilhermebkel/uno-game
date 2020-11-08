@@ -59,6 +59,10 @@ const useStyles = makeStyles(theme => ({
 		boxShadow: "0 0 9px #D34141",
 		borderRadius: theme.spacing(2),
 		padding: theme.spacing(1),
+		[theme.breakpoints.down("sm")]: {
+			top: -30,
+			right: -30,
+		},
 	},
 	cardComboMessage: {
 		color: colors.palette.red1,
