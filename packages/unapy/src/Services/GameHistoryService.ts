@@ -22,13 +22,15 @@ class GameHistoryService {
 			.forEach(history => {
 				const game = games.find(game => game.id === history.gameId)
 
-				consolidatedGameHistory.push({
-					createdAt: game.createdAt,
-					gameId: game.id,
-					name: game.title,
-					playersCount: game.players.length,
-					status: game.status,
-				})
+				if (game) {
+					consolidatedGameHistory.push({
+						createdAt: game.createdAt,
+						gameId: game.id,
+						name: game.title,
+						playersCount: game.players.length,
+						status: game.status,
+					})
+				}
 			})
 
 		games
