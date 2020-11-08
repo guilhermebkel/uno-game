@@ -239,7 +239,7 @@ const CardDeck: React.FC<CardDeckProps> = (props) => {
 				justify="center"
 				className={classes.cardContainer}
 			>
-				<Zoom in={socket?.currentPlayer?.status !== "afk"}>
+				<Zoom in={socket?.currentPlayer?.status === "afk"}>
 					<Grid
 						container
 						className={classes.afkContainer}
