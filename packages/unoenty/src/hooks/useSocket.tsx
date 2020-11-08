@@ -9,6 +9,7 @@ import {
 	CardColors,
 	ChatMessage,
 	Chat,
+	CardData,
 } from "@uno-game/protocols"
 
 type UseSocketResponse = {
@@ -143,6 +144,20 @@ const useSocket = (): UseSocketResponse => {
 
 	const toggleReady = (gameId: string) => {
 		socketStore.io.emit("ToggleReady", gameId)
+
+		socketStore.setGameData({
+			...socketStore?.game as Game,
+			players: socketStore?.game?.players?.map(player => {
+				if (player.id === socketStore?.player?.id) {
+					return {
+						...player,
+						ready: !player.ready,
+					}
+				}
+
+				return player
+			}) as PlayerData[],
+		})
 	}
 
 	const buyCard = (gameId: string) => {
@@ -151,6 +166,30 @@ const useSocket = (): UseSocketResponse => {
 
 	const putCard = (gameId: string, cardIds: string[], selectedColor: CardColors) => {
 		socketStore.io.emit("PutCard", gameId, cardIds, selectedColor)
+
+		const player = socketStore?.game?.players?.find(player => player.id === socketStore?.player?.id)
+
+		if (!player) {
+			return
+		}
+
+		const cards: CardData[] = []
+
+		cardIds.forEach(cardId => {
+			const card = player?.handCards?.find(card => card?.id === cardId) as CardData
+
+			if (card) {
+				cards.push(card)
+			}
+		})
+
+		socketStore.setGameData({
+			...socketStore?.game as Game,
+			usedCards: [
+				...cards,
+				...socketStore?.game?.usedCards as CardData[],
+			],
+		})
 	}
 
 	const toggleOnlineStatus = (gameId: string) => {
