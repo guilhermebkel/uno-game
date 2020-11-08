@@ -239,34 +239,39 @@ const CardDeck: React.FC<CardDeckProps> = (props) => {
 				justify="center"
 				className={classes.cardContainer}
 			>
-				<Zoom in={socket?.currentPlayer?.status === "afk"}>
+				<Zoom in={socket?.currentPlayer?.status !== "afk"}>
 					<Grid
 						container
-						alignItems="center"
-						justify="center"
-						direction="column"
 						className={classes.afkContainer}
 					>
-						<Typography
-							variant="body1"
-							className={classes.afkInfo}
+						<Grid
+							container
+							alignItems="center"
+							justify="center"
+							direction="column"
+							className={classes.afkContent}
 						>
-							We noticed you are afk, so we are making random plays
-							{" "}
-							automatically for you. In case you want to keep playing by
-							{" "}
-							yourself, click on the button below.
-						</Typography>
+							<Typography
+								variant="body1"
+								className={classes.afkInfo}
+							>
+								We noticed you are afk, so we are making random plays
+								{" "}
+								automatically for you. In case you want to keep playing by
+								{" "}
+								yourself, click on the button below.
+							</Typography>
 
-						<Divider orientation="horizontal" size={2} />
+							<Divider orientation="horizontal" size={2} />
 
-						<Button
-							variant="contained"
-							className={classes.afkButton}
-							onClick={toggleOnlineStatus}
-						>
-							I'M HERE
-						</Button>
+							<Button
+								variant="contained"
+								className={classes.afkButton}
+								onClick={toggleOnlineStatus}
+							>
+								I'M HERE
+							</Button>
+						</Grid>
 					</Grid>
 				</Zoom>
 

@@ -42,6 +42,9 @@ const useStyles = makeStyles((theme) => ({
 		zIndex: 9999,
 		height: "100%",
 	},
+	afkContent: {
+		flex: 1,
+	},
 	afkButton: {
 		backgroundColor: colors.palette.green1,
 		transition: theme.transitions.create("all", {
