@@ -27,10 +27,12 @@
     "express": "^4.17.1",
     "module-alias": "^2.2.2",
     "socket.io": "^2.3.0",
-    "socket.io-msgpack-parser": "^2.2.0"
+    "socket.io-msgpack-parser": "^2.2.0",
+    "@uno-game/error-handler": "*"
   },
   "optionalDependencies": {
-    "@uno-game/protocols": "*"
+    "@uno-game/protocols": "*",
+    "@uno-game/error-handler": "*"
   },
   "_moduleAliases": {
     "@": "dist"

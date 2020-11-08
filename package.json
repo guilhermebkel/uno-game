@@ -5,6 +5,9 @@
   "author": "Guilherme Mota <guilhermebromonschenkel@gmail.com>",
   "license": "MIT",
   "scripts": {
+    "setup": "npm run setup:app && npm run setup:env",
+    "setup:app": "npm install && npm run install:unapy && npm run install:unoenty && npm run bootstrap",
+    "setup:env": "npm run env:unapy && npm run env:unoenty",
     "bootstrap": "lerna bootstrap --use-workspaces --hoist && lerna link",
     "list": "lerna ls",
     "deploy": "lerna version",
@@ -12,10 +15,12 @@
     "build:unapy": "lerna run build --scope @uno-game/unapy",
     "start:unapy": "lerna run start --scope @uno-game/unapy",
     "dev:unapy": "lerna run dev --scope @uno-game/unapy",
+    "env:unapy": "cp packages/unapy/.env.example packages/unapy/.env",
     "typecheck:unapy": "lerna run typecheck --scope @uno-game/unapy",
     "install:unoenty": "lerna exec --scope @uno-game/unoenty -- npm install",
     "build:unoenty": "lerna run build --scope @uno-game/unoenty",
     "typecheck:unoenty": "lerna run typecheck --scope @uno-game/unoenty",
+    "env:unoenty": "cp packages/unoenty/.env.example packages/unoenty/.env",
     "lint": "npx eslint --ext .ts,.tsx packages",
     "lint:fix": "npx eslint  --fix packages"
   },

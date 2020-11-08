@@ -52,14 +52,16 @@ A simple UNO Game made in Javascript, supposed to be blazing easier and faster t
 ## 🚀 Getting started
 
 1. Clone this repository
-2. Run the following commands
+2. Run the following command
 ```sh
-npm install # Install all shared dependencies
-npm run install:unapy # Install dependencies for api
-npm run install:unoenty # Install dependencies for client
-npm run bootstrap # Link all packages dependencies together
+# Install all shared dependencies
+# Install dependencies for api
+# Install dependencies for client
+# Link all packages dependencies together
+# Add env file for api
+# Add env file for client
+npm run setup
 ```
-2. Copy the **.env.example** inside **packages/unoenty** and **packages/unapy** turning it into a **.env** file.
 
 3. Run the command bellow inside **packages/unoenty** and **packages/unapy** to start api and client.
 ```sh
