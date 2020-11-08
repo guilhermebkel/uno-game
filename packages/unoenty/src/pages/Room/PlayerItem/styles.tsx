@@ -19,7 +19,7 @@ const useStyles = makeStyles(theme => ({
 	title: {
 		fontWeight: "bold",
 		color: colors.grayScale[13],
-		[theme.breakpoints.down("md")]: {
+		[theme.breakpoints.down("sm")]: {
 			maxWidth: "100px",
 		},
 	},

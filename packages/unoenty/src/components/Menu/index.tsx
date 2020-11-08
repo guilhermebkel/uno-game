@@ -219,6 +219,8 @@ const Menu: React.FC = () => {
 						direction="column"
 						alignItems="center"
 					>
+						<Divider orientation="horizontal" size={2} />
+
 						<Button
 							startIcon={<LogoutIcon />}
 							className={classes.logoutButton}

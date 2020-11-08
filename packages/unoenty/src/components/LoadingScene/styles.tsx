@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
 		animationName: "$pulseAnimation",
 		animationDuration: "1.25s",
 		animationIterationCount: "infinite",
-		[theme.breakpoints.down("md")]: {
+		[theme.breakpoints.down("sm")]: {
 			maxWidth: 120,
 		},
 	},

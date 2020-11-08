@@ -15,7 +15,7 @@ const useStyles = makeStyles(theme => ({
 		width: "100%",
 		height: "100%",
 		borderRadius: theme.spacing(2),
-		[theme.breakpoints.down("md")]: {
+		[theme.breakpoints.down("sm")]: {
 			maxWidth: "100%",
 			height: "auto",
 			padding: theme.spacing(2, 0),
@@ -31,7 +31,7 @@ const useStyles = makeStyles(theme => ({
 	title: {
 		fontWeight: "bold",
 		color: colors.grayScale[13],
-		[theme.breakpoints.down("md")]: {
+		[theme.breakpoints.down("sm")]: {
 			maxWidth: "100px",
 		},
 	},
@@ -41,7 +41,7 @@ const useStyles = makeStyles(theme => ({
 		boxShadow: "9px 0 12px rgba(0, 0, 0, 0.5)",
 		borderRadius: theme.spacing(2),
 		maxWidth: "80%",
-		[theme.breakpoints.down("md")]: {
+		[theme.breakpoints.down("sm")]: {
 			flexDirection: "column",
 			justifyContent: "center",
 		},
@@ -61,12 +61,12 @@ const useStyles = makeStyles(theme => ({
 		color: colors.grayScale[15],
 	},
 	trophyImage: {
-		[theme.breakpoints.down("md")]: {
+		[theme.breakpoints.down("sm")]: {
 			width: 100,
 		},
 	},
 	wonImage: {
-		[theme.breakpoints.down("md")]: {
+		[theme.breakpoints.down("sm")]: {
 			marginTop: theme.spacing(2),
 			width: 90,
 		},

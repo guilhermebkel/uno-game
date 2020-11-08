@@ -11,7 +11,7 @@ const useStyles = makeStyles(theme => ({
 		backgroundColor: colors.grayScale[1],
 		padding: theme.spacing(PADDING, 0),
 		position: "relative",
-		[theme.breakpoints.down("md")]: {
+		[theme.breakpoints.down("sm")]: {
 			position: "fixed",
 			width: "85%",
 		},
@@ -40,15 +40,26 @@ const useStyles = makeStyles(theme => ({
 		borderRadius: theme.spacing(2),
 		color: colors.grayScale[15],
 		padding: theme.spacing(1, 2),
+		transition: theme.transitions.create("all", {
+			duration: theme.transitions.duration.standard,
+		}),
 		"&:hover": {
 			backgroundColor: colors.palette.red1,
+			opacity: 0.9,
 		},
 	},
 	githubButton: {
 		color: colors.grayScale[7],
+		transition: theme.transitions.create("all", {
+			duration: theme.transitions.duration.standard,
+		}),
+		"&:hover": {
+			color: colors.grayScale[12],
+		},
 	},
 	content: {
-		height: "100%",
+		flex: 1,
+		height: "auto",
 	},
 	menuIconContainer: {
 		position: "fixed",
@@ -56,7 +67,7 @@ const useStyles = makeStyles(theme => ({
 		left: 0,
 		zIndex: 99999,
 		width: "100%",
-		[theme.breakpoints.down("md")]: {
+		[theme.breakpoints.down("sm")]: {
 			backgroundColor: colors.grayScale[1],
 			boxShadow: "0px 5px 10px rgba(0, 0, 0, 0.25)",
 		},

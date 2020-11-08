@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
 			duration: theme.transitions.duration.standard,
 		}),
 		transform: `translateY(${theme.spacing(6)}px)`,
-		[theme.breakpoints.down("md")]: {
+		[theme.breakpoints.down("sm")]: {
 			transform: `translateY(${theme.spacing(5)}px)`,
 		},
 	},
@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
 			transform: "translateY(-20px) !important",
 			cursor: "pointer",
 		},
-		[theme.breakpoints.down("md")]: {
+		[theme.breakpoints.down("sm")]: {
 			height: 75,
 		},
 	},
@@ -70,7 +70,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 	avatarContainer: {
 		marginBottom: theme.spacing(2),
-		[theme.breakpoints.down("md")]: {
+		[theme.breakpoints.down("sm")]: {
 			marginBottom: 0,
 		},
 	},

@@ -13,12 +13,12 @@ const useStyles = makeStyles(theme => ({
 		maxWidth: 800,
 	},
 	pageTitle: {
-		[theme.breakpoints.down("md")]: {
+		[theme.breakpoints.down("sm")]: {
 			maxWidth: "100vw",
 		},
 	},
 	pageTitleContainer: {
-		[theme.breakpoints.down("md")]: {
+		[theme.breakpoints.down("sm")]: {
 			justifyContent: "center",
 		},
 	},

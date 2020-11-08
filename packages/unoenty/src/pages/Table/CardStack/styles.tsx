@@ -16,7 +16,7 @@ const useStyles = makeStyles(theme => ({
 		transition: theme.transitions.create("all", {
 			duration: theme.transitions.duration.standard,
 		}),
-		[theme.breakpoints.down("md")]: {
+		[theme.breakpoints.down("sm")]: {
 			padding: theme.spacing(2.25),
 			borderWidth: theme.spacing(0.5),
 			width: 120,
@@ -42,7 +42,7 @@ const useStyles = makeStyles(theme => ({
 		borderRadius: theme.spacing(1),
 		boxShadow: `0 0 ${theme.spacing(1)}px ${colors.palette.black1}`,
 		backgroundColor: colors.grayScale[10],
-		[theme.breakpoints.down("md")]: {
+		[theme.breakpoints.down("sm")]: {
 			height: 75,
 			width: 75 / cardConfig.cardProportion,
 			left: 75 * 0.2,

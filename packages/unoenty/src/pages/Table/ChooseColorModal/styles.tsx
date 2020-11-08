@@ -13,7 +13,7 @@ const useStyles = makeStyles(theme => ({
 		width: "100%",
 		height: "100%",
 		borderRadius: theme.spacing(2),
-		[theme.breakpoints.down("md")]: {
+		[theme.breakpoints.down("sm")]: {
 			height: "auto",
 			maxWidth: "100%",
 			padding: theme.spacing(2, 0),
@@ -25,7 +25,7 @@ const useStyles = makeStyles(theme => ({
 	colorSelectorContainer: {
 		width: 225,
 		height: 225,
-		[theme.breakpoints.down("md")]: {
+		[theme.breakpoints.down("sm")]: {
 			width: 158,
 			height: 158,
 		},
@@ -35,14 +35,14 @@ const useStyles = makeStyles(theme => ({
 		height: 80,
 		borderRadius: theme.spacing(2),
 		margin: theme.spacing(2),
-		[theme.breakpoints.down("md")]: {
+		[theme.breakpoints.down("sm")]: {
 			width: 60,
 			height: 60,
 			margin: theme.spacing(1),
 		},
 	},
 	chooseColorImg: {
-		[theme.breakpoints.down("md")]: {
+		[theme.breakpoints.down("sm")]: {
 			width: 172,
 		},
 	},

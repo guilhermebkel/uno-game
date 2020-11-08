@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
 		transition: theme.transitions.create("all", {
 			duration: theme.transitions.duration.standard,
 		}),
-		[theme.breakpoints.down("md")]: {
+		[theme.breakpoints.down("sm")]: {
 			height: 50,
 		},
 	},
@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
 			duration: theme.transitions.duration.standard,
 		}),
 		opacity: (props: UseStylesProps) => `${props.isCurrentRoundPlayer ? 1 : 0.5}`,
-		[theme.breakpoints.down("md")]: {
+		[theme.breakpoints.down("sm")]: {
 			display: "none",
 		},
 	},
@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
 		transition: theme.transitions.create("all", {
 			duration: theme.transitions.duration.standard,
 		}),
-		[theme.breakpoints.down("md")]: {
+		[theme.breakpoints.down("sm")]: {
 			width: 25,
 			height: 25 * cardConfig.cardProportion,
 		},
@@ -77,7 +77,7 @@ const useStyles = makeStyles((theme) => ({
 		position: "relative",
 		width: 100,
 		height: 125,
-		[theme.breakpoints.down("md")]: {
+		[theme.breakpoints.down("sm")]: {
 			width: "auto !important",
 			height: "auto !important",
 			// eslint-disable-next-line
@@ -122,7 +122,7 @@ const useStyles = makeStyles((theme) => ({
 		height: 160,
 		zIndex: 50,
 		borderRadius: "100%",
-		[theme.breakpoints.down("md")]: {
+		[theme.breakpoints.down("sm")]: {
 			width: 90,
 			height: 90,
 		},
@@ -135,7 +135,7 @@ const useStyles = makeStyles((theme) => ({
 		padding: theme.spacing(1, 3),
 		boxShadow: `0 0 50px ${colors.grayScale[1]}`,
 		transform: "rotate(-15deg)",
-		[theme.breakpoints.down("md")]: {
+		[theme.breakpoints.down("sm")]: {
 			padding: theme.spacing(1, 1.5),
 		},
 	},

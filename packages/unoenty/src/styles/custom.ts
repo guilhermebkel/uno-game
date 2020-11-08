@@ -31,7 +31,7 @@ const useCustomStyles = makeStyles(theme => ({
 	pageContainer: {
 		padding: theme.spacing(4),
 		maxWidth: 1366,
-		[theme.breakpoints.down("md")]: {
+		[theme.breakpoints.down("sm")]: {
 			padding: theme.spacing(1),
 			width: "100vw",
 			marginTop: theme.spacing(8),

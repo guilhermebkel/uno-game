@@ -8,7 +8,7 @@ const useStyles = makeStyles(theme => ({
 		userSelect: "none",
 	},
 	topCardStackContainer: {
-		[theme.breakpoints.down("md")]: {
+		[theme.breakpoints.down("sm")]: {
 			justifyContent: "center",
 			alignItems: "center",
 			display: "flex",
