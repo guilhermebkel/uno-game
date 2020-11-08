@@ -169,7 +169,7 @@ const GameCard: React.FC<GameCardProps> = (props) => {
 								/>
 							</MaterialAvatar>
 						))}
-						{[...new Array(remainingSlots)].map((_, index) => (
+						{[...new Array(remainingSlots || 0)].map((_, index) => (
 							<MaterialAvatar
 								key={index}
 								className={classes.avatar}
