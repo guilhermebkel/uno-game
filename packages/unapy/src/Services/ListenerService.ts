@@ -1,4 +1,5 @@
 import { Socket } from "socket.io"
+import ErrorHandler from "@uno-game/error-handler"
 
 import GameService from "@/Services/GameService"
 import ChatService from "@/Services/ChatService"
@@ -16,81 +17,85 @@ class ListenerService {
 	clients: Map<string, Socket> = new Map()
 
 	onConnection (client: Socket) {
-		const playerData = {} as Player
+		try {
+			const playerData = {} as Player
 
-		client.emit("PlayerConnected", client.id)
+			client.emit("PlayerConnected", client.id)
 
-		client.on("SetPlayerData", (playerId: string, playerName: string) => {
-			playerData.id = playerId
-			playerData.name = playerName
+			client.on("SetPlayerData", (playerId: string, playerName: string) => {
+				playerData.id = playerId
+				playerData.name = playerName
 
-			ClientService.setClient(playerId, client)
+				ClientService.setClient(playerId, client)
 
-			this.onSetPlayerData(playerId, playerName)
+				this.onSetPlayerData(playerId, playerName)
 
-			client.emit("PlayerDataSet")
-		})
+				client.emit("PlayerDataSet")
+			})
 
-		client.on("CreateGame", () => {
-			const gameId = CryptUtil.makeShortUUID()
-			const chatId = CryptUtil.makeShortUUID()
+			client.on("CreateGame", () => {
+				const gameId = CryptUtil.makeShortUUID()
+				const chatId = CryptUtil.makeShortUUID()
 
-			client.join(gameId)
-			client.join(chatId)
-
-			this.onCreateGame(gameId, playerData.id, chatId)
-		})
-
-		client.on("JoinGame", (gameId: string) => {
-			client.join(gameId)
-
-			const chatId = GameService.getChatIdByGameId(gameId)
-
-			if (chatId) {
+				client.join(gameId)
 				client.join(chatId)
-			}
 
-			this.onJoinGame(gameId, playerData.id, chatId)
-		})
+				this.onCreateGame(gameId, playerData.id, chatId)
+			})
 
-		client.on("BuyCard", (gameId: string) => {
-			this.onBuyCard(gameId, playerData.id)
-		})
+			client.on("JoinGame", (gameId: string) => {
+				client.join(gameId)
 
-		client.on(
-			"PutCard",
-			(gameId: string, cardIds: string[], selectedColor: CardColors) => {
-				this.onPutCard(gameId, playerData.id, cardIds, selectedColor)
-			},
-		)
+				const chatId = GameService.getChatIdByGameId(gameId)
 
-		client.on("SendChatMessage", (chatId: string, content: string) => {
-			this.onSendChatMessage(playerData.id, chatId, content)
-		})
+				if (chatId) {
+					client.join(chatId)
+				}
 
-		client.on(
-			"ChangePlayerStatus",
-			(gameId: string, playerStatus: PlayerStatus) => {
-				this.onChangePlayerStatus(playerData.id, gameId, playerStatus)
-			},
-		)
+				this.onJoinGame(gameId, playerData.id, chatId)
+			})
 
-		client.on("ToggleReady", (gameId: string) => {
-			this.onToggleReady(gameId, playerData.id)
-		})
+			client.on("BuyCard", (gameId: string) => {
+				this.onBuyCard(gameId, playerData.id)
+			})
 
-		client.on("ForceSelfDisconnect", (gameId: string) => {
-			this.onPlayerDisconnect(playerData.id)
+			client.on(
+				"PutCard",
+				(gameId: string, cardIds: string[], selectedColor: CardColors) => {
+					this.onPutCard(gameId, playerData.id, cardIds, selectedColor)
+				},
+			)
 
-			client.leave(gameId)
-			client.emit("SelfDisconnected")
-		})
+			client.on("SendChatMessage", (chatId: string, content: string) => {
+				this.onSendChatMessage(playerData.id, chatId, content)
+			})
 
-		client.on("disconnect", () => {
-			ClientService.destroyClient(playerData.id)
+			client.on(
+				"ChangePlayerStatus",
+				(gameId: string, playerStatus: PlayerStatus) => {
+					this.onChangePlayerStatus(playerData.id, gameId, playerStatus)
+				},
+			)
 
-			this.onPlayerDisconnect(playerData.id)
-		})
+			client.on("ToggleReady", (gameId: string) => {
+				this.onToggleReady(gameId, playerData.id)
+			})
+
+			client.on("ForceSelfDisconnect", (gameId: string) => {
+				this.onPlayerDisconnect(playerData.id)
+
+				client.leave(gameId)
+				client.emit("SelfDisconnected")
+			})
+
+			client.on("disconnect", () => {
+				ClientService.destroyClient(playerData.id)
+
+				this.onPlayerDisconnect(playerData.id)
+			})
+		} catch (error) {
+			ErrorHandler.handle(error)
+		}
 	}
 
 	private onChangePlayerStatus (

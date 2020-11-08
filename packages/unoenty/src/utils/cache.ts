@@ -1,3 +1,5 @@
+import ErrorHandler from "@uno-game/error-handler"
+
 export const clearAllServiceWorkerCache = async (): Promise<void> => {
 	const cacheNames = await caches.keys()
 
@@ -6,6 +8,6 @@ export const clearAllServiceWorkerCache = async (): Promise<void> => {
 			cacheNames.map(cache => caches.delete(cache)),
 		)
 	} catch (error) {
-		console.error("[RemoveCacheError] ", error.message)
+		ErrorHandler.handle(error)
 	}
 }

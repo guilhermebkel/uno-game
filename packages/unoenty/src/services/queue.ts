@@ -1,3 +1,5 @@
+import ErrorHandler from "@uno-game/error-handler"
+
 type QueueOptions = {
 	concurrency: number
 	retries: number
@@ -87,7 +89,7 @@ class Queue<TPlayload> {
 					await this.delay(this.options.delay)
 				}
 
-				console.error(error)
+				ErrorHandler.handle(error)
 			}
 
 			this.enqueued--

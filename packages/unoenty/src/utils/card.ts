@@ -1,3 +1,5 @@
+import ErrorHandler from "@uno-game/error-handler"
+
 import api from "@/services/api"
 
 import { CardData } from "@uno-game/protocols"
@@ -26,7 +28,7 @@ export const preloadCardPictures = async (): Promise<void> => {
 
 		await queue.process()
 	} catch (error) {
-		console.log(error)
+		ErrorHandler.handle(error)
 	}
 }
 

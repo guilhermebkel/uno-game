@@ -1,3 +1,5 @@
+import ErrorHandler from "@uno-game/error-handler"
+
 class Storage {
 	get<Data extends Record<string, unknown>> (key: string): Data | null {
 		try {
@@ -11,7 +13,7 @@ class Storage {
 				return null
 			}
 		} catch (error) {
-			console.log(error)
+			ErrorHandler.handle(error)
 			return null
 		}
 	}
@@ -22,7 +24,7 @@ class Storage {
 
 			localStorage.setItem(key, stringifiedData)
 		} catch (error) {
-			console.log(error)
+			ErrorHandler.handle(error)
 		}
 	}
 
@@ -30,7 +32,7 @@ class Storage {
 		try {
 			localStorage.removeItem(key)
 		} catch (error) {
-			console.log(error)
+			ErrorHandler.handle(error)
 		}
 	}
 }
