@@ -1,24 +1,22 @@
-import React, { useState } from "react"
+import React from "react"
 import {
 	Grid,
 	Typography,
-	Zoom,
 } from "@material-ui/core"
 
-import { PlayerData, PlayerState } from "@uno-game/protocols"
+import { PlayerData } from "@uno-game/protocols"
 
 import {
 	Avatar,
 	Divider,
 } from "@/components"
 
-import useSocket from "@/hooks/useSocket"
-import useDidMount from "@/hooks/useDidMount"
-
 import { useSocketStore } from "@/store/Socket"
 
 import useStyles from "@/pages/Table/CardDeckPlaceholder/styles"
 import useCustomStyles from "@/styles/custom"
+
+import PlayerEffect from "@/pages/Table/PlayerEffect"
 
 import { getCardPosition } from "@/utils/card"
 import { buildPercentage } from "@/utils/number"
@@ -27,7 +25,7 @@ const MAX_CARDS = 7
 
 type CardDeckPlaceholderProps = {
 	player: PlayerData
-	position: "left" | "top" | "right" | "bottom"
+	position: "left" | "top" | "topLeft" | "topRight" | "right" | "bottom"
 }
 
 type CardDeckPlaceholderPositionStylesMap = {
@@ -51,6 +49,18 @@ const cardDeckPlaceholderPositionStylesMap: CardDeckPlaceholderPositionStylesMap
 		remainingCardsText: { width: 20, height: 40, transform: "rotate(90deg)" },
 		container: { flexDirection: "row-reverse" },
 	},
+	topLeft: {
+		cardCounterContainer: { alignItems: "flex-start" },
+		cardContainer: { top: 180, left: -100, transform: "rotate(110deg)" },
+		remainingCardsText: { width: 20, height: 40, transform: "rotate(90deg)" },
+		container: { flexDirection: "row-reverse", width: 260, justifyContent: "flex-end" },
+	},
+	topRight: {
+		cardCounterContainer: { alignItems: "flex-start" },
+		cardContainer: { top: 100, left: -15, transform: "rotate(180deg)" },
+		remainingCardsText: { width: 20, height: 40, transform: "rotate(90deg)" },
+		container: { flexDirection: "row", width: "auto", justifyContent: "flex-end" },
+	},
 	right: {
 		cardCounterContainer: { alignItems: "flex-end" },
 		cardContainer: { top: 75, left: -50, transform: "rotate(235deg)" },
@@ -69,9 +79,6 @@ const CardDeckPlaceholder: React.FC<CardDeckPlaceholderProps> = (props) => {
 	const { player, position } = props
 
 	const socketStore = useSocketStore()
-	const socket = useSocket()
-
-	const [playerStateMessage, setPlayerStateMessage] = useState<string>("")
 
 	const limitedCards = player?.handCards?.slice(0, MAX_CARDS)
 	const allCards = player?.handCards
@@ -89,30 +96,6 @@ const CardDeckPlaceholder: React.FC<CardDeckPlaceholderProps> = (props) => {
 		isCurrentRoundPlayer: player?.isCurrentRoundPlayer,
 	})
 
-	const handlePlayerStateChange = (playerState: PlayerState, playerId: string, amountToBuy?: number) => {
-		if (playerId === player?.id) {
-			if (playerState === "Uno") {
-				setPlayerStateMessage("UNO!")
-			} else if (playerState === "Blocked") {
-				setPlayerStateMessage("BLOCKED!")
-			} else if (playerState === "BuyCards") {
-				setPlayerStateMessage(`BUY ${amountToBuy}!`)
-			}
-
-			setTimeout(() => {
-				setPlayerStateMessage("")
-			}, 2000)
-		}
-	}
-
-	const onPlayerStateChange = () => {
-		socket.onPlayerStateChange(handlePlayerStateChange)
-	}
-
-	useDidMount(() => {
-		onPlayerStateChange()
-	})
-
 	if (!player?.id) {
 		return <div />
 	}
@@ -121,25 +104,13 @@ const CardDeckPlaceholder: React.FC<CardDeckPlaceholderProps> = (props) => {
 		<Grid
 			container
 			alignItems="center"
+			justify="center"
 			className={classes.container}
 			style={positionStyles.container}
 		>
-			<Zoom in={!!playerStateMessage}>
-				<Grid
-					container
-					justify="center"
-					alignItems="center"
-					className={classes.playerStateMessageContainer}
-				>
-					<Typography
-						variant="h3"
-						align="center"
-						className={classes.playerStateMessageText}
-					>
-						{playerStateMessage}
-					</Typography>
-				</Grid>
-			</Zoom>
+			<PlayerEffect
+				playerId={player?.id}
+			/>
 
 			<Grid
 				container

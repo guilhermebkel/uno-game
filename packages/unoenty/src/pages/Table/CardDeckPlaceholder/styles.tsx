@@ -114,31 +114,6 @@ const useStyles = makeStyles((theme) => ({
 		width: 55,
 		textAlign: "center",
 	},
-	playerStateMessageContainer: {
-		position: "absolute",
-		top: 0,
-		left: 0,
-		width: 160,
-		height: 160,
-		zIndex: 50,
-		borderRadius: "100%",
-		[theme.breakpoints.down("sm")]: {
-			width: 90,
-			height: 90,
-		},
-	},
-	playerStateMessageText: {
-		color: colors.grayScale[15],
-		textShadow: `1px  1px 0 ${colors.grayScale[1]}, 1px -1px 0 ${colors.grayScale[1]}, -1px  1px 0 ${colors.grayScale[1]}, -1px -1px 0 ${colors.grayScale[1]}`,
-		fontWeight: "bold",
-		backgroundColor: colors.palette.yellow1,
-		padding: theme.spacing(1, 3),
-		boxShadow: `0 0 50px ${colors.grayScale[1]}`,
-		transform: "rotate(-15deg)",
-		[theme.breakpoints.down("sm")]: {
-			padding: theme.spacing(1, 1.5),
-		},
-	},
 }))
 
 export default useStyles

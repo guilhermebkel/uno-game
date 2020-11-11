@@ -153,10 +153,14 @@ const Table: React.FC = () => {
 							container
 							className={classes.tableContainer}
 						>
-							<Grid container>
+							<Grid
+								container
+								justify="space-between"
+								className={classes.topCardStackContainer}
+							>
 								<Grid item xs={2} className={classes.topCardStackContainer}>
 									<CardDeckPlaceholder
-										position="top"
+										position="topLeft"
 										player={socket.otherPlayers?.[1]}
 									/>
 								</Grid>
@@ -170,12 +174,16 @@ const Table: React.FC = () => {
 								</Grid>
 								<Grid item xs={2} className={classes.topCardStackContainer}>
 									<CardDeckPlaceholder
-										position="top"
+										position="topRight"
 										player={socket.otherPlayers?.[3]}
 									/>
 								</Grid>
 							</Grid>
-							<Grid container alignItems="center">
+							<Grid
+								container
+								alignItems="center"
+								justify="space-between"
+							>
 								<Grid item xs={2}>
 									<Grid container justify="flex-start">
 										<CardDeckPlaceholder

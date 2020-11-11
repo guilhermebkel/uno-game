@@ -25,6 +25,8 @@ import useCustomStyles from "@/styles/custom"
 import Device from "@/utils/device"
 import { buildPercentage } from "@/utils/number"
 
+import PlayerEffect from "@/pages/Table/PlayerEffect"
+
 export const CARD_TYPE = "DraggableCard"
 const CARD_WIDTH = Device.isMobile ? 20 : 40
 
@@ -122,7 +124,7 @@ type CardDeckProps = {
 }
 
 const CardDeck: React.FC<CardDeckProps> = (props) => {
-	const { cards } = props
+	const { cards, player } = props
 
 	const { gameId } = useParams<{ gameId: string }>()
 
@@ -239,7 +241,11 @@ const CardDeck: React.FC<CardDeckProps> = (props) => {
 				justify="center"
 				className={classes.cardContainer}
 			>
-				<Zoom in={socket?.currentPlayer?.status === "afk"}>
+				<PlayerEffect
+					playerId={player?.id}
+				/>
+
+				<Zoom in={player?.status === "afk"}>
 					<Grid
 						container
 						className={classes.afkContainer}
@@ -310,13 +316,13 @@ const CardDeck: React.FC<CardDeckProps> = (props) => {
 					alignItems="center"
 					className={classes.avatarContainer}
 					style={{
-						opacity: socket?.currentPlayer?.isCurrentRoundPlayer ? 1 : 0.5,
+						opacity: player?.isCurrentRoundPlayer ? 1 : 0.5,
 					}}
 				>
 					<Avatar
-						name={socket?.currentPlayer?.name}
+						name={player?.name}
 						size="small"
-						className={socket?.currentPlayer?.isCurrentRoundPlayer ? customClasses.avatarTimer : ""}
+						className={player?.isCurrentRoundPlayer ? customClasses.avatarTimer : ""}
 					/>
 
 					<Divider orientation="vertical" size={2} />
@@ -326,10 +332,10 @@ const CardDeck: React.FC<CardDeckProps> = (props) => {
 							variant="h3"
 							className={`${classes.title} ${customClasses.limitedName}`}
 						>
-							{socket?.currentPlayer?.name}
+							{player?.name}
 						</Typography>
 
-						{socket?.currentPlayer?.id && (
+						{player?.id && (
 							<Typography
 								variant="h2"
 								className={classes.description}
