@@ -158,13 +158,21 @@ const Table: React.FC = () => {
 								justify="space-between"
 								className={classes.topCardStackContainer}
 							>
-								<Grid item xs={2} className={classes.topCardStackContainer}>
+								<Grid
+									item
+									xs={2}
+									className={classes.cardDeckPlaceholder}
+								>
 									<CardDeckPlaceholder
 										position="topLeft"
 										player={socket.otherPlayers?.[1]}
 									/>
 								</Grid>
-								<Grid item xs={8} className={classes.topCardStackContainer}>
+								<Grid
+									item
+									xs={8}
+									className={classes.cardDeckPlaceholder}
+								>
 									<Grid container justify="center" alignItems="center">
 										<CardDeckPlaceholder
 											position="top"
@@ -172,7 +180,11 @@ const Table: React.FC = () => {
 										/>
 									</Grid>
 								</Grid>
-								<Grid item xs={2} className={classes.topCardStackContainer}>
+								<Grid
+									item
+									xs={2}
+									className={classes.cardDeckPlaceholder}
+								>
 									<CardDeckPlaceholder
 										position="topRight"
 										player={socket.otherPlayers?.[3]}
@@ -184,7 +196,11 @@ const Table: React.FC = () => {
 								alignItems="center"
 								justify="space-between"
 							>
-								<Grid item xs={2}>
+								<Grid
+									item
+									xs={2}
+									className={classes.cardDeckPlaceholder}
+								>
 									<Grid container justify="flex-start">
 										<CardDeckPlaceholder
 											position="left"
@@ -200,7 +216,11 @@ const Table: React.FC = () => {
 										/>
 									</Grid>
 								</Grid>
-								<Grid item xs={2}>
+								<Grid
+									item
+									xs={2}
+									className={classes.cardDeckPlaceholder}
+								>
 									<Grid container justify="flex-end">
 										<CardDeckPlaceholder
 											position="right"

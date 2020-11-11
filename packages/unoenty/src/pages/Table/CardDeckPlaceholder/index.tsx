@@ -101,112 +101,115 @@ const CardDeckPlaceholder: React.FC<CardDeckPlaceholderProps> = (props) => {
 	}
 
 	return (
-		<Grid
-			container
-			alignItems="center"
-			justify="center"
-			className={classes.container}
-			style={positionStyles.container}
-		>
+		<>
 			<PlayerEffect
 				playerId={player?.id}
 			/>
 
 			<Grid
 				container
-				className={classes.cardCounterContainer}
-				style={positionStyles.cardCounterContainer}
-				alignItems="flex-end"
+				alignItems="center"
+				justify="center"
+				className={classes.container}
+				style={positionStyles.container}
 			>
+
 				<Grid
 					container
-					className={classes.cardCounterContent}
+					className={classes.cardCounterContainer}
+					style={positionStyles.cardCounterContainer}
+					alignItems="flex-end"
+				>
+					<Grid
+						container
+						className={classes.cardCounterContent}
+						alignItems="center"
+						justify="center"
+					>
+						<Typography
+							variant="h3"
+							className={classes.cardCounterText}
+						>
+							{allCards.length}
+						</Typography>
+					</Grid>
+				</Grid>
+
+				<Divider orientation="vertical" size={2} />
+
+				<Grid
+					container
+					direction="column"
 					alignItems="center"
-					justify="center"
+					className={classes.avatarContainer}
 				>
 					<Typography
 						variant="h3"
-						className={classes.cardCounterText}
+						className={`${classes.playerName} ${customClasses.limitedName}`}
 					>
-						{allCards.length}
+						{player.name}
 					</Typography>
+
+					<Avatar
+						name={player.name}
+						size="small"
+						className={player.isCurrentRoundPlayer ? customClasses.avatarTimer : ""}
+					/>
+				</Grid>
+
+				<Divider orientation="vertical" size={2} />
+
+				<Grid
+					container
+					className={classes.cardContainer}
+					style={positionStyles.cardContainer}
+				>
+					{[...limitedCards, undefined].map((card, index) => {
+						const { x, y, inclination } = getCardPosition({
+							cardHeight: 62,
+							cardWidth: 40,
+							cardIndex: index,
+							cardsCount: limitedCards.length,
+							expectedCardsCount: limitedCards.length,
+							maxAngle: 90,
+							radius: 100,
+						})
+
+						const remainingCards = allCards.length - MAX_CARDS
+						const isPlaceholder = !card?.id
+						const showPlaceholder = isPlaceholder && remainingCards > 0
+
+						if (isPlaceholder && !showPlaceholder) {
+							return null
+						}
+
+						return (
+							<Grid
+								item
+								key={card?.id || index}
+								className={`${classes.card} ${showPlaceholder ? classes.remainingCardsContainer : ""}`}
+								style={{
+									transform: `rotate(${inclination}deg)`,
+									top: -y,
+									zIndex: index,
+									left: x,
+								}}
+							>
+								{showPlaceholder && (
+									<Typography
+										variant="h3"
+										className={classes.remainingCardsText}
+										style={positionStyles.remainingCardsText}
+									>
+										+{remainingCards}
+									</Typography>
+								)}
+							</Grid>
+						)
+					})}
 				</Grid>
 			</Grid>
-
-			<Divider orientation="vertical" size={2} />
-
-			<Grid
-				container
-				direction="column"
-				alignItems="center"
-				className={classes.avatarContainer}
-			>
-				<Typography
-					variant="h3"
-					className={`${classes.playerName} ${customClasses.limitedName}`}
-				>
-					{player.name}
-				</Typography>
-
-				<Avatar
-					name={player.name}
-					size="small"
-					className={player.isCurrentRoundPlayer ? customClasses.avatarTimer : ""}
-				/>
-			</Grid>
-
-			<Divider orientation="vertical" size={2} />
-
-			<Grid
-				container
-				className={classes.cardContainer}
-				style={positionStyles.cardContainer}
-			>
-				{[...limitedCards, undefined].map((card, index) => {
-					const { x, y, inclination } = getCardPosition({
-						cardHeight: 62,
-						cardWidth: 40,
-						cardIndex: index,
-						cardsCount: limitedCards.length,
-						expectedCardsCount: limitedCards.length,
-						maxAngle: 90,
-						radius: 100,
-					})
-
-					const remainingCards = allCards.length - MAX_CARDS
-					const isPlaceholder = !card?.id
-					const showPlaceholder = isPlaceholder && remainingCards > 0
-
-					if (isPlaceholder && !showPlaceholder) {
-						return null
-					}
-
-					return (
-						<Grid
-							item
-							key={card?.id || index}
-							className={`${classes.card} ${showPlaceholder ? classes.remainingCardsContainer : ""}`}
-							style={{
-								transform: `rotate(${inclination}deg)`,
-								top: -y,
-								zIndex: index,
-								left: x,
-							}}
-						>
-							{showPlaceholder && (
-								<Typography
-									variant="h3"
-									className={classes.remainingCardsText}
-									style={positionStyles.remainingCardsText}
-								>
-									+{remainingCards}
-								</Typography>
-							)}
-						</Grid>
-					)
-				})}
-			</Grid>
-		</Grid>
+		</>
 	)
 }
 

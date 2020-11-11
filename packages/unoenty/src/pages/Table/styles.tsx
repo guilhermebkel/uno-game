@@ -9,12 +9,19 @@ const useStyles = makeStyles(theme => ({
 	},
 	topCardStackContainer: {
 		paddingTop: theme.spacing(3),
-	},
-	topCardStackContent: {
 		[theme.breakpoints.down("sm")]: {
-			justifyContent: "center",
-			alignItems: "center",
-			display: "flex",
+			paddingTop: theme.spacing(6),
+		},
+	},
+	cardDeckPlaceholder: {
+		position: "relative",
+		maxHeight: 200,
+		maxWidth: 200,
+		height: "100%",
+		width: "100%",
+		[theme.breakpoints.down("sm")]: {
+			maxHeight: 160,
+			maxWidth: 100,
 		},
 	},
 }))

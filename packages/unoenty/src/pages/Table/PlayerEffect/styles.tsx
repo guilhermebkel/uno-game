@@ -5,17 +5,11 @@ import colors from "@/styles/colors"
 
 const useStyles = makeStyles((theme) => ({
 	playerEffectMessageContainer: {
-		minWidth: 290,
-		minHeight: 200,
 		position: "absolute",
 		top: 0,
 		backgroundColor: fade(colors.palette.blue1, 0.9),
 		zIndex: 9999,
 		height: "100%",
-		[theme.breakpoints.down("sm")]: {
-			minWidth: 90,
-			minHeight: 120,
-		},
 	},
 	playerEffectMessageContent: {
 		width: 160,
@@ -37,6 +31,7 @@ const useStyles = makeStyles((theme) => ({
 		transform: "rotate(-15deg)",
 		[theme.breakpoints.down("sm")]: {
 			padding: theme.spacing(1, 1.5),
+			fontSize: theme.spacing(1.25),
 		},
 	},
 }))

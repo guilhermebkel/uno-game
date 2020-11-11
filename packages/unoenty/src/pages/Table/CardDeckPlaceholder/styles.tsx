@@ -65,6 +65,9 @@ const useStyles = makeStyles((theme) => ({
 		width: 25,
 		height: "100%",
 		opacity: (props: UseStylesProps) => `${props.isCurrentRoundPlayer ? 1 : 0.5}`,
+		[theme.breakpoints.down("sm")]: {
+			alignItems: "normal !important",
+		},
 	},
 	cardCounterContent: {
 		position: "relative",
@@ -78,10 +81,10 @@ const useStyles = makeStyles((theme) => ({
 		width: 100,
 		height: 125,
 		[theme.breakpoints.down("sm")]: {
-			width: "auto !important",
-			height: "auto !important",
+			width: "50px !important",
+			height: "50px !important",
 			// eslint-disable-next-line
-			flexDirection: "column !important" as any,
+			flexDirection: "row !important" as any,
 		},
 	},
 	avatarContainer: {
