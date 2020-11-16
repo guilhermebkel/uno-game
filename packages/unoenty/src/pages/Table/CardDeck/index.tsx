@@ -160,7 +160,7 @@ const CardDeck: React.FC<CardDeckProps> = (props) => {
 			inclination = Math.abs(Math.round(cards.length / 2) - index)
 		}
 
-		const delta = 4
+		const delta = Device.isMobile ? 4 : 3
 
 		return inclination * delta
 	}
