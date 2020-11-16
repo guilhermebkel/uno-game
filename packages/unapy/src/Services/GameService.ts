@@ -726,8 +726,6 @@ class GameService {
 
 		game.usedCards = []
 
-		game.direction = "clockwise"
-
 		game.currentCardCombo = {
 			cardTypes: [],
 			amountToBuy: 0,
