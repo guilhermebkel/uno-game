@@ -193,7 +193,7 @@ const Table: React.FC = () => {
 							</Grid>
 							<Grid
 								container
-								alignItems="center"
+								alignItems="flex-start"
 								justify="space-between"
 							>
 								<Grid

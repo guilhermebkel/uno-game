@@ -58,7 +58,7 @@ class GameService {
 				cardTypes: [],
 				amountToBuy: 0,
 			},
-			maxRoundDurationInSeconds: environmentConfig.isDev ? 200000 : 20,
+			maxRoundDurationInSeconds: environmentConfig.isDev ? 200000 : 30,
 			createdAt: Date.now(),
 		}
 
