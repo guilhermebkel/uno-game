@@ -27,6 +27,7 @@
 </p>
 
 <p align="center">
+	<img src="./mockup.png" alt="mockup" />
 	<a href="https://uno.guilherr.me">Click here to play this game</a>
 </p>
 
