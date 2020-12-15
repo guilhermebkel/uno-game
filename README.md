@@ -28,6 +28,7 @@
 
 <p align="center">
 	<img src="./preview.gif" alt="mockup" />
+
 	<a href="https://uno.guilherr.me">Click here to play this game</a>
 </p>
 
