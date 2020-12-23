@@ -31,6 +31,8 @@ const useCustomStyles = makeStyles(theme => ({
 	pageContainer: {
 		padding: theme.spacing(4),
 		maxWidth: 1366,
+		// eslint-disable-next-line
+		overflowY: "overlay" as any,
 		[theme.breakpoints.down("sm")]: {
 			padding: theme.spacing(1),
 			width: "100vw",
