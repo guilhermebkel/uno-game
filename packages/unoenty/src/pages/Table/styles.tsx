@@ -7,6 +7,7 @@ const useStyles = makeStyles(theme => ({
 		padding: "16px",
 		userSelect: "none",
 		maxWidth: 1366,
+		alignSelf: "center",
 	},
 	topCardStackContainer: {
 		paddingTop: theme.spacing(3),
