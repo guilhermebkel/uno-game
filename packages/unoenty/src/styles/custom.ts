@@ -30,7 +30,6 @@ const useCustomStyles = makeStyles(theme => ({
 	},
 	pageContainer: {
 		padding: theme.spacing(4),
-		maxWidth: 1366,
 		overflowY: "auto",
 		[theme.breakpoints.down("sm")]: {
 			padding: theme.spacing(1),
