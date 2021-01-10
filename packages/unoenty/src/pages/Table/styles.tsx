@@ -6,6 +6,7 @@ const useStyles = makeStyles(theme => ({
 		overflow: "hidden",
 		padding: "16px",
 		userSelect: "none",
+		maxWidth: 1366,
 	},
 	topCardStackContainer: {
 		paddingTop: theme.spacing(3),
