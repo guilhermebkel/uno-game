@@ -7,7 +7,7 @@ import {
 
 import GameRoundRepository from "@/Repositories/GameRoundRepository"
 
-class GameService {
+class GameRoundService {
 	getRoundRemainingTimeInSeconds (gameId: string): number {
 		const gameRoundCounter = GameRoundRepository.getGameRoundCounter(gameId)
 
@@ -78,4 +78,4 @@ class GameService {
 	}
 }
 
-export default new GameService()
+export default new GameRoundService()
