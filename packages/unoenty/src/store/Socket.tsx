@@ -8,7 +8,7 @@ import useDidMount from "@/hooks/useDidMount"
 import { LoadingScene } from "@/components"
 
 import { preloadCardPictures } from "@/utils/card"
-// import { clearAllServiceWorkerCache } from "@/utils/cache"
+import { refreshCacheIfNeeded } from "@/utils/cache"
 
 import {
 	Game,
@@ -106,9 +106,7 @@ const SocketProvider: React.FC = (props) => {
 	const connect = async () => {
 		preloadCardPictures()
 
-		console.log("test")
-
-		// await clearAllServiceWorkerCache()
+		refreshCacheIfNeeded()
 
 		const playerId = await connectSocket()
 
