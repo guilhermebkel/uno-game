@@ -32,6 +32,7 @@ const useStyles = makeStyles(theme => ({
 		}),
 	},
 	card: {
+		WebkitBackfaceVisibility: "hidden",
 		height: 120,
 		width: 120 / cardConfig.cardProportion,
 		left: 120 * 0.2,
