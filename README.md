@@ -1,5 +1,5 @@
 <p align="center">
-	<img src="./assets/uno_icon.png" height="150" width="150" alt="icon example" />
+	<img src="./assets/uno_icon.png" width="200" alt="icon example" />
 </p>	
 
 <h3 align="center">
@@ -27,7 +27,7 @@
 </p>
 
 <p align="center">
-	<img src="./preview.gif" alt="mockup" />
+	<img src="./assets/preview.gif" alt="mockup" />
 	<br></br>
 	<a href="https://uno.guilherr.me">Click here to play this game</a>
 </p>
