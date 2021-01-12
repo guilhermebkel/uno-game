@@ -3,7 +3,7 @@ import { Request, Response } from "express"
 
 class CardController {
 	async getCardList (req: Request, res: Response) {
-		const cards = CardService.getAllCards()
+		const cards = CardService.getCardStack()
 
 		const cardList = cards.map(card => ({ src: card.src }))
 
