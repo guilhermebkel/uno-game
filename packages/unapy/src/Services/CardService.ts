@@ -30,27 +30,6 @@ class CardService {
 		"yellow",
 	]
 
-	getAllCards () {
-		const allCards: CardData[] = []
-
-		this.cardTypes.map(cardType => {
-			this.cardColors.map(cardColor => {
-				const cardPictureSrc = this.buildCardPictureSrc(cardType, cardColor)
-				const cardId = uuid.v4()
-
-				allCards.push({
-					id: cardId,
-					src: cardPictureSrc,
-					name: `${cardType}-${cardColor}`,
-					color: cardColor,
-					type: cardType,
-				})
-			})
-		})
-
-		return allCards
-	}
-
 	setupRandomCards () {
 		const randomCards: CardData[] = [
 			...this.getCardStack(),
@@ -75,7 +54,7 @@ class CardService {
 		return cardColors[0]
 	}
 
-	private getCardStack () {
+	getCardStack () {
 		const cardStack: CardData[] = []
 
 		this.cardTypes.map(cardType => {
