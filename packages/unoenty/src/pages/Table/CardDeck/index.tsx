@@ -28,7 +28,7 @@ import { buildPercentage } from "@/utils/number"
 import PlayerEffect from "@/pages/Table/PlayerEffect"
 
 export const CARD_TYPE = "DraggableCard"
-const CARD_WIDTH = Device.isMobile ? 20 : 40
+const CARD_WIDTH = Device.isMobile ? 30 : 50
 
 export type DraggedCardItem = {
 	type: "DraggableCard"

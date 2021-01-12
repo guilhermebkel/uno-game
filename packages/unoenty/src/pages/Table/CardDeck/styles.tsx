@@ -33,6 +33,7 @@ const useStyles = makeStyles((theme) => ({
 		[theme.breakpoints.down("sm")]: {
 			height: 75,
 		},
+		boxShadow: "-2px 2px 10px rgba(0, 0, 0, 0.5)",
 	},
 	afkContainer: {
 		position: "absolute",
