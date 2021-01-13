@@ -5,6 +5,7 @@ import GameRoundService from "@/Services/GameRoundService"
 import ClientService from "@/Services/ClientService"
 
 import NumberUtil from "@/Utils/NumberUtil"
+import ArrayUtil from "@/Utils/ArrayUtil"
 
 import environmentConfig from "@/Config/environment"
 
@@ -241,6 +242,8 @@ class GameService {
 				return card
 			}
 		})
+
+		ArrayUtil.shuffle(outStackCards)
 
 		game.usedCards = inStackCards
 		game.availableCards = [
