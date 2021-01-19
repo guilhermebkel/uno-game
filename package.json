@@ -19,7 +19,6 @@
     "install:unoenty": "lerna exec --stream --scope @uno-game/unoenty -- npm install",
     "build:unoenty": "lerna run build --scope @uno-game/unoenty --stream",
     "env:unoenty": "cp packages/unoenty/.env.example packages/unoenty/.env",
-    "lint": "npx eslint --ext .ts,.tsx packages",
     "ci:unapy": "npm install && npm run install:unapy && npm run bootstrap && npm run build:unapy",
     "ci:unoenty": "npm install && npm run install:unoenty && npm run bootstrap && npm run build:unoenty"
   },
