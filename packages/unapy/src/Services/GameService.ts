@@ -646,13 +646,13 @@ class GameService {
 					canBeUsed: game?.currentCardCombo?.cardTypes.length ? (
 						this.cardCanBeBuyCombed(game, handCard)
 					) : (
-						topStackCard?.color === handCard.color ||
-						handCard.type === "change-color" ||
-						handCard.type === "buy-4" ||
-						topStackCard?.type === handCard.type ||
-						handCard.color === game.currentGameColor
+						topStackCard?.color === handCard?.color ||
+						handCard?.type === "change-color" ||
+						handCard?.type === "buy-4" ||
+						topStackCard?.type === handCard?.type ||
+						handCard?.color === game.currentGameColor
 					),
-					canBeCombed: game.currentCardCombo.cardTypes.includes(handCard.type),
+					canBeCombed: game.currentCardCombo.cardTypes.includes(handCard?.type),
 				}))
 
 				return {
