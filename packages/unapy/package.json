@@ -35,6 +35,6 @@
     "@uno-game/error-handler": "*"
   },
   "_moduleAliases": {
-    "@": "uno/packages/unapy/dist"
+    "@": "dist"
   }
 }
