@@ -43,9 +43,6 @@
     "lint-staged": "^10.2.10",
     "typescript": "^3.9.2"
   },
-    "dependencies": {
-      "module-alias": "^2.2.2"
-  },
   "workspaces": [
     "packages/*",
     "packages/shared/*"
