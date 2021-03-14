@@ -33,8 +33,5 @@
   "optionalDependencies": {
     "@uno-game/protocols": "*",
     "@uno-game/error-handler": "*"
-  },
-  "_moduleAliases": {
-    "@": "dist"
   }
 }
