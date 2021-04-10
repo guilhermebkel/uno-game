@@ -31,6 +31,8 @@ class Server {
 
 	private static setupRoutes () {
 		Server.app.use(routes)
+
+		Server.app.get("/healthcheck", (_, res) => res.status(200).json({}))
 	}
 }
 
