@@ -39,6 +39,10 @@ const LoginDialog: LoginDialogType & React.FC<LoginDialogProps> = (props) => {
 	const classes = useStyles()
 
 	const handleConfirm = () => {
+		if (!response.name) {
+			return
+		}
+
 		setDialogVisible(false)
 
 		callback(response)
@@ -83,8 +87,10 @@ const LoginDialog: LoginDialogType & React.FC<LoginDialogProps> = (props) => {
 						</DialogContentText>
 						<TextField
 							autoFocus
+							required
 							margin="dense"
 							label="Name"
+							value={response.name}
 							onChange={({ target }) => handleChange("name", target.value)}
 							fullWidth
 						/>
