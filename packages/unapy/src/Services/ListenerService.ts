@@ -123,8 +123,9 @@ class ListenerService {
 	private onJoinGame (gameId: string, playerId: string, chatId: string) {
 		const gameExists = GameService.gameExists(gameId)
 		const chatExists = ChatService.chatExists(chatId)
+		const playerExists = PlayerService.playerExists(playerId)
 
-		if (gameExists) {
+		if (gameExists && playerExists) {
 			GameService.joinGame(gameId, playerId)
 
 			if (chatExists) {
