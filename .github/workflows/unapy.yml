@@ -43,5 +43,5 @@ jobs:
       with:
         host: '${{ secrets.CAPROVER_HOST }}'
         password: '${{ secrets.CAPROVER_PASSWORD }}'
-        app: 'unapy'
+        app: 'uno-game-api'
         image: 'guilhermebkel/unapy:latest'
