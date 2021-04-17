@@ -11,7 +11,7 @@
     "bootstrap": "lerna bootstrap --use-workspaces --hoist && lerna link",
     "list": "lerna ls",
     "deploy": "lerna version",
-    "install:unapy": "lerna exec --stream --scope @uno-game/unapy -- npm install",
+    "install:unapy": "lerna exec --stream --scope @uno-game/unapy -- npm install --force",
     "build:unapy": "lerna run build --scope @uno-game/unapy --stream",
     "start:unapy": "lerna run start --scope @uno-game/unapy --stream",
     "dev:unapy": "lerna run dev --scope @uno-game/unapy --stream",
