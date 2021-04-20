@@ -34,13 +34,25 @@ class ListenerService {
 			})
 
 			client.on("CreateGame", () => {
-				const gameId = CryptUtil.makeShortUUID()
-				const chatId = CryptUtil.makeShortUUID()
+				const existingGame = GameService.getExistingPlayerGame(playerData.id)
 
-				client.join(gameId)
-				client.join(chatId)
+				/**
+				 * Prevent players from creating a lot of games.
+				 */
+				if (existingGame) {
+					client.join(existingGame.id)
+					client.join(existingGame.chatId)
 
-				this.onCreateGame(gameId, playerData.id, chatId)
+					GameService.emitGameEvent(existingGame.id, "GameCreated", existingGame)
+				} else {
+					const gameId = CryptUtil.makeShortUUID()
+					const chatId = CryptUtil.makeShortUUID()
+
+					client.join(gameId)
+					client.join(chatId)
+
+					this.onCreateGame(gameId, playerData.id, chatId)
+				}
 			})
 
 			client.on("JoinGame", (gameId: string) => {

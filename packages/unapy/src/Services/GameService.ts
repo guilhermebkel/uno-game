@@ -68,6 +68,17 @@ class GameService {
 		this.emitGameEvent(gameId, "GameCreated", game)
 	}
 
+	getExistingPlayerGame (playerId: string): Game {
+		const player = PlayerService.getPlayerData(playerId)
+		const games = this.getGameList()
+
+		const game = games
+			.filter(({ status }) => status === "waiting")
+			.find(({ title }) => title === player.name)
+
+		return game
+	}
+
 	getChatIdByGameId (gameId: string) {
 		const game = GameRepository.getGame(gameId)
 
@@ -268,6 +279,25 @@ class GameService {
 		game.players = this.buildPlayersWithChangedPlayerStatus(gameId, playerId, playerStatus)
 
 		this.setGameData(gameId, game)
+	}
+
+	emitGameEvent (gameId: string, event: GameEvents, ...data: unknown[]) {
+		SocketService.emitRoomEvent(gameId, event, ...data)
+
+		const gameUpdateEvents: GameEvents[] = [
+			"GameStarted",
+			"GameCreated",
+			"GameEnded",
+			"PlayerJoined",
+			"PlayerLeft",
+		]
+
+		const isGameUpdateEvent = gameUpdateEvents.some(gameEvent => gameEvent === event)
+
+		if (isGameUpdateEvent) {
+			ClientService.dispatchGameHistoryConsolidated()
+			ClientService.dispatchGameListUpdated()
+		}
 	}
 
 	private makeComputedPlay (gameId: string, playerId: string): void {
@@ -471,25 +501,6 @@ class GameService {
 			setTimeout(() => {
 				this.makeComputedPlay(gameId, nextPlayerInfo.id)
 			}, 1000)
-		}
-	}
-
-	private emitGameEvent (gameId: string, event: GameEvents, ...data: unknown[]) {
-		SocketService.emitRoomEvent(gameId, event, ...data)
-
-		const gameUpdateEvents: GameEvents[] = [
-			"GameStarted",
-			"GameCreated",
-			"GameEnded",
-			"PlayerJoined",
-			"PlayerLeft",
-		]
-
-		const isGameUpdateEvent = gameUpdateEvents.some(gameEvent => gameEvent === event)
-
-		if (isGameUpdateEvent) {
-			ClientService.dispatchGameHistoryConsolidated()
-			ClientService.dispatchGameListUpdated()
 		}
 	}
 
