@@ -150,9 +150,8 @@ class GameService {
 		this.setGameData(gameId, game)
 
 		const areAllPlayersReady = game?.players?.every(player => player.ready)
-		const isThereMoreThanOnePlayer = game?.players?.length > 1
 
-		if (areAllPlayersReady && isThereMoreThanOnePlayer) {
+		if (areAllPlayersReady) {
 			this.startGame(gameId)
 		}
 	}
