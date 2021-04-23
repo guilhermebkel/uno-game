@@ -72,9 +72,11 @@ const Chat: React.FC = () => {
 	}
 
 	const handleSendChatMessage = () => {
-		if (chatId) {
-			socket.sendChatMessage(chatId, content)
+		if (!content || !chatId) {
+			return
 		}
+
+		socket.sendChatMessage(chatId, content)
 
 		setContent("")
 	}
