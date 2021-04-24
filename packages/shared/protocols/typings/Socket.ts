@@ -24,5 +24,5 @@ export type SocketClientEvents =
 "connect"
 
 export type SocketEventHandler<ReceivedData extends unknown, ResponseData extends unknown> = (
-	...data: ReceivedData[]
+	data: ReceivedData
 ) => Promise<ResponseData | void> | (ResponseData | void)

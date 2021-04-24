@@ -1,5 +1,5 @@
 import { Server as SocketServer } from "socket.io"
-import { SocketEventHandler, SocketServerEvents } from "@uno-game/protocols"
+import { SocketServerEvents } from "@uno-game/protocols"
 import ErrorHandler from "@uno-game/error-handler"
 
 import { SocketCallback, SocketClient } from "@/Protocols/SocketProtocol"
@@ -10,7 +10,8 @@ class SocketService {
 	on<ReceivedData extends unknown, ResponseData extends unknown> (
 		client: SocketClient,
 		event: SocketServerEvents,
-		handler: SocketEventHandler<ReceivedData, ResponseData>,
+		// eslint-disable-next-line
+		handler: any,
 	): void {
 		client.on(event, async (...data: unknown[]) => {
 			try {
