@@ -95,7 +95,7 @@ class GameService {
 	}
 
 	async joinGame (gameId: string, playerId: string): Promise<void> {
-		const game = await this.getGame(gameId)
+		let game = await this.getGame(gameId)
 
 		const player = game?.players?.find(player => player.id === playerId)
 
@@ -107,6 +107,8 @@ class GameService {
 			await this.addPlayer(gameId, playerId)
 		}
 
+		game = await this.getGame(gameId)
+
 		const gameRoundRemainingTimeInSeconds = await this.getRoundRemainingTimeInSeconds(gameId)
 
 		GameRoundService.emitGameRoundEvent(gameId, "GameRoundRemainingTimeChanged", gameRoundRemainingTimeInSeconds)
@@ -114,6 +116,8 @@ class GameService {
 		if (!playerIsNotOnGame) {
 			game.players = await this.buildPlayersWithChangedPlayerStatus(gameId, playerId, "online")
 		}
+
+		await this.setGameData(gameId, game)
 
 		this.emitGameEvent(gameId, "PlayerJoined", game)
 	}
