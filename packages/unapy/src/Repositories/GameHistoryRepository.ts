@@ -1,14 +1,18 @@
 import { GameHistory } from "@uno-game/protocols"
 
+import { Store } from "@/Protocols/StoreProtocol"
+
+import AsyncMapStoreService from "@/Services/AsyncMapStoreService"
+
 class GameRepository {
-	private static gameHistories: Map<string, GameHistory[]> = new Map()
+	private static gameHistories: Store<GameHistory[]> = new AsyncMapStoreService()
 
 	static async setGameHistory (playerId: string, gameHistory: GameHistory[]): Promise<void> {
-		this.gameHistories.set(playerId, gameHistory)
+		await this.gameHistories.set(playerId, gameHistory)
 	}
 
 	static async getGameHistory (playerId: string): Promise<GameHistory[]> {
-		const game = this.gameHistories.get(playerId)
+		const game = await this.gameHistories.getOne(playerId)
 
 		return game
 	}

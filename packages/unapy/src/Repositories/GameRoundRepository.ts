@@ -1,20 +1,24 @@
 import { GameRoundCounter } from "@uno-game/protocols"
 
+import { Store } from "@/Protocols/StoreProtocol"
+
+import AsyncMapStoreService from "@/Services/AsyncMapStoreService"
+
 class GameRoundRepository {
-	private static gameRoundCounters: Map<string, GameRoundCounter> = new Map()
+	private static gameRoundCounters: Store<GameRoundCounter> = new AsyncMapStoreService()
 
 	static async getGameRoundCounter (gameId: string): Promise<GameRoundCounter> {
-		const gameRoundCounter = this.gameRoundCounters.get(gameId)
+		const gameRoundCounter = await this.gameRoundCounters.getOne(gameId)
 
 		return gameRoundCounter
 	}
 
 	static async deleteGameRoundCounter (gameId: string): Promise<void> {
-		this.gameRoundCounters.delete(gameId)
+		await this.gameRoundCounters.delete(gameId)
 	}
 
 	static async setGameRoundCounterData (gameId: string, roundCounter: GameRoundCounter): Promise<void> {
-		this.gameRoundCounters.set(gameId, roundCounter)
+		await this.gameRoundCounters.set(gameId, roundCounter)
 	}
 }
 

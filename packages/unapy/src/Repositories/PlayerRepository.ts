@@ -1,14 +1,18 @@
 import { Player } from "@uno-game/protocols"
 
+import { Store } from "@/Protocols/StoreProtocol"
+
+import AsyncMapStoreService from "@/Services/AsyncMapStoreService"
+
 class PlayerRepository {
-	private static players: Map<string, Player> = new Map()
+	private static players: Store<Player> = new AsyncMapStoreService()
 
 	static async setPlayerData (playerData: Player): Promise<void> {
-		this.players.set(playerData.id, playerData)
+		await this.players.set(playerData.id, playerData)
 	}
 
 	static async getPlayerData (playerId: string): Promise<Player> {
-		return this.players.get(playerId)
+		return await this.players.getOne(playerId)
 	}
 }
 
