@@ -23,7 +23,7 @@ class GameRepository {
 		if (chat) {
 			chat.messages.push(message)
 
-			this.chats.set(chatId, chat)
+			await this.chats.set(chatId, chat)
 		}
 	}
 }
