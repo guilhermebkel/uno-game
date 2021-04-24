@@ -65,6 +65,11 @@ A simple UNO Game made in Javascript, supposed to be blazing easier and faster t
 npm run setup
 ```
 
+3. Run the command below inside the root folder to startup all the needed resources (such as Redis).
+```sh
+npm run dev:resources
+```
+
 3. Run the command bellow inside **packages/unoenty** and **packages/unapy** to start api and client.
 ```sh
 npm run dev

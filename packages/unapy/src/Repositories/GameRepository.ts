@@ -2,10 +2,10 @@ import { Game } from "@uno-game/protocols"
 
 import { Store } from "@/Protocols/StoreProtocol"
 
-import AsyncMapStoreService from "@/Services/AsyncMapStoreService"
+import RedisStoreService from "@/Services/RedisStoreService"
 
 class GameRepository {
-	private static games: Store<Game> = new AsyncMapStoreService()
+	private static games: Store<Game> = new RedisStoreService("game")
 
 	static async setGameData (gameId: string, game: Game): Promise<void> {
 		await this.games.set(gameId, game)

@@ -2,19 +2,19 @@ import { GameHistory } from "@uno-game/protocols"
 
 import { Store } from "@/Protocols/StoreProtocol"
 
-import AsyncMapStoreService from "@/Services/AsyncMapStoreService"
+import RedisStoreService from "@/Services/RedisStoreService"
 
 class GameRepository {
-	private static gameHistories: Store<GameHistory[]> = new AsyncMapStoreService()
+	private static gameHistories: Store<GameHistory[]> = new RedisStoreService("game-history")
 
 	static async setGameHistory (playerId: string, gameHistory: GameHistory[]): Promise<void> {
 		await this.gameHistories.set(playerId, gameHistory)
 	}
 
 	static async getGameHistory (playerId: string): Promise<GameHistory[]> {
-		const game = await this.gameHistories.getOne(playerId)
+		const gameHistory = await this.gameHistories.getOne(playerId)
 
-		return game
+		return gameHistory
 	}
 }
 

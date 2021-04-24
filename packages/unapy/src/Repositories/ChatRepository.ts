@@ -2,10 +2,10 @@ import { Chat, ChatMessage } from "@uno-game/protocols"
 
 import { Store } from "@/Protocols/StoreProtocol"
 
-import AsyncMapStoreService from "@/Services/AsyncMapStoreService"
+import RedisStoreService from "@/Services/RedisStoreService"
 
 class GameRepository {
-	private static chats: Store<Chat> = new AsyncMapStoreService()
+	private static chats: Store<Chat> = new RedisStoreService("chat")
 
 	static async createChat (chatData: Chat): Promise<void> {
 		this.chats.set(chatData.id, chatData)

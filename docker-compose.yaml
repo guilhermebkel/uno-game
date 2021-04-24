@@ -1,0 +1,7 @@
+version: "3"
+services:
+  redis:
+    image: redis
+    restart: "no"
+    ports:
+        - 6333:6379
