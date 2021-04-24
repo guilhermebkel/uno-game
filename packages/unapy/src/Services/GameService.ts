@@ -329,7 +329,7 @@ class GameService {
 		return remainingTimeInSeconds
 	}
 
-	private async resetRoundCounter (gameId: string): Promise<void> {
+	async resetRoundCounter (gameId: string): Promise<void> {
 		const { maxRoundDurationInSeconds } = await this.getGame(gameId)
 
 		const gameRoundRemainingTime = await this.getRoundRemainingTimeInSeconds(gameId)
@@ -497,7 +497,7 @@ class GameService {
 		await this.setGameData(gameId, game)
 
 		const nextPlayerInfo = await this.getCurrentPlayerInfo(gameId)
-		console.log(nextPlayerInfo)
+
 		if (nextPlayerInfo.playerStatus === "afk") {
 			await new Promise(resolve => {
 				setTimeout(async () => {
