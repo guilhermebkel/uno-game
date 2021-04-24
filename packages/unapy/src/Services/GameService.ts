@@ -281,7 +281,7 @@ class GameService {
 	}
 
 	emitGameEvent (gameId: string, event: GameEvents, ...data: unknown[]) {
-		SocketService.emitRoomEvent(gameId, event, ...data)
+		SocketService.emitGameEvent(gameId, event, ...data)
 
 		const gameUpdateEvents: GameEvents[] = [
 			"GameStarted",

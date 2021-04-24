@@ -20,6 +20,12 @@ class PlayerService {
 			return false
 		}
 	}
+
+	async getAllPlayerIds (): Promise<string[]> {
+		const playerIds = await PlayerRepository.getAllPlayerIds()
+
+		return playerIds
+	}
 }
 
 export default new PlayerService()

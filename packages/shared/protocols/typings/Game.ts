@@ -14,7 +14,9 @@ export type GameEvents =
 "PlayerBuyCards" |
 "CardStackBuyCardsCombo" |
 "GameRoundRemainingTimeChanged" |
-"PlayerGotAwayFromKeyboard"
+"PlayerGotAwayFromKeyboard" |
+"GameHistoryConsolidated" |
+"GameListUpdated"
 
 export type GameStatus =
 "waiting" |

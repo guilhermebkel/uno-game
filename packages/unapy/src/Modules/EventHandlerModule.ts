@@ -18,17 +18,18 @@ class EventHandlerModule {
 		try {
 			const playerData = {} as Player
 
-			client.emit("PlayerConnected", client.id)
+			SocketService.setupPlayerListener(client, client.id)
+			SocketService.emitPlayerEvent(client.id, "PlayerConnected")
 
 			SocketService.on(client, "SetPlayerData", async (playerId: string, playerName: string) => {
 				playerData.id = playerId
 				playerData.name = playerName
 
-				await ClientService.setClient(playerId, client)
+				SocketService.setupPlayerListener(client, playerId)
 
 				await this.onSetPlayerData(playerId, playerName)
 
-				client.emit("PlayerDataSet")
+				SocketService.emitPlayerEvent(playerId, "PlayerDataSet")
 			})
 
 			SocketService.on(client, "CreateGame", async () => {
@@ -38,28 +39,28 @@ class EventHandlerModule {
 				 * Prevent players from creating a lot of games.
 				 */
 				if (existingGame) {
-					client.join(existingGame.id)
-					client.join(existingGame.chatId)
+					SocketService.setupGameListener(client, existingGame.id)
+					SocketService.setupChatListener(client, existingGame.chatId)
 
 					GameService.emitGameEvent(existingGame.id, "GameCreated", existingGame)
 				} else {
 					const gameId = CryptUtil.makeShortUUID()
 					const chatId = CryptUtil.makeShortUUID()
 
-					client.join(gameId)
-					client.join(chatId)
+					SocketService.setupGameListener(client, gameId)
+					SocketService.setupChatListener(client, chatId)
 
 					await this.onCreateGame(gameId, playerData.id, chatId)
 				}
 			})
 
 			SocketService.on(client, "JoinGame", async (gameId: string) => {
-				client.join(gameId)
+				SocketService.setupGameListener(client, gameId)
 
 				const chatId = await GameService.getChatIdByGameId(gameId)
 
 				if (chatId) {
-					client.join(chatId)
+					SocketService.setupChatListener(client, chatId)
 				}
 
 				await this.onJoinGame(gameId, playerData.id, chatId)
@@ -89,12 +90,10 @@ class EventHandlerModule {
 				await this.onPlayerDisconnect(playerData.id)
 
 				client.leave(gameId)
-				client.emit("SelfDisconnected")
+				SocketService.emitPlayerEvent(playerData.id, "SelfDisconnected")
 			})
 
 			SocketService.on(client, "disconnect", async () => {
-				await ClientService.destroyClient(playerData.id)
-
 				await this.onPlayerDisconnect(playerData.id)
 			})
 		} catch (error) {

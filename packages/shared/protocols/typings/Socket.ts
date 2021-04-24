@@ -1,3 +1,8 @@
+import { ChatEvents } from "./Chat"
+import { GameEvents } from "./Game"
+import { GameRoundEvents } from "./GameRound"
+import { PlayerEvents } from "./Player"
+
 export type SocketServerEvents =
 "SetPlayerData" |
 "CreateGame" |
@@ -11,16 +16,10 @@ export type SocketServerEvents =
 "disconnect"
 
 export type SocketClientEvents =
-"PlayerJoined" |
-"PlayerLeft" |
-"ResetPlayerMovement" |
-"ResetPlayerItem" |
-"SetPlayerMovement" |
-"SetPlayerCharacterAttributes" |
-"SetPlayerRacingLap" |
-"SetPlayerItem" |
-"MysteryItemCaught" |
-"MysteryItemSpawned" |
+GameEvents |
+ChatEvents |
+GameRoundEvents |
+PlayerEvents |
 "connect"
 
 export type SocketEventHandler<ReceivedData extends unknown, ResponseData extends unknown> = (

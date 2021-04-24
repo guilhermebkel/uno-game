@@ -14,6 +14,10 @@ class PlayerRepository {
 	static async getPlayerData (playerId: string): Promise<Player> {
 		return await this.players.getOne(playerId)
 	}
+
+	static async getAllPlayerIds (): Promise<string[]> {
+		return await this.players.getKeys()
+	}
 }
 
 export default PlayerRepository

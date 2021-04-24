@@ -69,7 +69,7 @@ class ChatService {
 	}
 
 	private emitChatEvent (chatId: string, event: ChatEvents, ...data: unknown[]) {
-		SocketService.emitRoomEvent(chatId, event, ...data)
+		SocketService.emitChatEvent(chatId, event, ...data)
 	}
 }
 

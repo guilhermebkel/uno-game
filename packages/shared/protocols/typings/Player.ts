@@ -1,5 +1,10 @@
 import { CardData } from "./Card"
 
+export type PlayerEvents =
+"PlayerDataSet" |
+"SelfDisconnected" |
+"PlayerConnected"
+
 export type Player = {
 	id: string
 	name: string
