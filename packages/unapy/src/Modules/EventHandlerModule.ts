@@ -19,7 +19,7 @@ class EventHandlerModule {
 			const playerData = {} as Player
 
 			SocketService.setupPlayerListener(client, client.id)
-			SocketService.emitPlayerEvent(client.id, "PlayerConnected")
+			SocketService.emitPlayerEvent(client.id, "PlayerConnected", client.id)
 
 			SocketService.on(client, "SetPlayerData", async (playerId: string, playerName: string) => {
 				playerData.id = playerId

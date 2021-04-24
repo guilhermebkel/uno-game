@@ -58,7 +58,7 @@ class GameService {
 				cardTypes: [],
 				amountToBuy: 0,
 			},
-			maxRoundDurationInSeconds: environmentConfig.isDev ? 200000 : 30,
+			maxRoundDurationInSeconds: environmentConfig.isDev ? 10 : 30,
 			createdAt: Date.now(),
 		}
 
@@ -320,7 +320,7 @@ class GameService {
 
 		const randomCardColor = await CardService.retrieveRandomCardColor()
 
-		this.putCard(playerId, [usableCard.id], gameId, randomCardColor)
+		await this.putCard(playerId, [usableCard.id], gameId, randomCardColor)
 	}
 
 	private async getRoundRemainingTimeInSeconds (gameId: string): Promise<number> {
