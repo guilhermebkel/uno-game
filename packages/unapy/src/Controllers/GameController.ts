@@ -3,7 +3,7 @@ import { Request, Response } from "express"
 
 class GameController {
 	async getGameList (req: Request, res: Response) {
-		const games = GameService.getGameList()
+		const games = await GameService.getGameList()
 
 		const gameList = games.map(game => ({
 			id: game.id,

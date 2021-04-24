@@ -14,7 +14,6 @@ export type PlayerStatus = "online" | "offline" | "afk"
 
 export type PlayerData = Player & {
 	handCards: CardData[]
-	usedCards: CardData[]
 	status: PlayerStatus
 	ready: boolean
 	isCurrentRoundPlayer: boolean

@@ -5,18 +5,18 @@ import GameService from "@/Services/GameService"
 import GameHistoryRepository from "@/Repositories/GameHistoryRepository"
 
 class GameHistoryService {
-	retrieveGameHistory (playerId: string): GameHistory[] {
-		const gameHistory = this.consolidateGameHistory(playerId)
+	async retrieveGameHistory (playerId: string): Promise<GameHistory[]> {
+		const gameHistory = await this.consolidateGameHistory(playerId)
 
 		return gameHistory
 	}
 
-	private consolidateGameHistory (playerId: string): GameHistory[] {
-		const gameHistory = GameHistoryRepository.getGameHistory(playerId) || []
+	private async consolidateGameHistory (playerId: string): Promise<GameHistory[]> {
+		const gameHistory = await GameHistoryRepository.getGameHistory(playerId) || []
 
 		const consolidatedGameHistory: GameHistory[] = []
 
-		const games = GameService.getGameList()
+		const games = await GameService.getGameList()
 
 		gameHistory
 			.forEach(history => {
@@ -46,7 +46,7 @@ class GameHistoryService {
 				})
 			})
 
-		GameHistoryRepository.setGameHistory(playerId, consolidatedGameHistory)
+		await GameHistoryRepository.setGameHistory(playerId, consolidatedGameHistory)
 
 		return consolidatedGameHistory
 	}

@@ -3,17 +3,17 @@ import { GameRoundCounter } from "@uno-game/protocols"
 class GameRoundRepository {
 	private static gameRoundCounters: Map<string, GameRoundCounter> = new Map()
 
-	static getGameRoundCounter (gameId: string): GameRoundCounter {
+	static async getGameRoundCounter (gameId: string): Promise<GameRoundCounter> {
 		const gameRoundCounter = this.gameRoundCounters.get(gameId)
 
 		return gameRoundCounter
 	}
 
-	static deleteGameRoundCounter (gameId: string): void {
+	static async deleteGameRoundCounter (gameId: string): Promise<void> {
 		this.gameRoundCounters.delete(gameId)
 	}
 
-	static setGameRoundCounterData (gameId: string, roundCounter: GameRoundCounter): void {
+	static async setGameRoundCounterData (gameId: string, roundCounter: GameRoundCounter): Promise<void> {
 		this.gameRoundCounters.set(gameId, roundCounter)
 	}
 }

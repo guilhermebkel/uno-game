@@ -3,21 +3,21 @@ import { Socket } from "socket.io"
 class ClientRepository {
 	private static clients: Map<string, Socket> = new Map()
 
-	static setClient (playerId: string, client: Socket): void {
+	static async setClient (playerId: string, client: Socket): Promise<void> {
 		this.clients.set(playerId, client)
 	}
 
-	static destroyClient (playerId: string): void {
+	static async destroyClient (playerId: string): Promise<void> {
 		this.clients.delete(playerId)
 	}
 
-	static getClient (playerId: string): Socket {
+	static async getClient (playerId: string): Promise<Socket> {
 		const client = this.clients.get(playerId)
 
 		return client
 	}
 
-	static getConnectedPlayerIdList (): string[] {
+	static async getConnectedPlayerIdList (): Promise<string[]> {
 		const playerIds: string[] = []
 
 		for (const playerId of this.clients.keys()) {

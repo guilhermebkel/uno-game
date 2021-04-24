@@ -3,17 +3,17 @@ import { Chat, ChatMessage } from "@uno-game/protocols"
 class GameRepository {
 	private static chats: Map<string, Chat> = new Map()
 
-	static createChat (chatData: Chat): void {
+	static async createChat (chatData: Chat): Promise<void> {
 		this.chats.set(chatData.id, chatData)
 	}
 
-	static getChat (chatId: string): Chat {
+	static async getChat (chatId: string): Promise<Chat> {
 		const chat = this.chats.get(chatId)
 
 		return chat
 	}
 
-	static pushMessageToChat (chatId: string, message: ChatMessage): void {
+	static async pushMessageToChat (chatId: string, message: ChatMessage): Promise<void> {
 		const chat = this.chats.get(chatId)
 
 		if (chat) {

@@ -5,48 +5,52 @@ import GameHistoryService from "@/Services/GameHistoryService"
 import ClientRepository from "@/Repositories/ClientRepository"
 
 class ClientService {
-	dispatchGameHistoryConsolidated (playerId?: string): void {
+	async dispatchGameHistoryConsolidated (playerId?: string): Promise<void> {
 		let connectedPlayerIds: string[] = []
 
 		if (playerId) {
 			connectedPlayerIds = [playerId]
 		} else {
-			connectedPlayerIds = ClientRepository.getConnectedPlayerIdList()
+			connectedPlayerIds = await ClientRepository.getConnectedPlayerIdList()
 		}
 
-		connectedPlayerIds.forEach(playerId => {
-			const gameHistory = GameHistoryService.retrieveGameHistory(playerId)
+		await Promise.all(
+			connectedPlayerIds.map(async playerId => {
+				const gameHistory = await GameHistoryService.retrieveGameHistory(playerId)
 
-			const client = ClientRepository.getClient(playerId)
+				const client = await ClientRepository.getClient(playerId)
 
-			if (gameHistory && client) {
-				client.emit("GameHistoryConsolidated", gameHistory)
-			}
-		})
+				if (gameHistory && client) {
+					client.emit("GameHistoryConsolidated", gameHistory)
+				}
+			}),
+		)
 	}
 
-	dispatchGameListUpdated (): void {
-		const connectedPlayerIds = ClientRepository.getConnectedPlayerIdList()
+	async dispatchGameListUpdated (): Promise<void> {
+		const connectedPlayerIds = await ClientRepository.getConnectedPlayerIdList()
 
-		connectedPlayerIds.forEach(playerId => {
-			const client = this.getClient(playerId)
+		await Promise.all(
+			connectedPlayerIds.map(async playerId => {
+				const client = await this.getClient(playerId)
 
-			if (client) {
-				client.emit("GameListUpdated")
-			}
-		})
+				if (client) {
+					client.emit("GameListUpdated")
+				}
+			}),
+		)
 	}
 
-	setClient (playerId: string, client: Socket): void {
-		ClientRepository.setClient(playerId, client)
+	async setClient (playerId: string, client: Socket): Promise<void> {
+		await ClientRepository.setClient(playerId, client)
 	}
 
-	destroyClient (playerId: string): void {
-		ClientRepository.destroyClient(playerId)
+	async destroyClient (playerId: string): Promise<void> {
+		await ClientRepository.destroyClient(playerId)
 	}
 
-	private getClient (playerId: string): Socket {
-		const client = ClientRepository.getClient(playerId)
+	private async getClient (playerId: string): Promise<Socket> {
+		const client = await ClientRepository.getClient(playerId)
 
 		return client
 	}

@@ -3,16 +3,16 @@ import { Player } from "@uno-game/protocols"
 import PlayerRepository from "@/Repositories/PlayerRepository"
 
 class PlayerService {
-	setPlayerData (playerData: Player) {
-		PlayerRepository.setPlayerData(playerData)
+	async setPlayerData (playerData: Player): Promise<void> {
+		await PlayerRepository.setPlayerData(playerData)
 	}
 
-	getPlayerData (playerId: string): Player {
-		return PlayerRepository.getPlayerData(playerId)
+	async getPlayerData (playerId: string): Promise<Player> {
+		return await PlayerRepository.getPlayerData(playerId)
 	}
 
-	playerExists (playerId: string) {
-		const player = PlayerRepository.getPlayerData(playerId)
+	async playerExists (playerId: string): Promise<boolean> {
+		const player = await PlayerRepository.getPlayerData(playerId)
 
 		if (player) {
 			return true

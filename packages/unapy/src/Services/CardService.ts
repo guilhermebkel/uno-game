@@ -30,10 +30,10 @@ class CardService {
 		"yellow",
 	]
 
-	setupRandomCards () {
+	async setupRandomCards (): Promise<CardData[]> {
 		const randomCards: CardData[] = [
-			...this.getCardStack(),
-			...this.getCardStack(),
+			...await this.getCardStack(),
+			...await this.getCardStack(),
 		]
 
 		ArrayUtil.shuffle(randomCards)
@@ -41,7 +41,7 @@ class CardService {
 		return randomCards
 	}
 
-	retrieveRandomCardColor (): CardColors {
+	async retrieveRandomCardColor (): Promise<CardColors> {
 		const cardColors: Array<CardColors> = [
 			"blue",
 			"green",
@@ -54,7 +54,7 @@ class CardService {
 		return cardColors[0]
 	}
 
-	getCardStack () {
+	async getCardStack (): Promise<CardData[]> {
 		const cardStack: CardData[] = []
 
 		this.cardTypes.map(cardType => {

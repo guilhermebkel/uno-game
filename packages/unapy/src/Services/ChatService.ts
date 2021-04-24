@@ -12,8 +12,8 @@ import {
 import ChatRepository from "@/Repositories/ChatRepository"
 
 class ChatService {
-	setupChat (playerId: string, chatId: string) {
-		const playerData = PlayerService.getPlayerData(playerId)
+	async setupChat (playerId: string, chatId: string): Promise<void> {
+		const playerData = await PlayerService.getPlayerData(playerId)
 
 		const chat: Chat = {
 			id: chatId,
@@ -21,11 +21,11 @@ class ChatService {
 			messages: [],
 		}
 
-		this.createChat(chat)
+		await this.createChat(chat)
 	}
 
-	chatExists (chatId: string) {
-		const chat = ChatRepository.getChat(chatId)
+	async chatExists (chatId: string): Promise<boolean> {
+		const chat = await ChatRepository.getChat(chatId)
 
 		if (chat) {
 			return true
@@ -34,8 +34,8 @@ class ChatService {
 		}
 	}
 
-	pushMessage (playerId: string, chatId: string, content: string) {
-		const playerData = PlayerService.getPlayerData(playerId)
+	async pushMessage (playerId: string, chatId: string, content: string): Promise<void> {
+		const playerData = await PlayerService.getPlayerData(playerId)
 
 		const id = CryptUtil.makeUUID()
 
@@ -47,25 +47,25 @@ class ChatService {
 			id,
 		}
 
-		ChatRepository.pushMessageToChat(chatId, message)
+		await ChatRepository.pushMessageToChat(chatId, message)
 
 		this.emitChatEvent(chatId, "NewMessage", chatId, message)
 	}
 
-	retrieveChat (chatId: string): Chat {
-		const chat = ChatRepository.getChat(chatId)
+	async retrieveChat (chatId: string): Promise<Chat> {
+		const chat = await ChatRepository.getChat(chatId)
 
 		return chat
 	}
 
-	joinChat (chatId: string): void {
-		const chat = ChatRepository.getChat(chatId)
+	async joinChat (chatId: string): Promise<void> {
+		const chat = await ChatRepository.getChat(chatId)
 
 		this.emitChatEvent(chatId, "ChatStateChanged", chat)
 	}
 
-	private createChat (chatData: Chat): void {
-		ChatRepository.createChat(chatData)
+	private async createChat (chatData: Chat): Promise<void> {
+		await ChatRepository.createChat(chatData)
 	}
 
 	private emitChatEvent (chatId: string, event: ChatEvents, ...data: unknown[]) {

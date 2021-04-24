@@ -8,8 +8,8 @@ import {
 import GameRoundRepository from "@/Repositories/GameRoundRepository"
 
 class GameRoundService {
-	getRoundRemainingTimeInSeconds (gameId: string): number {
-		const gameRoundCounter = GameRoundRepository.getGameRoundCounter(gameId)
+	async getRoundRemainingTimeInSeconds (gameId: string): Promise<number> {
+		const gameRoundCounter = await GameRoundRepository.getGameRoundCounter(gameId)
 
 		if (gameRoundCounter) {
 			const { initializedAtMilliseconds, timeInSeconds } = gameRoundCounter
@@ -30,8 +30,8 @@ class GameRoundService {
 		return null
 	}
 
-	resetRoundCounter (gameId: string, roundCounter: GameRoundCounter) {
-		const currentRoundCounter = GameRoundRepository.getGameRoundCounter(gameId)
+	async resetRoundCounter (gameId: string, roundCounter: GameRoundCounter): Promise<void> {
+		const currentRoundCounter = await GameRoundRepository.getGameRoundCounter(gameId)
 
 		if (currentRoundCounter) {
 			const oldTimeoutId = currentRoundCounter.timeoutId
@@ -51,7 +51,7 @@ class GameRoundService {
 			roundCounter.intervalAction(gameId)
 		}, 1000)
 
-		GameRoundRepository.setGameRoundCounterData(gameId, {
+		await GameRoundRepository.setGameRoundCounterData(gameId, {
 			...roundCounter,
 			timeoutId: newTimeoutId,
 			intervalId: newIntervalId,
@@ -59,8 +59,8 @@ class GameRoundService {
 		})
 	}
 
-	removeRoundCounter (gameId: string) {
-		const currentRoundCounter = GameRoundRepository.getGameRoundCounter(gameId)
+	async removeRoundCounter (gameId: string): Promise<void> {
+		const currentRoundCounter = await GameRoundRepository.getGameRoundCounter(gameId)
 
 		if (currentRoundCounter) {
 			const oldTimeoutId = currentRoundCounter.timeoutId
@@ -69,7 +69,7 @@ class GameRoundService {
 			clearTimeout(oldTimeoutId)
 			clearInterval(oldIntervalId)
 
-			GameRoundRepository.deleteGameRoundCounter(gameId)
+			await GameRoundRepository.deleteGameRoundCounter(gameId)
 		}
 	}
 

@@ -2,8 +2,9 @@ import socket, { Server as SocketServer } from "socket.io"
 import { Server as HttpServer } from "http"
 import MsgPackParser from "socket.io-msgpack-parser"
 
-import ListenerService from "@/Services/ListenerService"
 import SocketService from "@/Services/SocketService"
+
+import EventHandlerModule from "@/Modules/EventHandlerModule"
 
 class Socket {
 	private static io: SocketServer
@@ -25,7 +26,7 @@ class Socket {
 	}
 
 	private static setupListeners (): void {
-		this.io.on("connection", client => ListenerService.onConnection(client))
+		this.io.on("connection", client => EventHandlerModule.onConnection(client))
 	}
 
 	private static setupService (): void {
