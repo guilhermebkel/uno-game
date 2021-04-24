@@ -104,7 +104,7 @@ class GameService {
 		const playerIsNotOnGame = !player
 
 		if (gameHasNotStarted && gameIsNotFull && playerIsNotOnGame) {
-			this.addPlayer(gameId, playerId)
+			await this.addPlayer(gameId, playerId)
 		}
 
 		const gameRoundRemainingTimeInSeconds = await this.getRoundRemainingTimeInSeconds(gameId)
@@ -330,14 +330,16 @@ class GameService {
 	}
 
 	private async resetRoundCounter (gameId: string): Promise<void> {
-		const game = await this.getGame(gameId)
+		const { maxRoundDurationInSeconds } = await this.getGame(gameId)
 
 		const gameRoundRemainingTime = await this.getRoundRemainingTimeInSeconds(gameId)
 
 		GameRoundService.emitGameRoundEvent(gameId, "GameRoundRemainingTimeChanged", gameRoundRemainingTime)
 
-		GameRoundService.resetRoundCounter(gameId, {
+		await GameRoundService.resetRoundCounter(gameId, {
 			timeoutAction: async (gameId) => {
+				const game = await this.getGame(gameId)
+
 				const currentPlayerInfo = await this.getCurrentPlayerInfo(gameId)
 
 				game.players = await this.buildPlayersWithChangedPlayerStatus(gameId, currentPlayerInfo.id, "afk")
@@ -354,7 +356,7 @@ class GameService {
 				GameRoundService.emitGameRoundEvent(gameId, "GameRoundRemainingTimeChanged", gameRoundRemainingTime)
 			},
 			gameId,
-			timeInSeconds: game.maxRoundDurationInSeconds,
+			timeInSeconds: maxRoundDurationInSeconds,
 		})
 	}
 
@@ -464,7 +466,8 @@ class GameService {
 
 		if (currentPlayerInfo.gameStatus === "winner") {
 			this.emitGameEvent(gameId, "PlayerWon", currentPlayerInfo.id, currentPlayerInfo.name)
-			return this.endGame(gameId)
+
+			return await this.endGame(gameId)
 		}
 
 		if (currentPlayerInfo.gameStatus === "uno") {
@@ -494,11 +497,15 @@ class GameService {
 		await this.setGameData(gameId, game)
 
 		const nextPlayerInfo = await this.getCurrentPlayerInfo(gameId)
-
+		console.log(nextPlayerInfo)
 		if (nextPlayerInfo.playerStatus === "afk") {
-			setTimeout(() => {
-				this.makeComputedPlay(gameId, nextPlayerInfo.id)
-			}, 1000)
+			await new Promise(resolve => {
+				setTimeout(async () => {
+					await this.makeComputedPlay(gameId, nextPlayerInfo.id)
+
+					resolve(true)
+				}, 1000)
+			})
 		}
 	}
 
