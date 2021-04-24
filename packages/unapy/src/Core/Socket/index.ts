@@ -36,11 +36,7 @@ class Socket {
 	}
 
 	private static setupSocket (http: HttpServer): void {
-		const oneSecondInMilliseconds = 1000
-
 		this.io = socket(http, {
-			pingInterval: oneSecondInMilliseconds,
-			pingTimeout: oneSecondInMilliseconds * 2,
 			...({ parser: MsgPackParser }),
 		})
 	}
