@@ -169,7 +169,7 @@ const SocketProvider: React.FC = (props) => {
 	}
 
 	const onPlayerPutCard = () => {
-		SocketService.on<PlayerPutCardEventData>("PlayerPutCard", ({ cards }) => {
+		SocketService.on<PlayerPutCardEventData>("PlayerPutCard", ({ playerId, cards }) => {
 			setGame(lastState => {
 				if (!lastState?.id) {
 					return lastState
@@ -183,6 +183,18 @@ const SocketProvider: React.FC = (props) => {
 					if (!cardExists) {
 						updatedData.usedCards.unshift(card)
 					}
+				})
+
+				updatedData.players = updatedData.players.map(player => {
+					if (player.id === playerId) {
+						player.handCards = player.handCards.filter(handCard => {
+							const handCardIsPutCard = cards.some(({ id }) => id === handCard.id)
+
+							return !handCardIsPutCard
+						})
+					}
+
+					return player
 				})
 
 				return updatedData

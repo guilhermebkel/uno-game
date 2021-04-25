@@ -70,7 +70,7 @@ export type PlayerToggledReadyEventData = { playerId: string, ready: boolean }
 
 export type NewMessageEventData = { chatId: string, message: ChatMessage }
 
-export type PlayerPutCardEventData = { cards: CardData[] }
+export type PlayerPutCardEventData = { playerId: string, cards: CardData[] }
 
 export type PlayerChoseCardColorEventData = { cards: CardData[] }
 

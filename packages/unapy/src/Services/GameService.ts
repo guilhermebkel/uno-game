@@ -65,7 +65,7 @@ class GameService {
 				cardTypes: [],
 				amountToBuy: 0,
 			},
-			maxRoundDurationInSeconds: environmentConfig.isDev ? 20000 : 30,
+			maxRoundDurationInSeconds: environmentConfig.isDev ? 10 : 30,
 			createdAt: Date.now(),
 		}
 
@@ -249,7 +249,7 @@ class GameService {
 			cards.push(card)
 		})
 
-		this.emitGameEvent<PlayerPutCardEventData>(game.id, "PlayerPutCard", { cards })
+		this.emitGameEvent<PlayerPutCardEventData>(game.id, "PlayerPutCard", { playerId, cards })
 
 		game.players = game?.players?.map(player => {
 			if (player.id === playerId) {
