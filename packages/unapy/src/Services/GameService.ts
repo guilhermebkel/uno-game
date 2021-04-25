@@ -30,16 +30,6 @@ class GameService {
 
 		const playerData = await PlayerService.getPlayerData(playerId)
 
-		const initialPlayer: PlayerData = {
-			id: playerId,
-			name: playerData.name,
-			handCards: [],
-			status: "online",
-			ready: false,
-			isCurrentRoundPlayer: false,
-			canBuyCard: false,
-		}
-
 		const game: Game = {
 			maxPlayers: 6,
 			type: "public",
@@ -53,7 +43,7 @@ class GameService {
 			title: playerData.name,
 			availableCards: [],
 			usedCards: [],
-			players: [initialPlayer],
+			players: [],
 			cards,
 			direction: "clockwise",
 			currentCardCombo: {
@@ -517,8 +507,6 @@ class GameService {
 
 	private async setGameData (gameId: string, game: Game): Promise<void> {
 		await GameRepository.setGameData(gameId, game)
-
-		this.emitGameEvent(gameId, "GameStateChanged", game)
 	}
 
 	private async getTopStackCard (gameId: string): Promise<CardData> {
