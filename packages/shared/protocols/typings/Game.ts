@@ -17,7 +17,9 @@ export type GameEvents =
 "PlayerGotAwayFromKeyboard" |
 "GameHistoryConsolidated" |
 "GameListUpdated" |
-"PlayerToggledReady"
+"PlayerToggledReady" |
+"PlayerPutCard" |
+"PlayerChoseCardColor"
 
 export type GameStatus =
 "waiting" |

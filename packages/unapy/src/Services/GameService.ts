@@ -28,6 +28,9 @@ import {
 	PlayerGotAwayFromKeyboardEventData,
 	GameStartedEventData,
 	PlayerToggledReadyEventData,
+	PlayerPutCardEventData,
+	PlayerChoseCardColorEventData,
+	GameRoundRemainingTimeChangedEventData,
 } from "@uno-game/protocols"
 
 import GameRepository from "@/Repositories/GameRepository"
@@ -125,7 +128,9 @@ class GameService {
 
 		const gameRoundRemainingTimeInSeconds = await this.getRoundRemainingTimeInSeconds(gameId)
 
-		GameRoundService.emitGameRoundEvent(gameId, "GameRoundRemainingTimeChanged", gameRoundRemainingTimeInSeconds)
+		GameRoundService.emitGameRoundEvent<GameRoundRemainingTimeChangedEventData>(gameId, "GameRoundRemainingTimeChanged", {
+			roundRemainingTimeInSeconds: gameRoundRemainingTimeInSeconds,
+		})
 
 		if (!playerIsNotOnGame) {
 			game.players = await this.buildPlayersWithChangedPlayerStatus(gameId, playerId, "online")
@@ -236,6 +241,8 @@ class GameService {
 
 			cards.push(card)
 		})
+
+		this.emitGameEvent<PlayerPutCardEventData>(game.id, "PlayerPutCard", { cards })
 
 		game.players = game?.players?.map(player => {
 			if (player.id === playerId) {
@@ -350,7 +357,9 @@ class GameService {
 
 		const gameRoundRemainingTime = await this.getRoundRemainingTimeInSeconds(gameId)
 
-		GameRoundService.emitGameRoundEvent(gameId, "GameRoundRemainingTimeChanged", gameRoundRemainingTime)
+		GameRoundService.emitGameRoundEvent<GameRoundRemainingTimeChangedEventData>(gameId, "GameRoundRemainingTimeChanged", {
+			roundRemainingTimeInSeconds: gameRoundRemainingTime,
+		})
 
 		await GameRoundService.resetRoundCounter(gameId, {
 			timeoutAction: async (gameId) => {
@@ -371,7 +380,9 @@ class GameService {
 			intervalAction: async (gameId) => {
 				const gameRoundRemainingTime = await this.getRoundRemainingTimeInSeconds(gameId)
 
-				GameRoundService.emitGameRoundEvent(gameId, "GameRoundRemainingTimeChanged", gameRoundRemainingTime)
+				GameRoundService.emitGameRoundEvent<GameRoundRemainingTimeChangedEventData>(gameId, "GameRoundRemainingTimeChanged", {
+					roundRemainingTimeInSeconds: gameRoundRemainingTime,
+				})
 			},
 			gameId,
 			timeInSeconds: maxRoundDurationInSeconds,
@@ -580,6 +591,10 @@ class GameService {
 					return card
 				}
 			})
+
+			const changedCards = game.usedCards.filter(({ id }) => cardIds.includes(id))
+
+			this.emitGameEvent<PlayerChoseCardColorEventData>(game.id, "PlayerChoseCardColor", { cards: changedCards })
 		}
 
 		if (isReverseCard) {

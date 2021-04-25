@@ -1,6 +1,7 @@
 import GameHistoryService from "@/Services/GameHistoryService"
 import PlayerService from "@/Services/PlayerService"
 import SocketService from "@/Services/SocketService"
+import { GameHistoryConsolidatedEventData } from "@uno-game/protocols"
 
 class ClientService {
 	async dispatchGameHistoryConsolidated (playerId?: string): Promise<void> {
@@ -17,7 +18,7 @@ class ClientService {
 				const gameHistory = await GameHistoryService.retrieveGameHistory(playerId)
 
 				if (gameHistory) {
-					SocketService.emitPlayerEvent(playerId, "GameHistoryConsolidated", gameHistory)
+					SocketService.emitPlayerEvent<GameHistoryConsolidatedEventData>(playerId, "GameHistoryConsolidated", { gameHistory })
 				}
 			}),
 		)

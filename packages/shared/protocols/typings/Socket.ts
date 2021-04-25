@@ -1,6 +1,7 @@
-import { CardColors } from "./Card"
+import { CardColors, CardData } from "./Card"
 import { Chat, ChatEvents, ChatMessage } from "./Chat"
 import { GameEvents, Game } from "./Game"
+import { GameHistory } from "./GameHistory"
 import { GameRoundEvents } from "./GameRound"
 import { Player, PlayerData, PlayerEvents, PlayerStatus } from "./Player"
 
@@ -68,3 +69,11 @@ export type GameStartedEventData = { gameId: string }
 export type PlayerToggledReadyEventData = { playerId: string, ready: boolean }
 
 export type NewMessageEventData = { chatId: string, message: ChatMessage }
+
+export type PlayerPutCardEventData = { cards: CardData[] }
+
+export type PlayerChoseCardColorEventData = { cards: CardData[] }
+
+export type GameRoundRemainingTimeChangedEventData = { roundRemainingTimeInSeconds: number }
+
+export type GameHistoryConsolidatedEventData = { gameHistory: GameHistory[] }

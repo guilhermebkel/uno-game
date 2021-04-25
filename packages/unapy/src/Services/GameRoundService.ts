@@ -73,8 +73,8 @@ class GameRoundService {
 		}
 	}
 
-	emitGameRoundEvent (gameId: string, event: GameRoundEvents, ...data: unknown[]) {
-		SocketService.emitGameEvent(gameId, event, ...data)
+	emitGameRoundEvent<Data extends unknown> (gameId: string, event: GameRoundEvents, data: Data) {
+		SocketService.emitGameEvent(gameId, event, data)
 	}
 }
 

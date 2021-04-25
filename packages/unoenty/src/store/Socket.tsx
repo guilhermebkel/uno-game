@@ -19,6 +19,10 @@ import {
 	PlayerJoinedEventData,
 	PlayerLeftEventData,
 	PlayerToggledReadyEventData,
+	PlayerPutCardEventData,
+	PlayerChoseCardColorEventData,
+	GameRoundRemainingTimeChangedEventData,
+	GameHistoryConsolidatedEventData,
 } from "@uno-game/protocols"
 
 export interface SocketContextData {
@@ -87,33 +91,15 @@ const SocketProvider: React.FC = (props) => {
 		})
 	}
 
-	const onChatStateChanged = () => {
-		client.on("ChatStateChanged", (chat: Chat) => {
-			setChats(lastState => {
-				const updatedChats = new Map(lastState.entries())
-
-				updatedChats.set(chat.id, chat)
-
-				return updatedChats
-			})
-		})
-	}
-
 	const onGameHistoryConsolidated = () => {
-		client.on("GameHistoryConsolidated", (gameHistory: GameHistory[]) => {
+		SocketService.on<GameHistoryConsolidatedEventData>("GameHistoryConsolidated", ({ gameHistory }) => {
 			setGameHistory(gameHistory)
 		})
 	}
 
-	const onGameStateChanged = () => {
-		client.on("GameStateChanged", (game: Game) => {
-			setGameData(game)
-		})
-	}
-
 	const onGameRoundRemainingTimeChanged = () => {
-		client.on("GameRoundRemainingTimeChanged", (remainingTimeInSeconds: number) => {
-			setGameRoundRemainingTimeInSeconds(remainingTimeInSeconds)
+		SocketService.on<GameRoundRemainingTimeChangedEventData>("GameRoundRemainingTimeChanged", ({ roundRemainingTimeInSeconds }) => {
+			setGameRoundRemainingTimeInSeconds(roundRemainingTimeInSeconds)
 		})
 	}
 
@@ -180,6 +166,52 @@ const SocketProvider: React.FC = (props) => {
 		})
 	}
 
+	const onPlayerPutCard = () => {
+		SocketService.on<PlayerPutCardEventData>("PlayerPutCard", ({ cards }) => {
+			setGame(lastState => {
+				if (!lastState?.id) {
+					return lastState
+				}
+
+				const updatedData = { ...lastState }
+
+				cards.forEach(card => {
+					const cardExists = updatedData.usedCards.some(({ id }) => id === card.id)
+
+					if (!cardExists) {
+						updatedData.usedCards.unshift(card)
+					}
+				})
+
+				return updatedData
+			})
+		})
+	}
+
+	const onPlayerChoseCardColor = () => {
+		SocketService.on<PlayerChoseCardColorEventData>("PlayerChoseCardColor", ({ cards }) => {
+			setGame(lastState => {
+				if (!lastState?.id) {
+					return lastState
+				}
+
+				const updatedData = { ...lastState }
+
+				updatedData.usedCards = updatedData.usedCards.map(usedCard => {
+					const card = cards.find(({ id }) => id === usedCard.id)
+
+					if (card) {
+						return card
+					}
+
+					return usedCard
+				})
+
+				return updatedData
+			})
+		})
+	}
+
 	const connect = async () => {
 		preloadCardPictures()
 
@@ -195,13 +227,13 @@ const SocketProvider: React.FC = (props) => {
 	}
 
 	const setupListeners = () => {
-		onGameStateChanged()
-		onChatStateChanged()
 		onGameRoundRemainingTimeChanged()
 		onGameHistoryConsolidated()
 		onPlayerJoined()
 		onPlayerLeft()
 		onPlayerToggledReady()
+		onPlayerPutCard()
+		onPlayerChoseCardColor()
 	}
 
 	useDidMount(() => {
