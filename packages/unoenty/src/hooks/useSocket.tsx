@@ -1,5 +1,5 @@
 import { useSocketStore } from "@/store/Socket"
-import { connectSocket, getPlayerData } from "@/services/socket"
+import { getPlayerData, SocketService } from "@/services/socket"
 
 import {
 	PlayerData,
@@ -10,6 +10,14 @@ import {
 	ChatMessage,
 	Chat,
 	CardData,
+	JoinGameEventInput,
+	JoinGameEventResponse,
+	BuyCardEventInput,
+	PutCardEventInput,
+	SendChatMessageEventInput,
+	ChangePlayerStatusEventInput,
+	ToggleReadyEventInput,
+	ForceSelfDisconnectEventInput,
 } from "@uno-game/protocols"
 
 type UseSocketResponse = {
@@ -131,19 +139,19 @@ const useSocket = (): UseSocketResponse => {
 	}
 
 	const joinGame = async (gameId: string): Promise<Game> => {
-		socketStore.io.emit("JoinGame", gameId)
-
-		const game = await new Promise<Game>((resolve) => {
-			socketStore.io.on("PlayerJoined", resolve)
-		})
+		const {
+			game,
+			chat,
+		} = await SocketService.emit<JoinGameEventInput, JoinGameEventResponse>("JoinGame", { gameId })
 
 		socketStore.setGameData(game)
+		socketStore.setChatData(chat)
 
 		return game
 	}
 
 	const toggleReady = (gameId: string) => {
-		socketStore.io.emit("ToggleReady", gameId)
+		SocketService.emit<ToggleReadyEventInput, unknown>("ToggleReady", { gameId })
 
 		/**
 		 * Little trick to improve response time
@@ -163,12 +171,16 @@ const useSocket = (): UseSocketResponse => {
 		})
 	}
 
-	const buyCard = (gameId: string) => {
-		socketStore.io.emit("BuyCard", gameId)
+	const buyCard = async (gameId: string) => {
+		await SocketService.emit<BuyCardEventInput, unknown>("BuyCard", { gameId })
 	}
 
 	const putCard = (gameId: string, cardIds: string[], selectedColor: CardColors) => {
-		socketStore.io.emit("PutCard", gameId, cardIds, selectedColor)
+		SocketService.emit<PutCardEventInput, unknown>("PutCard", {
+			gameId,
+			cardIds,
+			selectedColor,
+		})
 
 		/**
 		 * Little trick to improve response time
@@ -209,12 +221,18 @@ const useSocket = (): UseSocketResponse => {
 		})
 	}
 
-	const toggleOnlineStatus = (gameId: string) => {
-		socketStore.io.emit("ChangePlayerStatus", gameId, "online")
+	const toggleOnlineStatus = async (gameId: string) => {
+		await SocketService.emit<ChangePlayerStatusEventInput, unknown>("ChangePlayerStatus", {
+			gameId,
+			playerStatus: "online",
+		})
 	}
 
-	const sendChatMessage = (chatId: string, content: string) => {
-		socketStore.io.emit("SendChatMessage", chatId, content)
+	const sendChatMessage = async (chatId: string, message: string) => {
+		await SocketService.emit<SendChatMessageEventInput, unknown>("SendChatMessage", {
+			chatId,
+			message,
+		})
 	}
 
 	const onGameStart = (fn: () => void) => {
@@ -286,9 +304,7 @@ const useSocket = (): UseSocketResponse => {
 
 	const onReconnect = (fn: () => void) => {
 		socketStore.io.on("reconnect", async () => {
-			const playerIdFromRoom = await connectSocket()
-
-			const playerData = await getPlayerData(playerIdFromRoom)
+			const playerData = await getPlayerData()
 
 			socketStore.setPlayerData(playerData)
 
@@ -297,13 +313,7 @@ const useSocket = (): UseSocketResponse => {
 	}
 
 	const forceSelfDisconnect = async (gameId: string): Promise<void> => {
-		socketStore.io.emit("ForceSelfDisconnect", gameId)
-
-		await new Promise(resolve => {
-			socketStore.io.on("SelfDisconnected", async () => {
-				resolve()
-			})
-		})
+		await SocketService.emit<ForceSelfDisconnectEventInput, unknown>("ForceSelfDisconnect", { gameId })
 	}
 
 	return {

@@ -1,7 +1,8 @@
-import { ChatEvents } from "./Chat"
-import { GameEvents } from "./Game"
+import { CardColors } from "./Card"
+import { Chat, ChatEvents } from "./Chat"
+import { GameEvents, Game } from "./Game"
 import { GameRoundEvents } from "./GameRound"
-import { PlayerEvents } from "./Player"
+import { Player, PlayerEvents, PlayerStatus } from "./Player"
 
 export type SocketServerEvents =
 "SetPlayerData" |
@@ -25,3 +26,23 @@ PlayerEvents |
 export type SocketEventHandler<ReceivedData extends unknown, ResponseData extends unknown> = (
 	data: ReceivedData
 ) => Promise<ResponseData | void> | (ResponseData | void)
+
+export type SetPlayerDataEventInput = { player: Player }
+export type SetPlayerDataEventResponse = { player: Player }
+
+export type CreateGameEventResponse = { gameId: string }
+
+export type JoinGameEventInput = { gameId: string }
+export type JoinGameEventResponse = { game: Game, chat: Chat }
+
+export type BuyCardEventInput = { gameId: string }
+
+export type PutCardEventInput = { gameId: string, cardIds: string[], selectedColor: CardColors }
+
+export type SendChatMessageEventInput = { chatId: string, message: string }
+
+export type ChangePlayerStatusEventInput = { gameId: string, playerStatus: PlayerStatus }
+
+export type ToggleReadyEventInput = { gameId: string }
+
+export type ForceSelfDisconnectEventInput = { gameId: string }

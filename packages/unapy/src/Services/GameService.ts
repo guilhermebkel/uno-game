@@ -22,8 +22,10 @@ import {
 
 import GameRepository from "@/Repositories/GameRepository"
 
+import CryptUtil from "@/Utils/CryptUtil"
+
 class GameService {
-	async setupGame (playerId: string, gameId: string, chatId: string): Promise<void> {
+	async setupGame (playerId: string, chatId: string): Promise<Game> {
 		const cards = await CardService.setupRandomCards()
 
 		const playerData = await PlayerService.getPlayerData(playerId)
@@ -43,7 +45,7 @@ class GameService {
 			type: "public",
 			status: "waiting",
 			round: 0,
-			id: gameId,
+			id: CryptUtil.makeShortUUID(),
 			chatId,
 			currentPlayerIndex: 0,
 			nextPlayerIndex: 1,
@@ -62,9 +64,9 @@ class GameService {
 			createdAt: Date.now(),
 		}
 
-		await this.setGameData(gameId, game)
+		await this.setGameData(game.id, game)
 
-		this.emitGameEvent(gameId, "GameCreated", game)
+		return game
 	}
 
 	async getExistingPlayerGame (playerId: string): Promise<Game> {
@@ -94,7 +96,7 @@ class GameService {
 		}
 	}
 
-	async joinGame (gameId: string, playerId: string): Promise<void> {
+	async joinGame (gameId: string, playerId: string): Promise<Game> {
 		let game = await this.getGame(gameId)
 
 		const player = game?.players?.find(player => player.id === playerId)
@@ -119,7 +121,7 @@ class GameService {
 
 		await this.setGameData(gameId, game)
 
-		this.emitGameEvent(gameId, "PlayerJoined", game)
+		return game
 	}
 
 	async purgePlayer (playerId: string): Promise<void> {

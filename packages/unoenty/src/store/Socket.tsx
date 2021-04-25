@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState } from "react"
 import { Socket } from "socket.io-client"
 
-import client, { connectSocket, getPlayerData } from "@/services/socket"
+import client, { getPlayerData } from "@/services/socket"
 
 import useDidMount from "@/hooks/useDidMount"
 
@@ -28,6 +28,7 @@ export interface SocketContextData {
 	addChatMessage: (chatId: string, message: ChatMessage) => void
 	setGameData: (data: Game) => void
 	setPlayerData: (data: Player) => void
+	setChatData: (data: Chat) => void
 }
 
 const SocketStore = createContext<SocketContextData>({} as SocketContextData)
@@ -50,6 +51,16 @@ const SocketProvider: React.FC = (props) => {
 
 	const setGameData = (data: Game) => {
 		setGame(data)
+	}
+
+	const setChatData = (data: Chat) => {
+		setChats(lastState => {
+			const updatedChats = new Map(lastState.entries())
+
+			updatedChats.set(data.id, data)
+
+			return updatedChats
+		})
 	}
 
 	const addChatMessage = (chatId: string, message: ChatMessage) => {
@@ -108,9 +119,7 @@ const SocketProvider: React.FC = (props) => {
 
 		refreshCacheIfNeeded()
 
-		const playerId = await connectSocket()
-
-		const playerData = await getPlayerData(playerId)
+		const playerData = await getPlayerData()
 
 		setPlayerData(playerData)
 
@@ -139,6 +148,7 @@ const SocketProvider: React.FC = (props) => {
 				game,
 				gameHistory,
 				gameRoundRemainingTimeInSeconds,
+				setChatData,
 			}}
 		>
 			<LoadingScene loading={loading}>
