@@ -178,13 +178,15 @@ const SocketProvider: React.FC = (props) => {
 
 				const updatedData = { ...lastState }
 
-				cards.forEach(card => {
-					const cardExists = updatedData.usedCards.some(({ id }) => id === card.id)
+				cards
+					.reverse()
+					.forEach(card => {
+						const cardExists = updatedData.usedCards.some(({ id }) => id === card.id)
 
-					if (!cardExists) {
-						updatedData.usedCards.unshift(card)
-					}
-				})
+						if (!cardExists) {
+							updatedData.usedCards.unshift(card)
+						}
+					})
 
 				updatedData.players = updatedData.players.map(player => {
 					if (player.id === playerId) {
