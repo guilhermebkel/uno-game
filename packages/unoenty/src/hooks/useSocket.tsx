@@ -216,6 +216,18 @@ const useSocket = (): UseSocketResponse => {
 			gameId,
 			playerStatus: "online",
 		})
+
+		const lastState = { ...socketStore?.game } as Game
+
+		lastState.players = lastState.players?.map(player => {
+			if (player.id === socketStore.player?.id) {
+				player.status = "online"
+			}
+
+			return player
+		})
+
+		socketStore.setGameData(lastState)
 	}
 
 	const sendChatMessage = async (chatId: string, message: string) => {

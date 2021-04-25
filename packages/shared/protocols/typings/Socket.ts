@@ -92,3 +92,5 @@ export type PlayerCardUsabilityConsolidatedEventData = {
 		}>
 	}>
 }
+
+export type PlayerStatusChangedEventData = { playerId: string, status: PlayerStatus }
