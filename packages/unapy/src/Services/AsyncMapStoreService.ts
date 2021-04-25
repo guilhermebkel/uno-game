@@ -1,5 +1,9 @@
 import { Store } from "@/Protocols/StoreProtocol"
 
+/**
+ * This store is a in-memory async map data structure.
+ * So, the data here is not supposed to be persisted.
+ */
 class AsyncMapStoreService<Model> implements Store<Model> {
 	private store: Map<string, Model> = new Map()
 
