@@ -23,6 +23,8 @@ import {
 	PlayerChoseCardColorEventData,
 	GameRoundRemainingTimeChangedEventData,
 	GameHistoryConsolidatedEventData,
+	PlayerBoughtCardEventData,
+	PlayerCardUsabilityConsolidatedEventData,
 } from "@uno-game/protocols"
 
 export interface SocketContextData {
@@ -212,6 +214,70 @@ const SocketProvider: React.FC = (props) => {
 		})
 	}
 
+	const onPlayerBoughtCard = () => {
+		SocketService.on<PlayerBoughtCardEventData>("PlayerBoughtCard", ({ playerId, cards }) => {
+			setGame(lastState => {
+				if (!lastState?.id) {
+					return lastState
+				}
+
+				const updatedData = { ...lastState }
+
+				updatedData.players = updatedData.players.map(player => {
+					if (player.id === playerId) {
+						cards.forEach(card => {
+							const cardExists = player.handCards.some(({ id }) => id === card.id)
+
+							if (!cardExists) {
+								player.handCards.unshift(card)
+							}
+						})
+					}
+
+					return player
+				})
+
+				return updatedData
+			})
+		})
+	}
+
+	const onPlayerCardUsabilityConsolidated = () => {
+		SocketService.on<PlayerCardUsabilityConsolidatedEventData>("PlayerCardUsabilityConsolidated", ({ players }) => {
+			setGame(lastState => {
+				if (!lastState?.id) {
+					return lastState
+				}
+
+				const updatedData = { ...lastState }
+
+				updatedData.players = updatedData.players.map(player => {
+					const consolidatedPlayer = players.find(({ id }) => id === player.id)
+
+					if (consolidatedPlayer) {
+						player.isCurrentRoundPlayer = consolidatedPlayer.isCurrentRoundPlayer
+						player.canBuyCard = consolidatedPlayer.canBuyCard
+
+						player.handCards = player.handCards.map(handCard => {
+							const consolidatedHandCard = consolidatedPlayer.handCards.find(({ id }) => id === handCard.id)
+
+							if (consolidatedHandCard) {
+								handCard.canBeCombed = consolidatedHandCard.canBeCombed
+								handCard.canBeUsed = consolidatedHandCard.canBeUsed
+							}
+
+							return handCard
+						})
+					}
+
+					return player
+				})
+
+				return updatedData
+			})
+		})
+	}
+
 	const connect = async () => {
 		preloadCardPictures()
 
@@ -234,6 +300,8 @@ const SocketProvider: React.FC = (props) => {
 		onPlayerToggledReady()
 		onPlayerPutCard()
 		onPlayerChoseCardColor()
+		onPlayerBoughtCard()
+		onPlayerCardUsabilityConsolidated()
 	}
 
 	useDidMount(() => {

@@ -77,3 +77,18 @@ export type PlayerChoseCardColorEventData = { cards: CardData[] }
 export type GameRoundRemainingTimeChangedEventData = { roundRemainingTimeInSeconds: number }
 
 export type GameHistoryConsolidatedEventData = { gameHistory: GameHistory[] }
+
+export type PlayerBoughtCardEventData = { playerId: string, cards: CardData[] }
+
+export type PlayerCardUsabilityConsolidatedEventData = {
+	players: Array<{
+		id: string
+		isCurrentRoundPlayer: boolean
+		canBuyCard: boolean
+		handCards: Array<{
+			id: string
+			canBeUsed: boolean
+			canBeCombed: boolean
+		}>
+	}>
+}

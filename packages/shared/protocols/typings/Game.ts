@@ -19,7 +19,9 @@ export type GameEvents =
 "GameListUpdated" |
 "PlayerToggledReady" |
 "PlayerPutCard" |
-"PlayerChoseCardColor"
+"PlayerChoseCardColor" |
+"PlayerBoughtCard" |
+"PlayerCardUsabilityConsolidated"
 
 export type GameStatus =
 "waiting" |

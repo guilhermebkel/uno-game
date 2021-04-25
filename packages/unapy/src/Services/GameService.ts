@@ -31,6 +31,8 @@ import {
 	PlayerPutCardEventData,
 	PlayerChoseCardColorEventData,
 	GameRoundRemainingTimeChangedEventData,
+	PlayerBoughtCardEventData,
+	PlayerCardUsabilityConsolidatedEventData,
 } from "@uno-game/protocols"
 
 import GameRepository from "@/Repositories/GameRepository"
@@ -202,6 +204,11 @@ class GameService {
 		const available = [...game?.availableCards]
 
 		const card = available.shift()
+
+		this.emitGameEvent<PlayerBoughtCardEventData>(game.id, "PlayerBoughtCard", {
+			playerId: playerId,
+			cards: [card],
+		})
 
 		game.players = game?.players?.map(player => {
 			if (player.id === playerId) {
@@ -658,6 +665,11 @@ class GameService {
 
 				const cards = available.slice(0, game.currentCardCombo.amountToBuy)
 
+				this.emitGameEvent<PlayerBoughtCardEventData>(game.id, "PlayerBoughtCard", {
+					playerId: playerAffected?.id,
+					cards,
+				})
+
 				available = available.slice(game.currentCardCombo.amountToBuy, available.length)
 
 				game.players = game?.players?.map(player => {
@@ -728,6 +740,25 @@ class GameService {
 					})),
 				}
 			}
+		})
+
+		const consolidatedPlayers = playersWithCardUsability.map(player => {
+			const handCards = player.handCards.map(handCard => ({
+				id: handCard.id,
+				canBeUsed: handCard.canBeUsed,
+				canBeCombed: handCard.canBeCombed,
+			}))
+
+			return {
+				id: player.id,
+				isCurrentRoundPlayer: player.isCurrentRoundPlayer,
+				canBuyCard: player.canBuyCard,
+				handCards,
+			}
+		})
+
+		this.emitGameEvent<PlayerCardUsabilityConsolidatedEventData>(game.id, "PlayerCardUsabilityConsolidated", {
+			players: consolidatedPlayers,
 		})
 
 		return playersWithCardUsability
