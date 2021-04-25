@@ -18,6 +18,16 @@ import {
 	CardData,
 	CardColors,
 	PlayerStatus,
+	PlayerJoinedEventData,
+	PlayerLeftEventData,
+	PlayerWonEventData,
+	PlayerBuyCardsEventData,
+	PlayerUnoEventData,
+	PlayerBlockedEventData,
+	GameEndedEventData,
+	PlayerGotAwayFromKeyboardEventData,
+	GameStartedEventData,
+	PlayerToggledReadyEventData,
 } from "@uno-game/protocols"
 
 import GameRepository from "@/Repositories/GameRepository"
@@ -87,7 +97,7 @@ class GameService {
 	}
 
 	async joinGame (gameId: string, playerId: string): Promise<Game> {
-		let game = await this.getGame(gameId)
+		const game = await this.getGame(gameId)
 
 		const player = game?.players?.find(player => player.id === playerId)
 
@@ -96,10 +106,22 @@ class GameService {
 		const playerIsNotOnGame = !player
 
 		if (gameHasNotStarted && gameIsNotFull && playerIsNotOnGame) {
-			await this.addPlayer(gameId, playerId)
-		}
+			const playerData = await PlayerService.getPlayerData(playerId)
 
-		game = await this.getGame(gameId)
+			const player: PlayerData = {
+				id: playerId,
+				name: playerData.name,
+				handCards: [],
+				status: "online",
+				ready: false,
+				isCurrentRoundPlayer: false,
+				canBuyCard: false,
+			}
+
+			game.players.push(player)
+
+			this.emitGameEvent<PlayerJoinedEventData>(game.id, "PlayerJoined", { player })
+		}
 
 		const gameRoundRemainingTimeInSeconds = await this.getRoundRemainingTimeInSeconds(gameId)
 
@@ -124,7 +146,7 @@ class GameService {
 				if (isPlayerOnGame) {
 					await this.disconnectPlayer(game?.id, playerId)
 
-					this.emitGameEvent(game?.id, "PlayerLeft", game)
+					this.emitGameEvent<PlayerLeftEventData>(game?.id, "PlayerLeft", { playerId })
 				}
 			}),
 		)
@@ -133,15 +155,13 @@ class GameService {
 	async toggleReady (playerId: string, gameId: string): Promise<void> {
 		const game = await this.getGame(gameId)
 
-		game.players = game?.players?.map(player => {
-			if (player.id === playerId) {
-				return {
-					...player,
-					ready: !player.ready,
-				}
-			} else {
-				return player
-			}
+		const updatedPlayer = game?.players?.find(({ id }) => id === playerId)
+
+		updatedPlayer.ready = !updatedPlayer.ready
+
+		this.emitGameEvent<PlayerToggledReadyEventData>(gameId, "PlayerToggledReady", {
+			playerId,
+			ready: updatedPlayer.ready,
 		})
 
 		await this.setGameData(gameId, game)
@@ -276,8 +296,8 @@ class GameService {
 		await this.setGameData(gameId, game)
 	}
 
-	emitGameEvent (gameId: string, event: GameEvents, ...data: unknown[]) {
-		SocketService.emitGameEvent(gameId, event, ...data)
+	emitGameEvent<Data extends unknown> (gameId: string, event: GameEvents, data: Data) {
+		SocketService.emitGameEvent(gameId, event, data)
 
 		const gameUpdateEvents: GameEvents[] = [
 			"GameStarted",
@@ -344,7 +364,9 @@ class GameService {
 
 				await this.makeComputedPlay(gameId, currentPlayerInfo.id)
 
-				this.emitGameEvent(gameId, "PlayerGotAwayFromKeyboard", currentPlayerInfo.id)
+				this.emitGameEvent<PlayerGotAwayFromKeyboardEventData>(gameId, "PlayerGotAwayFromKeyboard", {
+					playerId: currentPlayerInfo.id,
+				})
 			},
 			intervalAction: async (gameId) => {
 				const gameRoundRemainingTime = await this.getRoundRemainingTimeInSeconds(gameId)
@@ -409,7 +431,7 @@ class GameService {
 
 		await this.setGameData(gameId, game)
 
-		this.emitGameEvent(gameId, "GameStarted", game)
+		this.emitGameEvent<GameStartedEventData>(gameId, "GameStarted", { gameId: game.id })
 
 		await	this.resetRoundCounter(gameId)
 	}
@@ -461,13 +483,18 @@ class GameService {
 		const currentPlayerInfo = await this.getCurrentPlayerInfo(gameId)
 
 		if (currentPlayerInfo.gameStatus === "winner") {
-			this.emitGameEvent(gameId, "PlayerWon", currentPlayerInfo.id, currentPlayerInfo.name)
+			this.emitGameEvent<PlayerWonEventData>(gameId, "PlayerWon", {
+				player: {
+					id: currentPlayerInfo.id,
+					name: currentPlayerInfo.name,
+				},
+			})
 
 			return await this.endGame(gameId)
 		}
 
 		if (currentPlayerInfo.gameStatus === "uno") {
-			this.emitGameEvent(gameId, "PlayerUno", currentPlayerInfo.id)
+			this.emitGameEvent<PlayerUnoEventData>(gameId, "PlayerUno", { playerId: currentPlayerInfo.id })
 		}
 
 		const game = await this.getGame(gameId)
@@ -580,7 +607,7 @@ class GameService {
 					game.nextPlayerIndex--
 				}
 
-				this.emitGameEvent(game.id, "PlayerBlocked", playerAffected?.id)
+				this.emitGameEvent<PlayerBlockedEventData>(game.id, "PlayerBlocked", { playerId: playerAffected?.id })
 			})
 		}
 
@@ -607,7 +634,10 @@ class GameService {
 			})
 
 			if (!affectedPlayerCanMakeCardBuyCombo) {
-				this.emitGameEvent(game.id, "PlayerBuyCards", playerAffected?.id, game.currentCardCombo.amountToBuy)
+				this.emitGameEvent<PlayerBuyCardsEventData>(game.id, "PlayerBuyCards", {
+					playerId: playerAffected?.id,
+					amountToBuy: game.currentCardCombo.amountToBuy,
+				})
 
 				let available = [...game?.availableCards]
 
@@ -760,7 +790,7 @@ class GameService {
 
 		await this.removeRoundCounter(gameId)
 
-		this.emitGameEvent(gameId, "GameEnded")
+		this.emitGameEvent<GameEndedEventData>(gameId, "GameEnded", { gameId })
 	}
 }
 

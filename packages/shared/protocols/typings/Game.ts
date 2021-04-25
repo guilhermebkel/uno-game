@@ -16,7 +16,8 @@ export type GameEvents =
 "GameRoundRemainingTimeChanged" |
 "PlayerGotAwayFromKeyboard" |
 "GameHistoryConsolidated" |
-"GameListUpdated"
+"GameListUpdated" |
+"PlayerToggledReady"
 
 export type GameStatus =
 "waiting" |

@@ -1,8 +1,8 @@
 import { CardColors } from "./Card"
-import { Chat, ChatEvents } from "./Chat"
+import { Chat, ChatEvents, ChatMessage } from "./Chat"
 import { GameEvents, Game } from "./Game"
 import { GameRoundEvents } from "./GameRound"
-import { Player, PlayerEvents, PlayerStatus } from "./Player"
+import { Player, PlayerData, PlayerEvents, PlayerStatus } from "./Player"
 
 export type SocketServerEvents =
 "SetPlayerData" |
@@ -46,3 +46,25 @@ export type ChangePlayerStatusEventInput = { gameId: string, playerStatus: Playe
 export type ToggleReadyEventInput = { gameId: string }
 
 export type ForceSelfDisconnectEventInput = { gameId: string }
+
+export type PlayerJoinedEventData = { player: PlayerData }
+
+export type PlayerLeftEventData = { playerId: string }
+
+export type PlayerWonEventData = { player: Player }
+
+export type PlayerBuyCardsEventData = { playerId: string, amountToBuy: number }
+
+export type PlayerBlockedEventData = { playerId: string }
+
+export type PlayerUnoEventData = { playerId: string }
+
+export type GameEndedEventData = { gameId: string }
+
+export type PlayerGotAwayFromKeyboardEventData = { playerId: string}
+
+export type GameStartedEventData = { gameId: string }
+
+export type PlayerToggledReadyEventData = { playerId: string, ready: boolean }
+
+export type NewMessageEventData = { chatId: string, message: ChatMessage }

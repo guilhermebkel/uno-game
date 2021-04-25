@@ -5,9 +5,7 @@ import {
 	PlayerData,
 	Game,
 	PlayerState,
-	GameEvents,
 	CardColors,
-	ChatMessage,
 	Chat,
 	CardData,
 	JoinGameEventInput,
@@ -18,6 +16,12 @@ import {
 	ChangePlayerStatusEventInput,
 	ToggleReadyEventInput,
 	ForceSelfDisconnectEventInput,
+	PlayerBuyCardsEventData,
+	PlayerGotAwayFromKeyboardEventData,
+	PlayerBlockedEventData,
+	PlayerUnoEventData,
+	GameStartedEventData,
+	NewMessageEventData,
 } from "@uno-game/protocols"
 
 type UseSocketResponse = {
@@ -27,7 +31,6 @@ type UseSocketResponse = {
 	currentRoundPlayer: PlayerData
 	getWinner: (game?: Game) => PlayerData | null
 	getCurrentPlayer: (players?: PlayerData[] | undefined) => PlayerData
-	createGame: () => Promise<Game>
 	joinGame: (gameId: string) => Promise<Game>
 	toggleReady: (gameId: string) => void
 	buyCard: (gameId: string) => void
@@ -35,7 +38,6 @@ type UseSocketResponse = {
 	toggleOnlineStatus: (gameId: string) => void
 	sendChatMessage: (chatId: string, content: string) => void
 	onGameStart: (fn: () => void) => void
-	onPlayerWon: (fn: (playerId: string, playerName: string) => void) => void
 	onCardStackBuyCardsCombo: (fn: (amountToBuy: number) => void) => void
 	onNewChatMessage: (fn?: () => void) => void
 	onPlayerGotAwayFromKeyboard: (fn: (playerId: string) => void) => void
@@ -124,18 +126,6 @@ const useSocket = (): UseSocketResponse => {
 		}
 
 		return (otherPlayers || []) as PlayerData[]
-	}
-
-	const createGame = async (): Promise<Game> => {
-		socketStore.io.emit("CreateGame")
-
-		const game = await new Promise<Game>(resolve => {
-			socketStore.io.on("GameCreated", (game: Game) => {
-				resolve(game)
-			})
-		})
-
-		return game
 	}
 
 	const joinGame = async (gameId: string): Promise<Game> => {
@@ -236,11 +226,7 @@ const useSocket = (): UseSocketResponse => {
 	}
 
 	const onGameStart = (fn: () => void) => {
-		socketStore.io.on("GameStarted", fn)
-	}
-
-	const onPlayerWon = (fn: (playerId: string, playerName: string) => void) => {
-		socketStore.io.on("PlayerWon", fn)
+		SocketService.on<GameStartedEventData>("GameStarted", fn)
 	}
 
 	const onCardStackBuyCardsCombo = (fn: (amountToBuy: number) => void) => {
@@ -248,7 +234,7 @@ const useSocket = (): UseSocketResponse => {
 	}
 
 	const onNewChatMessage = (fn?: () => void) => {
-		socketStore.io.on("NewMessage", (chatId: string, message: ChatMessage) => {
+		SocketService.on<NewMessageEventData>("NewMessage", ({ chatId, message }) => {
 			socketStore.addChatMessage(chatId, message)
 
 			if (fn) {
@@ -272,30 +258,27 @@ const useSocket = (): UseSocketResponse => {
 	}
 
 	const onGameListUpdated = (fn: () => void): void => {
-		socketStore.io.on("GameListUpdated", fn)
+		SocketService.on<unknown>("GameListUpdated", fn)
 	}
 
 	const onPlayerGotAwayFromKeyboard = (fn: (playerId: string) => void) => {
-		socketStore.io.on("PlayerGotAwayFromKeyboard", (playerId: string) => {
+		SocketService.on<PlayerGotAwayFromKeyboardEventData>("PlayerGotAwayFromKeyboard", ({ playerId }) => {
 			fn(playerId)
 		})
 	}
 
 	const onPlayerStateChange = (fn: (playerState: PlayerState, playerId: string, amountToBuy?: number) => void) => {
-		const events: { [key in GameEvents]?: PlayerState } = {
-			PlayerUno: "Uno",
-			PlayerBlocked: "Blocked",
-			PlayerBuyCards: "BuyCards",
-		}
+		SocketService.on<PlayerBuyCardsEventData>("PlayerBuyCards", ({ playerId, amountToBuy }) => {
+			fn("BuyCards", playerId, amountToBuy)
+		})
 
-		Object.entries(events)
-			.forEach(([event, playerState]) => {
-				socketStore.io.on(event, (playerId: string, amountToBuy?: number) => {
-					if (playerState) {
-						fn(playerState, playerId, amountToBuy)
-					}
-				})
-			})
+		SocketService.on<PlayerBlockedEventData>("PlayerBlocked", ({ playerId }) => {
+			fn("Blocked", playerId)
+		})
+
+		SocketService.on<PlayerUnoEventData>("PlayerUno", ({ playerId }) => {
+			fn("Uno", playerId)
+		})
 	}
 
 	const onPong = (fn: (latency: number) => void) => {
@@ -331,12 +314,10 @@ const useSocket = (): UseSocketResponse => {
 		},
 		getCurrentPlayer,
 		getWinner,
-		createGame,
 		joinGame,
 		sendChatMessage,
 		toggleOnlineStatus,
 		onGameStart,
-		onPlayerWon,
 		onPlayerStateChange,
 		onCardStackBuyCardsCombo,
 		onNewChatMessage,

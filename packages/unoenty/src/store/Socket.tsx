@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState } from "react"
 import { Socket } from "socket.io-client"
 
-import client, { getPlayerData } from "@/services/socket"
+import client, { getPlayerData, SocketService } from "@/services/socket"
 
 import useDidMount from "@/hooks/useDidMount"
 
@@ -16,6 +16,9 @@ import {
 	Chat,
 	Player,
 	GameHistory,
+	PlayerJoinedEventData,
+	PlayerLeftEventData,
+	PlayerToggledReadyEventData,
 } from "@uno-game/protocols"
 
 export interface SocketContextData {
@@ -114,6 +117,69 @@ const SocketProvider: React.FC = (props) => {
 		})
 	}
 
+	const onPlayerJoined = () => {
+		SocketService.on<PlayerJoinedEventData>("PlayerJoined", ({ player }) => {
+			setGame(lastState => {
+				if (!lastState?.id) {
+					return lastState
+				}
+
+				const updatedData = { ...lastState }
+
+				const playerExists = updatedData.players.some(({ id }) => id === player.id)
+
+				if (!playerExists) {
+					updatedData.players.push(player)
+				}
+
+				return updatedData
+			})
+		})
+	}
+
+	const onPlayerLeft = () => {
+		SocketService.on<PlayerLeftEventData>("PlayerLeft", ({ playerId }) => {
+			setGame(lastState => {
+				if (!lastState?.id) {
+					return lastState
+				}
+
+				const updatedData = { ...lastState }
+
+				if (updatedData?.status === "waiting") {
+					updatedData.players = updatedData.players.filter(({ id }) => id !== playerId)
+				}
+
+				return updatedData
+			})
+		})
+	}
+
+	const onPlayerToggledReady = () => {
+		SocketService.on<PlayerToggledReadyEventData>("PlayerToggledReady", ({ playerId, ready }) => {
+			setGame(lastState => {
+				if (!lastState?.id) {
+					return lastState
+				}
+
+				const updatedData = { ...lastState }
+
+				updatedData.players = updatedData.players.map(player => {
+					if (player.id === playerId) {
+						return {
+							...player,
+							ready,
+						}
+					}
+
+					return player
+				})
+
+				return updatedData
+			})
+		})
+	}
+
 	const connect = async () => {
 		preloadCardPictures()
 
@@ -128,12 +194,19 @@ const SocketProvider: React.FC = (props) => {
 		}, 1000)
 	}
 
-	useDidMount(() => {
-		connect()
+	const setupListeners = () => {
 		onGameStateChanged()
 		onChatStateChanged()
 		onGameRoundRemainingTimeChanged()
 		onGameHistoryConsolidated()
+		onPlayerJoined()
+		onPlayerLeft()
+		onPlayerToggledReady()
+	}
+
+	useDidMount(() => {
+		connect()
+		setupListeners()
 	})
 
 	return (

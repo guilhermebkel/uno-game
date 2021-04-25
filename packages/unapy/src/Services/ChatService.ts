@@ -7,6 +7,7 @@ import {
 	Chat,
 	ChatMessage,
 	ChatEvents,
+	NewMessageEventData,
 } from "@uno-game/protocols"
 
 import ChatRepository from "@/Repositories/ChatRepository"
@@ -51,7 +52,10 @@ class ChatService {
 
 		await ChatRepository.pushMessageToChat(chatId, message)
 
-		this.emitChatEvent(chatId, "NewMessage", chatId, message)
+		this.emitChatEvent<NewMessageEventData>(chatId, "NewMessage", {
+			chatId,
+			message,
+		})
 	}
 
 	async retrieveChat (chatId: string): Promise<Chat> {
@@ -70,8 +74,8 @@ class ChatService {
 		await ChatRepository.createChat(chatData)
 	}
 
-	private emitChatEvent (chatId: string, event: ChatEvents, ...data: unknown[]) {
-		SocketService.emitChatEvent(chatId, event, ...data)
+	private emitChatEvent<Data extends unknown> (chatId: string, event: ChatEvents, data: Data) {
+		SocketService.emitChatEvent(chatId, event, data)
 	}
 }
 

@@ -17,7 +17,6 @@ import useSocket from "@/hooks/useSocket"
 import {
 	LoadingComponent,
 	CloseGamePrompt,
-	LoadingScene,
 } from "@/components"
 
 import Device from "@/utils/device"
@@ -31,7 +30,8 @@ import GameEndedModal from "@/pages/Table/GameEndedModal"
 
 import CardProvider from "@/store/Card"
 
-import { CardData, Game } from "@uno-game/protocols"
+import { CardData, Game, PlayerWonEventData } from "@uno-game/protocols"
+import { SocketService } from "@/services/socket"
 
 const Table: React.FC = () => {
 	const { gameId } = useParams<{ gameId: string }>()
@@ -97,10 +97,10 @@ const Table: React.FC = () => {
 	}
 
 	const onPlayerWon = () => {
-		socket.onPlayerWon((playerId, playerName: string) => {
+		SocketService.on<PlayerWonEventData>("PlayerWon", ({ player }) => {
 			openGameEndedModal(
-				playerName,
-				playerId === socket?.currentPlayer?.id,
+				player.name,
+				player.id === socket?.currentPlayer?.id,
 				false,
 			)
 		})
@@ -108,12 +108,7 @@ const Table: React.FC = () => {
 
 	const onGameStart = () => {
 		socket.onGameStart(() => {
-			LoadingScene.run({
-				onStart: () => {
-					GameEndedModal.close()
-				},
-				duration: 2000,
-			})
+			window.location.reload()
 		})
 	}
 

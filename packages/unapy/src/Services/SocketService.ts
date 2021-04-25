@@ -31,22 +31,22 @@ class SocketService {
 		this.io = socketWithDisabledBinary as SocketServer
 	}
 
-	emitGameEvent (gameId: string, event: SocketClientEvents, ...data: unknown[]) {
+	emitGameEvent<Data extends unknown> (gameId: string, event: SocketClientEvents, data: Data) {
 		const roomName = this.mountGameRoomName(gameId)
 
-		this.emitRoomEvent(roomName, event, ...data)
+		this.emitRoomEvent(roomName, event, data)
 	}
 
-	emitPlayerEvent (playerId: string, event: SocketClientEvents, ...data: unknown[]) {
+	emitPlayerEvent<Data extends unknown> (playerId: string, event: SocketClientEvents, data: Data) {
 		const roomName = this.mountPlayerRoomName(playerId)
 
-		this.emitRoomEvent(roomName, event, ...data)
+		this.emitRoomEvent(roomName, event, data)
 	}
 
-	emitChatEvent (chatId: string, event: SocketClientEvents, ...data: unknown[]) {
+	emitChatEvent<Data extends unknown> (chatId: string, event: SocketClientEvents, data: Data) {
 		const roomName = this.mountChatRoomName(chatId)
 
-		this.emitRoomEvent(roomName, event, ...data)
+		this.emitRoomEvent(roomName, event, data)
 	}
 
 	setupPlayerListener (client: SocketClient, playerId: string) {
@@ -85,10 +85,10 @@ class SocketService {
 		return gameRoomName
 	}
 
-	private emitRoomEvent (roomId: string, event: SocketClientEvents, ...data: unknown[]) {
+	private emitRoomEvent (roomId: string, event: SocketClientEvents, data: unknown) {
 		const socket = this.io
 
-		socket.to(roomId).emit(event, ...data)
+		socket.to(roomId).emit(event, data)
 	}
 
 	private callback (callback: SocketCallback, error: string, data: unknown): void {

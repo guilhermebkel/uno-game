@@ -27,7 +27,7 @@ class ClientService {
 		const connectedPlayerIds = await PlayerService.getAllPlayerIds()
 
 		connectedPlayerIds.forEach(playerId => {
-			SocketService.emitPlayerEvent(playerId, "GameListUpdated", [])
+			SocketService.emitPlayerEvent<unknown>(playerId, "GameListUpdated", [])
 		})
 	}
 }
