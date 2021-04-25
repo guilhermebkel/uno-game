@@ -29,9 +29,6 @@ class EventHandlerModule {
 		try {
 			let playerData = {} as Player
 
-			SocketService.setupPlayerListener(client, client.id)
-			SocketService.emitPlayerEvent(client.id, "PlayerConnected", client.id)
-
 			SocketService.on<SetPlayerDataEventInput, SetPlayerDataEventResponse>(client, "SetPlayerData", async ({ player }) => {
 				playerData = await PlayerService.setPlayerData(player)
 
