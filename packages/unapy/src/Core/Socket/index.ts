@@ -39,8 +39,8 @@ class Socket {
 		const oneSecondInMilliseconds = 1000
 
 		this.io = socket(http, {
-			pingInterval: oneSecondInMilliseconds,
-			pingTimeout: oneSecondInMilliseconds * 2,
+			pingInterval: oneSecondInMilliseconds * 2,
+			pingTimeout: oneSecondInMilliseconds * 3,
 			...({ parser: MsgPackParser }),
 		})
 	}
