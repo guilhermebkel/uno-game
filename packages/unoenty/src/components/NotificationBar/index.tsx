@@ -4,22 +4,20 @@ import Alert from "@material-ui/lab/Alert"
 
 import useStyles from "@/components/NotificationBar/styles"
 
-import { useSocketStore } from "@/store/Socket"
+import SocketService from "@/services/socket"
 
 import Device from "@/utils/device"
 
 const NotificationBar: React.FC = () => {
-	const { io } = useSocketStore()
-
 	const [opened, setOpened] = useState(false)
 
 	const classes = useStyles({ opened })
 
-	io.on("connect", () => {
+	SocketService.on("connect", () => {
 		setOpened(false)
 	})
 
-	io.on("disconnect", () => {
+	SocketService.on("disconnect", () => {
 		setOpened(true)
 	})
 
