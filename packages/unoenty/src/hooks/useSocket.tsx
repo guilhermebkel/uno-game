@@ -17,7 +17,6 @@ import {
 	ToggleReadyEventInput,
 	ForceSelfDisconnectEventInput,
 	PlayerBuyCardsEventData,
-	PlayerGotAwayFromKeyboardEventData,
 	PlayerBlockedEventData,
 	PlayerUnoEventData,
 	GameStartedEventData,
@@ -39,7 +38,6 @@ type UseSocketResponse = {
 	sendChatMessage: (chatId: string, content: string) => void
 	onGameStart: (fn: () => void) => void
 	onNewChatMessage: (fn?: () => void) => void
-	onPlayerGotAwayFromKeyboard: (fn: (playerId: string) => void) => void
 	onPlayerStateChange: (fn: (playerState: PlayerState, playerId: string, amountToBuy?: number) => void) => void
 	onReconnect: (fn: () => void) => void
 	forceSelfDisconnect: (gameId: string) => Promise<void>
@@ -271,12 +269,6 @@ const useSocket = (): UseSocketResponse => {
 		SocketService.on<unknown>("GameListUpdated", fn)
 	}
 
-	const onPlayerGotAwayFromKeyboard = (fn: (playerId: string) => void) => {
-		SocketService.on<PlayerGotAwayFromKeyboardEventData>("PlayerGotAwayFromKeyboard", ({ playerId }) => {
-			fn(playerId)
-		})
-	}
-
 	const onPlayerStateChange = (fn: (playerState: PlayerState, playerId: string, amountToBuy?: number) => void) => {
 		SocketService.on<PlayerBuyCardsEventData>("PlayerBuyCards", ({ playerId, amountToBuy }) => {
 			fn("BuyCards", playerId, amountToBuy)
@@ -327,7 +319,6 @@ const useSocket = (): UseSocketResponse => {
 		onPlayerStateChange,
 		onNewChatMessage,
 		onReconnect,
-		onPlayerGotAwayFromKeyboard,
 		toggleReady,
 		buyCard,
 		putCard,

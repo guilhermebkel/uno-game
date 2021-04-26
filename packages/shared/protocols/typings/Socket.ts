@@ -64,7 +64,7 @@ export type PlayerUnoEventData = { playerId: string }
 
 export type GameEndedEventData = { gameId: string }
 
-export type PlayerGotAwayFromKeyboardEventData = { playerId: string}
+export type PlayerStatusChangedEventData = { playerId: string, status: PlayerStatus }
 
 export type GameStartedEventData = { game: Game }
 
@@ -94,7 +94,5 @@ export type PlayerCardUsabilityConsolidatedEventData = {
 		}>
 	}>
 }
-
-export type PlayerStatusChangedEventData = { playerId: string, status: PlayerStatus }
 
 export type GameAmountToBuyChangedEventData = { amountToBuy: number }

@@ -24,8 +24,8 @@ import {
 	GameHistoryConsolidatedEventData,
 	PlayerBoughtCardEventData,
 	PlayerCardUsabilityConsolidatedEventData,
-	PlayerGotAwayFromKeyboardEventData,
 	GameAmountToBuyChangedEventData,
+	PlayerStatusChangedEventData,
 } from "@uno-game/protocols"
 
 export interface SocketContextData {
@@ -292,8 +292,8 @@ const SocketProvider: React.FC = (props) => {
 		})
 	}
 
-	const onPlayerGotAwayFromKeyboard = () => {
-		SocketService.on<PlayerGotAwayFromKeyboardEventData>("PlayerGotAwayFromKeyboard", ({ playerId }) => {
+	const onPlayerStatusChanged = () => {
+		SocketService.on<PlayerStatusChangedEventData>("PlayerStatusChanged", ({ playerId, status }) => {
 			setGame(lastState => {
 				if (!lastState?.id) {
 					return lastState
@@ -303,7 +303,7 @@ const SocketProvider: React.FC = (props) => {
 
 				updatedData.players = updatedData.players.map(player => {
 					if (player.id === playerId) {
-						player.status = "afk"
+						player.status = status
 					}
 
 					return player
@@ -354,7 +354,7 @@ const SocketProvider: React.FC = (props) => {
 		onPlayerChoseCardColor()
 		onPlayerBoughtCard()
 		onPlayerCardUsabilityConsolidated()
-		onPlayerGotAwayFromKeyboard()
+		onPlayerStatusChanged()
 		onGameAmountToBuyChanged()
 	}
 

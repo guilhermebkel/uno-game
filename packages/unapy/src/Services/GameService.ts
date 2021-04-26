@@ -25,7 +25,6 @@ import {
 	PlayerUnoEventData,
 	PlayerBlockedEventData,
 	GameEndedEventData,
-	PlayerGotAwayFromKeyboardEventData,
 	GameStartedEventData,
 	PlayerToggledReadyEventData,
 	PlayerPutCardEventData,
@@ -34,6 +33,7 @@ import {
 	PlayerBoughtCardEventData,
 	PlayerCardUsabilityConsolidatedEventData,
 	GameAmountToBuyChangedEventData,
+	PlayerStatusChangedEventData,
 } from "@uno-game/protocols"
 
 import GameRepository from "@/Repositories/GameRepository"
@@ -377,10 +377,6 @@ class GameService {
 
 				game.players = await this.buildPlayersWithChangedPlayerStatus(gameId, currentPlayerInfo.id, "afk")
 
-				this.emitGameEvent<PlayerGotAwayFromKeyboardEventData>(gameId, "PlayerGotAwayFromKeyboard", {
-					playerId: currentPlayerInfo.id,
-				})
-
 				await this.setGameData(gameId, game)
 
 				await this.makeComputedPlay(gameId, currentPlayerInfo.id)
@@ -404,15 +400,21 @@ class GameService {
 	private async buildPlayersWithChangedPlayerStatus (gameId: string, playerId: string, status: PlayerStatus): Promise<PlayerData[]> {
 		const game = await this.getGame(gameId)
 
+		const updatedPlayer = game.players.find(({ id }) => id === playerId)
+
+		updatedPlayer.status = status
+
 		const playersWithChangedPlayerStatus = game.players.map(player => {
 			if (player.id === playerId) {
-				return {
-					...player,
-					status,
-				}
+				return updatedPlayer
 			}
 
 			return player
+		})
+
+		this.emitGameEvent<PlayerStatusChangedEventData>(game.id, "PlayerStatusChanged", {
+			playerId: updatedPlayer.id,
+			status: updatedPlayer.status,
 		})
 
 		return playersWithChangedPlayerStatus
