@@ -238,7 +238,11 @@ const useSocket = (): UseSocketResponse => {
 	}
 
 	const onGameStart = (fn: () => void) => {
-		SocketService.on<GameStartedEventData>("GameStarted", fn)
+		SocketService.on<GameStartedEventData>("GameStarted", ({ game }) => {
+			socketStore.setGameData(game)
+
+			fn()
+		})
 	}
 
 	const onCardStackBuyCardsCombo = (fn: (amountToBuy: number) => void) => {

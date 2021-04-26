@@ -64,7 +64,7 @@ export type GameEndedEventData = { gameId: string }
 
 export type PlayerGotAwayFromKeyboardEventData = { playerId: string}
 
-export type GameStartedEventData = { gameId: string }
+export type GameStartedEventData = { game: Game }
 
 export type PlayerToggledReadyEventData = { playerId: string, ready: boolean }
 

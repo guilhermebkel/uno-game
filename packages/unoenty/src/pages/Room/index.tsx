@@ -18,6 +18,7 @@ import {
 	LoadingComponent,
 	CloseGamePrompt,
 	GameCard,
+	LoadingScene,
 } from "@/components"
 
 import useStyles from "@/pages/Room/styles"
@@ -55,7 +56,12 @@ const Room: React.FC = () => {
 
 	const onGameStart = () => {
 		socket.onGameStart(() => {
-			window.location.pathname = `/${gameId}/table`
+			LoadingScene.run({
+				onStart: () => {
+					history.push(`/${gameId}/table`)
+				},
+				duration: 2000,
+			})
 		})
 	}
 

@@ -449,7 +449,7 @@ class GameService {
 
 		await this.setGameData(gameId, game)
 
-		this.emitGameEvent<GameStartedEventData>(gameId, "GameStarted", { gameId: game.id })
+		this.emitGameEvent<GameStartedEventData>(gameId, "GameStarted", { game })
 
 		await	this.resetRoundCounter(gameId)
 	}
