@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState } from "react"
 import { Socket } from "socket.io-client"
 
-import client, { connectSocket, getPlayerData } from "@/services/socket"
+import client, { getPlayerData, SocketService } from "@/services/socket"
 
 import useDidMount from "@/hooks/useDidMount"
 
@@ -16,6 +16,17 @@ import {
 	Chat,
 	Player,
 	GameHistory,
+	PlayerJoinedEventData,
+	PlayerLeftEventData,
+	PlayerToggledReadyEventData,
+	PlayerPutCardEventData,
+	PlayerChoseCardColorEventData,
+	GameRoundRemainingTimeChangedEventData,
+	GameHistoryConsolidatedEventData,
+	PlayerBoughtCardEventData,
+	PlayerCardUsabilityConsolidatedEventData,
+	PlayerGotAwayFromKeyboardEventData,
+	GameAmountToBuyChangedEventData,
 } from "@uno-game/protocols"
 
 export interface SocketContextData {
@@ -28,6 +39,7 @@ export interface SocketContextData {
 	addChatMessage: (chatId: string, message: ChatMessage) => void
 	setGameData: (data: Game) => void
 	setPlayerData: (data: Player) => void
+	setChatData: (data: Chat) => void
 }
 
 const SocketStore = createContext<SocketContextData>({} as SocketContextData)
@@ -52,6 +64,16 @@ const SocketProvider: React.FC = (props) => {
 		setGame(data)
 	}
 
+	const setChatData = (data: Chat) => {
+		setChats(lastState => {
+			const updatedChats = new Map(lastState.entries())
+
+			updatedChats.set(data.id, data)
+
+			return updatedChats
+		})
+	}
+
 	const addChatMessage = (chatId: string, message: ChatMessage) => {
 		setChats(lastState => {
 			const updatedChats = new Map(lastState.entries())
@@ -73,33 +95,240 @@ const SocketProvider: React.FC = (props) => {
 		})
 	}
 
-	const onChatStateChanged = () => {
-		client.on("ChatStateChanged", (chat: Chat) => {
-			setChats(lastState => {
-				const updatedChats = new Map(lastState.entries())
-
-				updatedChats.set(chat.id, chat)
-
-				return updatedChats
-			})
-		})
-	}
-
 	const onGameHistoryConsolidated = () => {
-		client.on("GameHistoryConsolidated", (gameHistory: GameHistory[]) => {
+		SocketService.on<GameHistoryConsolidatedEventData>("GameHistoryConsolidated", ({ gameHistory }) => {
 			setGameHistory(gameHistory)
 		})
 	}
 
-	const onGameStateChanged = () => {
-		client.on("GameStateChanged", (game: Game) => {
-			setGameData(game)
+	const onGameRoundRemainingTimeChanged = () => {
+		SocketService.on<GameRoundRemainingTimeChangedEventData>("GameRoundRemainingTimeChanged", ({ roundRemainingTimeInSeconds }) => {
+			setGameRoundRemainingTimeInSeconds(roundRemainingTimeInSeconds)
 		})
 	}
 
-	const onGameRoundRemainingTimeChanged = () => {
-		client.on("GameRoundRemainingTimeChanged", (remainingTimeInSeconds: number) => {
-			setGameRoundRemainingTimeInSeconds(remainingTimeInSeconds)
+	const onPlayerJoined = () => {
+		SocketService.on<PlayerJoinedEventData>("PlayerJoined", ({ player }) => {
+			setGame(lastState => {
+				if (!lastState?.id) {
+					return lastState
+				}
+
+				const updatedData = { ...lastState }
+
+				const playerExists = updatedData.players.some(({ id }) => id === player.id)
+
+				if (!playerExists) {
+					updatedData.players.push(player)
+				}
+
+				return updatedData
+			})
+		})
+	}
+
+	const onPlayerLeft = () => {
+		SocketService.on<PlayerLeftEventData>("PlayerLeft", ({ playerId }) => {
+			setGame(lastState => {
+				if (!lastState?.id) {
+					return lastState
+				}
+
+				const updatedData = { ...lastState }
+
+				if (updatedData?.status === "waiting") {
+					updatedData.players = updatedData.players.filter(({ id }) => id !== playerId)
+				}
+
+				return updatedData
+			})
+		})
+	}
+
+	const onPlayerToggledReady = () => {
+		SocketService.on<PlayerToggledReadyEventData>("PlayerToggledReady", ({ playerId, ready }) => {
+			setGame(lastState => {
+				if (!lastState?.id) {
+					return lastState
+				}
+
+				const updatedData = { ...lastState }
+
+				updatedData.players = updatedData.players.map(player => {
+					if (player.id === playerId) {
+						return {
+							...player,
+							ready,
+						}
+					}
+
+					return player
+				})
+
+				return updatedData
+			})
+		})
+	}
+
+	const onPlayerPutCard = () => {
+		SocketService.on<PlayerPutCardEventData>("PlayerPutCard", ({ playerId, cards }) => {
+			setGame(lastState => {
+				if (!lastState?.id) {
+					return lastState
+				}
+
+				const updatedData = { ...lastState }
+
+				cards
+					.reverse()
+					.forEach(card => {
+						const cardExists = updatedData.usedCards.some(({ id }) => id === card.id)
+
+						if (!cardExists) {
+							updatedData.usedCards.unshift(card)
+						}
+					})
+
+				updatedData.players = updatedData.players.map(player => {
+					if (player.id === playerId) {
+						player.handCards = player.handCards.filter(handCard => {
+							const handCardIsPutCard = cards.some(({ id }) => id === handCard.id)
+
+							return !handCardIsPutCard
+						})
+					}
+
+					return player
+				})
+
+				return updatedData
+			})
+		})
+	}
+
+	const onPlayerChoseCardColor = () => {
+		SocketService.on<PlayerChoseCardColorEventData>("PlayerChoseCardColor", ({ cards }) => {
+			setGame(lastState => {
+				if (!lastState?.id) {
+					return lastState
+				}
+
+				const updatedData = { ...lastState }
+
+				updatedData.usedCards = updatedData.usedCards.map(usedCard => {
+					const card = cards.find(({ id }) => id === usedCard.id)
+
+					if (card) {
+						return card
+					}
+
+					return usedCard
+				})
+
+				return updatedData
+			})
+		})
+	}
+
+	const onPlayerBoughtCard = () => {
+		SocketService.on<PlayerBoughtCardEventData>("PlayerBoughtCard", ({ playerId, cards }) => {
+			setGame(lastState => {
+				if (!lastState?.id) {
+					return lastState
+				}
+
+				const updatedData = { ...lastState }
+
+				updatedData.players = updatedData.players.map(player => {
+					if (player.id === playerId) {
+						cards.forEach(card => {
+							const cardExists = player.handCards.some(({ id }) => id === card.id)
+
+							if (!cardExists) {
+								player.handCards.unshift(card)
+							}
+						})
+					}
+
+					return player
+				})
+
+				return updatedData
+			})
+		})
+	}
+
+	const onPlayerCardUsabilityConsolidated = () => {
+		SocketService.on<PlayerCardUsabilityConsolidatedEventData>("PlayerCardUsabilityConsolidated", ({ players }) => {
+			setGame(lastState => {
+				if (!lastState?.id) {
+					return lastState
+				}
+
+				const updatedData = { ...lastState }
+
+				updatedData.players = updatedData.players.map(player => {
+					const consolidatedPlayer = players.find(({ id }) => id === player.id)
+
+					if (consolidatedPlayer) {
+						player.isCurrentRoundPlayer = consolidatedPlayer.isCurrentRoundPlayer
+						player.canBuyCard = consolidatedPlayer.canBuyCard
+
+						player.handCards = player.handCards.map(handCard => {
+							const consolidatedHandCard = consolidatedPlayer.handCards.find(({ id }) => id === handCard.id)
+
+							if (consolidatedHandCard) {
+								handCard.canBeCombed = consolidatedHandCard.canBeCombed
+								handCard.canBeUsed = consolidatedHandCard.canBeUsed
+							}
+
+							return handCard
+						})
+					}
+
+					return player
+				})
+
+				return updatedData
+			})
+		})
+	}
+
+	const onPlayerGotAwayFromKeyboard = () => {
+		SocketService.on<PlayerGotAwayFromKeyboardEventData>("PlayerGotAwayFromKeyboard", ({ playerId }) => {
+			setGame(lastState => {
+				if (!lastState?.id) {
+					return lastState
+				}
+
+				const updatedData = { ...lastState }
+
+				updatedData.players = updatedData.players.map(player => {
+					if (player.id === playerId) {
+						player.status = "afk"
+					}
+
+					return player
+				})
+
+				return updatedData
+			})
+		})
+	}
+
+	const onGameAmountToBuyChanged = () => {
+		SocketService.on<GameAmountToBuyChangedEventData>("GameAmountToBuyChanged", ({ amountToBuy }) => {
+			setGame(lastState => {
+				if (!lastState?.id) {
+					return lastState
+				}
+
+				const updatedData = { ...lastState }
+
+				updatedData.currentCardCombo.amountToBuy = amountToBuy
+
+				return updatedData
+			})
 		})
 	}
 
@@ -108,9 +337,7 @@ const SocketProvider: React.FC = (props) => {
 
 		refreshCacheIfNeeded()
 
-		const playerId = await connectSocket()
-
-		const playerData = await getPlayerData(playerId)
+		const playerData = await getPlayerData()
 
 		setPlayerData(playerData)
 
@@ -119,12 +346,23 @@ const SocketProvider: React.FC = (props) => {
 		}, 1000)
 	}
 
-	useDidMount(() => {
-		connect()
-		onGameStateChanged()
-		onChatStateChanged()
+	const setupListeners = () => {
 		onGameRoundRemainingTimeChanged()
 		onGameHistoryConsolidated()
+		onPlayerJoined()
+		onPlayerLeft()
+		onPlayerToggledReady()
+		onPlayerPutCard()
+		onPlayerChoseCardColor()
+		onPlayerBoughtCard()
+		onPlayerCardUsabilityConsolidated()
+		onPlayerGotAwayFromKeyboard()
+		onGameAmountToBuyChanged()
+	}
+
+	useDidMount(() => {
+		connect()
+		setupListeners()
 	})
 
 	return (
@@ -139,6 +377,7 @@ const SocketProvider: React.FC = (props) => {
 				game,
 				gameHistory,
 				gameRoundRemainingTimeInSeconds,
+				setChatData,
 			}}
 		>
 			<LoadingScene loading={loading}>

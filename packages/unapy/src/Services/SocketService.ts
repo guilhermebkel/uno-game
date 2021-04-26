@@ -1,5 +1,5 @@
 import { Server as SocketServer } from "socket.io"
-import { SocketServerEvents, SocketClientEvents } from "@uno-game/protocols"
+import { SocketServerEvents, SocketClientEvents, SocketEventHandler } from "@uno-game/protocols"
 import ErrorHandler from "@uno-game/error-handler"
 
 import { SocketCallback, SocketClient } from "@/Protocols/SocketProtocol"
@@ -10,17 +10,16 @@ class SocketService {
 	on<ReceivedData extends unknown, ResponseData extends unknown> (
 		client: SocketClient,
 		event: SocketServerEvents,
-		// eslint-disable-next-line
-		handler: any,
+		handler: SocketEventHandler<ReceivedData, ResponseData>,
 	): void {
-		client.on(event, async (...data: unknown[]) => {
+		client.on(event, async (data: ReceivedData, callback: SocketCallback) => {
 			try {
-				await handler(...data)
+				const result = await handler(data)
 
-				// this.callback(callback, null, result)
+				this.callback(callback, null, result)
 			} catch (error) {
 				ErrorHandler.handle(error)
-				// this.callback(callback, error.name, null)
+				this.callback(callback, error.name, null)
 			}
 		})
 	}
@@ -32,22 +31,22 @@ class SocketService {
 		this.io = socketWithDisabledBinary as SocketServer
 	}
 
-	emitGameEvent (gameId: string, event: SocketClientEvents, ...data: unknown[]) {
+	emitGameEvent<Data extends unknown> (gameId: string, event: SocketClientEvents, data: Data) {
 		const roomName = this.mountGameRoomName(gameId)
 
-		this.emitRoomEvent(roomName, event, ...data)
+		this.emitRoomEvent(roomName, event, data)
 	}
 
-	emitPlayerEvent (playerId: string, event: SocketClientEvents, ...data: unknown[]) {
+	emitPlayerEvent<Data extends unknown> (playerId: string, event: SocketClientEvents, data: Data) {
 		const roomName = this.mountPlayerRoomName(playerId)
 
-		this.emitRoomEvent(roomName, event, ...data)
+		this.emitRoomEvent(roomName, event, data)
 	}
 
-	emitChatEvent (chatId: string, event: SocketClientEvents, ...data: unknown[]) {
+	emitChatEvent<Data extends unknown> (chatId: string, event: SocketClientEvents, data: Data) {
 		const roomName = this.mountChatRoomName(chatId)
 
-		this.emitRoomEvent(roomName, event, ...data)
+		this.emitRoomEvent(roomName, event, data)
 	}
 
 	setupPlayerListener (client: SocketClient, playerId: string) {
@@ -86,10 +85,10 @@ class SocketService {
 		return gameRoomName
 	}
 
-	private emitRoomEvent (roomId: string, event: SocketClientEvents, ...data: unknown[]) {
+	private emitRoomEvent (roomId: string, event: SocketClientEvents, data: unknown) {
 		const socket = this.io
 
-		socket.to(roomId).emit(event, ...data)
+		socket.to(roomId).emit(event, data)
 	}
 
 	private callback (callback: SocketCallback, error: string, data: unknown): void {

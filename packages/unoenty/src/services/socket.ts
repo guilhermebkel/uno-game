@@ -1,51 +1,99 @@
-import io from "socket.io-client"
+import io, { Socket as SocketClient } from "socket.io-client"
 import MsgPackParser from "socket.io-msgpack-parser"
 
-import { Player } from "@uno-game/protocols"
-
 import { LoginDialog } from "@/components"
-import Auth from "@/services/auth"
+
+import AuthService from "@/services/auth"
+
+import ErrorHandler from "@uno-game/error-handler"
+
+import {
+	SocketServerEvents,
+	SocketEventHandler,
+	SocketClientEvents,
+	Player,
+	SetPlayerDataEventInput,
+	SetPlayerDataEventResponse,
+} from "@uno-game/protocols"
 
 import serverConfig from "@/config/server"
 
-const client = io(serverConfig.apiUrl, {
-	reconnection: true,
-	reconnectionAttempts: Infinity,
-	reconnectionDelay: 1000,
-	reconnectionDelayMax: 5000,
-	randomizationFactor: 0.5,
-	...({ parser: MsgPackParser }),
-})
+class Socket {
+	static client: typeof SocketClient
 
-export const connectSocket = async (): Promise<string> => {
-	return new Promise<string>(resolve => {
-		client.on("PlayerConnected", (playerId: string) => {
-			resolve(playerId)
+	constructor () {
+		if (!Socket.client) {
+			Socket.client = io(serverConfig.apiUrl, {
+				reconnection: true,
+				reconnectionAttempts: Infinity,
+				reconnectionDelay: 1000,
+				reconnectionDelayMax: 5000,
+				randomizationFactor: 0.5,
+				...({ parser: MsgPackParser }),
+			})
+		}
+
+		this.on("connect", () => {
+			const playerData = AuthService.getPlayerData()
+
+			if (playerData) {
+				this.emit<SetPlayerDataEventInput, SetPlayerDataEventResponse>("SetPlayerData", {
+					player: playerData,
+				})
+			}
 		})
-	})
+	}
+
+	async emit<RequestPayload extends unknown, ResponsePayload extends unknown> (
+		event: SocketServerEvents,
+		data: RequestPayload,
+	): Promise<ResponsePayload> {
+		return await new Promise<ResponsePayload>((resolve, reject) => {
+			Socket.client.emit(event, data, (error: string, responsePayload: ResponsePayload) => {
+				if (error) {
+					reject(error)
+				}
+
+				resolve(responsePayload)
+			})
+		})
+	}
+
+	on<ReceivedData extends unknown> (
+		event: SocketClientEvents,
+		handler: SocketEventHandler<ReceivedData, ReceivedData>,
+	): void {
+		Socket.client.on(event, async (data: ReceivedData) => {
+			try {
+				await handler(data)
+			} catch (error) {
+				ErrorHandler.handle(error)
+			}
+		})
+	}
 }
 
-export const getPlayerData = async (playerId: string): Promise<Player> => {
-	let playerData = Auth.getPlayerData()
+export const SocketService = new Socket()
+
+export default Socket.client
+
+export const getPlayerData = async (): Promise<Player> => {
+	let playerData = AuthService.getPlayerData()
 
 	if (!playerData) {
 		const loginData = await LoginDialog.open()
 
 		playerData = {
-			id: playerId,
+			id: "",
 			name: loginData.name,
 		}
-
-		Auth.setPlayerData(playerData)
 	}
 
-	client.emit("SetPlayerData", playerData.id, playerData.name)
-
-	await new Promise<void>((resolve) => {
-		client.on("PlayerDataSet", resolve)
+	const { player } = await SocketService.emit<SetPlayerDataEventInput, SetPlayerDataEventResponse>("SetPlayerData", {
+		player: playerData,
 	})
 
-	return playerData
-}
+	AuthService.setPlayerData(player)
 
-export default client
+	return player
+}

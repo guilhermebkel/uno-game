@@ -5,7 +5,10 @@ import {
 	Add as CreateIcon,
 } from "@material-ui/icons"
 
-import { Game } from "@uno-game/protocols"
+import {
+	CreateGameEventResponse,
+	Game,
+} from "@uno-game/protocols"
 
 import useDidMount from "@/hooks/useDidMount"
 import useSocket from "@/hooks/useSocket"
@@ -14,6 +17,7 @@ import DeviceUtil from "@/utils/device"
 import { orderByCreatedAtDesc } from "@/utils/game"
 
 import api from "@/services/api"
+import { SocketService } from "@/services/socket"
 
 import { Divider, LoadingComponent, GameCard } from "@/components"
 
@@ -37,11 +41,11 @@ const Dashboard: React.FC = () => {
 	const handleCreateNewGame = async () => {
 		setLoadingCreateGame(true)
 
-		const game = await socket.createGame()
+		const { gameId } = await SocketService.emit<unknown, CreateGameEventResponse>("CreateGame", {})
 
 		setLoadingCreateGame(false)
 
-		history.push(`/${game.id}`)
+		history.push(`/${gameId}`)
 	}
 
 	const getGameList = async () => {

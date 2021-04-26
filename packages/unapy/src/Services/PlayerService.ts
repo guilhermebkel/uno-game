@@ -2,9 +2,18 @@ import { Player } from "@uno-game/protocols"
 
 import PlayerRepository from "@/Repositories/PlayerRepository"
 
+import CryptUtil from "@/Utils/CryptUtil"
+
 class PlayerService {
-	async setPlayerData (playerData: Player): Promise<void> {
-		await PlayerRepository.setPlayerData(playerData)
+	async setPlayerData (playerData: Player): Promise<Player> {
+		const player = {
+			id: playerData.id || CryptUtil.makeUUID(),
+			name: playerData.name,
+		}
+
+		await PlayerRepository.setPlayerData(player)
+
+		return player
 	}
 
 	async getPlayerData (playerId: string): Promise<Player> {

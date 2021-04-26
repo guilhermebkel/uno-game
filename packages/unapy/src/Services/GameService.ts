@@ -18,32 +18,40 @@ import {
 	CardData,
 	CardColors,
 	PlayerStatus,
+	PlayerJoinedEventData,
+	PlayerLeftEventData,
+	PlayerWonEventData,
+	PlayerBuyCardsEventData,
+	PlayerUnoEventData,
+	PlayerBlockedEventData,
+	GameEndedEventData,
+	PlayerGotAwayFromKeyboardEventData,
+	GameStartedEventData,
+	PlayerToggledReadyEventData,
+	PlayerPutCardEventData,
+	PlayerChoseCardColorEventData,
+	GameRoundRemainingTimeChangedEventData,
+	PlayerBoughtCardEventData,
+	PlayerCardUsabilityConsolidatedEventData,
+	GameAmountToBuyChangedEventData,
 } from "@uno-game/protocols"
 
 import GameRepository from "@/Repositories/GameRepository"
 
+import CryptUtil from "@/Utils/CryptUtil"
+
 class GameService {
-	async setupGame (playerId: string, gameId: string, chatId: string): Promise<void> {
+	async setupGame (playerId: string, chatId: string): Promise<Game> {
 		const cards = await CardService.setupRandomCards()
 
 		const playerData = await PlayerService.getPlayerData(playerId)
-
-		const initialPlayer: PlayerData = {
-			id: playerId,
-			name: playerData.name,
-			handCards: [],
-			status: "online",
-			ready: false,
-			isCurrentRoundPlayer: false,
-			canBuyCard: false,
-		}
 
 		const game: Game = {
 			maxPlayers: 6,
 			type: "public",
 			status: "waiting",
 			round: 0,
-			id: gameId,
+			id: CryptUtil.makeShortUUID(),
 			chatId,
 			currentPlayerIndex: 0,
 			nextPlayerIndex: 1,
@@ -51,20 +59,20 @@ class GameService {
 			title: playerData.name,
 			availableCards: [],
 			usedCards: [],
-			players: [initialPlayer],
+			players: [],
 			cards,
 			direction: "clockwise",
 			currentCardCombo: {
 				cardTypes: [],
 				amountToBuy: 0,
 			},
-			maxRoundDurationInSeconds: environmentConfig.isDev ? 20000 : 30,
+			maxRoundDurationInSeconds: environmentConfig.isDev ? 100 : 30,
 			createdAt: Date.now(),
 		}
 
-		await this.setGameData(gameId, game)
+		await this.setGameData(game.id, game)
 
-		this.emitGameEvent(gameId, "GameCreated", game)
+		return game
 	}
 
 	async getExistingPlayerGame (playerId: string): Promise<Game> {
@@ -94,8 +102,8 @@ class GameService {
 		}
 	}
 
-	async joinGame (gameId: string, playerId: string): Promise<void> {
-		let game = await this.getGame(gameId)
+	async joinGame (gameId: string, playerId: string): Promise<Game> {
+		const game = await this.getGame(gameId)
 
 		const player = game?.players?.find(player => player.id === playerId)
 
@@ -104,14 +112,28 @@ class GameService {
 		const playerIsNotOnGame = !player
 
 		if (gameHasNotStarted && gameIsNotFull && playerIsNotOnGame) {
-			await this.addPlayer(gameId, playerId)
-		}
+			const playerData = await PlayerService.getPlayerData(playerId)
 
-		game = await this.getGame(gameId)
+			const player: PlayerData = {
+				id: playerId,
+				name: playerData.name,
+				handCards: [],
+				status: "online",
+				ready: false,
+				isCurrentRoundPlayer: false,
+				canBuyCard: false,
+			}
+
+			game.players.push(player)
+
+			this.emitGameEvent<PlayerJoinedEventData>(game.id, "PlayerJoined", { player })
+		}
 
 		const gameRoundRemainingTimeInSeconds = await this.getRoundRemainingTimeInSeconds(gameId)
 
-		GameRoundService.emitGameRoundEvent(gameId, "GameRoundRemainingTimeChanged", gameRoundRemainingTimeInSeconds)
+		GameRoundService.emitGameRoundEvent<GameRoundRemainingTimeChangedEventData>(gameId, "GameRoundRemainingTimeChanged", {
+			roundRemainingTimeInSeconds: gameRoundRemainingTimeInSeconds,
+		})
 
 		if (!playerIsNotOnGame) {
 			game.players = await this.buildPlayersWithChangedPlayerStatus(gameId, playerId, "online")
@@ -119,7 +141,7 @@ class GameService {
 
 		await this.setGameData(gameId, game)
 
-		this.emitGameEvent(gameId, "PlayerJoined", game)
+		return game
 	}
 
 	async purgePlayer (playerId: string): Promise<void> {
@@ -132,7 +154,7 @@ class GameService {
 				if (isPlayerOnGame) {
 					await this.disconnectPlayer(game?.id, playerId)
 
-					this.emitGameEvent(game?.id, "PlayerLeft", game)
+					this.emitGameEvent<PlayerLeftEventData>(game?.id, "PlayerLeft", { playerId })
 				}
 			}),
 		)
@@ -141,15 +163,13 @@ class GameService {
 	async toggleReady (playerId: string, gameId: string): Promise<void> {
 		const game = await this.getGame(gameId)
 
-		game.players = game?.players?.map(player => {
-			if (player.id === playerId) {
-				return {
-					...player,
-					ready: !player.ready,
-				}
-			} else {
-				return player
-			}
+		const updatedPlayer = game?.players?.find(({ id }) => id === playerId)
+
+		updatedPlayer.ready = !updatedPlayer.ready
+
+		this.emitGameEvent<PlayerToggledReadyEventData>(gameId, "PlayerToggledReady", {
+			playerId,
+			ready: updatedPlayer.ready,
 		})
 
 		await this.setGameData(gameId, game)
@@ -185,6 +205,11 @@ class GameService {
 		const available = [...game?.availableCards]
 
 		const card = available.shift()
+
+		this.emitGameEvent<PlayerBoughtCardEventData>(game.id, "PlayerBoughtCard", {
+			playerId: playerId,
+			cards: [card],
+		})
 
 		game.players = game?.players?.map(player => {
 			if (player.id === playerId) {
@@ -224,6 +249,8 @@ class GameService {
 
 			cards.push(card)
 		})
+
+		this.emitGameEvent<PlayerPutCardEventData>(game.id, "PlayerPutCard", { playerId, cards })
 
 		game.players = game?.players?.map(player => {
 			if (player.id === playerId) {
@@ -284,8 +311,8 @@ class GameService {
 		await this.setGameData(gameId, game)
 	}
 
-	emitGameEvent (gameId: string, event: GameEvents, ...data: unknown[]) {
-		SocketService.emitGameEvent(gameId, event, ...data)
+	emitGameEvent<Data extends unknown> (gameId: string, event: GameEvents, data: Data) {
+		SocketService.emitGameEvent(gameId, event, data)
 
 		const gameUpdateEvents: GameEvents[] = [
 			"GameStarted",
@@ -338,7 +365,9 @@ class GameService {
 
 		const gameRoundRemainingTime = await this.getRoundRemainingTimeInSeconds(gameId)
 
-		GameRoundService.emitGameRoundEvent(gameId, "GameRoundRemainingTimeChanged", gameRoundRemainingTime)
+		GameRoundService.emitGameRoundEvent<GameRoundRemainingTimeChangedEventData>(gameId, "GameRoundRemainingTimeChanged", {
+			roundRemainingTimeInSeconds: gameRoundRemainingTime,
+		})
 
 		await GameRoundService.resetRoundCounter(gameId, {
 			timeoutAction: async (gameId) => {
@@ -352,12 +381,16 @@ class GameService {
 
 				await this.makeComputedPlay(gameId, currentPlayerInfo.id)
 
-				this.emitGameEvent(gameId, "PlayerGotAwayFromKeyboard", currentPlayerInfo.id)
+				this.emitGameEvent<PlayerGotAwayFromKeyboardEventData>(gameId, "PlayerGotAwayFromKeyboard", {
+					playerId: currentPlayerInfo.id,
+				})
 			},
 			intervalAction: async (gameId) => {
 				const gameRoundRemainingTime = await this.getRoundRemainingTimeInSeconds(gameId)
 
-				GameRoundService.emitGameRoundEvent(gameId, "GameRoundRemainingTimeChanged", gameRoundRemainingTime)
+				GameRoundService.emitGameRoundEvent<GameRoundRemainingTimeChangedEventData>(gameId, "GameRoundRemainingTimeChanged", {
+					roundRemainingTimeInSeconds: gameRoundRemainingTime,
+				})
 			},
 			gameId,
 			timeInSeconds: maxRoundDurationInSeconds,
@@ -417,7 +450,7 @@ class GameService {
 
 		await this.setGameData(gameId, game)
 
-		this.emitGameEvent(gameId, "GameStarted", game)
+		this.emitGameEvent<GameStartedEventData>(gameId, "GameStarted", { game })
 
 		await	this.resetRoundCounter(gameId)
 	}
@@ -469,13 +502,18 @@ class GameService {
 		const currentPlayerInfo = await this.getCurrentPlayerInfo(gameId)
 
 		if (currentPlayerInfo.gameStatus === "winner") {
-			this.emitGameEvent(gameId, "PlayerWon", currentPlayerInfo.id, currentPlayerInfo.name)
+			this.emitGameEvent<PlayerWonEventData>(gameId, "PlayerWon", {
+				player: {
+					id: currentPlayerInfo.id,
+					name: currentPlayerInfo.name,
+				},
+			})
 
 			return await this.endGame(gameId)
 		}
 
 		if (currentPlayerInfo.gameStatus === "uno") {
-			this.emitGameEvent(gameId, "PlayerUno", currentPlayerInfo.id)
+			this.emitGameEvent<PlayerUnoEventData>(gameId, "PlayerUno", { playerId: currentPlayerInfo.id })
 		}
 
 		const game = await this.getGame(gameId)
@@ -515,8 +553,6 @@ class GameService {
 
 	private async setGameData (gameId: string, game: Game): Promise<void> {
 		await GameRepository.setGameData(gameId, game)
-
-		this.emitGameEvent(gameId, "GameStateChanged", game)
 	}
 
 	private async getTopStackCard (gameId: string): Promise<CardData> {
@@ -563,6 +599,10 @@ class GameService {
 					return card
 				}
 			})
+
+			const changedCards = game.usedCards.filter(({ id }) => cardIds.includes(id))
+
+			this.emitGameEvent<PlayerChoseCardColorEventData>(game.id, "PlayerChoseCardColor", { cards: changedCards })
 		}
 
 		if (isReverseCard) {
@@ -590,7 +630,7 @@ class GameService {
 					game.nextPlayerIndex--
 				}
 
-				this.emitGameEvent(game.id, "PlayerBlocked", playerAffected?.id)
+				this.emitGameEvent<PlayerBlockedEventData>(game.id, "PlayerBlocked", { playerId: playerAffected?.id })
 			})
 		}
 
@@ -616,12 +656,24 @@ class GameService {
 				}
 			})
 
+			this.emitGameEvent<GameAmountToBuyChangedEventData>(game.id, "GameAmountToBuyChanged", {
+				amountToBuy: game.currentCardCombo.amountToBuy,
+			})
+
 			if (!affectedPlayerCanMakeCardBuyCombo) {
-				this.emitGameEvent(game.id, "PlayerBuyCards", playerAffected?.id, game.currentCardCombo.amountToBuy)
+				this.emitGameEvent<PlayerBuyCardsEventData>(game.id, "PlayerBuyCards", {
+					playerId: playerAffected?.id,
+					amountToBuy: game.currentCardCombo.amountToBuy,
+				})
 
 				let available = [...game?.availableCards]
 
 				const cards = available.slice(0, game.currentCardCombo.amountToBuy)
+
+				this.emitGameEvent<PlayerBoughtCardEventData>(game.id, "PlayerBoughtCard", {
+					playerId: playerAffected?.id,
+					cards,
+				})
 
 				available = available.slice(game.currentCardCombo.amountToBuy, available.length)
 
@@ -642,6 +694,10 @@ class GameService {
 					cardTypes: [],
 					amountToBuy: 0,
 				}
+
+				this.emitGameEvent<GameAmountToBuyChangedEventData>(game.id, "GameAmountToBuyChanged", {
+					amountToBuy: 0,
+				})
 
 				if (game.direction === "clockwise") {
 					game.nextPlayerIndex++
@@ -693,6 +749,25 @@ class GameService {
 					})),
 				}
 			}
+		})
+
+		const consolidatedPlayers = playersWithCardUsability.map(player => {
+			const handCards = player.handCards.map(handCard => ({
+				id: handCard.id,
+				canBeUsed: handCard.canBeUsed,
+				canBeCombed: handCard.canBeCombed,
+			}))
+
+			return {
+				id: player.id,
+				isCurrentRoundPlayer: player.isCurrentRoundPlayer,
+				canBuyCard: player.canBuyCard,
+				handCards,
+			}
+		})
+
+		this.emitGameEvent<PlayerCardUsabilityConsolidatedEventData>(game.id, "PlayerCardUsabilityConsolidated", {
+			players: consolidatedPlayers,
 		})
 
 		return playersWithCardUsability
@@ -770,7 +845,7 @@ class GameService {
 
 		await this.removeRoundCounter(gameId)
 
-		this.emitGameEvent(gameId, "GameEnded")
+		this.emitGameEvent<GameEndedEventData>(gameId, "GameEnded", { gameId })
 	}
 }
 
