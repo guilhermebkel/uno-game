@@ -377,13 +377,13 @@ class GameService {
 
 				game.players = await this.buildPlayersWithChangedPlayerStatus(gameId, currentPlayerInfo.id, "afk")
 
-				await this.setGameData(gameId, game)
-
-				await this.makeComputedPlay(gameId, currentPlayerInfo.id)
-
 				this.emitGameEvent<PlayerGotAwayFromKeyboardEventData>(gameId, "PlayerGotAwayFromKeyboard", {
 					playerId: currentPlayerInfo.id,
 				})
+
+				await this.setGameData(gameId, game)
+
+				await this.makeComputedPlay(gameId, currentPlayerInfo.id)
 			},
 			intervalAction: async (gameId) => {
 				const gameRoundRemainingTime = await this.getRoundRemainingTimeInSeconds(gameId)
