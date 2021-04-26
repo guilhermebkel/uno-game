@@ -32,7 +32,7 @@ import GameEndedModal from "@/pages/Table/GameEndedModal"
 import CardProvider from "@/store/Card"
 
 import { CardData, Game, PlayerWonEventData } from "@uno-game/protocols"
-import { SocketService } from "@/services/socket"
+import SocketService from "@/services/socket"
 
 const Table: React.FC = () => {
 	const { gameId } = useParams<{ gameId: string }>()

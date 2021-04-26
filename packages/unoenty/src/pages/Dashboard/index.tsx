@@ -17,7 +17,7 @@ import DeviceUtil from "@/utils/device"
 import { orderByCreatedAtDesc } from "@/utils/game"
 
 import api from "@/services/api"
-import { SocketService } from "@/services/socket"
+import SocketService from "@/services/socket"
 
 import { Divider, LoadingComponent, GameCard } from "@/components"
 

@@ -18,12 +18,12 @@ import {
 
 import serverConfig from "@/config/server"
 
-class Socket {
+class SocketService {
 	static client: typeof SocketClient
 
 	constructor () {
-		if (!Socket.client) {
-			Socket.client = io(serverConfig.apiUrl, {
+		if (!SocketService.client) {
+			SocketService.client = io(serverConfig.apiUrl, {
 				reconnection: true,
 				reconnectionAttempts: Infinity,
 				reconnectionDelay: 1000,
@@ -49,7 +49,7 @@ class Socket {
 		data: RequestPayload,
 	): Promise<ResponsePayload> {
 		return await new Promise<ResponsePayload>((resolve, reject) => {
-			Socket.client.emit(event, data, (error: string, responsePayload: ResponsePayload) => {
+			SocketService.client.emit(event, data, (error: string, responsePayload: ResponsePayload) => {
 				if (error) {
 					reject(error)
 				}
@@ -63,7 +63,7 @@ class Socket {
 		event: SocketClientEvents,
 		handler: SocketEventHandler<ReceivedData, ReceivedData>,
 	): void {
-		Socket.client.on(event, async (data: ReceivedData) => {
+		SocketService.client.on(event, async (data: ReceivedData) => {
 			try {
 				await handler(data)
 			} catch (error) {
@@ -71,29 +71,27 @@ class Socket {
 			}
 		})
 	}
-}
 
-export const SocketService = new Socket()
+	async getPlayerData (): Promise<Player> {
+		let playerData = AuthService.getPlayerData()
 
-export default Socket.client
+		if (!playerData) {
+			const loginData = await LoginDialog.open()
 
-export const getPlayerData = async (): Promise<Player> => {
-	let playerData = AuthService.getPlayerData()
-
-	if (!playerData) {
-		const loginData = await LoginDialog.open()
-
-		playerData = {
-			id: "",
-			name: loginData.name,
+			playerData = {
+				id: "",
+				name: loginData.name,
+			}
 		}
+
+		const { player } = await this.emit<SetPlayerDataEventInput, SetPlayerDataEventResponse>("SetPlayerData", {
+			player: playerData,
+		})
+
+		AuthService.setPlayerData(player)
+
+		return player
 	}
-
-	const { player } = await SocketService.emit<SetPlayerDataEventInput, SetPlayerDataEventResponse>("SetPlayerData", {
-		player: playerData,
-	})
-
-	AuthService.setPlayerData(player)
-
-	return player
 }
+
+export default new SocketService()

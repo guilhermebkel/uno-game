@@ -1,7 +1,6 @@
 import React, { createContext, useContext, useState } from "react"
-import { Socket } from "socket.io-client"
 
-import client, { getPlayerData, SocketService } from "@/services/socket"
+import SocketService from "@/services/socket"
 
 import useDidMount from "@/hooks/useDidMount"
 
@@ -30,7 +29,6 @@ import {
 } from "@uno-game/protocols"
 
 export interface SocketContextData {
-	io: typeof Socket
 	game?: Game
 	chats?: Map<string, Chat>
 	player?: Player
@@ -337,7 +335,7 @@ const SocketProvider: React.FC = (props) => {
 
 		refreshCacheIfNeeded()
 
-		const playerData = await getPlayerData()
+		const playerData = await SocketService.getPlayerData()
 
 		setPlayerData(playerData)
 
@@ -368,7 +366,6 @@ const SocketProvider: React.FC = (props) => {
 	return (
 		<SocketStore.Provider
 			value={{
-				io: client,
 				addChatMessage,
 				chats,
 				setPlayerData,

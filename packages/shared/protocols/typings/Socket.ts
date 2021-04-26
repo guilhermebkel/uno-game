@@ -22,7 +22,9 @@ GameEvents |
 ChatEvents |
 GameRoundEvents |
 PlayerEvents |
-"connect"
+"connect" |
+"reconnect" |
+"disconnect"
 
 export type SocketEventHandler<ReceivedData extends unknown, ResponseData extends unknown> = (
 	data: ReceivedData

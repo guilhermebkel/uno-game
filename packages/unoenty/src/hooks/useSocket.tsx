@@ -1,5 +1,5 @@
 import { useSocketStore } from "@/store/Socket"
-import { getPlayerData, SocketService } from "@/services/socket"
+import SocketService from "@/services/socket"
 
 import {
 	PlayerData,
@@ -38,11 +38,9 @@ type UseSocketResponse = {
 	toggleOnlineStatus: (gameId: string) => void
 	sendChatMessage: (chatId: string, content: string) => void
 	onGameStart: (fn: () => void) => void
-	onCardStackBuyCardsCombo: (fn: (amountToBuy: number) => void) => void
 	onNewChatMessage: (fn?: () => void) => void
 	onPlayerGotAwayFromKeyboard: (fn: (playerId: string) => void) => void
 	onPlayerStateChange: (fn: (playerState: PlayerState, playerId: string, amountToBuy?: number) => void) => void
-	onPong: (fn: (latency: number) => void) => void
 	onReconnect: (fn: () => void) => void
 	forceSelfDisconnect: (gameId: string) => Promise<void>
 	getChat: (chatId?: string) => Chat | null
@@ -245,10 +243,6 @@ const useSocket = (): UseSocketResponse => {
 		})
 	}
 
-	const onCardStackBuyCardsCombo = (fn: (amountToBuy: number) => void) => {
-		socketStore.io.on("CardStackBuyCardsCombo", fn)
-	}
-
 	const onNewChatMessage = (fn?: () => void) => {
 		SocketService.on<NewMessageEventData>("NewMessage", ({ chatId, message }) => {
 			socketStore.addChatMessage(chatId, message)
@@ -297,13 +291,9 @@ const useSocket = (): UseSocketResponse => {
 		})
 	}
 
-	const onPong = (fn: (latency: number) => void) => {
-		socketStore.io.on("pong", fn)
-	}
-
 	const onReconnect = (fn: () => void) => {
-		socketStore.io.on("reconnect", async () => {
-			const playerData = await getPlayerData()
+		SocketService.on<unknown>("reconnect", async () => {
+			const playerData = await SocketService.getPlayerData()
 
 			socketStore.setPlayerData(playerData)
 
@@ -335,11 +325,9 @@ const useSocket = (): UseSocketResponse => {
 		toggleOnlineStatus,
 		onGameStart,
 		onPlayerStateChange,
-		onCardStackBuyCardsCombo,
 		onNewChatMessage,
 		onReconnect,
 		onPlayerGotAwayFromKeyboard,
-		onPong,
 		toggleReady,
 		buyCard,
 		putCard,
