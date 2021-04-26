@@ -22,7 +22,8 @@ export type GameEvents =
 "PlayerChoseCardColor" |
 "PlayerBoughtCard" |
 "PlayerCardUsabilityConsolidated" |
-"PlayerStatusChanged"
+"PlayerStatusChanged" |
+"GameAmountToBuyChanged"
 
 export type GameStatus =
 "waiting" |

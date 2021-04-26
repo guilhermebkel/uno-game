@@ -94,3 +94,5 @@ export type PlayerCardUsabilityConsolidatedEventData = {
 }
 
 export type PlayerStatusChangedEventData = { playerId: string, status: PlayerStatus }
+
+export type GameAmountToBuyChangedEventData = { amountToBuy: number }

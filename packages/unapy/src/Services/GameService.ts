@@ -33,6 +33,7 @@ import {
 	GameRoundRemainingTimeChangedEventData,
 	PlayerBoughtCardEventData,
 	PlayerCardUsabilityConsolidatedEventData,
+	GameAmountToBuyChangedEventData,
 } from "@uno-game/protocols"
 
 import GameRepository from "@/Repositories/GameRepository"
@@ -655,6 +656,10 @@ class GameService {
 				}
 			})
 
+			this.emitGameEvent<GameAmountToBuyChangedEventData>(game.id, "GameAmountToBuyChanged", {
+				amountToBuy: game.currentCardCombo.amountToBuy,
+			})
+
 			if (!affectedPlayerCanMakeCardBuyCombo) {
 				this.emitGameEvent<PlayerBuyCardsEventData>(game.id, "PlayerBuyCards", {
 					playerId: playerAffected?.id,
@@ -689,6 +694,10 @@ class GameService {
 					cardTypes: [],
 					amountToBuy: 0,
 				}
+
+				this.emitGameEvent<GameAmountToBuyChangedEventData>(game.id, "GameAmountToBuyChanged", {
+					amountToBuy: 0,
+				})
 
 				if (game.direction === "clockwise") {
 					game.nextPlayerIndex++

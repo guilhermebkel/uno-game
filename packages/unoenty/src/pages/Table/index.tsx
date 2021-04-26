@@ -17,6 +17,7 @@ import useSocket from "@/hooks/useSocket"
 import {
 	LoadingComponent,
 	CloseGamePrompt,
+	LoadingScene,
 } from "@/components"
 
 import Device from "@/utils/device"
@@ -108,7 +109,12 @@ const Table: React.FC = () => {
 
 	const onGameStart = () => {
 		socket.onGameStart(() => {
-			window.location.reload()
+			LoadingScene.run({
+				onStart: () => {
+					GameEndedModal.close()
+				},
+				duration: 2000,
+			})
 		})
 	}
 

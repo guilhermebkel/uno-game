@@ -26,6 +26,7 @@ import {
 	PlayerBoughtCardEventData,
 	PlayerCardUsabilityConsolidatedEventData,
 	PlayerGotAwayFromKeyboardEventData,
+	GameAmountToBuyChangedEventData,
 } from "@uno-game/protocols"
 
 export interface SocketContextData {
@@ -315,6 +316,22 @@ const SocketProvider: React.FC = (props) => {
 		})
 	}
 
+	const onGameAmountToBuyChanged = () => {
+		SocketService.on<GameAmountToBuyChangedEventData>("GameAmountToBuyChanged", ({ amountToBuy }) => {
+			setGame(lastState => {
+				if (!lastState?.id) {
+					return lastState
+				}
+
+				const updatedData = { ...lastState }
+
+				updatedData.currentCardCombo.amountToBuy = amountToBuy
+
+				return updatedData
+			})
+		})
+	}
+
 	const connect = async () => {
 		preloadCardPictures()
 
@@ -340,6 +357,7 @@ const SocketProvider: React.FC = (props) => {
 		onPlayerBoughtCard()
 		onPlayerCardUsabilityConsolidated()
 		onPlayerGotAwayFromKeyboard()
+		onGameAmountToBuyChanged()
 	}
 
 	useDidMount(() => {
