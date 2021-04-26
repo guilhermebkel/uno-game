@@ -242,8 +242,8 @@ class GameService {
 		 */
 		const usedCards = [...cards, ...game?.usedCards]
 
-		const inStackCards = usedCards.slice(0, 10)
-		let outStackCards = usedCards.slice(10, usedCards.length)
+		const inStackCards = usedCards.slice(0, 10).filter(card => card)
+		let outStackCards = usedCards.slice(10, usedCards.length).filter(card => card)
 
 		outStackCards = outStackCards.map(card => {
 			if (card.color === "black") {
