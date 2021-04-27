@@ -1,7 +1,7 @@
 import { Store } from "@/Protocols/StoreProtocol"
 
 import RedisStoreService from "@/Services/RedisStoreService"
-import FIFOQueueService from "@/Services/FIFOQueueService"
+import GlobalFIFOQueueService from "@/Services/GlobalFIFOQueueService"
 
 /**
  * This store is faster than Redis since it works on in-memory data structure
@@ -12,18 +12,16 @@ class MemoryWithCacheStoreService<Model> implements Store<Model> {
 	private store: Map<string, Model> = new Map()
 
 	private redisStoreService: RedisStoreService<Model>
-	private redisStoreActionFIFOQueue: FIFOQueueService
 	private cacheLoaded = false
 
 	constructor (namespace: string) {
 		this.redisStoreService = new RedisStoreService(namespace)
-		this.redisStoreActionFIFOQueue = new FIFOQueueService()
 	}
 
 	async set (id: string, data: Model): Promise<void> {
 		await this.loadCacheIfNeeded()
 
-		this.redisStoreActionFIFOQueue.enqueue(() => this.redisStoreService.set(id, data))
+		GlobalFIFOQueueService.enqueue(() => this.redisStoreService.set(id, data), id)
 
 		this.store.set(id, data)
 	}
@@ -31,7 +29,7 @@ class MemoryWithCacheStoreService<Model> implements Store<Model> {
 	async delete (id: string): Promise<void> {
 		await this.loadCacheIfNeeded()
 
-		this.redisStoreActionFIFOQueue.enqueue(() => this.redisStoreService.delete(id))
+		GlobalFIFOQueueService.enqueue(() => this.redisStoreService.delete(id), id)
 
 		this.store.delete(id)
 	}
