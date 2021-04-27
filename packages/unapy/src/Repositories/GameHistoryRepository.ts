@@ -2,10 +2,10 @@ import { GameHistory } from "@uno-game/protocols"
 
 import { Store } from "@/Protocols/StoreProtocol"
 
-import RedisStoreService from "@/Services/RedisStoreService"
+import MemoryWithCacheStoreService from "@/Services/MemoryWithCacheStoreService"
 
 class GameRepository {
-	private static gameHistories: Store<GameHistory[]> = new RedisStoreService("game-history")
+	private static gameHistories: Store<GameHistory[]> = new MemoryWithCacheStoreService("game-history")
 
 	static async setGameHistory (playerId: string, gameHistory: GameHistory[]): Promise<void> {
 		await this.gameHistories.set(playerId, gameHistory)
