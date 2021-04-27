@@ -1,5 +1,5 @@
 {
   "name": "@uno-game/error-handler",
   "version": "1.0.0",
-  "main": "index.ts"
+  "main": "index.js"
 }
