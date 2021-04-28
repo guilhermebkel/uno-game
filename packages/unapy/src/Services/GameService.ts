@@ -419,7 +419,7 @@ class GameService {
 
 		const allCards = [...game?.cards]
 
-		const currentPlayer = game?.players?.[game.currentPlayerIndex]
+		const currentPlayer = await this.getCurrentPlayerInfo(game)
 
 		game.status = "playing"
 
