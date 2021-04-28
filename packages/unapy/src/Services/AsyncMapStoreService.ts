@@ -22,23 +22,19 @@ class AsyncMapStoreService<Model> implements Store<Model> {
 	}
 
 	async getAll (): Promise<Model[]> {
-		const models: Model[] = []
-
-		for (const model of this.store.values()) {
-			models.push(model)
-		}
+		const models = Array.from(this.store, ([, value]) => value)
 
 		return models
 	}
 
 	async getKeys (): Promise<string[]> {
-		const keys: string[] = []
-
-		for (const key of this.store.keys()) {
-			keys.push(key)
-		}
+		const keys = Array.from(this.store, ([key]) => key)
 
 		return keys
+	}
+
+	set storeData (storeData: Map<string, Model>) {
+		this.store = storeData
 	}
 }
 

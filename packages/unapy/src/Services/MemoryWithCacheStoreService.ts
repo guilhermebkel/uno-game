@@ -1,6 +1,7 @@
 import { Store } from "@/Protocols/StoreProtocol"
 
 import RedisStoreService from "@/Services/RedisStoreService"
+import AsyncMapStoreService from "@/Services/AsyncMapStoreService"
 import GlobalFIFOQueueService from "@/Services/GlobalFIFOQueueService"
 
 /**
@@ -9,13 +10,14 @@ import GlobalFIFOQueueService from "@/Services/GlobalFIFOQueueService"
  * that it is needed. It basically combines 'AsyncMapStore' with 'RedisStore'.
  */
 class MemoryWithCacheStoreService<Model> implements Store<Model> {
-	private store: Map<string, Model> = new Map()
-
+	private asyncMapStoreService: AsyncMapStoreService<Model>
 	private redisStoreService: RedisStoreService<Model>
-	private cacheLoaded = false
+	private cacheLoaded: boolean
 
 	constructor (namespace: string) {
 		this.redisStoreService = new RedisStoreService(namespace)
+		this.asyncMapStoreService = new AsyncMapStoreService()
+		this.cacheLoaded = false
 	}
 
 	async set (id: string, data: Model): Promise<void> {
@@ -23,7 +25,7 @@ class MemoryWithCacheStoreService<Model> implements Store<Model> {
 
 		GlobalFIFOQueueService.enqueue(() => this.redisStoreService.set(id, data), id)
 
-		this.store.set(id, data)
+		await this.asyncMapStoreService.set(id, data)
 	}
 
 	async delete (id: string): Promise<void> {
@@ -31,13 +33,13 @@ class MemoryWithCacheStoreService<Model> implements Store<Model> {
 
 		GlobalFIFOQueueService.enqueue(() => this.redisStoreService.delete(id), id)
 
-		this.store.delete(id)
+		await this.asyncMapStoreService.delete(id)
 	}
 
 	async getOne (id: string): Promise<Model> {
 		await this.loadCacheIfNeeded()
 
-		const model = this.store.get(id)
+		const model = await this.asyncMapStoreService.getOne(id)
 
 		return model
 	}
@@ -45,11 +47,7 @@ class MemoryWithCacheStoreService<Model> implements Store<Model> {
 	async getAll (): Promise<Model[]> {
 		await this.loadCacheIfNeeded()
 
-		const models: Model[] = []
-
-		for (const model of this.store.values()) {
-			models.push(model)
-		}
+		const models = await this.asyncMapStoreService.getAll()
 
 		return models
 	}
@@ -57,11 +55,7 @@ class MemoryWithCacheStoreService<Model> implements Store<Model> {
 	async getKeys (): Promise<string[]> {
 		await this.loadCacheIfNeeded()
 
-		const keys: string[] = []
-
-		for (const key of this.store.keys()) {
-			keys.push(key)
-		}
+		const keys: string[] = await this.asyncMapStoreService.getKeys()
 
 		return keys
 	}
@@ -70,7 +64,7 @@ class MemoryWithCacheStoreService<Model> implements Store<Model> {
 		if (!this.cacheLoaded) {
 			const cachedData = await this.redisStoreService.getAllInMap()
 
-			this.store = cachedData
+			this.asyncMapStoreService.storeData = cachedData
 			this.cacheLoaded = true
 		}
 	}
