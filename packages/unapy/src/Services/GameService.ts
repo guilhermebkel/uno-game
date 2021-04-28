@@ -186,13 +186,13 @@ class GameService {
 	}
 
 	async buyCard (playerId: string, gameId: string): Promise<void> {
-		const currentPlayerInfo = await this.getCurrentPlayerInfo(gameId)
+		const game = await this.getGame(gameId)
+
+		const currentPlayerInfo = await this.getCurrentPlayerInfo(game)
 
 		if (currentPlayerInfo.id !== playerId) {
 			return
 		}
-
-		const game = await this.getGame(gameId)
 
 		const player = game?.players?.find(player => player.id === currentPlayerInfo.id)
 
@@ -230,13 +230,13 @@ class GameService {
 	}
 
 	async putCard (playerId: string, cardIds: string[], gameId: string, selectedColor: CardColors): Promise<void> {
-		const currentPlayerInfo = await this.getCurrentPlayerInfo(gameId)
+		let game = await this.getGame(gameId)
+
+		const currentPlayerInfo = await this.getCurrentPlayerInfo(game)
 
 		if (currentPlayerInfo.id !== playerId) {
 			return
 		}
-
-		let game = await this.getGame(gameId)
 
 		const player = game?.players?.find(player => player.id === playerId)
 
@@ -369,7 +369,7 @@ class GameService {
 			timeoutAction: async (gameId) => {
 				const game = await this.getGame(gameId)
 
-				const currentPlayerInfo = await this.getCurrentPlayerInfo(gameId)
+				const currentPlayerInfo = await this.getCurrentPlayerInfo(game)
 
 				game.players = await this.buildPlayersWithChangedPlayerStatus(game, currentPlayerInfo.id, "afk")
 
@@ -495,7 +495,9 @@ class GameService {
 	private async nextRound (gameId: string): Promise<void> {
 		await this.resetRoundCounter(gameId)
 
-		const currentPlayerInfo = await this.getCurrentPlayerInfo(gameId)
+		const game = await this.getGame(gameId)
+
+		const currentPlayerInfo = await this.getCurrentPlayerInfo(game)
 
 		if (currentPlayerInfo.gameStatus === "winner") {
 			this.emitGameEvent<PlayerWonEventData>(gameId, "PlayerWon", {
@@ -511,8 +513,6 @@ class GameService {
 		if (currentPlayerInfo.gameStatus === "uno") {
 			this.emitGameEvent<PlayerUnoEventData>(gameId, "PlayerUno", { playerId: currentPlayerInfo.id })
 		}
-
-		const game = await this.getGame(gameId)
 
 		const expectedNextPlayerIndex = game?.nextPlayerIndex
 
@@ -532,9 +532,9 @@ class GameService {
 
 		game.currentPlayerIndex = nextPlayerIndex
 
-		await this.setGameData(gameId, game)
+		const nextPlayerInfo = await this.getCurrentPlayerInfo(game)
 
-		const nextPlayerInfo = await this.getCurrentPlayerInfo(gameId)
+		await this.setGameData(gameId, game)
 
 		if (nextPlayerInfo.playerStatus === "afk") {
 			await new Promise(resolve => {
@@ -763,9 +763,7 @@ class GameService {
 		return playersWithCardUsability
 	}
 
-	private async getCurrentPlayerInfo (gameId: string): Promise<CurrentPlayerInfo> {
-		const game = await this.getGame(gameId)
-
+	private async getCurrentPlayerInfo (game: Game): Promise<CurrentPlayerInfo> {
 		const { players } = game
 
 		const currentPlayer = players[game?.currentPlayerIndex]
@@ -794,9 +792,9 @@ class GameService {
 	}
 
 	private async endGame (gameId: string): Promise<void> {
-		const winnerInfo = await this.getCurrentPlayerInfo(gameId)
-
 		const game = await this.getGame(gameId)
+
+		const winnerInfo = await this.getCurrentPlayerInfo(game)
 
 		const cards = await CardService.setupRandomCards()
 
