@@ -136,7 +136,7 @@ class GameService {
 		})
 
 		if (!playerIsNotOnGame) {
-			game.players = await this.buildPlayersWithChangedPlayerStatus(gameId, playerId, "online")
+			game.players = await this.buildPlayersWithChangedPlayerStatus(game, playerId, "online")
 		}
 
 		await this.setGameData(gameId, game)
@@ -224,9 +224,7 @@ class GameService {
 
 		game.availableCards = available
 
-		await this.setGameData(gameId, game)
-
-		game.players = await this.buildPlayersWithCardUsability(currentPlayerInfo.id, gameId)
+		game.players = await this.buildPlayersWithCardUsability(currentPlayerInfo.id, game)
 
 		await this.setGameData(gameId, game)
 	}
@@ -294,9 +292,7 @@ class GameService {
 
 		game.currentGameColor = cards[0]?.color
 
-		await this.setGameData(gameId, game)
-
-		game = await this.buildGameWithCardEffect(gameId, cards, selectedColor)
+		game = await this.buildGameWithCardEffect(game, cards, selectedColor)
 
 		await this.setGameData(gameId, game)
 
@@ -306,7 +302,7 @@ class GameService {
 	async changePlayerStatus (gameId: string, playerId: string, playerStatus: PlayerStatus): Promise<void> {
 		const game = await this.getGame(gameId)
 
-		game.players = await this.buildPlayersWithChangedPlayerStatus(gameId, playerId, playerStatus)
+		game.players = await this.buildPlayersWithChangedPlayerStatus(game, playerId, playerStatus)
 
 		await this.setGameData(gameId, game)
 	}
@@ -375,7 +371,7 @@ class GameService {
 
 				const currentPlayerInfo = await this.getCurrentPlayerInfo(gameId)
 
-				game.players = await this.buildPlayersWithChangedPlayerStatus(gameId, currentPlayerInfo.id, "afk")
+				game.players = await this.buildPlayersWithChangedPlayerStatus(game, currentPlayerInfo.id, "afk")
 
 				await this.setGameData(gameId, game)
 
@@ -397,9 +393,7 @@ class GameService {
 		await GameRoundService.removeRoundCounter(gameId)
 	}
 
-	private async buildPlayersWithChangedPlayerStatus (gameId: string, playerId: string, status: PlayerStatus): Promise<PlayerData[]> {
-		const game = await this.getGame(gameId)
-
+	private async buildPlayersWithChangedPlayerStatus (game: Game, playerId: string, status: PlayerStatus): Promise<PlayerData[]> {
 		const updatedPlayer = game.players.find(({ id }) => id === playerId)
 
 		updatedPlayer.status = status
@@ -486,7 +480,7 @@ class GameService {
 		}
 
 		if (game.status === "playing") {
-			game.players = await this.buildPlayersWithChangedPlayerStatus(gameId, playerId, "offline")
+			game.players = await this.buildPlayersWithChangedPlayerStatus(game, playerId, "offline")
 		}
 
 		await this.setGameData(gameId, game)
@@ -532,7 +526,7 @@ class GameService {
 
 		const nextPlayer = game?.players?.[nextPlayerIndex]
 
-		game.players = await this.buildPlayersWithCardUsability(nextPlayer.id, gameId)
+		game.players = await this.buildPlayersWithCardUsability(nextPlayer.id, game)
 
 		game.round++
 
@@ -557,9 +551,7 @@ class GameService {
 		await GameRepository.setGameData(gameId, game)
 	}
 
-	private async getTopStackCard (gameId: string): Promise<CardData> {
-		const game = await this.getGame(gameId)
-
+	private async getTopStackCard (game: Game): Promise<CardData> {
 		return game?.usedCards?.[0]
 	}
 
@@ -573,11 +565,9 @@ class GameService {
 		)
 	}
 
-	private async buildGameWithCardEffect (gameId: string, cards: CardData[], selectedColor: CardColors): Promise<Game> {
+	private async buildGameWithCardEffect (game: Game, cards: CardData[], selectedColor: CardColors): Promise<Game> {
 		const cardTypes = cards.map(card => card.type)
 		const cardIds = cards.map(card => card.id)
-
-		const game = await this.getGame(gameId)
 
 		let playerAffected: PlayerData
 
@@ -712,10 +702,8 @@ class GameService {
 		return game
 	}
 
-	private async buildPlayersWithCardUsability (currentPlayerId: string, gameId: string): Promise<PlayerData[]> {
-		const game = await this.getGame(gameId)
-
-		const topStackCard = await this.getTopStackCard(gameId)
+	private async buildPlayersWithCardUsability (currentPlayerId: string, game: Game): Promise<PlayerData[]> {
+		const topStackCard = await this.getTopStackCard(game)
 
 		const playersWithCardUsability = game?.players?.map(player => {
 			if (currentPlayerId === player.id) {
