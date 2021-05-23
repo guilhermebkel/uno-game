@@ -109,9 +109,8 @@ const Table: React.FC = () => {
 	const onGameStart = () => {
 		socket.onGameStart(() => {
 			/**
-			 * Workaround to make sure the game is reloaded correctly since sometimes it
-			 * happens to the global game state to be broken after starting the game while
-			 * interacting with 'LoadingScene' and 'GameEndedModal'
+			 * Workaround to make sure the game is reloaded correctly after 'retry' since sometimes it
+			 * happens to the global game state to be broken after interacting with 'LoadingScene' and 'GameEndedModal'.
 			 */
 			window.location.reload()
 		})
