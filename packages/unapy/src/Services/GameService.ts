@@ -144,8 +144,10 @@ class GameService {
 		return game
 	}
 
-	async purgePlayer (playerId: string): Promise<void> {
+	async purgePlayer (playerId: string): Promise<Game[]> {
 		const games = await this.getGameList()
+
+		const purgedGames: Game[] = []
 
 		await Promise.all(
 			games.map(async game => {
@@ -155,9 +157,13 @@ class GameService {
 					await this.disconnectPlayer(game?.id, playerId)
 
 					this.emitGameEvent<PlayerLeftEventData>(game?.id, "PlayerLeft", { playerId })
+
+					purgedGames.push(game)
 				}
 			}),
 		)
+
+		return purgedGames
 	}
 
 	async toggleReady (playerId: string, gameId: string): Promise<void> {
@@ -308,7 +314,7 @@ class GameService {
 	}
 
 	emitGameEvent<Data extends unknown> (gameId: string, event: GameEvents, data: Data) {
-		SocketService.emitGameEvent(gameId, event, data)
+		SocketService.emitRoomEvent("game", gameId, event, data)
 
 		const gameUpdateEvents: GameEvents[] = [
 			"GameStarted",

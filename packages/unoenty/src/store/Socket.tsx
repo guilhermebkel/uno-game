@@ -59,7 +59,10 @@ const SocketProvider: React.FC = (props) => {
 	}
 
 	const setGameData = (data: Game) => {
-		setGame(data)
+		setGame(lastState => ({
+			...(lastState || {}),
+			...(data || {}),
+		}))
 	}
 
 	const setChatData = (data: Chat) => {

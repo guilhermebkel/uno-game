@@ -18,7 +18,7 @@ class ClientService {
 				const gameHistory = await GameHistoryService.retrieveGameHistory(playerId)
 
 				if (gameHistory) {
-					SocketService.emitPlayerEvent<GameHistoryConsolidatedEventData>(playerId, "GameHistoryConsolidated", { gameHistory })
+					SocketService.emitRoomEvent<GameHistoryConsolidatedEventData>("player", playerId, "GameHistoryConsolidated", { gameHistory })
 				}
 			}),
 		)
@@ -28,7 +28,7 @@ class ClientService {
 		const connectedPlayerIds = await PlayerService.getAllPlayerIds()
 
 		connectedPlayerIds.forEach(playerId => {
-			SocketService.emitPlayerEvent<unknown>(playerId, "GameListUpdated", [])
+			SocketService.emitRoomEvent<unknown>("player", playerId, "GameListUpdated", [])
 		})
 	}
 }

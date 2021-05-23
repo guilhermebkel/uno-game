@@ -6,14 +6,14 @@ class Node {
 		let node = document.getElementById(id)
 
 		if (node) {
-			ReactDOM.unmountComponentAtNode(node)
+			this.unmountComponent(id)
 		} else {
 			node = document.createElement("div")
 			node.setAttribute("id", id)
 			document.body.appendChild(node)
 		}
 
-		const where = document.getElementById("root") || document.body
+		const where = document.body
 
 		const expectedRendering = ReactDOM.createPortal(component, where)
 

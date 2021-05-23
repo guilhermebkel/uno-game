@@ -4,8 +4,6 @@ import { Grid, makeStyles } from "@material-ui/core"
 import { NotificationBar, Menu } from "@/components"
 import Routes from "@/routes"
 
-import SocketProvider from "@/store/Socket"
-
 import colors from "@/styles/colors"
 
 const useStyles = makeStyles(theme => ({
@@ -31,7 +29,7 @@ const App: React.FC = () => {
 	const classes = useStyles()
 
 	return (
-		<SocketProvider>
+		<>
 			<Grid
 				container
 				direction="column"
@@ -54,7 +52,7 @@ const App: React.FC = () => {
 					</Grid>
 				</Grid>
 			</Grid>
-		</SocketProvider>
+		</>
 	)
 }
 

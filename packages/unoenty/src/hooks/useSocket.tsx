@@ -139,22 +139,20 @@ const useSocket = (): UseSocketResponse => {
 	const toggleReady = (gameId: string) => {
 		SocketService.emit<ToggleReadyEventInput, unknown>("ToggleReady", { gameId })
 
-		/**
-		 * Little trick to improve response time
-		 */
-		socketStore.setGameData({
-			...socketStore?.game as Game,
-			players: socketStore?.game?.players?.map(player => {
-				if (player.id === socketStore?.player?.id) {
-					return {
-						...player,
-						ready: !player.ready,
-					}
-				}
+		const lastState = { ...socketStore?.game } as Game
 
-				return player
-			}) as PlayerData[],
-		})
+		lastState.players = (lastState.players || [])?.map(player => {
+			if (player.id === socketStore?.player?.id) {
+				return {
+					...player,
+					ready: !player.ready,
+				}
+			}
+
+			return player
+		}) as PlayerData[]
+
+		socketStore.setGameData(lastState)
 	}
 
 	const buyCard = async (gameId: string) => {
@@ -215,7 +213,7 @@ const useSocket = (): UseSocketResponse => {
 
 		const lastState = { ...socketStore?.game } as Game
 
-		lastState.players = lastState.players?.map(player => {
+		lastState.players = (lastState.players || []).map(player => {
 			if (player.id === socketStore.player?.id) {
 				player.status = "online"
 			}

@@ -17,7 +17,6 @@ import useSocket from "@/hooks/useSocket"
 import {
 	LoadingComponent,
 	CloseGamePrompt,
-	LoadingScene,
 } from "@/components"
 
 import Device from "@/utils/device"
@@ -109,21 +108,21 @@ const Table: React.FC = () => {
 
 	const onGameStart = () => {
 		socket.onGameStart(() => {
-			LoadingScene.run({
-				onStart: () => {
-					GameEndedModal.close()
-				},
-				duration: 2000,
-			})
+			/**
+			 * Workaround to make sure the game is reloaded correctly since sometimes it
+			 * happens to the global game state to be broken after starting the game while
+			 * interacting with 'LoadingScene' and 'GameEndedModal'
+			 */
+			window.location.reload()
 		})
 	}
 
-	const setupTable = () => {
-		joinGame()
+	const setupTable = async () => {
+		dispatchEvent("GameTableOpened")
+
+		await joinGame()
 		onPlayerWon()
 		onGameStart()
-
-		dispatchEvent("GameTableOpened")
 	}
 
 	const onReconnect = () => {

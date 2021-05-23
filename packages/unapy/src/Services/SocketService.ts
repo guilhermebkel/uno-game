@@ -2,7 +2,12 @@ import { Server as SocketServer } from "socket.io"
 import { SocketServerEvents, SocketClientEvents, SocketEventHandler } from "@uno-game/protocols"
 import ErrorHandler from "@uno-game/error-handler"
 
-import { SocketCallback, SocketClient } from "@/Protocols/SocketProtocol"
+import {
+	SocketCallback,
+	SocketClient,
+	SocketContext,
+	SocketRoomNameMap,
+} from "@/Protocols/SocketProtocol"
 
 class SocketService {
 	private io: SocketServer
@@ -31,61 +36,37 @@ class SocketService {
 		this.io = socketWithDisabledBinary as SocketServer
 	}
 
-	emitGameEvent<Data extends unknown> (gameId: string, event: SocketClientEvents, data: Data) {
-		const roomName = this.mountGameRoomName(gameId)
+	emitRoomEvent<Data extends unknown> (context: SocketContext, id: string, event: SocketClientEvents, data: Data) {
+		const roomName = this.mountRoomName(context, id)
 
-		this.emitRoomEvent(roomName, event, data)
+		this.emitEvent(roomName, event, data)
 	}
 
-	emitPlayerEvent<Data extends unknown> (playerId: string, event: SocketClientEvents, data: Data) {
-		const roomName = this.mountPlayerRoomName(playerId)
+	removeListener (client: SocketClient, context: SocketContext, id: string) {
+		const roomName = this.mountRoomName(context, id)
 
-		this.emitRoomEvent(roomName, event, data)
+		client.leave(roomName)
 	}
 
-	emitChatEvent<Data extends unknown> (chatId: string, event: SocketClientEvents, data: Data) {
-		const roomName = this.mountChatRoomName(chatId)
-
-		this.emitRoomEvent(roomName, event, data)
-	}
-
-	setupPlayerListener (client: SocketClient, playerId: string) {
-		const roomName = this.mountPlayerRoomName(playerId)
+	setupListener (client: SocketClient, context: SocketContext, id: string): void {
+		const roomName = this.mountRoomName(context, id)
 
 		client.join(roomName)
 	}
 
-	setupGameListener (client: SocketClient, gameId: string) {
-		const roomName = this.mountGameRoomName(gameId)
+	private mountRoomName (context: SocketContext, id: string): string {
+		const socketRoomNameMap: SocketRoomNameMap = {
+			game: `game:${id}`,
+			player: `player:${id}`,
+			chat: `chat:${id}`,
+		}
 
-		client.join(roomName)
+		const roomName = socketRoomNameMap[context]
+
+		return roomName
 	}
 
-	setupChatListener (client: SocketClient, chatId: string) {
-		const roomName = this.mountChatRoomName(chatId)
-
-		client.join(roomName)
-	}
-
-	private mountChatRoomName (playerId: string): string {
-		const playerRoomName = `chat:${playerId}`
-
-		return playerRoomName
-	}
-
-	private mountPlayerRoomName (playerId: string): string {
-		const playerRoomName = `player:${playerId}`
-
-		return playerRoomName
-	}
-
-	private mountGameRoomName (gameId: string): string {
-		const gameRoomName = `game:${gameId}`
-
-		return gameRoomName
-	}
-
-	private emitRoomEvent (roomId: string, event: SocketClientEvents, data: unknown) {
+	private emitEvent (roomId: string, event: SocketClientEvents, data: unknown): void {
 		const socket = this.io
 
 		socket.to(roomId).emit(event, data)

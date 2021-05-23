@@ -32,7 +32,7 @@ class EventHandlerModule {
 			SocketService.on<SetPlayerDataEventInput, SetPlayerDataEventResponse>(client, "SetPlayerData", async ({ player }) => {
 				playerData = await PlayerService.setPlayerData(player)
 
-				SocketService.setupPlayerListener(client, playerData.id)
+				SocketService.setupListener(client, "player", playerData.id)
 
 				await ClientService.dispatchGameHistoryConsolidated(playerData.id)
 
@@ -53,8 +53,8 @@ class EventHandlerModule {
 					game = await GameService.setupGame(playerData.id, chat.id)
 				}
 
-				SocketService.setupGameListener(client, game.id)
-				SocketService.setupChatListener(client, game.chatId)
+				SocketService.setupListener(client, "game", game.id)
+				SocketService.setupListener(client, "chat", game.chatId)
 
 				return {
 					gameId: game.id,
@@ -65,8 +65,8 @@ class EventHandlerModule {
 				const game = await GameService.joinGame(gameId, playerData.id)
 				const chat = await ChatService.joinChat(game.chatId)
 
-				SocketService.setupChatListener(client, game.chatId)
-				SocketService.setupGameListener(client, gameId)
+				SocketService.setupListener(client, "chat", game.chatId)
+				SocketService.setupListener(client, "game", gameId)
 
 				return {
 					game,
@@ -94,10 +94,13 @@ class EventHandlerModule {
 				await GameService.toggleReady(playerData.id, gameId)
 			})
 
-			SocketService.on<ForceSelfDisconnectEventInput, unknown>(client, "ForceSelfDisconnect", async ({ gameId }) => {
-				await GameService.purgePlayer(playerData.id)
+			SocketService.on<ForceSelfDisconnectEventInput, unknown>(client, "ForceSelfDisconnect", async () => {
+				const purgedGames = await GameService.purgePlayer(playerData.id)
 
-				client.leave(gameId)
+				purgedGames.forEach(purgedGame => {
+					SocketService.removeListener(client, "game", purgedGame.id)
+					SocketService.removeListener(client, "chat", purgedGame.chatId)
+				})
 			})
 
 			SocketService.on<unknown, unknown>(client, "disconnect", async () => {
