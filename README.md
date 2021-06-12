@@ -83,6 +83,9 @@ Right here everything should be working fine. So, **api** will be available at *
 2. Create a new branch locally following the **Git Karma** pattern. Ex: feat/my-awesome-feature.
 3. Then, after coding your contribution, make a merge request for your branch.
 
+## 🗺️ Roadmap
+Since we want to keep improving this game, you are able to see what we plan to do next on our [**Roadmap**](https://github.com/guilhermebkel/uno-game/projects/1). Any idea or suggestion of improvement and bug solving is welcome!
+
 ## 💫 Contributors
 
 Thanks to all the people who contributed on this project!
