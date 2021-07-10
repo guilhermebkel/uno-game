@@ -109,7 +109,7 @@ Thanks to all the people who contributed on this project!
 				href="https://github.com/coutlcdo" 
 				title="coutlcdo"
 			>
-				<img src="https://avatars.githubusercontent.com/coutlcdo" width="100px;" alt=""/>
+				<img src="https://avatars.githubusercontent.com/lcscout" width="100px;" alt=""/>
 				<br />
 				<sub>
 					<b>Lucas Coutinho de Oliveira</b>
