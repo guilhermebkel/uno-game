@@ -106,8 +106,8 @@ Thanks to all the people who contributed on this project!
 		</td>
 		<td align="center">
 			<a
-				href="https://github.com/coutlcdo" 
-				title="coutlcdo"
+				href="https://github.com/lcscout" 
+				title="lcscout"
 			>
 				<img src="https://avatars.githubusercontent.com/lcscout" width="100px;" alt=""/>
 				<br />
