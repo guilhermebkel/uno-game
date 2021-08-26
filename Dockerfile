@@ -1,4 +1,4 @@
-FROM node:current-stretch
+FROM node:14.17
 
 RUN mkdir -p /uno
 
