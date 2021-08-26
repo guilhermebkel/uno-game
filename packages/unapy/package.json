@@ -36,6 +36,9 @@
     "socket.io": "^2.3.0",
     "socket.io-msgpack-parser": "^2.2.0"
   },
+  "_moduleAliases": {
+    "@": "./dist"
+  },
   "optionalDependencies": {
     "@uno-game/protocols": "*",
     "@uno-game/error-handler": "*"

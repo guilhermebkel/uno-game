@@ -47,9 +47,6 @@
     "packages/*",
     "packages/shared/*"
   ],
-  "_moduleAliases": {
-    "@": "packages/unapy/dist"
-  },
   "dependencies": {
     "socket.io-redis": "^6.1.0"
   }
