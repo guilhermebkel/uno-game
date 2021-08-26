@@ -20,7 +20,7 @@
     "install:unoenty": "lerna exec --stream --scope @uno-game/unoenty -- npm install",
     "build:unoenty": "lerna run build --scope @uno-game/unoenty --stream",
     "env:unoenty": "cp packages/unoenty/.env.example packages/unoenty/.env",
-    "ci:unapy": "npm install --force && npm run install:unapy && npm run bootstrap && npm run build:unapy",
+    "ci:unapy": "npm install && npm run install:unapy && npm run bootstrap && npm run build:unapy",
     "ci:unoenty": "npm install && npm run install:unoenty && npm run bootstrap && npm run build:unoenty"
   },
   "devDependencies": {

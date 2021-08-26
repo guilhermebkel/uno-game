@@ -17,13 +17,13 @@
     "@types/node": "^14.0.1",
     "@types/socket.io": "^2.1.8",
     "@types/uuid": "^8.0.0",
-    "@uno-game/protocols": "",
+    "@uno-game/protocols": "*",
     "nodemon": "^2.0.4",
     "sucrase": "^3.15.0",
     "tsconfig-paths": "^3.9.0"
   },
   "dependencies": {
-    "@uno-game/error-handler": "",
+    "@uno-game/error-handler": "*",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
@@ -34,7 +34,7 @@
     "socket.io-msgpack-parser": "^2.2.0"
   },
   "optionalDependencies": {
-    "@uno-game/protocols": "",
-    "@uno-game/error-handler": ""
+    "@uno-game/protocols": "*",
+    "@uno-game/error-handler": "*"
   }
 }
