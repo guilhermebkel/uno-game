@@ -3,6 +3,9 @@
   "version": "0.0.0",
   "description": "The UNO Game API",
   "main": "dist/index.js",
+  "engines": {
+    "node": ">=0.10.3 <15"
+  },
   "scripts": {
     "start": "node -r module-alias/register dist/index.js",
     "dev": "nodemon src/index.ts",
