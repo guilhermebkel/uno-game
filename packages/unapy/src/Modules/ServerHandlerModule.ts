@@ -13,7 +13,9 @@ class ServerHandlerModule {
 		const onGoingGames = games.filter(({ status }) => status === "playing")
 
 		await Promise.all(
-			onGoingGames.map(game => GameService.resetRoundCounter(game.id)),
+			onGoingGames.map(() => {
+				// GameService.resetRoundCounter(game.id)
+			}),
 		)
 	}
 }

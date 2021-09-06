@@ -236,7 +236,6 @@ class GameService {
 	}
 
 	async putCard (playerId: string, cardIds: string[], gameId: string, selectedColor: CardColors): Promise<void> {
-		await new Promise(resolve => setTimeout(resolve, 20000))
 		let game = await this.getGame(gameId)
 
 		const currentPlayerInfo = await this.getCurrentPlayerInfo(game)
