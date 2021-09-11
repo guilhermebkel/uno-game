@@ -19,9 +19,17 @@ class GameController {
 	}
 
 	async getDetailedGame (req: Request, res: Response) {
-		const gameId = String(req.params.gameId)
+		const { gameId } = req.params
+
+		if (!gameId) {
+			return res.status(400).send("Bad Request: gameId was not supplied")
+		}
 
 		const game = await GameService.getGame(gameId)
+
+		if (!game) {
+			return res.status(404).send("Not found: no game found for this gameId")
+		}
 
 		return res.status(200).json(game)
 	}
