@@ -17,6 +17,14 @@ class GameController {
 			games: gameList,
 		})
 	}
+
+	async getDetailedGame (req: Request, res: Response) {
+		const gameId = String(req.params.gameId)
+
+		const game = await GameService.getGame(gameId)
+
+		return res.status(200).json({ game })
+	}
 }
 
 export default new GameController()

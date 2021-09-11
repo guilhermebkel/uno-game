@@ -10,6 +10,8 @@ routes.use("/assets", AssetController.getAsset)
 
 routes.get("/games", GameController.getGameList)
 
+routes.get("/games/:gameId", GameController.getDetailedGame)
+
 routes.get("/cards", CardController.getCardList)
 
 export default routes

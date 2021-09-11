@@ -492,7 +492,7 @@ class GameService {
 		await this.setGameData(gameId, game)
 	}
 
-	private async getGame (gameId: string): Promise<Game> {
+	async getGame (gameId: string): Promise<Game> {
 		const game = await GameRepository.getGame(gameId)
 
 		return game
