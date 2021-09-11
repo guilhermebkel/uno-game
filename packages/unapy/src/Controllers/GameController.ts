@@ -23,7 +23,7 @@ class GameController {
 
 		const game = await GameService.getGame(gameId)
 
-		return res.status(200).json({ game })
+		return res.status(200).json(game)
 	}
 }
 
