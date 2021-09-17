@@ -2,10 +2,10 @@ import { Chat, ChatMessage } from "@uno-game/protocols"
 
 import { Store } from "@/Protocols/StoreProtocol"
 
-import MemoryWithCacheStoreService from "@/Services/MemoryWithCacheStoreService"
+import AsyncMapStoreService from "@/Services/AsyncMapStoreService"
 
 class GameRepository {
-	private static chats: Store<Chat> = new MemoryWithCacheStoreService("chat")
+	private static chats: Store<Chat> = new AsyncMapStoreService()
 
 	static async createChat (chatData: Chat): Promise<void> {
 		this.chats.set(chatData.id, chatData)

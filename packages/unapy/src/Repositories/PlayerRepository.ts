@@ -2,10 +2,10 @@ import { Player } from "@uno-game/protocols"
 
 import { Store } from "@/Protocols/StoreProtocol"
 
-import MemoryWithCacheStoreService from "@/Services/MemoryWithCacheStoreService"
+import AsyncMapStoreService from "@/Services/AsyncMapStoreService"
 
 class PlayerRepository {
-	private static players: Store<Player> = new MemoryWithCacheStoreService("player")
+	private static players: Store<Player> = new AsyncMapStoreService()
 
 	static async setPlayerData (playerData: Player): Promise<void> {
 		await this.players.set(playerData.id, playerData)
