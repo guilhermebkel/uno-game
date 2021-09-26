@@ -132,7 +132,7 @@ const CardStack: React.FC<CardStackProps> = (props) => {
 					container
 					className={classes.cardStackContent}
 				>
-					{cards?.map((card, index) => (
+					{cards?.slice(0, 20)?.map((card, index) => (
 						<img
 							key={card.id}
 							className={classes.card}
