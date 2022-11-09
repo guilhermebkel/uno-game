@@ -164,7 +164,7 @@ const Table: React.FC = () => {
 								>
 									<CardDeckPlaceholder
 										position="topLeft"
-										player={socket.otherPlayers?.[1]}
+										player={socket.layoutedOtherPlayers.topLeft}
 									/>
 								</Grid>
 								<Grid
@@ -175,7 +175,7 @@ const Table: React.FC = () => {
 									<Grid container justify="center" alignItems="center">
 										<CardDeckPlaceholder
 											position="top"
-											player={socket.otherPlayers?.[2]}
+											player={socket.layoutedOtherPlayers.top}
 										/>
 									</Grid>
 								</Grid>
@@ -186,7 +186,7 @@ const Table: React.FC = () => {
 								>
 									<CardDeckPlaceholder
 										position="topRight"
-										player={socket.otherPlayers?.[3]}
+										player={socket.layoutedOtherPlayers.topRight}
 									/>
 								</Grid>
 							</Grid>
@@ -203,7 +203,7 @@ const Table: React.FC = () => {
 									<Grid container justify="flex-start">
 										<CardDeckPlaceholder
 											position="left"
-											player={socket.otherPlayers?.[0]}
+											player={socket.layoutedOtherPlayers.left}
 										/>
 									</Grid>
 								</Grid>
@@ -223,28 +223,63 @@ const Table: React.FC = () => {
 									<Grid container justify="flex-end">
 										<CardDeckPlaceholder
 											position="right"
-											player={socket.otherPlayers?.[4]}
+											player={socket.layoutedOtherPlayers.right}
 										/>
 									</Grid>
 								</Grid>
 							</Grid>
-							<Grid container alignItems="center">
-								<Grid container justify="center" style={{ height: "100%" }}>
-									{socket?.currentPlayer ? (
-										<>
+							<Grid container justify="space-between">
+								<Grid
+									item
+									xs={2}
+									className={classes.cardDeckPlaceholder}
+								>
+									<CardDeckPlaceholder
+										position="bottomLeft"
+										player={socket.layoutedOtherPlayers.bottomLeft}
+									/>
+								</Grid>
+
+								{socket?.currentPlayer ? (
+									<Grid
+										container
+										alignItems="center"
+										justify="center"
+										style={{ position: "absolute", bottom: 16, height: 240, left: 0 }}
+									>
+										<Grid
+											style={{ height: "100%" }}
+										>
 											<CustomCardDragPreview />
 
 											<CardDeck
 												cards={socket.currentPlayer?.handCards}
 												player={socket.currentPlayer}
 											/>
-										</>
-									) : (
+										</Grid>
+									</Grid>
+								) : (
+									<Grid
+										item
+										xs={2}
+										className={classes.cardDeckPlaceholder}
+									>
 										<CardDeckPlaceholder
 											position="bottom"
-											player={socket.otherPlayers?.[5]}
+											player={socket.layoutedOtherPlayers.bottom}
 										/>
-									)}
+									</Grid>
+								)}
+
+								<Grid
+									item
+									xs={2}
+									className={classes.cardDeckPlaceholder}
+								>
+									<CardDeckPlaceholder
+										position="bottomRight"
+										player={socket.layoutedOtherPlayers.bottomRight}
+									/>
 								</Grid>
 							</Grid>
 						</Grid>

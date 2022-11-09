@@ -47,7 +47,7 @@ class GameService {
 		const playerData = await PlayerService.getPlayerData(playerId)
 
 		const game: Game = {
-			maxPlayers: 6,
+			maxPlayers: 8,
 			type: "public",
 			status: "waiting",
 			round: 0,

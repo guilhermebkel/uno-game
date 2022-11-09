@@ -22,11 +22,13 @@ import {
 	GameStartedEventData,
 	NewMessageEventData,
 } from "@uno-game/protocols"
+import { GameDeckLayoutPosition } from "@/utils/game"
+import { getSanitizedValueWithBoundaries } from "@/utils/number"
 
 type UseSocketResponse = {
 	currentPlayer: PlayerData
 	winner: PlayerData | null
-	otherPlayers: PlayerData[]
+	layoutedOtherPlayers: Record<GameDeckLayoutPosition, PlayerData>
 	currentRoundPlayer: PlayerData
 	getWinner: (game?: Game) => PlayerData | null
 	getCurrentPlayer: (players?: PlayerData[] | undefined) => PlayerData
@@ -83,45 +85,49 @@ const useSocket = (): UseSocketResponse => {
 		return player as PlayerData
 	}
 
-	const getOtherPlayers = (): PlayerData[] => {
-		const totalPlayers = socketStore?.game?.players?.length as number
+	const getLayoutedOtherPlayers = (): Record<GameDeckLayoutPosition, PlayerData> => {
+		const positionsIndexMap: Record<number, GameDeckLayoutPosition> = {
+			0: "topLeft",
+			1: "top",
+			2: "topRight",
+			3: "right",
+			4: "bottomRight",
+			5: "bottom",
+			6: "bottomLeft",
+			7: "left"
+		}
 
+		const layoutedOtherPlayers = {} as Record<GameDeckLayoutPosition, PlayerData>
+
+		const players = socketStore?.game?.players || []
 		const playerId = socketStore.player?.id
 
-		let currentPlayerIndex = socketStore?.game?.players?.
-			findIndex(player => player.id === playerId) as number
+		const currentPlayerIndex = players?.findIndex(player => player.id === playerId) as number
+		const isThereAnyCurrentPlayer = currentPlayerIndex === -1
 
-		if (currentPlayerIndex === -1) {
-			currentPlayerIndex = totalPlayers
+		if (isThereAnyCurrentPlayer) {
+			players.forEach((player, index) => {
+				layoutedOtherPlayers[positionsIndexMap[index]] = player
+			})
+		} else {
+			const currentPlayerPositionIndex = 5 // bottom
+
+			const otherPlayersBeforeCurrentPlayer = players?.slice(0, currentPlayerIndex)
+
+			otherPlayersBeforeCurrentPlayer?.reverse()?.forEach((player, index) => {
+				const otherPlayerIndex = getSanitizedValueWithBoundaries(currentPlayerPositionIndex - (index + 1), players.length, 0)
+				layoutedOtherPlayers[positionsIndexMap[otherPlayerIndex]] = player
+			})
+
+			const otherPlayersAfterCurrentPlayer = players?.slice(currentPlayerIndex + 1, players?.length)
+
+			otherPlayersAfterCurrentPlayer?.forEach((player, index) => {
+				const otherPlayerIndex = getSanitizedValueWithBoundaries(currentPlayerPositionIndex + (index + 1), players.length, 0)
+				layoutedOtherPlayers[positionsIndexMap[otherPlayerIndex]] = player
+			})
 		}
 
-		const otherPlayersBeforeCurrentPlayer = socketStore?.game?.players?.
-			slice(0, currentPlayerIndex)
-
-		const otherPlayersAfterCurrentPlayer = socketStore?.game?.players?.
-			slice(currentPlayerIndex + 1, socketStore?.game?.players?.length)
-
-		let otherPlayers = [
-			...otherPlayersAfterCurrentPlayer || [],
-			...otherPlayersBeforeCurrentPlayer || [],
-		]
-
-		/**
-		 * Improves layout location
-		 */
-		if (totalPlayers <= 4) {
-			otherPlayers = [
-				otherPlayers[0],
-				{} as PlayerData,
-				otherPlayers[1],
-				{} as PlayerData,
-				otherPlayers[2],
-				{} as PlayerData,
-				otherPlayers[3],
-			]
-		}
-
-		return (otherPlayers || []) as PlayerData[]
+		return layoutedOtherPlayers
 	}
 
 	const joinGame = async (gameId: string): Promise<Game> => {
@@ -302,8 +308,8 @@ const useSocket = (): UseSocketResponse => {
 		get currentPlayer (): PlayerData {
 			return getCurrentPlayer()
 		},
-		get otherPlayers (): PlayerData[] {
-			return getOtherPlayers()
+		get layoutedOtherPlayers (): Record<GameDeckLayoutPosition, PlayerData> {
+			return getLayoutedOtherPlayers()
 		},
 		get currentRoundPlayer (): PlayerData {
 			return getCurrentRoundPlayer()

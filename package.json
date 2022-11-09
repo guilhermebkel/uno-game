@@ -7,7 +7,7 @@
   "scripts": {
     "dev:resources": "docker-compose up",
     "setup": "npm run setup:app && npm run setup:env",
-    "setup:app": "npm install && npm run install:unapy && npm run install:unoenty && npm run bootstrap",
+    "setup:app": "npm install && npm run bootstrap",
     "setup:env": "npm run env:unapy && npm run env:unoenty",
     "bootstrap": "lerna bootstrap --use-workspaces --hoist && lerna link",
     "list": "lerna ls",

@@ -12,5 +12,7 @@ export const statusColorMap: StatusMap<string> = {
 	waiting: colors.palette.yellow1,
 }
 
+export type GameDeckLayoutPosition = "left" | "top" | "topLeft" | "topRight" | "right" | "bottom" | "bottomLeft" | "bottomRight"
+
 // eslint-disable-next-line
 export const orderByCreatedAtDesc = (a: any, b: any) => b.createdAt - a.createdAt

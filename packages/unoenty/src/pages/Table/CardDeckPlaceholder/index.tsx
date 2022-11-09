@@ -2,6 +2,7 @@ import React from "react"
 import {
 	Grid,
 	Typography,
+	Tooltip
 } from "@material-ui/core"
 
 import { PlayerData } from "@uno-game/protocols"
@@ -20,12 +21,13 @@ import PlayerEffect from "@/pages/Table/PlayerEffect"
 
 import { getCardPosition } from "@/utils/card"
 import { buildPercentage } from "@/utils/number"
+import { GameDeckLayoutPosition } from "@/utils/game"
 
 const MAX_CARDS = 7
 
 type CardDeckPlaceholderProps = {
 	player: PlayerData
-	position: "left" | "top" | "topLeft" | "topRight" | "right" | "bottom"
+	position: GameDeckLayoutPosition
 }
 
 type CardDeckPlaceholderPositionStylesMap = {
@@ -34,6 +36,7 @@ type CardDeckPlaceholderPositionStylesMap = {
 		cardContainer?: React.CSSProperties
 		remainingCardsText?: React.CSSProperties
 		container?: React.CSSProperties
+		avatarContainer?: React.CSSProperties
 	}
 }
 
@@ -71,8 +74,22 @@ const cardDeckPlaceholderPositionStylesMap: CardDeckPlaceholderPositionStylesMap
 		cardCounterContainer: { alignItems: "flex-end" },
 		cardContainer: { top: 50, left: -10, transform: "rotate(330deg)" },
 		remainingCardsText: { width: 55, height: 50, transform: "rotate(-90deg)" },
-		container: { flexDirection: "row-reverse" },
+		container: { flexDirection: "row-reverse", top: 40, left: 64 },
 	},
+	bottomLeft: {
+		cardCounterContainer: { alignItems: "flex-end", position: "relative", bottom: -30 },
+		cardContainer: { top: 80, left: 8, transform: "rotate(366deg)" },
+		remainingCardsText: { width: 55, height: 50, transform: "rotate(-90deg)" },
+		container: { flexDirection: "row-reverse" },
+		avatarContainer: { flexDirection: "column-reverse", position: "relative", bottom: -60, height: 88, justifyContent: "space-between" }
+	},
+	bottomRight: {
+		cardCounterContainer: { alignItems: "flex-end", position: "relative", bottom: -36 },
+		cardContainer: { top: 36, left: 40, transform: "rotate(280deg)" },
+		remainingCardsText: { width: 55, height: 50, transform: "rotate(-90deg)" },
+		container: { flexDirection: "row", width: "auto", justifyContent: "flex-end" },
+		avatarContainer: { flexDirection: "column-reverse", position: "relative", bottom: -60, height: 98, justifyContent: "space-between" }
+	}
 }
 
 const CardDeckPlaceholder: React.FC<CardDeckPlaceholderProps> = (props) => {
@@ -137,25 +154,28 @@ const CardDeckPlaceholder: React.FC<CardDeckPlaceholderProps> = (props) => {
 
 				<Divider orientation="vertical" size={2} />
 
-				<Grid
-					container
-					direction="column"
-					alignItems="center"
-					className={classes.avatarContainer}
-				>
-					<Typography
-						variant="h3"
-						className={`${classes.playerName} ${customClasses.limitedName}`}
+				<Tooltip title={player.name}>
+					<Grid
+						container
+						direction="column"
+						alignItems="center"
+						className={classes.avatarContainer}
+						style={positionStyles.avatarContainer}
 					>
-						{player.name}
-					</Typography>
+						<Typography
+							variant="h3"
+							className={`${classes.playerName} ${customClasses.limitedName}`}
+						>
+							{player.name}
+						</Typography>
 
-					<Avatar
-						name={player.name}
-						size="small"
-						className={player.isCurrentRoundPlayer ? customClasses.avatarTimer : ""}
-					/>
-				</Grid>
+						<Avatar
+							name={player.name}
+							size="small"
+							className={player.isCurrentRoundPlayer ? customClasses.avatarTimer : ""}
+						/>
+					</Grid>
+				</Tooltip>
 
 				<Divider orientation="vertical" size={2} />
 
