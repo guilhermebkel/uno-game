@@ -88,7 +88,7 @@ const useSocket = (): UseSocketResponse => {
 	const getLayoutedOtherPlayers = (): Record<GameDeckLayoutPosition, PlayerData> => {
 		const positionsByAmountOfPlayersMap: Record<number, GameDeckLayoutPosition[]> = {
 			1: ["bottom"],
-			2: ["bottom", "right"],
+			2: ["bottom", "top"],
 			3: ["bottom", "right", "left"],
 			4: ["bottom", "right", "top", "left"],
 			5: ["bottom", "right", "topRight", "top", "left"],
