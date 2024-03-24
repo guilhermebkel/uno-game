@@ -7,7 +7,7 @@ export const stringToColor = (value: string): string => {
     hash = value.charCodeAt(i) + ((hash << 5) - hash)
   }
 
-  let color = '#';
+  let color = "#"
 
   for (i = 0; i < 3; i += 1) {
     const value = (hash >> (i * 8)) & 0xff;
