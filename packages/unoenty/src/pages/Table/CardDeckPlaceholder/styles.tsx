@@ -92,6 +92,7 @@ const useStyles = makeStyles((theme) => ({
 		opacity: (props: UseStylesProps) => `${props.isCurrentRoundPlayer ? 1 : 0.5}`,
 	},
 	playerName: {
+		fontSize: 14,
 		fontWeight: "bold",
 		color: (props: UseStylesProps) => `${props.isCurrentRoundPlayer ? colors.palette.yellow1 : colors.grayScale[12]}`,
 		marginBottom: theme.spacing(1),

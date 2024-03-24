@@ -139,7 +139,7 @@ const CardDeck: React.FC<CardDeckProps> = (props) => {
 	const socket = useSocket()
 	const classes = useStyles()
 	const customClasses = useCustomStyles({
-		limitedNameWidth: 70,
+		limitedNameWidth: 120,
 		avatarTimerRemainingPercentage: buildPercentage(
 			socketStore.gameRoundRemainingTimeInSeconds as number,
 			socketStore.game?.maxRoundDurationInSeconds as number,
@@ -330,7 +330,7 @@ const CardDeck: React.FC<CardDeckProps> = (props) => {
 					<Grid item>
 						<Typography
 							variant="h3"
-							className={`${classes.title} ${customClasses.limitedName}`}
+							className={`${classes.playerName} ${customClasses.limitedName}`}
 						>
 							{player?.name}
 						</Typography>

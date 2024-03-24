@@ -69,7 +69,8 @@ const useStyles = makeStyles((theme) => ({
 		color: colors.grayScale[12],
 		fontWeight: "lighter",
 	},
-	title: {
+	playerName: {
+		fontSize: 16,
 		fontWeight: "bold",
 		color: colors.grayScale[13],
 	},
