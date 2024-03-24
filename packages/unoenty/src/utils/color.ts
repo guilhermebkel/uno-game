@@ -10,7 +10,7 @@ export const stringToColor = (value: string): string => {
   let color = "#"
 
   for (i = 0; i < 3; i += 1) {
-    const value = (hash >> (i * 8)) & 0xff;
+    const value = (hash >> (i * 8)) & 0xff
     color += `00${value.toString(16)}`.substr(-2)
   }
   /* eslint-enable no-bitwise */
