@@ -1,8 +1,11 @@
-import React from "react"
+import React, { useCallback } from "react"
 import { Container, Typography } from "@material-ui/core"
 import { fade } from "@material-ui/core/styles/colorManipulator"
 
+import { stringToColor } from "@/utils/color"
 import Device from "@/utils/device"
+
+import theme from "@/styles/theme"
 
 import useStyles from "@/components/Avatar/styles"
 
@@ -17,15 +20,15 @@ const Avatar: React.FC<AvatarProps> = (props) => {
 
 	const classes = useStyles()
 
-	const getNameMainLetter = () => {
+	const getNameMainLetter = useCallback(() => {
 		const firstLetter = name[0]
 
 		const upperCasedFirstLetter = firstLetter.toUpperCase()
 
 		return upperCasedFirstLetter
-	}
+	}, [name])
 
-	const getFontSize = () => {
+	const getFontSize = useCallback(() => {
 		let fontSize: number | undefined
 
 		if (size === "large") {
@@ -37,20 +40,11 @@ const Avatar: React.FC<AvatarProps> = (props) => {
 		}
 
 		return fontSize
-	}
+	}, [size])
 
-	const getAvatarColor = () => {
-		const colors = [
-			"#E0CE2D",
-			"#35EA88",
-			"#35EAC9",
-			"#9E3EFF",
-		]
+	const getAvatarColor = useCallback(() => stringToColor(name), [name])
 
-		return colors[name.length % colors.length]
-	}
-
-	const getAvatarSize = () => {
+	const getAvatarSize = useCallback(() => {
 		let avatarSize: number | undefined
 
 		if (size === "large") {
@@ -62,7 +56,7 @@ const Avatar: React.FC<AvatarProps> = (props) => {
 		}
 
 		return avatarSize
-	}
+	}, [size])
 
 	return (
 		<Container
@@ -88,6 +82,7 @@ const Avatar: React.FC<AvatarProps> = (props) => {
 					className={classes.avatarTypography}
 					style={{
 						fontSize: getFontSize(),
+						color: theme.palette.getContrastText(getAvatarColor())
 					}}
 				>
 					{getNameMainLetter()}
