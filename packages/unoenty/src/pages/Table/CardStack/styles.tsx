@@ -74,6 +74,7 @@ const useStyles = makeStyles(theme => ({
 		bottom: -16,
 	},
 	buyCardContainer: {
+		zIndex: 5,
 		position: "absolute",
 		bottom: -64,
 		left: 0,
