@@ -23,6 +23,8 @@ type CardStackProps = {
 
 let lastAmountToBuy = 0
 
+const MAX_CARDS_VISIBLE_ON_CARD_STACK = 20
+
 const CardStack: React.FC<CardStackProps> = (props) => {
 	const cardStore = useCardStore()
 	const socket = useSocket()
@@ -132,15 +134,15 @@ const CardStack: React.FC<CardStackProps> = (props) => {
 					container
 					className={classes.cardStackContent}
 				>
-					{cards?.slice(0, 20)?.map((card, index) => (
+					{cards?.slice(0, MAX_CARDS_VISIBLE_ON_CARD_STACK)?.map((card, index) => (
 						<img
 							key={card.id}
 							className={classes.card}
 							alt={card.name}
 							src={card.src}
 							style={{
-								transform: `rotate(${cards.length - index}rad)`,
-								zIndex: cards.length - index,
+								transform: `rotate(${MAX_CARDS_VISIBLE_ON_CARD_STACK - index}rad)`,
+								zIndex: MAX_CARDS_VISIBLE_ON_CARD_STACK - index,
 								filter: (index === 0) ? "saturate(1.5)" : "contrast(0.5)",
 							}}
 						/>
