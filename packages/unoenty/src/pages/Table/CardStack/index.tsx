@@ -23,7 +23,7 @@ type CardStackProps = {
 
 let lastAmountToBuy = 0
 
-const MAX_CARDS_VISIBLE_ON_CARD_STACK = 20
+const MAX_CARDS_VISIBLE_ON_CARD_STACK = 10
 
 const CardStack: React.FC<CardStackProps> = (props) => {
 	const cardStore = useCardStore()
@@ -88,7 +88,7 @@ const CardStack: React.FC<CardStackProps> = (props) => {
 				className={classes.cardStackContainer}
 				innerRef={cardStackRef}
 				style={{
-					backgroundColor: isHovering ? "rgba(255, 255, 255, 0.1)" : "",
+					backgroundColor: isHovering ? "rgba(255, 255, 255, 0.15)" : "",
 				}}
 			>
 				<Zoom
