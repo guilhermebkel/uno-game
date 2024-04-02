@@ -141,7 +141,7 @@ const CardStack: React.FC<CardStackProps> = (props) => {
 							alt={card.name}
 							src={card.src}
 							style={{
-								transform: `rotate(${MAX_CARDS_VISIBLE_ON_CARD_STACK - (index * 4)}deg)`,
+								transform: `rotate(${index * (-4)}deg)`,
 								zIndex: MAX_CARDS_VISIBLE_ON_CARD_STACK - index,
 								filter: (index === 0) ? "saturate(1.5)" : "contrast(0.5)",
 							}}
