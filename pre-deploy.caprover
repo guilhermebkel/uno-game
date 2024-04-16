@@ -1,7 +1,0 @@
-var preDeployFunction = function (captainAppObj, dockerUpdateObject) {
-    return Promise.resolve()
-        .then(function(){
-            dockerUpdateObject.TaskTemplate.Resources = {Limits: {MemoryBytes: 512 * 1024 * 1024}};
-            return dockerUpdateObject;
-        });
-};

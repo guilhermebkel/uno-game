@@ -1,0 +1,4 @@
+TaskTemplate:
+  Resources:
+    Limits:
+      MemoryBytes: 536870912 # 512MB
